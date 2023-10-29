@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomizedShell", "CustomizedShell\CustomizedShell.csproj", "{8B121736-EA25-40D7-AA31-D992422649F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maui.Components", "Maui.Components\Maui.Components.csproj", "{61C02406-2388-4BCC-9E3C-A665415876EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{8B121736-EA25-40D7-AA31-D992422649F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B121736-EA25-40D7-AA31-D992422649F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B121736-EA25-40D7-AA31-D992422649F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C02406-2388-4BCC-9E3C-A665415876EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C02406-2388-4BCC-9E3C-A665415876EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C02406-2388-4BCC-9E3C-A665415876EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C02406-2388-4BCC-9E3C-A665415876EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

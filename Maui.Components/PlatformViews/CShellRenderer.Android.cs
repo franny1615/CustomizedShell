@@ -6,7 +6,7 @@ using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Controls.Platform.Compatibility;
 using Microsoft.Maui.Platform;
 
-namespace CustomizedShell.PlatformViews;
+namespace Maui.Components.PlatformViews;
 
 public class CShellRenderer : ShellRenderer
 {

@@ -44,10 +44,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Resources/Images/" />
-	</ItemGroup>
-
 	<!-- Android -->
 	<ItemGroup Condition="$(TargetFramework.StartsWith('net7.0-android')) != true">
 		<Compile Remove="**\**\*.Android.cs" />
@@ -58,5 +54,8 @@
 	<ItemGroup Condition="$(TargetFramework.StartsWith('net7.0-ios')) != true AND $(TargetFramework.StartsWith('net7.0-maccatalyst')) != true">
 		<Compile Remove="**\**\*.MaciOS.cs" />
 		<None Include="**\**\*.MaciOS.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Maui.Components\Maui.Components.csproj" />
 	</ItemGroup>
 </Project>

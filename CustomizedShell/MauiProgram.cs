@@ -1,5 +1,5 @@
 ﻿using CustomizedShell.Pages;
-using CustomizedShell.PlatformViews;
+using Maui.Components.PlatformViews;
 
 namespace CustomizedShell;
 
@@ -13,7 +13,7 @@ public static class MauiProgram
 			.RegisterPages()
 			.ConfigureMauiHandlers(handlers =>
 			{
-				handlers.AddHandler<Shell, CShellRenderer>();
+				// handlers.AddHandler<Shell, CShellRenderer>();
 			})
 			.ConfigureFonts(fonts =>
 			{
@@ -26,6 +26,8 @@ public static class MauiProgram
 	public static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
 	{
 		builder.Services.AddTransient<MainPage>();
+		builder.Services.AddTransient<SearchPage>();
+		builder.Services.AddTransient<SettingsPage>();
 
 		return builder;
 	}
