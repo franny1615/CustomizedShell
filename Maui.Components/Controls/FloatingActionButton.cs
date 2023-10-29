@@ -8,6 +8,7 @@ public enum FloatingActionButtonStyle
 	Small,
 	Regular,
 	Large,
+	Extended,
 	Unknown
 }
 
@@ -54,25 +55,62 @@ public class FloatingActionButton : ContentView
 		set => SetValue(FABBackgroundColorProperty, value);
 	}
 
+	public static readonly BindableProperty TextProperty = BindableProperty.Create(
+		nameof(TextProperty),
+		typeof(string),
+		typeof(FloatingActionButton),
+		string.Empty
+	);
+
+	public string Text 
+	{
+		get => (string)GetValue(TextProperty);
+		set => SetValue(TextProperty, value);
+	}
+
+	public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
+		nameof(TextColorProperty),
+		typeof(Color),
+		typeof(FloatingActionButton),
+		null
+	);
+
+	public Color TextColor 
+	{
+		get => (Color)GetValue(TextColorProperty);
+		set => SetValue(TextColorProperty, value);
+	}
+
 	private readonly TapGestureRecognizer _FABClick = new()
 	{
 		NumberOfTapsRequired = 1
 	};
 
-	private readonly Grid _FABLayout = new();
-	private readonly Border _FABContainer = new();
+	private readonly HorizontalStackLayout _FABLayout = new()
+	{
+		HorizontalOptions = LayoutOptions.Center,
+		Spacing = 4,
+	};
+	private readonly Border _FABContainer = new() { Stroke = Colors.Transparent };
 	private readonly Image _FABImage = new()
 	{
 		VerticalOptions = LayoutOptions.Center,
 		HorizontalOptions = LayoutOptions.Center
 	};
+	private readonly Label _FABLabel = new()
+	{
+		FontSize = 16,
+		FontAttributes = FontAttributes.Bold,
+		VerticalOptions = LayoutOptions.Center
+	};
 
 	public FloatingActionButton()
 	{
 		GestureRecognizers.Add(_FABClick);
-		_FABContainer.Content = _FABImage;
-		_FABLayout.Children.Add(_FABContainer);
-		Content = _FABLayout;
+		
+		_FABContainer.Content = _FABLayout;
+		
+		Content = _FABContainer;
 
 		Loaded += FABLoaded;
 		Unloaded += FABUnloaded;
@@ -103,6 +141,14 @@ public class FloatingActionButton : ContentView
 		{
 			_FABImage.Source = ImageSource;
 		}
+		else if (propertyName == TextProperty.PropertyName)
+		{
+			_FABLabel.Text = Text;
+		}
+		else if (propertyName == TextColorProperty.PropertyName)
+		{
+			_FABLabel.TextColor = TextColor;
+		}
 		else if (propertyName == FABBackgroundColorProperty.PropertyName)
 		{
 			_FABContainer.BackgroundColor = FABBackgroundColor;
@@ -115,10 +161,12 @@ public class FloatingActionButton : ContentView
 
 	private void ApplyFABStyle()
 	{
+		_FABLayout.Clear();
 		switch (FABStyle)
 		{
 			case FloatingActionButtonStyle.Small:
-				_FABLayout.Shadow = new Shadow { Brush = Colors.DarkGray, Radius = 2, Offset = new Point(0, 1) };
+				_FABContainer.Shadow = new Shadow { Brush = Colors.DarkGray, Radius = 2, Offset = new Point(0, 1) };
+				_FABLayout.Add(_FABImage);
 				_FABContainer.StrokeShape = new RoundRectangle { CornerRadius = 12 };
 				_FABContainer.HeightRequest = 40;
 				_FABContainer.WidthRequest = 40;
@@ -127,7 +175,8 @@ public class FloatingActionButton : ContentView
 				_FABImage.Aspect = Aspect.AspectFit;
 				break;
 			case FloatingActionButtonStyle.Regular:
-				_FABLayout.Shadow = new Shadow { Brush = Colors.DarkGray, Radius = 2, Offset = new Point(0, 1) };
+				_FABContainer.Shadow = new Shadow { Brush = Colors.DarkGray, Radius = 2, Offset = new Point(0, 1) };
+				_FABLayout.Add(_FABImage);
 				_FABContainer.StrokeShape = new RoundRectangle { CornerRadius = 16 };
 				_FABContainer.HeightRequest = 56;
 				_FABContainer.WidthRequest = 56;
@@ -136,12 +185,29 @@ public class FloatingActionButton : ContentView
 				_FABImage.Aspect = Aspect.AspectFit;
 				break;
 			case FloatingActionButtonStyle.Large:
-				_FABLayout.Shadow = new Shadow { Brush = Colors.DarkGray, Radius = 2, Offset = new Point(0, 1) };
+				_FABContainer.Shadow = new Shadow { Brush = Colors.DarkGray, Radius = 2, Offset = new Point(0, 1) };
+				_FABLayout.Add(_FABImage);
 				_FABContainer.StrokeShape = new RoundRectangle { CornerRadius = 28 };
 				_FABContainer.HeightRequest = 96;
 				_FABContainer.WidthRequest = 96;
 				_FABImage.HeightRequest = 36;
 				_FABImage.WidthRequest = 36;
+				_FABImage.Aspect = Aspect.AspectFit;
+				break;
+			case FloatingActionButtonStyle.Extended:
+				if (FABBackgroundColor != null)
+				{
+					_FABContainer.Shadow = new Shadow { Brush = Colors.DarkGray, Radius = 2, Offset = new Point(0, 1) };
+				}
+				if (ImageSource != null)
+				{
+					_FABLayout.Add(_FABImage);
+				}
+				_FABLayout.Add(_FABLabel);
+				_FABContainer.StrokeShape = new RoundRectangle { CornerRadius = 16 };
+				_FABContainer.HeightRequest = 56;
+				_FABImage.HeightRequest = 24;
+				_FABImage.WidthRequest = 24;
 				_FABImage.Aspect = Aspect.AspectFit;
 				break;
 			case FloatingActionButtonStyle.Unknown:

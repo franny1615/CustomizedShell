@@ -1,9 +1,19 @@
 ﻿using CustomizedShell.Pages;
+using Maui.Components.Controls;
 
 namespace CustomizedShell;
 
 public class AppShell : Shell
 {
+    private readonly FloatingActionButton _LogoutButton = new()
+    {
+        ImageSource = "logout.png",
+        Text = "Logout",
+        FABStyle = FloatingActionButtonStyle.Extended,
+        HorizontalOptions = LayoutOptions.Start,
+        VerticalOptions = LayoutOptions.Center
+    };
+
     public AppShell()
     {
         Shell.SetFlyoutBehavior(this, FlyoutBehavior.Flyout);
@@ -25,23 +35,13 @@ public class AppShell : Shell
             }
         };
 
-        var button = new Button
-        {
-            Padding = 16,
-            BackgroundColor = Colors.Transparent,
-            FontAttributes = FontAttributes.Bold,
-            FontSize = 16,
-            ImageSource = "logout.png",
-            Text = "Logout",
-            TextColor = Color.FromArgb("#3EB489"),
-            HorizontalOptions = LayoutOptions.Start
-        };
-
         FlyoutFooter = new Grid
         {
+            HeightRequest = 100,
+            Padding = 16,
             Children = 
             {
-                button
+                _LogoutButton
             }
         };
         
@@ -76,5 +76,30 @@ public class AppShell : Shell
                 }
             }
         });
+
+        Loaded += ShellLoaded;
+        Unloaded += ShellUnloaded;
+    }
+
+    private void ShellLoaded(object sender, EventArgs e)
+    {
+        Application.Current.RequestedThemeChanged += ThemeChanged;
+    }
+
+    private void ShellUnloaded(object sender, EventArgs e)
+    {
+        Application.Current.RequestedThemeChanged -= ThemeChanged;
+    }
+
+    private void ThemeChanged(object sender, AppThemeChangedEventArgs e)
+    {
+        if (e.RequestedTheme == AppTheme.Dark)
+        {
+            _LogoutButton.TextColor = Colors.White;
+        }
+        else
+        {
+            _LogoutButton.TextColor = Colors.Black;
+        }
     }
 }

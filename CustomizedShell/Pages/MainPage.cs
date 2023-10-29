@@ -40,6 +40,21 @@ public class MainPage : ContentPage
 						new FloatingActionButton
 						{
 							FABBackgroundColor = Color.FromArgb("#3EB489"),
+							Text = "Home",
+							TextColor = Colors.White,
+							FABStyle = FloatingActionButtonStyle.Extended,
+						},
+						new FloatingActionButton
+						{
+							FABBackgroundColor = Color.FromArgb("#3EB489"),
+							ImageSource = "home.png",
+							Text = "Home",
+							TextColor = Colors.White,
+							FABStyle = FloatingActionButtonStyle.Extended,
+						},
+						new FloatingActionButton
+						{
+							FABBackgroundColor = Color.FromArgb("#3EB489"),
 							ImageSource = "home.png",
 							FABStyle = FloatingActionButtonStyle.Large,
 						}
