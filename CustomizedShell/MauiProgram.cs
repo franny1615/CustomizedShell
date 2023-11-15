@@ -1,5 +1,7 @@
 ﻿using CustomizedShell.Pages;
-using Maui.Components.PlatformViews;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Markup;
 
 namespace CustomizedShell;
 
@@ -10,14 +12,19 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseMauiCommunityToolkit()
+			.UseMauiCommunityToolkitCore()
+			.UseMauiCommunityToolkitMarkup()
 			.RegisterPages()
 			.ConfigureMauiHandlers(handlers =>
 			{
+				// leaving this here as an example
 				// handlers.AddHandler<Shell, CShellRenderer>();
 			})
 			.ConfigureFonts(fonts =>
 			{
-				fonts.AddFont("Montserrat-Regular.ttf", "MontserratRegular");
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSans");
+				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
 		return builder.Build();
