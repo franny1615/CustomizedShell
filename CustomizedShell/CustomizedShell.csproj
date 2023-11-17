@@ -8,7 +8,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>CustomizedShell</ApplicationTitle>
+		<ApplicationTitle>Inventory</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.funestechnologies.inventory</ApplicationId>
@@ -27,10 +27,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="24,24" Resize="False" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1F5673" BaseSize="48,48" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
