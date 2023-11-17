@@ -16,11 +16,6 @@ public static class MauiProgram
 			.UseMauiCommunityToolkitCore()
 			.UseMauiCommunityToolkitMarkup()
 			.RegisterPages()
-			.ConfigureMauiHandlers(handlers =>
-			{
-				// leaving this here as an example
-				// handlers.AddHandler<Shell, CShellRenderer>();
-			})
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSans");
