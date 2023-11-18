@@ -195,4 +195,10 @@ Delete account?
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
 </root>

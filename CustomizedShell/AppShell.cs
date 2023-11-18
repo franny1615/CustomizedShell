@@ -80,12 +80,28 @@ public class AppShell : Shell
                 },
                 new ShellContent
                 {
+                    Title = Lang["Inventory"],
+                    Icon = "inventory.png",
+                    FlyoutIcon = "inventory_primary.png",
+                    ContentTemplate = new DataTemplate(typeof(InventoryPage)),
+                    Route = nameof(InventoryPage)
+                },
+                new ShellContent
+                {
+                    Title = Lang["Data"],
+                    Icon = "article.png",
+                    FlyoutIcon = "article_primary.png",
+                    ContentTemplate = new DataTemplate(typeof(DataPage)),
+                    Route = nameof(DataPage)
+                },
+                new ShellContent
+                {
                     Title = Lang["Profile"],
                     Icon = "person.png",
                     FlyoutIcon = "person_primary.png",
                     ContentTemplate = new DataTemplate(typeof(ProfilePage)),
                     Route = nameof(ProfilePage)
-                }
+                },
             }
         });
 
