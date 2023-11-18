@@ -1,3 +1,6 @@
+using CommunityToolkit.Mvvm.Messaging;
+using CustomizedShell.Models;
+using CustomizedShell.ViewModels;
 using Maui.Components.Controls;
 using Microsoft.Maui.Controls.Shapes;
 
@@ -6,6 +9,7 @@ namespace CustomizedShell.Pages;
 public class LoginPage : BasePage
 {
 	#region Private Variables
+    private LoginViewModel _LoginViewModel => (LoginViewModel) BindingContext;
 	private readonly ScrollView _ContentScroll = new();
 	private readonly VerticalStackLayout _ContentLayout = new()
 	{
@@ -13,7 +17,7 @@ public class LoginPage : BasePage
 		VerticalOptions = LayoutOptions.Center,
 	};
 	private readonly StyledEntry _Username = new();
-	private readonly StyledEntry _Password = new();
+	private readonly StyledEntry _Password = new() { IsPassword = true };
 	private readonly FloatingActionButton _Login = new()
 	{
 		TextColor = Colors.White,
@@ -29,9 +33,12 @@ public class LoginPage : BasePage
     #endregion
 
     #region Constructor
-    public LoginPage()
+    public LoginPage(LoginViewModel loginViewModel)
 	{
-		HideNavBar();
+        NavigationPage.SetHasNavigationBar(this, false);
+        Shell.SetNavBarIsVisible(this, false);
+
+        BindingContext = loginViewModel;
 
 		_Username.Placeholder = Lang["Username"];
 		_Password.Placeholder = Lang["Password"];
@@ -105,7 +112,7 @@ public class LoginPage : BasePage
 
 		_ContentScroll.Content = _ContentLayout;
 
-		Page.Content = _ContentScroll;
+		Content = _ContentScroll;
 	}
     #endregion
 
@@ -125,14 +132,38 @@ public class LoginPage : BasePage
     #endregion
 
     #region Helpers
-    private void Register(object sender, ClickedEventArgs e)
+    private async void Register(object sender, ClickedEventArgs e)
     {
-        // TODO: take them to registration page, by pushing onto navigation stack
+        await this.Navigation.PushAsync(new RegisterPage(_LoginViewModel));
     }
 
-    private void Login(object sender, ClickedEventArgs e)
+    private async void Login(object sender, ClickedEventArgs e)
     {
-        // TODO: validate in viewmodel if what they entered matched some user inside the db
+        if (string.IsNullOrEmpty(_Username.Text) ||
+            string.IsNullOrEmpty(_Password.Text))
+        {
+            return;
+        }
+
+        bool validLogin = await _LoginViewModel.Login(
+            _Username.Text,
+            _Password.Text
+        );
+
+        if (validLogin)
+        {
+            WeakReferenceMessenger.Default.Send<InternalMessage>(new InternalMessage("signed-in"));
+        }
+        else
+        {
+            await this.DisplayAlert(
+                Lang["Login"], 
+                Lang["InvalidLogin"],
+                Lang["TryAgain"]);
+        }
+
+        _Username.Text = "";
+        _Password.Text = "";
     }
     #endregion
 }

@@ -8,12 +8,11 @@ public class SplashScreen : BasePage
 {
     public SplashScreen()
     {
+        NavigationPage.SetHasNavigationBar(this, false);
         Shell.SetNavBarIsVisible(this, false);
         Shell.SetTabBarIsVisible(this, false);
 
-        HideNavBar();
-
-        Page.Content = new Grid
+        Content = new Grid
         {
             VerticalOptions = LayoutOptions.Center,
             HorizontalOptions = LayoutOptions.Center,

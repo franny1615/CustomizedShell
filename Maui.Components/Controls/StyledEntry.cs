@@ -47,6 +47,19 @@ public class StyledEntry : ContentView
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
+
+    public static readonly BindableProperty IsPasswordProperty = BindableProperty.Create(
+        nameof(IsPasswordProperty),
+        typeof(bool),
+        typeof(StyledEntry),
+        defaultValue: false
+    );
+
+    public bool IsPassword
+    {
+        get => (bool)GetValue(IsPasswordProperty);
+        set => SetValue(IsPasswordProperty, value);
+    }
     #endregion
 
     #region Private Properties
@@ -73,6 +86,7 @@ public class StyledEntry : ContentView
         VerticalTextAlignment = TextAlignment.Center,
         VerticalOptions = LayoutOptions.Center,
         Keyboard = Keyboard.Plain,
+        IsPassword = false,
         Margin = new Thickness(16, 0, 16, 0)
     };
     #endregion
@@ -112,6 +126,14 @@ public class StyledEntry : ContentView
         else if (propertyName == KeyboardProperty.PropertyName)
         {
             _Entry.Keyboard = Keyboard;
+        }
+        else if (propertyName == IsPasswordProperty.PropertyName)
+        {
+            _Entry.IsPassword = IsPassword;
+        }
+        else if (propertyName == TextProperty.PropertyName)
+        {
+            _Entry.Text = Text;
         }
     }
     #endregion

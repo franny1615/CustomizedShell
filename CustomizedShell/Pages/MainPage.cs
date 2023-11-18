@@ -2,7 +2,7 @@ using Maui.Components.Controls;
 
 namespace CustomizedShell.Pages;
 
-public class MainPage : ContentPage
+public class MainPage : BasePage
 {
 	public MainPage()
 	{

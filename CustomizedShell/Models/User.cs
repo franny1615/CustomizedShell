@@ -15,6 +15,8 @@ public class User
     [MaxLength(250), Unique]
     public string Password { get; set; }
 
+    public string Email { get; set; }
+
     public bool IsLoggedIn { get; set; }
 }
 

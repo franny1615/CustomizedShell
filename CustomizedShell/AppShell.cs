@@ -1,10 +1,16 @@
-﻿using CustomizedShell.Pages;
+﻿using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Messaging;
+using CustomizedShell.Models;
+using CustomizedShell.Pages;
+using CustomizedShell.Services;
 using Maui.Components.Controls;
 
 namespace CustomizedShell;
 
 public class AppShell : Shell
 {
+    #region Private Properties
+    private LanguageService Lang => LanguageService.Instance;
     private readonly FloatingActionButton _LogoutButton = new()
     {
         ImageSource = "logout.png",
@@ -13,28 +19,41 @@ public class AppShell : Shell
         HorizontalOptions = LayoutOptions.Start,
         VerticalOptions = LayoutOptions.Center
     };
+    private Grid _BrandContainer = new()
+    {
+        HeightRequest = 150,
+        MinimumHeightRequest = DeviceInfo.Current.Platform == DevicePlatform.iOS ? 206 : 150,
+        BackgroundColor = Application.Current.Resources["Primary"] as Color,
+        Margin = 0,
+        RowDefinitions = GridRowsColumns.Rows.Define(100, 30),
+        RowSpacing = 4,
+        Children = 
+        {
+            new Image
+            {
+                HeightRequest = 100,
+                WidthRequest = 100,
+                Source = "app_ic.png"
+            }.Row(0).Bottom(),
+            new Label
+            {
+                TextColor = Colors.White,
+                FontSize = 16,
+                FontAttributes = FontAttributes.Bold,
+                HorizontalOptions = LayoutOptions.Center,
+                Text = LanguageService.Instance["WelcomeTo"]
+            }.Row(1).Top()
+        }
+    };
+    #endregion
 
+    #region Constructor
     public AppShell()
     {
         Shell.SetFlyoutBehavior(this, FlyoutBehavior.Flyout);
         Shell.SetTabBarIsVisible(this, true);
 
-        FlyoutHeader = new Grid 
-        {
-            HeightRequest = 110,
-            Margin = 0,
-            BackgroundColor = Color.FromArgb("#3EB489"),
-            Children = 
-            {
-                new Image
-                {
-                    Source = "home.png",
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center
-                }
-            }
-        };
-
+        FlyoutHeaderTemplate = new DataTemplate(() => _BrandContainer);
         FlyoutFooter = new Grid
         {
             HeightRequest = 100,
@@ -52,43 +71,35 @@ public class AppShell : Shell
             {
                 new ShellContent 
                 { 
-                    Title = "Home", 
+                    Title = Lang["Home"], 
                     Icon = "home.png",
-                    FlyoutIcon = "home_green.png",
+                    FlyoutIcon = "home_primary.png",
                     ContentTemplate = new DataTemplate(typeof(MainPage)),
                     Route = nameof(MainPage) 
-                },
-                new ShellContent 
-                { 
-                    Title = "Search", 
-                    Icon = "search.png",
-                    FlyoutIcon = "search_green.png",
-                    ContentTemplate = new DataTemplate(typeof(SearchPage)),
-                    Route = nameof(SearchPage) 
-                },
-                new ShellContent 
-                { 
-                    Title = "Settings", 
-                    Icon = "settings.png",
-                    FlyoutIcon = "settings_green.png",
-                    ContentTemplate = new DataTemplate(typeof(SettingsPage)),
-                    Route = nameof(SettingsPage) 
                 }
             }
         });
 
         Loaded += ShellLoaded;
         Unloaded += ShellUnloaded;
-    }
 
+        // these two are here in case we want to display them in Shell.
+        Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+        Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+    }
+    #endregion
+
+    #region Helpers
     private void ShellLoaded(object sender, EventArgs e)
     {
         Application.Current.RequestedThemeChanged += ThemeChanged;
+        _LogoutButton.Clicked += Logout;
     }
 
     private void ShellUnloaded(object sender, EventArgs e)
     {
         Application.Current.RequestedThemeChanged -= ThemeChanged;
+        _LogoutButton.Clicked -= Logout;
     }
 
     private void ThemeChanged(object sender, AppThemeChangedEventArgs e)
@@ -102,4 +113,22 @@ public class AppShell : Shell
             _LogoutButton.TextColor = Colors.Black;
         }
     }
+
+    private async void Logout(object sender, EventArgs e)
+    {
+        // find user that is logged in
+        var users = await UserDAL.GetAll();
+        foreach(var user in users)
+        {
+            if (user.IsLoggedIn)
+            {
+                user.IsLoggedIn = false;
+                await UserDAL.Save(user);
+                break;
+            }
+        }
+
+        WeakReferenceMessenger.Default.Send<InternalMessage>(new InternalMessage("signed-out"));
+    }
+    #endregion
 }
