@@ -4,11 +4,12 @@ namespace CustomizedShell.ViewModels;
 
 public partial class ProfileViewModel : BaseViewModel
 {
+    private UserDAL _UserDAL = new();
     private User _CurrentUser = new();
 
     public async Task<User> GetLoggedInUser()
     {
-        _CurrentUser = (await UserDAL.GetAll())?.First(user => user.IsLoggedIn);
+        _CurrentUser = (await _UserDAL.GetAll())?.First(user => user.IsLoggedIn);
         return _CurrentUser;
     }
 
@@ -20,12 +21,12 @@ public partial class ProfileViewModel : BaseViewModel
         _CurrentUser.Username = username;
         _CurrentUser.Password = password;
         _CurrentUser.Email = email;
-        await UserDAL.Save(_CurrentUser);
+        await _UserDAL.Save(_CurrentUser);
     } 
 
     public async Task DeleteAccount()
     {
-        await UserDAL.Delete(_CurrentUser);
+        await _UserDAL.Delete(_CurrentUser);
         // TODO: delete all associated tables that are linked to this _CurrentUser id.
     }
 }

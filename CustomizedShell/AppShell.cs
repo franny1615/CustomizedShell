@@ -10,6 +10,7 @@ namespace CustomizedShell;
 public class AppShell : Shell
 {
     #region Private Properties
+    private UserDAL _UserDAL = new();
     private LanguageService Lang => LanguageService.Instance;
     private readonly FloatingActionButton _LogoutButton = new()
     {
@@ -125,13 +126,13 @@ public class AppShell : Shell
     private async void Logout(object sender, EventArgs e)
     {
         // find user that is logged in
-        var users = await UserDAL.GetAll();
+        var users = await _UserDAL.GetAll();
         foreach(var user in users)
         {
             if (user.IsLoggedIn)
             {
                 user.IsLoggedIn = false;
-                await UserDAL.Save(user);
+                await _UserDAL.Save(user);
                 break;
             }
         }

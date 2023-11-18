@@ -6,6 +6,11 @@ namespace CustomizedShell.Pages;
 
 public class SplashScreen : BasePage
 {
+    #region Private Properties
+    private UserDAL _UserDAL = new();
+    #endregion
+
+    #region Constructor
     public SplashScreen()
     {
         NavigationPage.SetHasNavigationBar(this, false);
@@ -35,11 +40,13 @@ public class SplashScreen : BasePage
             }
         };
     }
+    #endregion
 
+    #region Overrides
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        var users = await UserDAL.GetAll();
+        var users = await _UserDAL.GetAll();
 
         if (users != null && users.Count > 0)
         {
@@ -71,4 +78,5 @@ public class SplashScreen : BasePage
 
         return null;
     }
+    #endregion
 }

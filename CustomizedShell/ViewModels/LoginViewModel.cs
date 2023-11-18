@@ -4,12 +4,14 @@ namespace CustomizedShell.ViewModels;
 
 public partial class LoginViewModel : BaseViewModel
 {
+    private UserDAL _UserDAL = new();
+
     public async Task<bool> Login(
         string username,
         string password
     )
     {
-        var users = await UserDAL.GetAll();
+        var users = await _UserDAL.GetAll();
         if (users != null && users.Count > 0)
         {
             return await ValidateUser(users, username, password);
@@ -28,7 +30,7 @@ public partial class LoginViewModel : BaseViewModel
             if (user.Username == username.Trim() && user.Password == password)
             {
                 user.IsLoggedIn = true;
-                await UserDAL.Save(user);
+                await _UserDAL.Save(user);
                 return true;
             }
         }
@@ -52,6 +54,6 @@ public partial class LoginViewModel : BaseViewModel
 
         // TODO: decide if you're going to save this in preferences to
         // determine who is logged in or not.
-        var userID = await UserDAL.Save(user);
+        var userID = await _UserDAL.Save(user);
     }
 }
