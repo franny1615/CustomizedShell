@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Data.Common;
-using Maui.Components.DAL;
+﻿using Maui.Components.DAL;
 using SQLite;
 
 namespace CustomizedShell.Models;
@@ -16,6 +14,8 @@ public class User
 
     [MaxLength(250), Unique]
     public string Password { get; set; }
+
+    public bool IsLoggedIn { get; set; }
 }
 
 public static class UserDAL

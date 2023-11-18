@@ -130,8 +130,8 @@ public class FloatingActionButton : ContentView
 
 	private async void FABHasBeenClicked(object sender, TappedEventArgs e)
 	{
-		await this.ScaleTo(0.8, 40);
-		await this.ScaleTo(1.0, 40);
+		await this.ScaleTo(0.95, 70);
+		await this.ScaleTo(1.0, 70);
 
 		Clicked?.Invoke(this, null);
 	}

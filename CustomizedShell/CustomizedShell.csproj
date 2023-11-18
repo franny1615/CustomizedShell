@@ -21,13 +21,13 @@
 		<CodesignKey>Apple Development: Created via API (52CNACLPJR)</CodesignKey>
 		<CodesignProvision>VS: WildCard Development</CodesignProvision>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">13.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="124,124" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="124,124" ForegroundScale="0.5" Color="#1F5673" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1F5673" BaseSize="124,124" />
@@ -43,7 +43,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+	  <None Remove="Resources\Images\app_ic.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,5 +69,23 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Maui.Components\Maui.Components.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Resources\Localization\AppLanguage.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AppLanguage.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Localization\AppLanguage.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>AppLanguage.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiImage Update="Resources\Images\app_ic.svg">
+	    <BaseSize>124,124</BaseSize>
+	  </MauiImage>
 	</ItemGroup>
 </Project>

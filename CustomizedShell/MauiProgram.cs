@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Markup;
+using Maui.Components;
 
 namespace CustomizedShell;
 
@@ -12,6 +13,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseMauiComponents()
 			.UseMauiCommunityToolkit()
 			.UseMauiCommunityToolkitCore()
 			.UseMauiCommunityToolkitMarkup()
