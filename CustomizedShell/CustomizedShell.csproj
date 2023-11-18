@@ -11,7 +11,7 @@
 		<ApplicationTitle>Inventory</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.funestechnologies.inventory</ApplicationId>
+		<ApplicationId>com.funestechnologies.ftim</ApplicationId>
 		<ApplicationIdGuid>4569d991-576c-4d70-b80d-19673180f8e3</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -27,10 +27,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="24,24" Resize="False" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" BaseSize="124,124" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1F5673" BaseSize="48,48" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1F5673" BaseSize="124,124" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
