@@ -76,6 +76,14 @@ public class AppShell : Shell
                     FlyoutIcon = "home_primary.png",
                     ContentTemplate = new DataTemplate(typeof(MainPage)),
                     Route = nameof(MainPage) 
+                },
+                new ShellContent
+                {
+                    Title = Lang["Profile"],
+                    Icon = "person.png",
+                    FlyoutIcon = "person_primary.png",
+                    ContentTemplate = new DataTemplate(typeof(ProfilePage)),
+                    Route = nameof(ProfilePage)
                 }
             }
         });

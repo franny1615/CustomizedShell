@@ -6,6 +6,11 @@ public class MainPage : BasePage
 {
 	public MainPage()
 	{
+		// TODO: this page should show a summary of blocks
+		// of total amount of inventory items
+		// category counts, etc.
+		//
+		// there should be three tabs for now, Dashboard/Inventory/Profile
 		Content = new Grid
 		{
 			Children = 

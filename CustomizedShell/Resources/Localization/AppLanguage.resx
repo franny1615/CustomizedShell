@@ -165,4 +165,34 @@
   <data name="Home" xml:space="preserve">
     <value>Dashboard</value>
   </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>Delete Account</value>
+  </data>
+  <data name="ChangesSaved" xml:space="preserve">
+    <value>Changes have been saved.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="ProfileDeletePrompt" xml:space="preserve">
+    <value>
+Deleting account is irreversible. 
+
+All data associated with account will be deleted, and you will be signed out.
+
+Delete account?
+    </value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
 </root>
