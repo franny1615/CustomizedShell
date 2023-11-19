@@ -45,6 +45,7 @@ public static class MauiProgram
 	{
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddTransient<ProfileViewModel>();
+		builder.Services.AddTransient<DataViewModel>();
 
 		return builder;
 	}

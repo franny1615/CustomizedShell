@@ -44,6 +44,9 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\app_ic.svg" />
+	  <None Remove="Resources\Images\barcode.svg" />
+	  <None Remove="Resources\Images\category.svg" />
+	  <None Remove="Resources\Images\done.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

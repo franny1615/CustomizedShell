@@ -201,4 +201,22 @@ Delete account?
   <data name="Inventory" xml:space="preserve">
     <value>Inventory</value>
   </data>
+  <data name="Barcodes" xml:space="preserve">
+    <value>Barcodes</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="Statuses" xml:space="preserve">
+    <value>Statuses</value>
+  </data>
+  <data name="BarcodeCount" xml:space="preserve">
+    <value>{0} stored barcodes</value>
+  </data>
+  <data name="CategoryCount" xml:space="preserve">
+    <value>{0} stored categories</value>
+  </data>
+  <data name="StatusCount" xml:space="preserve">
+    <value>{0} stored statuses</value>
+  </data>
 </root>
