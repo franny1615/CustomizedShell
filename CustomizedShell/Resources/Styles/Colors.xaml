@@ -11,7 +11,7 @@
     <Color x:Key="Tertiary">#E8AE68</Color>
     <Color x:Key="Positive">#70AE6E</Color>
     <Color x:Key="Negative">#AB3428</Color>
-    <Color x:Key="CardColorLight">#c7c7cc</Color>
+    <Color x:Key="CardColorLight">#d8d8dc</Color>
     <Color x:Key="CardColorDark">#545456</Color>
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
