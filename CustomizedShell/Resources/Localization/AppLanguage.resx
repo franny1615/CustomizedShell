@@ -219,4 +219,29 @@ Delete account?
   <data name="StatusCount" xml:space="preserve">
     <value>{0} stored statuses</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="NewStatus" xml:space="preserve">
+    <value>New Status</value>
+  </data>
+  <data name="EditStatus" xml:space="preserve">
+    <value>Edit Status</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CannotSaveEmptyStatus" xml:space="preserve">
+    <value>An empty status cannot be saved.</value>
+  </data>
+  <data name="CannotDeleteStatus" xml:space="preserve">
+    <value>Cannot delete a status that has associated inventory.</value>
+  </data>
+  <data name="SaveStatusPrompt" xml:space="preserve">
+    <value>
+Status name change alters all inventory items using this status.
+
+Save changes?
+    </value>
+  </data>
 </root>

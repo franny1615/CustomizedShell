@@ -111,6 +111,9 @@ public class AppShell : Shell
         // these two are here in case we want to display them in Shell.
         Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
         Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+
+        // actual shell routes
+        Routing.RegisterRoute(nameof(StatusesPage), typeof(StatusesPage));
     }
     #endregion
 

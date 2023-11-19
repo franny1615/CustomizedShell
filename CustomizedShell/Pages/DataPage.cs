@@ -79,9 +79,9 @@ public class DataPage : BasePage
         _Statuses.Description = string.Format(statusesTemplate, statusCount);
     }
     
-    private void GoToStatuses(object sender, EventArgs e)
+    private async void GoToStatuses(object sender, EventArgs e)
     {
-        // TODO:
+        await Shell.Current.GoToAsync(nameof(StatusesPage));
     }
 
     private void GoToCategories(object sender, EventArgs e)

@@ -23,4 +23,15 @@ public class BasePage : ContentPage
         Behaviors.Remove(_StatusBarBehavior);
         base.OnDisappearing();
     }
+
+    public void OverrideBackButtonText()
+    {
+        // android default back button is good enough 
+        #if IOS
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior
+        {
+            TextOverride = Lang["GoBack"]
+        });
+        #endif
+    }
 }
