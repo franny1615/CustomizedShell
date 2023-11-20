@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Markup;
 using CommunityToolkit.Maui.Views;
-using CoreBluetooth;
 using CustomizedShell.Models;
 using CustomizedShell.Services;
 using CustomizedShell.ViewModels;
 using Maui.Components.Controls;
-using Microsoft.Maui.Controls.Shapes;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace CustomizedShell.Views;
@@ -93,6 +91,7 @@ public class StatusDetailsPopupView : Popup
                 break;
             case StatusDetailsMode.Edit:
                 _Header.Text = LanguageService.Instance["EditStatus"];
+                _StatusNameEntry.Text = _Status.Name;
                 _ContentLayout.Children.Add(new VerticalStackLayout
                 {
                     Spacing = 16,

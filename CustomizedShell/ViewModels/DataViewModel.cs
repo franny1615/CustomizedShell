@@ -11,12 +11,9 @@ public partial class DataViewModel : BaseViewModel
     private readonly CategoryDAL _CategoryDAL = new();
     private readonly StatusDAL _StatusDAL = new();
 
-    [ObservableProperty]
-    public string searchText = string.Empty;
-
-    public ObservableCollection<Status> Statuses = new();
-    public ObservableCollection<Barcode> Barcodes = new();
-    public ObservableCollection<Category> Categories = new();
+    public ObservableCollection<Status> Statuses { get; set; } = new();
+    public ObservableCollection<Barcode> Barcodes { get; set; } = new();
+    public ObservableCollection<Category> Categories { get; set; } = new();
 
     #region Barcode
     public async Task<int> GetBarcodeCount()
@@ -59,17 +56,17 @@ public partial class DataViewModel : BaseViewModel
         return statuses.Count;
     }
 
-    public async Task GetAllStatuses()
+    public async Task GetAllStatuses(string search)
     {
         Statuses.Clear();
 
         List<Status> allStatus = await _StatusDAL.GetAll();
         List<Status> filtered = new();
-        if (!string.IsNullOrEmpty(SearchText))
+        if (!string.IsNullOrEmpty(search))
         {
             foreach(var status in allStatus)
             {
-                if (status.Name.ToLower().Contains(SearchText.ToLower()))
+                if (status.Name.ToLower().Contains(search.ToLower()))
                 {
                     filtered.Add(status);
                 }

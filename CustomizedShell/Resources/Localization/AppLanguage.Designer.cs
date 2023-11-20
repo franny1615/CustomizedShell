@@ -88,6 +88,24 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete a status that has associated inventory..
+        /// </summary>
+        internal static string CannotDeleteStatus {
+            get {
+                return ResourceManager.GetString("CannotDeleteStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An empty status cannot be saved..
+        /// </summary>
+        internal static string CannotSaveEmptyStatus {
+            get {
+                return ResourceManager.GetString("CannotSaveEmptyStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Categories.
         /// </summary>
         internal static string Categories {
@@ -124,11 +142,29 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Account.
         /// </summary>
         internal static string DeleteAccount {
             get {
                 return ResourceManager.GetString("DeleteAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Status.
+        /// </summary>
+        internal static string EditStatus {
+            get {
+                return ResourceManager.GetString("EditStatus", resourceCulture);
             }
         }
         
@@ -192,6 +228,15 @@ namespace CustomizedShell.Resources.Localization {
         internal static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Status.
+        /// </summary>
+        internal static string NewStatus {
+            get {
+                return ResourceManager.GetString("NewStatus", resourceCulture);
             }
         }
         
@@ -279,6 +324,37 @@ namespace CustomizedShell.Resources.Localization {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///Status name change alters all inventory items using this status.
+        ///
+        ///Save changes?
+        ///    .
+        /// </summary>
+        internal static string SaveStatusPrompt {
+            get {
+                return ResourceManager.GetString("SaveStatusPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         

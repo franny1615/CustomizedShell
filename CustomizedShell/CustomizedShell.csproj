@@ -47,6 +47,7 @@
 	  <None Remove="Resources\Images\barcode.svg" />
 	  <None Remove="Resources\Images\category.svg" />
 	  <None Remove="Resources\Images\done.svg" />
+	  <None Remove="Resources\Images\search.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

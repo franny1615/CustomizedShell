@@ -244,4 +244,7 @@ Status name change alters all inventory items using this status.
 Save changes?
     </value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>
