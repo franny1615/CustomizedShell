@@ -118,13 +118,11 @@ public class FloatingActionButton : ContentView
 
 	private void FABLoaded(object sender, EventArgs e)
 	{
-		Application.Current.RequestedThemeChanged += ThemeChanged;
 		_FABClick.Tapped += FABHasBeenClicked;
 	}
 
 	private void FABUnloaded(object sender, EventArgs e)
 	{
-		Application.Current.RequestedThemeChanged -= ThemeChanged;
 		_FABClick.Tapped -= FABHasBeenClicked;
 	}
 
@@ -134,11 +132,6 @@ public class FloatingActionButton : ContentView
 		await this.ScaleTo(1.0, 70);
 
 		Clicked?.Invoke(this, null);
-	}
-
-	private void ThemeChanged(object sender, AppThemeChangedEventArgs e)
-	{
-		ApplyShadow();
 	}
 
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -173,7 +166,6 @@ public class FloatingActionButton : ContentView
 		switch (FABStyle)
 		{
 			case FloatingActionButtonStyle.Small:
-				ApplyShadow();
 				_FABLayout.Add(_FABImage);
 				_FABContainer.StrokeShape = new RoundRectangle { CornerRadius = 12 };
 				_FABContainer.HeightRequest = 40;
@@ -183,7 +175,6 @@ public class FloatingActionButton : ContentView
 				_FABImage.Aspect = Aspect.AspectFit;
 				break;
 			case FloatingActionButtonStyle.Regular:
-				ApplyShadow();
 				_FABLayout.Add(_FABImage);
 				_FABContainer.StrokeShape = new RoundRectangle { CornerRadius = 16 };
 				_FABContainer.HeightRequest = 56;
@@ -193,7 +184,6 @@ public class FloatingActionButton : ContentView
 				_FABImage.Aspect = Aspect.AspectFit;
 				break;
 			case FloatingActionButtonStyle.Large:
-				ApplyShadow();
 				_FABLayout.Add(_FABImage);
 				_FABContainer.StrokeShape = new RoundRectangle { CornerRadius = 28 };
 				_FABContainer.HeightRequest = 96;
@@ -203,7 +193,6 @@ public class FloatingActionButton : ContentView
 				_FABImage.Aspect = Aspect.AspectFit;
 				break;
 			case FloatingActionButtonStyle.Extended:
-				ApplyShadow();
 				if (ImageSource != null)
 				{
 					_FABLayout.Add(_FABImage);
@@ -218,32 +207,6 @@ public class FloatingActionButton : ContentView
 			case FloatingActionButtonStyle.Unknown:
 			default:
 				break;
-		}
-	}
-
-	private void ApplyShadow()
-	{
-		if (FABBackgroundColor.Equals(Colors.Transparent))
-		{
-			return;
-		}
-		if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
-		{
-			_FABContainer.Shadow = new Shadow 
-			{
-				Brush = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.DarkGray : Color.FromRgb(86, 86, 84), 
-				Radius = 2, 
-				Offset = new Point(0, 1) 
-			};
-		}
-		else
-		{
-			_FABContainer.Shadow = new Shadow 
-			{ 
-				Brush = Application.Current.RequestedTheme == AppTheme.Dark ? Colors.DarkGray : Color.FromRgb(86, 86, 84),
-				Radius = 10, 
-				Offset = new Point(0, 5) 
-			};
 		}
 	}
 }
