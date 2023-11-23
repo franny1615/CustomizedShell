@@ -1,10 +1,16 @@
-﻿using CustomizedShell.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CustomizedShell.Models;
+using Maui.Components;
+using Maui.Components.Interfaces;
 
 namespace CustomizedShell.ViewModels;
 
-public partial class LoginViewModel : BaseViewModel
+public partial class LoginViewModel(
+    ILanguageService languageService,
+    IDAL<User> userDAL) : ObservableObject
 {
-    private UserDAL _UserDAL = new();
+    private readonly ILanguageService _LanguageService = languageService; 
+    private readonly IDAL<User> _UserDAL = userDAL;
 
     public async Task<bool> Login(
         string username,
@@ -52,8 +58,6 @@ public partial class LoginViewModel : BaseViewModel
             IsLoggedIn = true
         };
 
-        // TODO: decide if you're going to save this in preferences to
-        // determine who is logged in or not.
-        var userID = await _UserDAL.Save(user);
+        await _UserDAL.Save(user);
     }
 }

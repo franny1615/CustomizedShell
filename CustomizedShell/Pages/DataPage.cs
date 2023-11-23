@@ -1,11 +1,14 @@
 ﻿using CustomizedShell.ViewModels;
+using Maui.Components;
 using Maui.Components.Controls;
+using Maui.Components.Pages;
 
 namespace CustomizedShell.Pages;
 
 public class DataPage : BasePage
 {
     #region Private Properties
+    private readonly ILanguageService _Lang;
     private DataViewModel _DataViewModel => (DataViewModel)BindingContext;
     private readonly VerticalStackLayout _ContentLayout = new()
     {
@@ -18,8 +21,11 @@ public class DataPage : BasePage
     #endregion
 
     #region Constructor
-    public DataPage(DataViewModel dataViewModel)
+    public DataPage(
+        ILanguageService languageService,
+        DataViewModel dataViewModel) : base(languageService)
     {
+        _Lang = languageService;
         BindingContext = dataViewModel;
 
         Color primary = Application.Current.Resources["Primary"] as Color;
@@ -32,9 +38,9 @@ public class DataPage : BasePage
         _Categories.ImageBackgroundColor = primary;
         _Statuses.ImageBackgroundColor = primary;
 
-        _Barcodes.Title = Lang["Barcodes"];
-        _Categories.Title = Lang["Categories"];
-        _Statuses.Title = Lang["Statuses"];
+        _Barcodes.Title = _Lang.StringForKey("Barcodes");
+        _Categories.Title = _Lang.StringForKey("Categories");
+        _Statuses.Title = _Lang.StringForKey("Statuses");
 
         _ContentLayout.Children.Add(_Barcodes);
         _ContentLayout.Children.Add(_Categories);
@@ -66,9 +72,9 @@ public class DataPage : BasePage
     #region Helpers
     private async void FetchCounts()
     {
-        string barcodesTemplate = Lang["BarcodeCount"];
-        string categoriesTemplate = Lang["CategoryCount"];
-        string statusesTemplate = Lang["StatusCount"];
+        string barcodesTemplate = _Lang.StringForKey("BarcodeCount");
+        string categoriesTemplate = _Lang.StringForKey("CategoryCount");
+        string statusesTemplate = _Lang.StringForKey("StatusCount");
 
         int barcodeCount = await _DataViewModel.GetBarcodeCount();
         int categoryCount = await _DataViewModel.GetCategoryCount();
@@ -84,9 +90,9 @@ public class DataPage : BasePage
         await Shell.Current.GoToAsync(nameof(StatusesPage));
     }
 
-    private void GoToCategories(object sender, EventArgs e)
+    private async void GoToCategories(object sender, EventArgs e)
     {
-        // TODO:
+        await Shell.Current.GoToAsync(nameof(CategoriesPage));
     }
 
     private void GoToBarcodes(object sender, EventArgs e)

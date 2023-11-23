@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using CustomizedShell.Models;
+using Maui.Components;
+using Maui.Components.Interfaces;
+using Maui.Components.Pages;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace CustomizedShell.Pages;
@@ -7,12 +10,16 @@ namespace CustomizedShell.Pages;
 public class SplashScreen : BasePage
 {
     #region Private Properties
-    private UserDAL _UserDAL = new();
+    private readonly ILanguageService _LanguageService;
+    private readonly IDAL<User> _UserDAL;
     #endregion
 
     #region Constructor
-    public SplashScreen()
+    public SplashScreen(ILanguageService languageService, IDAL<User> userDAL) : base(languageService)
     {
+        _LanguageService = languageService;
+        _UserDAL = userDAL;
+
         NavigationPage.SetHasNavigationBar(this, false);
         Shell.SetNavBarIsVisible(this, false);
         Shell.SetTabBarIsVisible(this, false);

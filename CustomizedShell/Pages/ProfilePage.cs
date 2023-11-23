@@ -1,14 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using CustomizedShell.Models;
 using CustomizedShell.ViewModels;
+using Maui.Components;
 using Maui.Components.Controls;
+using Maui.Components.Pages;
 using Microsoft.Maui.Controls.Shapes;
+using System.Runtime.CompilerServices;
 
 namespace CustomizedShell.Pages;
 
 public class ProfilePage : BasePage
 {
     #region Private Properties
+    private readonly ILanguageService _LanguageService;
     private ProfileViewModel _ProfileViewModel => (ProfileViewModel) BindingContext;
     private readonly ScrollView _ContentScroll = new();
 	private readonly VerticalStackLayout _ContentLayout = new()
@@ -33,15 +37,18 @@ public class ProfilePage : BasePage
     #endregion
 
     #region Constructors
-    public ProfilePage(ProfileViewModel profileViewModel)
+    public ProfilePage(
+        ILanguageService languageService, 
+        ProfileViewModel profileViewModel) : base (languageService)
     {
+        _LanguageService = languageService;
         BindingContext = profileViewModel;
 
-        _Username.Placeholder = Lang["Username"];
-		_Password.Placeholder = Lang["Password"];
-        _Email.Placeholder = Lang["Email"];
-        _Save.Text = Lang["Save"];
-        _DeleteAccount.Text = Lang["DeleteAccount"];
+        _Username.Placeholder = languageService.StringForKey("Username");
+		_Password.Placeholder = languageService.StringForKey("Password");
+        _Email.Placeholder = languageService.StringForKey("Email");
+        _Save.Text = languageService.StringForKey("Save");
+        _DeleteAccount.Text = languageService.StringForKey("DeleteAccount");
 
         _ContentLayout.Add(new Border
 		{
@@ -66,7 +73,7 @@ public class ProfilePage : BasePage
         });
         _ContentLayout.Add(new Label
 		{
-            Text = Lang["Profile"],
+            Text = languageService.StringForKey("Profile"),
             FontSize = 16,
             FontAttributes = FontAttributes.Bold,
             HorizontalOptions = LayoutOptions.Center,
@@ -150,19 +157,19 @@ public class ProfilePage : BasePage
         await FetchUser();
 
         await DisplayAlert(
-            Lang["Profile"],
-            Lang["ChangesSaved"],
-            Lang["Ok"]
+            _LanguageService.StringForKey("Profile"),
+            _LanguageService.StringForKey("ChangesSaved"),
+            _LanguageService.StringForKey("Ok")
         );
     }
 
     private async void DeleteAccount(object sender, EventArgs e)
     {
         bool shouldDelete = await DisplayAlert(
-            Lang["AreYouSure"],
-            Lang["ProfileDeletePrompt"],
-            Lang["Yes"],
-            Lang["No"]
+            _LanguageService.StringForKey("AreYouSure"),
+            _LanguageService.StringForKey("ProfileDeletePrompt"),
+            _LanguageService.StringForKey("Yes"),
+            _LanguageService.StringForKey("No")
         );
 
         if (shouldDelete)

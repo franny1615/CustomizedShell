@@ -12,6 +12,8 @@ public class Barcode : ISearchable
 
     public int Number { get; set; } = -1;
 
+    public string Name { get; set; } = string.Empty;
+
     public string Description { get; set; } = string.Empty;
 
     public string[] SearchableTerms
@@ -24,6 +26,12 @@ public class Barcode : ISearchable
             return words.ToArray();
         }
     }
+
+    [Ignore]
+    public ImageSource Icon { get; set; } = "barcode.png";
+
+    [Ignore]
+    public Color IconBackgroundColor { get; set; } = Application.Current.Resources["Primary"] as Color;
 }
 
-public class BarcodeDAL : BaseDAL<Barcode> { }
+public class BarcodeDAL : BaseDAL<Barcode>, IDAL<Barcode> { }

@@ -12,7 +12,15 @@ public class Category : ISearchable
 
     public string Name { get; set; } = string.Empty;
 
+    public string Description { get; set; } = string.Empty;
+
     public string[] SearchableTerms => Name.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+    [Ignore]
+    public ImageSource Icon { get; set; } = "category.png";
+
+    [Ignore]
+    public Color IconBackgroundColor { get; set; } = Application.Current.Resources["Primary"] as Color;
 }
 
-public class CategoryDAL : BaseDAL<Category> { }
+public class CategoryDAL : BaseDAL<Category>, IDAL<Category> { }

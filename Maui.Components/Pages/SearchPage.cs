@@ -7,18 +7,8 @@ using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Components.Pages;
 
-public class EditEventArgs : EventArgs 
-{
-    public ISearchable Item { get; set; }
-}
-
 public class SearchPage : BasePage
 {
-    #region Events
-    public event EventHandler Add;
-    public event EventHandler<EditEventArgs> Edit;
-    #endregion
-
     #region Private Properties
     private Debouncer _Debouncer = new(0.5);
     private ISearchViewModel _SearchViewModel => (ISearchViewModel)BindingContext;
@@ -49,10 +39,12 @@ public class SearchPage : BasePage
     {
         BindingContext = searchViewModel;
 
+        Title = searchViewModel.PageTitle;
+
         _Search.SetAppThemeColor(
             SearchBarView.SearchBackgroundColorProperty, 
-            Application.Current.Resources["CardLight"] as Color, 
-            Application.Current.Resources["CardDark"] as Color);
+            Application.Current.Resources["CardColorLight"] as Color, 
+            Application.Current.Resources["CardColorDark"] as Color);
         _Search.SetAppThemeColor(SearchBarView.ContentColorProperty, Colors.Black, Colors.White);
         _Search.Placeholder = _SearchViewModel.SearchPlaceholder;
         _Search.ClearImageSource = _SearchViewModel.ClearSearchIcon;
@@ -128,7 +120,7 @@ public class SearchPage : BasePage
     #region Helpers
     private void AddClicked(object sender, EventArgs e)
     {
-        Add?.Invoke(sender, e);
+        
     }
 
     private void EditClicked(object sender, EventArgs e)
@@ -136,12 +128,12 @@ public class SearchPage : BasePage
         if (sender is MiniCardView mini && 
             mini.BindingContext is ISearchable miniItem)
         {
-            Edit?.Invoke(sender, new EditEventArgs { Item = miniItem });    
+                
         }
         else if (sender is CardView card && 
                  card.BindingContext is ISearchable cardItem)
         {
-            Edit?.Invoke(sender, new EditEventArgs { Item = cardItem });
+            
         }
     }
 

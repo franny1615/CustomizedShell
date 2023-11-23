@@ -3,15 +3,17 @@ using CommunityToolkit.Mvvm.Messaging;
 using CustomizedShell.Models;
 using CustomizedShell.Pages;
 using CustomizedShell.Services;
+using Maui.Components;
 using Maui.Components.Controls;
+using Maui.Components.Interfaces;
 
 namespace CustomizedShell;
 
 public class AppShell : Shell
 {
     #region Private Properties
-    private UserDAL _UserDAL = new();
-    private LanguageService Lang => LanguageService.Instance;
+    private readonly ILanguageService _LanguageService;
+    private readonly IDAL<User> _UserDAL;
     private readonly FloatingActionButton _LogoutButton = new()
     {
         ImageSource = "logout.png",
@@ -36,23 +38,29 @@ public class AppShell : Shell
                 WidthRequest = 100,
                 Source = "app_ic.png"
             }.Row(0).Bottom(),
-            new Label
-            {
-                TextColor = Colors.White,
-                FontSize = 16,
-                FontAttributes = FontAttributes.Bold,
-                HorizontalOptions = LayoutOptions.Center,
-                Text = LanguageService.Instance["WelcomeTo"]
-            }.Row(1).Top()
         }
     };
     #endregion
 
     #region Constructor
-    public AppShell()
+    public AppShell(
+        ILanguageService languageService,
+        IDAL<User> userDAL)
     {
+        _LanguageService = languageService;
+        _UserDAL = userDAL;
+
         Shell.SetFlyoutBehavior(this, FlyoutBehavior.Flyout);
         Shell.SetTabBarIsVisible(this, true);
+
+        _BrandContainer.Children.Add(new Label
+        {
+            TextColor = Colors.White,
+            FontSize = 16,
+            FontAttributes = FontAttributes.Bold,
+            HorizontalOptions = LayoutOptions.Center,
+            Text = _LanguageService.StringForKey("WelcomeTo")
+        }.Row(1).Top());
 
         FlyoutHeaderTemplate = new DataTemplate(() => _BrandContainer);
         FlyoutFooter = new Grid
@@ -72,7 +80,7 @@ public class AppShell : Shell
             {
                 new ShellContent 
                 { 
-                    Title = Lang["Home"], 
+                    Title = _LanguageService.StringForKey("Home"), 
                     Icon = "home.png",
                     FlyoutIcon = "home_primary.png",
                     ContentTemplate = new DataTemplate(typeof(MainPage)),
@@ -80,7 +88,7 @@ public class AppShell : Shell
                 },
                 new ShellContent
                 {
-                    Title = Lang["Inventory"],
+                    Title = _LanguageService.StringForKey("Inventory"),
                     Icon = "inventory.png",
                     FlyoutIcon = "inventory_primary.png",
                     ContentTemplate = new DataTemplate(typeof(InventoryPage)),
@@ -88,7 +96,7 @@ public class AppShell : Shell
                 },
                 new ShellContent
                 {
-                    Title = Lang["Data"],
+                    Title = _LanguageService.StringForKey("Data"),
                     Icon = "article.png",
                     FlyoutIcon = "article_primary.png",
                     ContentTemplate = new DataTemplate(typeof(DataPage)),
@@ -96,7 +104,7 @@ public class AppShell : Shell
                 },
                 new ShellContent
                 {
-                    Title = Lang["Profile"],
+                    Title = _LanguageService.StringForKey("Profile"),
                     Icon = "person.png",
                     FlyoutIcon = "person_primary.png",
                     ContentTemplate = new DataTemplate(typeof(ProfilePage)),
@@ -114,6 +122,7 @@ public class AppShell : Shell
 
         // actual shell routes
         Routing.RegisterRoute(nameof(StatusesPage), typeof(StatusesPage));
+        Routing.RegisterRoute(nameof(CategoriesPage), typeof(CategoriesPage));
     }
     #endregion
 

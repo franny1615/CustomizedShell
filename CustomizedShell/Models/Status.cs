@@ -16,9 +16,11 @@ public class Status : ISearchable
 
     public string[] SearchableTerms => Name.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
+    [Ignore]
     public ImageSource Icon { get; set; } = "done.png";
 
+    [Ignore]
     public Color IconBackgroundColor { get; set; } = Application.Current.Resources["Primary"] as Color;
 }
 
-public class StatusDAL : BaseDAL<Status> { }
+public class StatusDAL : BaseDAL<Status>, IDAL<Status> { }

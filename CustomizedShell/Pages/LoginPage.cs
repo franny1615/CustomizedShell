@@ -1,14 +1,17 @@
 using CommunityToolkit.Mvvm.Messaging;
 using CustomizedShell.Models;
 using CustomizedShell.ViewModels;
+using Maui.Components;
 using Maui.Components.Controls;
+using Maui.Components.Pages;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace CustomizedShell.Pages;
 
 public class LoginPage : BasePage
 {
-	#region Private Variables
+    #region Private Variables
+    private readonly ILanguageService _LanguageService;
     private LoginViewModel _LoginViewModel => (LoginViewModel) BindingContext;
 	private readonly ScrollView _ContentScroll = new();
 	private readonly VerticalStackLayout _ContentLayout = new()
@@ -33,17 +36,21 @@ public class LoginPage : BasePage
     #endregion
 
     #region Constructor
-    public LoginPage(LoginViewModel loginViewModel)
+    public LoginPage(
+        ILanguageService languageService, 
+        LoginViewModel loginViewModel) : base(languageService)
 	{
+        _LanguageService = languageService;
+
         NavigationPage.SetHasNavigationBar(this, false);
         Shell.SetNavBarIsVisible(this, false);
 
         BindingContext = loginViewModel;
 
-		_Username.Placeholder = Lang["Username"];
-		_Password.Placeholder = Lang["Password"];
-		_Login.Text = Lang["Login"];
-		_Register.Text = Lang["Register"];
+		_Username.Placeholder = languageService.StringForKey("Username");
+		_Password.Placeholder = languageService.StringForKey("Password");
+		_Login.Text = languageService.StringForKey("Login");
+		_Register.Text = languageService.StringForKey("Register");
 
 		_ContentLayout.Add(new Border
 		{
@@ -68,7 +75,7 @@ public class LoginPage : BasePage
         });
         _ContentLayout.Add(new Label
 		{
-            Text = Lang["WelcomeTo"],
+            Text = languageService.StringForKey("WelcomeTo"),
             FontSize = 16,
             FontAttributes = FontAttributes.Bold,
             HorizontalOptions = LayoutOptions.Center,
@@ -76,7 +83,7 @@ public class LoginPage : BasePage
         });
         _ContentLayout.Add(new Label
         {
-            Text = Lang["WelcomeBack"],
+            Text = languageService.StringForKey("WelcomeBack"),
             FontSize = 16,
             FontAttributes = FontAttributes.None,
             HorizontalOptions = LayoutOptions.Center,
@@ -102,7 +109,7 @@ public class LoginPage : BasePage
 		_ContentLayout.Add(_Login);
 		_ContentLayout.Add(new Label
 		{
-			Text = Lang["Or"],
+			Text = languageService.StringForKey("Or"),
 			FontSize = 16,
 			FontAttributes = FontAttributes.Bold,
 			HorizontalOptions = LayoutOptions.Center,
@@ -134,7 +141,7 @@ public class LoginPage : BasePage
     #region Helpers
     private async void Register(object sender, ClickedEventArgs e)
     {
-        await this.Navigation.PushAsync(new RegisterPage(_LoginViewModel));
+        await this.Navigation.PushAsync(new RegisterPage(_LanguageService, _LoginViewModel));
     }
 
     private async void Login(object sender, ClickedEventArgs e)
@@ -157,9 +164,9 @@ public class LoginPage : BasePage
         else
         {
             await this.DisplayAlert(
-                Lang["Login"], 
-                Lang["InvalidLogin"],
-                Lang["TryAgain"]);
+                _LanguageService.StringForKey("Login"), 
+                _LanguageService.StringForKey("InvalidLogin"),
+                _LanguageService.StringForKey("TryAgain"));
         }
 
         _Username.Text = "";

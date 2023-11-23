@@ -1,8 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using CustomizedShell.Models;
-using CustomizedShell.Pages;
 using CustomizedShell.ViewModels;
+using Maui.Components;
 using Maui.Components.Controls;
+using Maui.Components.Pages;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace CustomizedShell;
@@ -10,6 +11,7 @@ namespace CustomizedShell;
 public class RegisterPage : BasePage
 {
     #region Private Propertires
+    private readonly ILanguageService _LanguageService;
     private LoginViewModel _LoginViewModel => (LoginViewModel) BindingContext;
     private readonly ScrollView _ContentScroll = new();
 	private readonly VerticalStackLayout _ContentLayout = new()
@@ -35,18 +37,22 @@ public class RegisterPage : BasePage
     #endregion
 
     #region Constructor
-    public RegisterPage(LoginViewModel loginViewModel)
+    public RegisterPage(
+        ILanguageService languageService, 
+        LoginViewModel loginViewModel) : base(languageService)
     {
+        _LanguageService = languageService;
+
         NavigationPage.SetHasNavigationBar(this, false);
         Shell.SetNavBarIsVisible(this, false);
 
         BindingContext = loginViewModel;
 
-        _Username.Placeholder = Lang["Username"];
-		_Password.Placeholder = Lang["Password"];
-        _Email.Placeholder = Lang["Email"];
-        _Register.Text = Lang["Register"];
-        _GoBack.Text = Lang["GoBack"];
+        _Username.Placeholder = _LanguageService.StringForKey("Username");
+		_Password.Placeholder = _LanguageService.StringForKey("Password");
+        _Email.Placeholder = _LanguageService.StringForKey("Email");
+        _Register.Text = _LanguageService.StringForKey("Register");
+        _GoBack.Text = _LanguageService.StringForKey("GoBack");
 
         _ContentLayout.Add(new Border
 		{
@@ -71,7 +77,7 @@ public class RegisterPage : BasePage
         });
         _ContentLayout.Add(new Label
 		{
-            Text = Lang["Register"],
+            Text = _LanguageService.StringForKey("Register"),
             FontSize = 16,
             FontAttributes = FontAttributes.Bold,
             HorizontalOptions = LayoutOptions.Center,
@@ -103,7 +109,7 @@ public class RegisterPage : BasePage
         _ContentLayout.Add(_Register);
         _ContentLayout.Add(new Label
 		{
-			Text = Lang["Or"],
+			Text = _LanguageService.StringForKey("Or"),
 			FontSize = 16,
 			FontAttributes = FontAttributes.Bold,
 			HorizontalOptions = LayoutOptions.Center,
@@ -138,9 +144,9 @@ public class RegisterPage : BasePage
         if (string.IsNullOrEmpty(_Username.Text))
         {
             await this.DisplayAlert(
-                Lang["Register"],
-                Lang["UsernameRequired"],
-                Lang["Ok"]
+                _LanguageService.StringForKey("Register"),
+                _LanguageService.StringForKey("UsernameRequired"),
+                _LanguageService.StringForKey("Ok")
             );
             return;
         }
@@ -148,9 +154,9 @@ public class RegisterPage : BasePage
         if (string.IsNullOrEmpty(_Password.Text))
         {
             await this.DisplayAlert(
-                Lang["Register"],
-                Lang["PasswordRequired"],
-                Lang["Ok"]
+                _LanguageService.StringForKey("Register"),
+                _LanguageService.StringForKey("PasswordRequired"),
+                _LanguageService.StringForKey("Ok")
             );
             return;
         }
@@ -158,9 +164,9 @@ public class RegisterPage : BasePage
         if (string.IsNullOrEmpty(_Email.Text))
         {
             await this.DisplayAlert(
-                Lang["Register"],
-                Lang["EmailRequired"],
-                Lang["Ok"]
+                _LanguageService.StringForKey("Register"),
+                _LanguageService.StringForKey("EmailRequired"),
+                _LanguageService.StringForKey("Ok")
             );
             return;
         }

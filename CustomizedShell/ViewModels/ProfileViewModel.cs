@@ -1,10 +1,16 @@
-﻿using CustomizedShell.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CustomizedShell.Models;
+using Maui.Components;
+using Maui.Components.Interfaces;
 
 namespace CustomizedShell.ViewModels;
 
-public partial class ProfileViewModel : BaseViewModel
+public partial class ProfileViewModel(
+    ILanguageService languageService,
+    IDAL<User> userDAL) : ObservableObject
 {
-    private UserDAL _UserDAL = new();
+    private readonly ILanguageService _LanguageService = languageService;
+    private readonly IDAL<User> _UserDAL = userDAL;
     private User _CurrentUser = new();
 
     public async Task<User> GetLoggedInUser()

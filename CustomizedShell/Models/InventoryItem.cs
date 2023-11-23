@@ -1,10 +1,11 @@
 ﻿using Maui.Components.DAL;
+using Maui.Components.Interfaces;
 using SQLite;
 
 namespace CustomizedShell.Models;
 
 [Table("inventory_item")]
-public class InventoryItem
+public class InventoryItem : ISearchable
 {
     [PrimaryKey, AutoIncrement, Column("_id")]
     public int Id { get; set; } = -1;
@@ -22,6 +23,25 @@ public class InventoryItem
     public string Name { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
+
+    [Ignore]
+    public ImageSource Icon { get; set; } = "";
+
+    [Ignore]
+    public Color IconBackgroundColor { get; set; } = Application.Current.Resources["Primary"] as Color;
+
+    public string[] SearchableTerms
+    {
+        get
+        {
+            string[] name = Name.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] desc = Description.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            List<string> words = [.. name, .. desc];
+
+            return words.ToArray();
+        }
+    }
 }
 
-public class InventoryItemDAL : BaseDAL<InventoryItem> { }
+public class InventoryItemDAL : BaseDAL<InventoryItem>, IDAL<InventoryItem> { }
