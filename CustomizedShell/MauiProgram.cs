@@ -4,6 +4,7 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Markup;
 using Maui.Components;
 using CustomizedShell.ViewModels;
+using CustomizedShell.Services;
 
 namespace CustomizedShell;
 
@@ -20,6 +21,7 @@ public static class MauiProgram
 			.UseMauiCommunityToolkitMarkup()
 			.RegisterPages()
 			.RegisterViewModels()
+			.RegisterServices()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -47,6 +49,13 @@ public static class MauiProgram
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddTransient<ProfileViewModel>();
 		builder.Services.AddTransient<DataViewModel>();
+
+		return builder;
+	}
+
+	public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
+	{
+		builder.Services.AddSingleton<ILanguageService, LanguageService>();
 
 		return builder;
 	}

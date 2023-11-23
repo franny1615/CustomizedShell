@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CustomizedShell.Models;
+using Maui.Components.Interfaces;
+using Maui.Components.Utilities;
 
 namespace CustomizedShell.ViewModels;
 
@@ -16,105 +18,46 @@ public partial class DataViewModel : BaseViewModel
     public ObservableCollection<Category> Categories { get; set; } = new();
 
     #region Barcode
-    public async Task<int> GetBarcodeCount()
-    {
-        var barcodes = await _BarcodeDAL.GetAll();
-
-        if (barcodes == null)
-        {
-            return 0;
-        }
-
-        return barcodes.Count;
-    }
+    public async Task<int> GetBarcodeCount() => (await _BarcodeDAL.GetAll()).Count;
     #endregion
 
     #region Category
-    public async Task<int> GetCategoryCount()
+    public async Task<int> GetCategoryCount() => (await _CategoryDAL.GetAll()).Count;
+    public async Task GetAllCategories(string search)
     {
-        var categories = await _CategoryDAL.GetAll();
-
-        if (categories == null)
-        {
-            return 0;
-        }
-
-        return categories.Count;
+        Categories.Clear();
+        (await _CategoryDAL.GetAll())
+            .Cast<ISearchable>()
+            .ToList()
+            .FilterList(search)
+            .Cast<Category>()
+            .ToList()
+            .ForEach(Categories.Add);
     }
     #endregion
 
     #region Status
-    public async Task<int> GetStatusesCount()
-    {
-        var statuses = await _StatusDAL.GetAll();
-
-        if (statuses == null)
-        {
-            return 0;
-        }
-
-        return statuses.Count;
-    }
-
     public async Task GetAllStatuses(string search)
     {
         Statuses.Clear();
-
-        List<Status> allStatus = await _StatusDAL.GetAll();
-        List<Status> filtered = new();
-        if (!string.IsNullOrEmpty(search))
-        {
-            foreach(var status in allStatus)
-            {
-                if (status.Name.ToLower().Contains(search.ToLower()))
-                {
-                    filtered.Add(status);
-                }
-            }
-        }
-        else
-        {
-            filtered.AddRange(allStatus);
-        }
-
-        foreach(var status in filtered)
-        {
-            Statuses.Add(status);
-        }
-    }
-
-    public async Task<bool> SaveStatus(Status status)
-    {
-        return await _StatusDAL.Save(status);
+        (await _StatusDAL.GetAll())
+            .Cast<ISearchable>()
+            .ToList()
+            .FilterList(search)
+            .Cast<Status>()
+            .ToList()
+            .ForEach(Statuses.Add);
     }
 
     public async Task<bool> CanDeleteStatus(Status status)
     {
-        var inventory = await _InventoryDAL.GetAll();
-        if (inventory == null)
-        {
-            return true;
-        }
-
-        if (inventory.Count == 0)
-        {
-            return true;
-        }
-
-        foreach(var item in inventory)
-        {
-            if (item.StatusID == status.Id)
-            {
-                return false; // cannot delete a status that has associated inventory attached to it
-            }
-        }
-
-        return true;
+        // if linked to at least on item, status cannot be deleted
+        var inventoryItem = (await _InventoryDAL.GetAll()).FirstOrDefault(inventory => inventory.StatusID == status.Id);
+        return inventoryItem == null;
     }
 
-    public async Task<bool> DeleteStatus(Status status)
-    {
-        return await _StatusDAL.Delete(status);
-    }
+    public async Task<int> GetStatusesCount() => (await _StatusDAL.GetAll()).Count;
+    public async Task<bool> SaveStatus(Status status) => await _StatusDAL.Save(status);
+    public async Task<bool> DeleteStatus(Status status) => await _StatusDAL.Delete(status);
     #endregion
 }

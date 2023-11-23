@@ -247,4 +247,7 @@ Save changes?
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Categories</value>
+  </data>
 </root>

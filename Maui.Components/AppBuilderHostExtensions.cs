@@ -1,4 +1,5 @@
-﻿using Maui.Components.Controls;
+﻿using CommunityToolkit.Maui;
+using Maui.Components.Controls;
 #if ANDROID
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 #endif
