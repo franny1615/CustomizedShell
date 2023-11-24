@@ -10,8 +10,10 @@ public interface ISearchViewModel
 
     public ImageSource SearchIcon { get; set; }
     public ImageSource ClearSearchIcon { get; set; }
-    public ImageSource CloseEditAddIcon { get; set; }
     public ImageSource AddIcon { get; set; }
+
+    public EditSearchableArgs AddArgs { get; set; }
+    public EditSearchableArgs EditArgs { get; set; }
 
     public CardStyle CardStyle { get; set; }
     public bool ShowAdd { get; }
@@ -21,4 +23,23 @@ public interface ISearchViewModel
     public Task GetAllItems(string search);
     public Task<bool> Save(ISearchable searchable);
     public Task<bool> Delete(ISearchable searchable);
+    public ISearchable NewSearchable();
+}
+
+public class EditSearchableArgs()
+{
+    public ImageSource DeleteIcon { get; set; }
+    public ImageSource SaveIcon { get; set; }
+    public ImageSource CloseIcon { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string NamePlaceholder { get; set; } = string.Empty;
+    public string DescriptionPlaceholder { get; set; } = string.Empty;
+    public string SavePlaceholder { get; set; } = string.Empty;
+    public string DeletePlaceholder { get; set; } = string.Empty;
+
+    public bool HasDeleteConfirmation = false;
+    public string DeleteConfirmationTitle { get; set; } = string.Empty;
+    public string DeleteConfirmationMessage { get; set; } = string.Empty;
+    public string ConfirmDelete { get; set; } = string.Empty;
+    public string DenyDelete { get; set; } = string.Empty;
 }

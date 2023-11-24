@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Maui.Views;
 using Maui.Components.Controls;
 using Maui.Components.Enums;
 using Maui.Components.Interfaces;
+using Maui.Components.Popups;
 using Maui.Components.Utilities;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
@@ -11,6 +13,7 @@ public class SearchPage : BasePage
 {
     #region Private Properties
     private Debouncer _Debouncer = new(0.5);
+    private readonly ILanguageService _LanguageService;
     private ISearchViewModel _SearchViewModel => (ISearchViewModel)BindingContext;
     private readonly Grid _ContentLayout = new()
     {
@@ -37,6 +40,8 @@ public class SearchPage : BasePage
         ILanguageService languageService,
         ISearchViewModel searchViewModel) : base(languageService)
     {
+        _LanguageService = languageService;
+
         BindingContext = searchViewModel;
 
         Title = searchViewModel.PageTitle;
@@ -120,7 +125,18 @@ public class SearchPage : BasePage
     #region Helpers
     private void AddClicked(object sender, EventArgs e)
     {
-        
+        var popup = new EditSearchablePopup(
+            _LanguageService,
+            _SearchViewModel.NewSearchable(),
+            _SearchViewModel,
+            _SearchViewModel.AddArgs,
+            _SearchViewModel.CardStyle,
+            isNew: true
+        );
+
+        popup.Closed += async (s, e) => await _SearchViewModel.GetAllItems(_Search.Text);
+
+        this.ShowPopup(popup);
     }
 
     private void EditClicked(object sender, EventArgs e)
@@ -128,12 +144,32 @@ public class SearchPage : BasePage
         if (sender is MiniCardView mini && 
             mini.BindingContext is ISearchable miniItem)
         {
-                
+            var popup = new EditSearchablePopup(
+                _LanguageService,
+                miniItem,
+                _SearchViewModel,
+                _SearchViewModel.EditArgs,
+                _SearchViewModel.CardStyle
+            );       
+
+            popup.Closed += async (s, e) => await _SearchViewModel.GetAllItems(_Search.Text);
+
+            this.ShowPopup(popup);
         }
         else if (sender is CardView card && 
                  card.BindingContext is ISearchable cardItem)
         {
-            
+            var popup = new EditSearchablePopup(
+                _LanguageService,
+                cardItem,
+                _SearchViewModel,
+                _SearchViewModel.EditArgs,
+                _SearchViewModel.CardStyle
+            );       
+
+            popup.Closed += async (s, e) => await _SearchViewModel.GetAllItems(_Search.Text);
+
+            this.ShowPopup(popup);
         }
     }
 

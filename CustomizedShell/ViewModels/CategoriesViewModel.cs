@@ -16,13 +16,15 @@ public class CategoriesViewModel : ISearchViewModel
     public string PageTitle { get; set; }
     public ImageSource SearchIcon { get; set; } = "search.png";
     public ImageSource ClearSearchIcon { get; set; } = "close.png";
-    public ImageSource CloseEditAddIcon { get; set; } = "close.png";
     public ImageSource AddIcon { get; set; } = "add.png";
     public CardStyle CardStyle { get; set; } = CardStyle.Mini;
 
     public bool ShowAdd => true;
 
     public ObservableCollection<ISearchable> Items { get; set; } = new();
+
+    public EditSearchableArgs AddArgs { get; set; } = new();
+    public EditSearchableArgs EditArgs { get; set; } = new();
 
     public CategoriesViewModel(
         ILanguageService languageService,
@@ -32,6 +34,27 @@ public class CategoriesViewModel : ISearchViewModel
         _CategoryDAL = categoryDAL;
         PageTitle = _LanguageService.StringForKey("Categories");
         SearchPlaceholder = _LanguageService.StringForKey("Search");
+
+        AddArgs.SaveIcon = "";
+        AddArgs.CloseIcon = "";
+        AddArgs.Title = _LanguageService.StringForKey("");
+        AddArgs.NamePlaceholder = _LanguageService.StringForKey("");
+        AddArgs.DescriptionPlaceholder = _LanguageService.StringForKey("");
+        AddArgs.SavePlaceholder = _LanguageService.StringForKey("");
+        
+        EditArgs.DeleteIcon = "";
+        EditArgs.SaveIcon = "";
+        EditArgs.CloseIcon = "";
+        EditArgs.Title = _LanguageService.StringForKey("");
+        EditArgs.NamePlaceholder = _LanguageService.StringForKey("");
+        EditArgs.DescriptionPlaceholder = _LanguageService.StringForKey("");
+        EditArgs.SavePlaceholder = _LanguageService.StringForKey("");
+        EditArgs.DeletePlaceholder = _LanguageService.StringForKey("");
+        EditArgs.HasDeleteConfirmation = true;
+        EditArgs.DeleteConfirmationTitle = _LanguageService.StringForKey("");
+        EditArgs.DeleteConfirmationMessage = _LanguageService.StringForKey("");
+        EditArgs.ConfirmDelete = _LanguageService.StringForKey("");
+        EditArgs.DenyDelete = _LanguageService.StringForKey("");
     }
 
     public async Task GetAllItems(string search)
@@ -53,4 +76,6 @@ public class CategoriesViewModel : ISearchViewModel
     {
         throw new NotImplementedException();
     }
+
+    public ISearchable NewSearchable() => new Category();
 }

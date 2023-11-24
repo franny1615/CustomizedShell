@@ -18,6 +18,7 @@ public class App : Application
         IDAL<User> userDAL,
         LoginViewModel loginViewModel)
     {
+        _UserDAL = userDAL;
         _LanguageService = languageService;
         _LoginViewModel = loginViewModel;
 
