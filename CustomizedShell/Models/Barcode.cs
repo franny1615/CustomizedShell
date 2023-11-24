@@ -10,6 +10,8 @@ public class Barcode : ISearchable
     [PrimaryKey, AutoIncrement, Column("_id")]
     public int Id { get; set; } = -1;
 
+    public int UserID { get; set; } = -1;
+
     public int Number { get; set; } = -1;
 
     public string Name { get; set; } = string.Empty;

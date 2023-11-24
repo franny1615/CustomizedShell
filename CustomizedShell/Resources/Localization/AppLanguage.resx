@@ -226,7 +226,7 @@ Delete account?
     <value>New Status</value>
   </data>
   <data name="EditStatus" xml:space="preserve">
-    <value>Edit Status</value>
+    <value>Edit a Status</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
@@ -238,11 +238,9 @@ Delete account?
     <value>Cannot delete a status that has associated inventory.</value>
   </data>
   <data name="SaveStatusPrompt" xml:space="preserve">
-    <value>
-Status name change alters all inventory items using this status.
+    <value>Status name change alters all inventory items using this status.
 
-Save changes?
-    </value>
+Save changes?</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
@@ -259,13 +257,36 @@ Save changes?
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="EditStatus" xml:space="preserve">
-    <value>EditStatus</value>
-  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="DeletePrompt" xml:space="preserve">
     <value>Deleting is an irreversible action. Proceed?</value>
+  </data>
+  <data name="AddCategory" xml:space="preserve">
+    <value>Add a Category</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CannotDeleteCategory" xml:space="preserve">
+    <value>Cannot delete a category that is associated with inventory items.</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="EditCategory" xml:space="preserve">
+    <value>Edit a Category</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>Some error occurred processing request. Please try again.</value>
+  </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>Error Occurred</value>
+  </data>
+  <data name="SaveCategoryPrompt" xml:space="preserve">
+    <value>Category name changes alters all inventory items using this category.
+
+Save changes?</value>
   </data>
 </root>

@@ -65,7 +65,7 @@ public class StyledEntry : ContentView
     #region Private Properties
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(20, 50),
+        RowDefinitions = Rows.Define(25, 50),
         RowSpacing = 4,
     };
     private readonly Label _PlaceholderLabel = new()

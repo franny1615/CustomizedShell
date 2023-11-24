@@ -10,6 +10,8 @@ public class Category : ISearchable
     [PrimaryKey, AutoIncrement, Column("_id")]
     public int Id { get; set; } = -1;
 
+    public int UserID { get; set; } = -1;
+
     public string Name { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;

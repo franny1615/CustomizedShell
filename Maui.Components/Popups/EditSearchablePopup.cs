@@ -5,13 +5,13 @@ using CommunityToolkit.Maui.Views;
 using Maui.Components.Controls;
 using Maui.Components.Enums;
 using Maui.Components.Interfaces;
-using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Components.Popups;
 
 public class EditSearchablePopup : Popup
 {
     #region Private Properties
+    private readonly EditSearchableArgs _Args;
     private readonly ILanguageService _LanguageService;
     private readonly ISearchViewModel _SearchViewModel;
     private readonly ISearchable _Searchable;
@@ -49,6 +49,7 @@ public class EditSearchablePopup : Popup
         CardStyle cardStyle,
         bool isNew = false)
     {
+        _Args = args;
         _LanguageService = languageService;
         _Searchable = searchable;
         _SearchViewModel = searchViewModel;
@@ -141,11 +142,15 @@ public class EditSearchablePopup : Popup
     private void HasOpened(object sender, PopupOpenedEventArgs e)
     {
         DeviceDisplay.Current.MainDisplayInfoChanged += NewDisplayInfo;
+        _SaveButton.Clicked += Save;
+        _DeleteButton.Clicked += Delete;
     }
 
     private void HasClosed(object sender, PopupClosedEventArgs e)
     {
         DeviceDisplay.Current.MainDisplayInfoChanged -= NewDisplayInfo;
+        _SaveButton.Clicked -= Save;
+        _DeleteButton.Clicked -= Delete;
     }
 
     private void NewDisplayInfo(object sender, DisplayInfoChangedEventArgs e)
@@ -156,6 +161,71 @@ public class EditSearchablePopup : Popup
     private void ApplyContentWidth(DisplayInfo info)
     {
         _ContentLayout.WidthRequest = info.Width / info.Density * 0.8;
+    }
+
+    private async void Delete(object sender, ClickedEventArgs e)
+    {
+        bool delete = true;
+        if (_Args.HasDeleteConfirmation)
+        {
+            delete = await Application.Current.MainPage.DisplayAlert(
+                _Args.DeleteConfirmationTitle,
+                _Args.DeleteConfirmationMessage,
+                _Args.ConfirmDelete,
+                _Args.DenyDelete);
+        }
+
+        if (!delete)
+        {
+            return;
+        }
+
+        bool wasAbleToDelete = await _SearchViewModel.Delete(_Searchable);
+        if (!wasAbleToDelete)
+        {
+            await Application.Current.MainPage.DisplayAlert(
+                _Args.DeleteErrorTitle,
+                _Args.DeleteErrorMessage,
+                _Args.DeleteErrorAcknowledgement);
+        }
+        else
+        {
+            await this.CloseAsync();
+        }
+    }
+
+    private async void Save(object sender, ClickedEventArgs e)
+    {
+        bool save = true;
+        if (_Args.HasSaveConfirmation)
+        {
+            save = await Application.Current.MainPage.DisplayAlert(
+                _Args.SaveConfirmationTitle,
+                _Args.SaveConfirmationMessage,
+                _Args.ConfirmSave,
+                _Args.DenySave);
+        }
+
+        if (!save)
+        {
+            return;
+        }
+
+        _Searchable.Name = _NameEntry.Text;
+        _Searchable.Description = _DescriptionEntry.Text;
+
+        bool wasAbleToSave = await _SearchViewModel.Save(_Searchable);
+        if (!wasAbleToSave)
+        {
+            await Application.Current.MainPage.DisplayAlert(
+                _Args.SaveErrorTitle,
+                _Args.SaveErrorMessage,
+                _Args.SaveErrorAcknowledgement);
+        }
+        else
+        {
+            await this.CloseAsync();
+        }
     }
     #endregion
 }

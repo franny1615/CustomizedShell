@@ -8,6 +8,11 @@ public static class StringUtils
         this List<ISearchable> list, 
         string search)
     {
+        if (string.IsNullOrEmpty(search))
+        {
+            return list;
+        }
+
         string[] userInput = search.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
         List<ISearchable> filtered = new();

@@ -78,8 +78,8 @@ public class SearchPage : BasePage
                     mini.SetBinding(MiniCardView.ImageBackgroundColorProperty, "IconBackgroundColor");
                     mini.SetAppThemeColor(
                         MiniCardView.CardColorProperty,
-                        Application.Current.Resources["CardLight"] as Color, 
-                        Application.Current.Resources["CardDark"] as Color);
+                        Application.Current.Resources["CardColorLight"] as Color, 
+                        Application.Current.Resources["CardColorDark"] as Color);
                     
                     return mini;
                 case CardStyle.Regular:
@@ -91,8 +91,8 @@ public class SearchPage : BasePage
                     regular.SetBinding(CardView.ImageSourceProperty, "Icon");
                     regular.SetAppThemeColor(
                         CardView.CardColorProperty,
-                        Application.Current.Resources["CardLight"] as Color, 
-                        Application.Current.Resources["CardDark"] as Color);
+                        Application.Current.Resources["CardColorLight"] as Color, 
+                        Application.Current.Resources["CardColorDark"] as Color);
                     regular.SetBinding(CardView.ImageBackgroundColorProperty, "IconBackgroundColor");
                     
                     return regular;

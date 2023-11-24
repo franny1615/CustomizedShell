@@ -70,6 +70,24 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a Category.
+        /// </summary>
+        internal static string AddCategory {
+            get {
+                return ResourceManager.GetString("AddCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a Status.
+        /// </summary>
+        internal static string AddStatus {
+            get {
+                return ResourceManager.GetString("AddStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
         internal static string AreYouSure {
@@ -97,6 +115,24 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete a category that is associated with inventory items..
+        /// </summary>
+        internal static string CannotDeleteCategory {
+            get {
+                return ResourceManager.GetString("CannotDeleteCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete a status that has associated inventory..
         /// </summary>
         internal static string CannotDeleteStatus {
@@ -120,6 +156,15 @@ namespace CustomizedShell.Resources.Localization {
         internal static string Categories {
             get {
                 return ResourceManager.GetString("Categories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category.
+        /// </summary>
+        internal static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
             }
         }
         
@@ -169,6 +214,15 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting is an irreversible action. Proceed?.
+        /// </summary>
+        internal static string DeletePrompt {
+            get {
+                return ResourceManager.GetString("DeletePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {
@@ -187,7 +241,16 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Status.
+        ///   Looks up a localized string similar to Edit a Category.
+        /// </summary>
+        internal static string EditCategory {
+            get {
+                return ResourceManager.GetString("EditCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit a Status.
         /// </summary>
         internal static string EditStatus {
             get {
@@ -210,6 +273,24 @@ namespace CustomizedShell.Resources.Localization {
         internal static string EmailRequired {
             get {
                 return ResourceManager.GetString("EmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Some error occurred processing request. Please try again..
+        /// </summary>
+        internal static string ErrorMessage {
+            get {
+                return ResourceManager.GetString("ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Occurred.
+        /// </summary>
+        internal static string ErrorOccurred {
+            get {
+                return ResourceManager.GetString("ErrorOccurred", resourceCulture);
             }
         }
         
@@ -364,11 +445,20 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///Status name change alters all inventory items using this status.
+        ///   Looks up a localized string similar to Category name changes alters all inventory items using this category.
         ///
-        ///Save changes?
-        ///    .
+        ///Save changes?.
+        /// </summary>
+        internal static string SaveCategoryPrompt {
+            get {
+                return ResourceManager.GetString("SaveCategoryPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status name change alters all inventory items using this status.
+        ///
+        ///Save changes?.
         /// </summary>
         internal static string SaveStatusPrompt {
             get {
