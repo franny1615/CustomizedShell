@@ -70,6 +70,15 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a Barcode.
+        /// </summary>
+        internal static string AddBarcode {
+            get {
+                return ResourceManager.GetString("AddBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a Category.
         /// </summary>
         internal static string AddCategory {
@@ -97,6 +106,15 @@ namespace CustomizedShell.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode.
+        /// </summary>
+        internal static string Barcode {
+            get {
+                return ResourceManager.GetString("Barcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} stored barcodes.
         /// </summary>
         internal static string BarcodeCount {
@@ -120,6 +138,15 @@ namespace CustomizedShell.Resources.Localization {
         internal static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete a barcode that is linked to inventory items..
+        /// </summary>
+        internal static string CannotDeleteBarcode {
+            get {
+                return ResourceManager.GetString("CannotDeleteBarcode", resourceCulture);
             }
         }
         
@@ -237,6 +264,15 @@ namespace CustomizedShell.Resources.Localization {
         internal static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit a Barcode.
+        /// </summary>
+        internal static string EditBarcode {
+            get {
+                return ResourceManager.GetString("EditBarcode", resourceCulture);
             }
         }
         
@@ -441,6 +477,17 @@ namespace CustomizedShell.Resources.Localization {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode number or description alters all inventory items using this barcode.
+        ///
+        ///Save Changes?.
+        /// </summary>
+        internal static string SaveBarcodePrompt {
+            get {
+                return ResourceManager.GetString("SaveBarcodePrompt", resourceCulture);
             }
         }
         

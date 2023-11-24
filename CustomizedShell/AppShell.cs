@@ -123,6 +123,7 @@ public class AppShell : Shell
         // actual shell routes
         Routing.RegisterRoute(nameof(StatusesPage), typeof(StatusesPage));
         Routing.RegisterRoute(nameof(CategoriesPage), typeof(CategoriesPage));
+        Routing.RegisterRoute(nameof(BarcodesPage), typeof(BarcodesPage));
     }
     #endregion
 

@@ -95,9 +95,9 @@ public class DataPage : BasePage
         await Shell.Current.GoToAsync(nameof(CategoriesPage));
     }
 
-    private void GoToBarcodes(object sender, EventArgs e)
+    private async void GoToBarcodes(object sender, EventArgs e)
     {
-        // TODO:
+        await Shell.Current.GoToAsync(nameof(BarcodesPage));
     }
     #endregion
 }

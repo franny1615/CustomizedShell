@@ -289,4 +289,21 @@ Save changes?</value>
 
 Save changes?</value>
   </data>
+  <data name="AddBarcode" xml:space="preserve">
+    <value>Add a Barcode</value>
+  </data>
+  <data name="Barcode" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="CannotDeleteBarcode" xml:space="preserve">
+    <value>Cannot delete a barcode that is linked to inventory items.</value>
+  </data>
+  <data name="EditBarcode" xml:space="preserve">
+    <value>Edit a Barcode</value>
+  </data>
+  <data name="SaveBarcodePrompt" xml:space="preserve">
+    <value>Barcode number or description alters all inventory items using this barcode.
+
+Save Changes?</value>
+  </data>
 </root>

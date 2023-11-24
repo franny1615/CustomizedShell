@@ -43,6 +43,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<DataPage>();
 		builder.Services.AddTransient<StatusesPage>();
 		builder.Services.AddTransient<CategoriesPage>();
+		builder.Services.AddTransient<BarcodesPage>();
 
 		return builder;
 	}
@@ -54,6 +55,7 @@ public static class MauiProgram
         builder.Services.AddTransient<DataViewModel>();
         builder.Services.AddTransient<CategoriesViewModel>();
 		builder.Services.AddTransient<StatusesViewModel>();
+		builder.Services.AddTransient<BarcodesViewModel>();
 
         return builder;
 	}
