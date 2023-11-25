@@ -1,4 +1,5 @@
-﻿using CustomizedShell.ViewModels;
+﻿using CustomizedShell.Models;
+using CustomizedShell.ViewModels;
 using Maui.Components;
 using Maui.Components.Pages;
 
@@ -8,6 +9,7 @@ public class StatusesPage : SearchPage
 {
     #region Private Properties
     private readonly ILanguageService _LanguageService;
+    private readonly StatusesViewModel _StatusViewModel;
     #endregion
 
     #region Constructor
@@ -16,6 +18,7 @@ public class StatusesPage : SearchPage
         StatusesViewModel statusViewModel) : base(languageService, statusViewModel)
     {
         _LanguageService = languageService;
+        _StatusViewModel = statusViewModel;
         OverrideBackButtonText();
     }
     #endregion
@@ -39,15 +42,19 @@ public class StatusesPage : SearchPage
     #region Helpers
     private async void AddStatus(object sender, EditEventArgs e)
     {
-        await this.Navigation.PushModalAsync(new PopupPage(_LanguageService)
-        {
-            PopupStyle = PopupStyle.BottomSheet
-        });
+        await this.Navigation.PushModalAsync(new EditStatusPage(
+            _LanguageService,
+            _StatusViewModel,
+            e.Item as Status,
+            isNew: true));
     }
 
-    private void EditStatus(object sender, EditEventArgs e)
+    private async void EditStatus(object sender, EditEventArgs e)
     {
-        
+        await this.Navigation.PushModalAsync(new EditStatusPage(
+            _LanguageService,
+            _StatusViewModel,
+            e.Item as Status));
     }
     #endregion
 }

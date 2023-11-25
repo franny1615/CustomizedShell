@@ -89,7 +89,8 @@ public class CardView : ContentView
     #region Private Helpers
     private readonly Border _ContentContainer = new()
     {
-        Stroke = Colors.Transparent,
+        Stroke = Colors.Black,
+        StrokeThickness = 0.1,
         StrokeShape = new RoundRectangle { CornerRadius = 16 },
     };
     private readonly Grid _ContentLayout = new()

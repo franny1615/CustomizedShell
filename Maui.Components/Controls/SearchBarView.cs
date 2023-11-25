@@ -89,7 +89,8 @@ public class SearchBarView : ContentView
     #region Private Varibles
     private readonly Border _ContentContainer = new()
     {
-        Stroke = Colors.Transparent,
+        Stroke = Colors.Black,
+        StrokeThickness = 0.1,
         StrokeShape = new RoundRectangle { CornerRadius = 16 },
         Padding = 8
     };

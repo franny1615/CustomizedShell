@@ -77,7 +77,8 @@ public class MiniCardView : ContentView
     #region Private Helpers
     private readonly Border _ContentContainer = new()
     {
-        Stroke = Colors.Transparent,
+        Stroke = Colors.Black,
+        StrokeThickness = 0.1,
         StrokeShape = new RoundRectangle { CornerRadius = 8 },
     };
     private readonly Grid _ContentLayout = new()

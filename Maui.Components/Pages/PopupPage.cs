@@ -47,8 +47,7 @@ public class PopupPage : BasePage
     #region Private Variables
     private readonly Grid _OuterLayout = new()
     {
-        IgnoreSafeArea = true,
-        BackgroundColor = Colors.Black.WithAlpha(0.1f)
+        IgnoreSafeArea = true
     };
     private readonly ContentView _ContentLayout = new();
     private readonly Border _ContentContainer = new()
@@ -73,8 +72,10 @@ public class PopupPage : BasePage
 
         _ContentContainer.SetAppThemeColor(
             Border.BackgroundColorProperty, 
-            Application.Current.Resources["CardColorLight"] as Color,
-            Application.Current.Resources["CardColorDark"] as Color);
+            Colors.White,
+            Color.FromRgb(28,28,30));
+
+        _OuterLayout.BackgroundColor = Colors.Black.WithAlpha(0.1f);
 
         _ContentContainer.Content = _ContentLayout;
         _OuterLayout.Children.Add(_ContentContainer);

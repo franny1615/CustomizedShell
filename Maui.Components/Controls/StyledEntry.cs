@@ -78,6 +78,14 @@ public class StyledEntry : ContentView
         Margin = new Thickness(16, 0, 0, 0),
         MaxLines = 1
     };
+    private readonly Border _EntryContainer = new()
+    {
+        Stroke = Colors.Black,
+        StrokeThickness = 0.1,
+        StrokeShape = new RoundRectangle {  CornerRadius = 16 },
+        BackgroundColor = Colors.Transparent,
+        Padding = 0,
+    };
     private readonly Entry _Entry = new()
     {
         FontSize = 20,
@@ -96,15 +104,14 @@ public class StyledEntry : ContentView
     {
         BindingContext = this;
 
+        _EntryContainer.Content = _Entry;
+        _EntryContainer.SetAppThemeColor(
+            Entry.BackgroundColorProperty, 
+            Application.Current.Resources["CardColorLight"] as Color,
+            Application.Current.Resources["CardColorDark"] as Color);
+        
         _ContentLayout.Children.Add(_PlaceholderLabel.Row(0));
-        _ContentLayout.Children.Add(new Border
-        {
-            Stroke = Colors.DarkGray,
-            StrokeShape = new RoundRectangle {  CornerRadius = 16 },
-            BackgroundColor = Colors.Transparent,
-            Padding = 0,
-            Content = _Entry
-        }.Row(1));
+        _ContentLayout.Children.Add(_EntryContainer.Row(1));
 
         _Entry.SetBinding(Entry.TextProperty, nameof(Text));
 
