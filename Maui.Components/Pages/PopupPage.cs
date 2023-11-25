@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Markup;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
@@ -47,7 +48,8 @@ public class PopupPage : BasePage
     #region Private Variables
     private readonly Grid _OuterLayout = new()
     {
-        IgnoreSafeArea = true
+        IgnoreSafeArea = true,
+        BackgroundColor = Colors.Transparent
     };
     private readonly ContentView _ContentLayout = new();
     private readonly Border _ContentContainer = new()
@@ -75,8 +77,6 @@ public class PopupPage : BasePage
             Colors.White,
             Color.FromRgb(28,28,30));
 
-        _OuterLayout.BackgroundColor = Colors.Black.WithAlpha(0.1f);
-
         _ContentContainer.Content = _ContentLayout;
         _OuterLayout.Children.Add(_ContentContainer);
         Content = _OuterLayout;
@@ -86,13 +86,22 @@ public class PopupPage : BasePage
     #region Overrides
     protected override void OnAppearing()
     {
-        DeviceDisplay.Current.MainDisplayInfoChanged += DisplayInfoChange;
         base.OnAppearing();
+        DeviceDisplay.Current.MainDisplayInfoChanged += DisplayInfoChange;
+        Task.Run(async () => 
+        {
+            await Task.Delay(250);
+            MainThread.BeginInvokeOnMainThread(() => 
+            {
+                _OuterLayout.BackgroundColorTo(Colors.Black.WithAlpha(0.25f), easing: Easing.CubicIn);
+            });
+        });
     }
 
     protected override void OnDisappearing()
     {
         DeviceDisplay.Current.MainDisplayInfoChanged -= DisplayInfoChange;
+        _OuterLayout.BackgroundColor = Colors.Transparent;
         base.OnDisappearing();
     }
 

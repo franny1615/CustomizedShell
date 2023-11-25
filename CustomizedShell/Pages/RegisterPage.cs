@@ -4,6 +4,7 @@ using CustomizedShell.ViewModels;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
+using Maui.Components.Utilities;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace CustomizedShell;
@@ -128,12 +129,18 @@ public class RegisterPage : BasePage
         base.OnAppearing();
         _Register.Clicked += Register;
         _GoBack.Clicked += GoBack;
+        _Username.TextChanged += UsernameChanged;
+        _Password.TextChanged += PasswordChanged;
+        _Email.TextChanged += EmailChanged;
     }
 
     protected override void OnDisappearing()
     {
         _Register.Clicked -= Register;
         _GoBack.Clicked -= GoBack;
+        _Username.TextChanged -= UsernameChanged;
+        _Password.TextChanged -= PasswordChanged;
+        _Email.TextChanged -= EmailChanged;
         base.OnDisappearing();
     }
     #endregion
@@ -143,32 +150,31 @@ public class RegisterPage : BasePage
     {
         if (string.IsNullOrEmpty(_Username.Text))
         {
-            await this.DisplayAlert(
-                _LanguageService.StringForKey("Register"),
-                _LanguageService.StringForKey("UsernameRequired"),
-                _LanguageService.StringForKey("Ok")
-            );
-            return;
+            _Username.StatusColor = Colors.Red;
+            _Username.StatusIcon = "info.png";
+            _Username.StatusText = _LanguageService.StringForKey("UsernameRequired");
         }
 
         if (string.IsNullOrEmpty(_Password.Text))
         {
-            await this.DisplayAlert(
-                _LanguageService.StringForKey("Register"),
-                _LanguageService.StringForKey("PasswordRequired"),
-                _LanguageService.StringForKey("Ok")
-            );
-            return;
+            _Password.StatusColor = Colors.Red;
+            _Password.StatusIcon = "info.png";
+            _Password.StatusText = _LanguageService.StringForKey("PasswordRequired");
         }
 
         if (string.IsNullOrEmpty(_Email.Text))
         {
-            await this.DisplayAlert(
-                _LanguageService.StringForKey("Register"),
-                _LanguageService.StringForKey("EmailRequired"),
-                _LanguageService.StringForKey("Ok")
-            );
-            return;
+            _Email.StatusColor = Colors.Red;
+            _Email.StatusIcon = "info.png";
+            _Email.StatusText = _LanguageService.StringForKey("EmailRequired");
+        }
+
+        if (string.IsNullOrEmpty(_Email.Text) || 
+            string.IsNullOrEmpty(_Password.Text) || 
+            string.IsNullOrEmpty(_Username.Text) ||
+            !StringUtils.IsValidEmail(_Email.Text))
+        {
+            return;    
         }
 
         await _LoginViewModel.RegisterUser(
@@ -182,6 +188,63 @@ public class RegisterPage : BasePage
     private async void GoBack(object sender, EventArgs e)
     {
         await this.Navigation.PopAsync();
+    }
+
+    private void UsernameChanged(object sender, TextChangedEventArgs e)
+    {
+        if (e.NewTextValue.Length > 0)
+        {
+            _Username.StatusColor = Colors.Green;
+            _Username.StatusIcon = null;
+            _Username.StatusText = "";
+        }
+        else
+        {
+            _Username.StatusColor = Colors.Black;
+            _Username.StatusIcon = null;
+            _Username.StatusText = "";
+        }
+    }
+
+    private void PasswordChanged(object sender, TextChangedEventArgs e)
+    {
+        if (e.NewTextValue.Length > 0)
+        {
+            _Password.StatusColor = Colors.Green;
+            _Password.StatusIcon = null;
+            _Password.StatusText = "";
+        }
+        else
+        {
+            _Password.StatusColor = Colors.Black;
+            _Password.StatusIcon = null;
+            _Password.StatusText = "";
+        }
+    }
+
+    private void EmailChanged(object sender, TextChangedEventArgs e)
+    {
+        if (e.NewTextValue.Length > 0)
+        {
+            if (StringUtils.IsValidEmail(e.NewTextValue))
+            {
+                _Email.StatusColor = Colors.Green;
+                _Email.StatusIcon = null;
+                _Email.StatusText = "";
+            }
+            else
+            {
+                _Email.StatusColor = Colors.Red;
+                _Email.StatusIcon = "info.png";
+                _Email.StatusText = _LanguageService.StringForKey("EmailInvalid");
+            }
+        }
+        else
+        {
+            _Email.StatusColor = Colors.Black;
+            _Email.StatusIcon = null;
+            _Email.StatusText = "";
+        }
     }
     #endregion
 }

@@ -4,6 +4,7 @@ using CustomizedShell.ViewModels;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
+using Maui.Components.Utilities;
 using Microsoft.Maui.Controls.Shapes;
 using System.Runtime.CompilerServices;
 
@@ -111,7 +112,7 @@ public class ProfilePage : BasePage
         _ContentLayout.Add(_DeleteAccount);
 
         _ContentScroll.Content = _ContentLayout;
-        Content = _ContentLayout;
+        Content = _ContentScroll;
     }
     #endregion
 
@@ -144,10 +145,57 @@ public class ProfilePage : BasePage
         _Username.Text = user.Username;
         _Password.Text = user.Password;
         _Email.Text = user.Email;
+
+        _Username.StatusColor = Colors.Black;
+        _Username.StatusIcon = null;
+        _Username.StatusText = "";
+
+        _Password.StatusColor = Colors.Black;
+        _Password.StatusIcon = null;
+        _Password.StatusText = "";
+
+        _Email.StatusColor = Colors.Black;
+        _Email.StatusIcon = null;
+        _Email.StatusText = "";
     }
 
     private async void Save(object sender, EventArgs e)
     {
+        if (string.IsNullOrEmpty(_Username.Text))
+        {
+            _Username.StatusColor = Colors.Red;
+            _Username.StatusIcon = "info.png";
+            _Username.StatusText = _LanguageService.StringForKey("UsernameRequired");
+        }
+
+        if (string.IsNullOrEmpty(_Password.Text))
+        {
+            _Password.StatusColor = Colors.Red;
+            _Password.StatusIcon = "info.png";
+            _Password.StatusText = _LanguageService.StringForKey("PasswordRequired");
+        }
+
+        if (string.IsNullOrEmpty(_Email.Text))
+        {
+            _Email.StatusColor = Colors.Red;
+            _Email.StatusIcon = "info.png";
+            _Email.StatusText = _LanguageService.StringForKey("EmailRequired");
+        }
+        else if (!StringUtils.IsValidEmail(_Email.Text))
+        {
+            _Email.StatusColor = Colors.Red;
+            _Email.StatusIcon = "info.png";
+            _Email.StatusText = _LanguageService.StringForKey("EmailInvalid");
+        }
+
+        if (string.IsNullOrEmpty(_Email.Text) || 
+            string.IsNullOrEmpty(_Password.Text) || 
+            string.IsNullOrEmpty(_Username.Text) ||
+            !StringUtils.IsValidEmail(_Email.Text))
+        {
+            return;    
+        }
+
         await _ProfileViewModel.Save(
             _Username.Text,
             _Password.Text,

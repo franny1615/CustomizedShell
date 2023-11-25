@@ -1,4 +1,5 @@
-﻿using Maui.Components.Interfaces;
+﻿using System.Net.Mail;
+using Maui.Components.Interfaces;
 
 namespace Maui.Components.Utilities;
 
@@ -37,5 +38,19 @@ public static class StringUtils
         }
 
         return filtered;
+    }
+
+    public static bool IsValidEmail(string emailaddress)
+    {
+        try
+        {
+            MailAddress m = new MailAddress(emailaddress);
+
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
     }
 }

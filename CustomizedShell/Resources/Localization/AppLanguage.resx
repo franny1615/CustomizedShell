@@ -151,13 +151,16 @@
     <value>Email</value>
   </data>
   <data name="UsernameRequired" xml:space="preserve">
-    <value>Username is required to register.</value>
+    <value>Username required.</value>
   </data>
   <data name="PasswordRequired" xml:space="preserve">
-    <value>Password is required to register.</value>
+    <value>Password required.</value>
   </data>
   <data name="EmailRequired" xml:space="preserve">
-    <value>Email is required to register.</value>
+    <value>Email required.</value>
+  </data>
+  <data name="EmailInvalid" xml:space="preserve">
+    <value>Not a proper email.</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -305,5 +308,8 @@ Save changes?</value>
     <value>Barcode number or description alters all inventory items using this barcode.
 
 Save Changes?</value>
+  </data>
+  <data name="NotEmpty" xml:space="preserve">
+    <value>Must not be empty.</value>
   </data>
 </root>

@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Maui.Markup;
+﻿using CommunityToolkit.Maui.Behaviors;
+using CommunityToolkit.Maui.Markup;
 using Microsoft.Maui.Controls.Shapes;
+using SQLite;
 using System.Runtime.CompilerServices;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
@@ -60,12 +62,51 @@ public class StyledEntry : ContentView
         get => (bool)GetValue(IsPasswordProperty);
         set => SetValue(IsPasswordProperty, value);
     }
+
+    public static readonly BindableProperty StatusIconProperty = BindableProperty.Create(
+        nameof(StatusIconProperty),
+        typeof(ImageSource),
+        typeof(StyledEntry),
+        null
+    );
+
+    public ImageSource StatusIcon
+    {
+        get => (ImageSource)GetValue(StatusIconProperty);
+        set => SetValue(StatusIconProperty, value);
+    }
+
+    public static readonly BindableProperty StatusTextProperty = BindableProperty.Create(
+        nameof(StatusTextProperty),
+        typeof(string),
+        typeof(StyledEntry),
+        null
+    );
+
+    public string StatusText 
+    {
+        get => (string)GetValue(StatusTextProperty);
+        set => SetValue(StatusTextProperty, value);
+    }
+
+    public static readonly BindableProperty StatusColorProperty = BindableProperty.Create(
+        nameof(StatusColorProperty),
+        typeof(Color),
+        typeof(StyledEntry),
+        null
+    );
+
+    public Color StatusColor 
+    {
+        get => (Color)GetValue(StatusColorProperty);
+        set => SetValue(StatusColorProperty, value);
+    }
     #endregion
 
     #region Private Properties
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(25, 50),
+        RowDefinitions = Rows.Define(25, 50, Auto),
         RowSpacing = 4,
     };
     private readonly Label _PlaceholderLabel = new()
@@ -81,7 +122,7 @@ public class StyledEntry : ContentView
     private readonly Border _EntryContainer = new()
     {
         Stroke = Colors.Black,
-        StrokeThickness = 0.1,
+        StrokeThickness = 1,
         StrokeShape = new RoundRectangle {  CornerRadius = 16 },
         BackgroundColor = Colors.Transparent,
         Padding = 0,
@@ -97,6 +138,22 @@ public class StyledEntry : ContentView
         IsPassword = false,
         Margin = new Thickness(16, 0, 16, 0)
     };
+    private readonly HorizontalStackLayout _StatusContainer = new() 
+    { 
+        Spacing = 4,
+        Margin = new Thickness(16, 0, 16, 0)
+    };
+    private readonly Image _StatusImage = new()
+    {
+        HeightRequest = 15,
+        WidthRequest = 15,
+    };
+    private readonly Label _StatusLabel = new()
+    {
+        FontSize = 12,
+        FontAttributes = FontAttributes.Bold
+    };
+    private readonly IconTintColorBehavior _StatusColor = new();
     #endregion
 
     #region Constructor
@@ -116,6 +173,10 @@ public class StyledEntry : ContentView
         _Entry.SetBinding(Entry.TextProperty, nameof(Text));
 
         Content = _ContentLayout;
+
+        _StatusImage.Behaviors.Add(_StatusColor);
+        _StatusContainer.Children.Add(_StatusImage.Center());
+        _StatusContainer.Children.Add(_StatusLabel.CenterVertical().Start());
 
         Loaded += EntryLoaded;
         Unloaded += EntryUnloaded;
@@ -142,6 +203,23 @@ public class StyledEntry : ContentView
         {
             _Entry.Text = Text;
         }
+        else if (propertyName == StatusColorProperty.PropertyName)
+        {
+            _EntryContainer.Stroke = StatusColor;
+            _StatusColor.TintColor = StatusColor; 
+            _StatusLabel.TextColor = StatusColor;
+        }
+        else if (propertyName == StatusIconProperty.PropertyName ||
+                 propertyName == StatusTextProperty.PropertyName)
+        {
+            _ContentLayout.Children.Remove(_StatusContainer);
+            if (StatusIcon != null && !string.IsNullOrEmpty(StatusText))
+            {
+                _StatusImage.Source = StatusIcon;
+                _StatusLabel.Text = StatusText;
+                _ContentLayout.Children.Add(_StatusContainer.Row(2).Start());
+            }
+        } 
     }
     #endregion
 

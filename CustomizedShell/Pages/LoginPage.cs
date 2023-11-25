@@ -129,16 +129,52 @@ public class LoginPage : BasePage
         base.OnAppearing();
         _Login.Clicked += Login;
         _Register.Clicked += Register;
+        _Username.TextChanged += UsernameChanged;
+        _Password.TextChanged += PasswordChanged;
     }
     protected override void OnDisappearing()
     {
         _Login.Clicked -= Login;
         _Register.Clicked -= Register;
+        _Username.TextChanged -= UsernameChanged;
+        _Password.TextChanged -= PasswordChanged;
         base.OnDisappearing();
     }
     #endregion
 
     #region Helpers
+    private void UsernameChanged(object sender, TextChangedEventArgs e)
+    {
+        if (e.NewTextValue.Length > 0)
+        {
+            _Username.StatusColor = Colors.Green;
+            _Username.StatusIcon = null;
+            _Username.StatusText = "";
+        }
+        else
+        {
+            _Username.StatusColor = Colors.Black;
+            _Username.StatusIcon = null;
+            _Username.StatusText = "";
+        }
+    }
+
+    private void PasswordChanged(object sender, TextChangedEventArgs e)
+    {
+        if (e.NewTextValue.Length > 0)
+        {
+            _Password.StatusColor = Colors.Green;
+            _Password.StatusIcon = null;
+            _Password.StatusText = "";
+        }
+        else
+        {
+            _Password.StatusColor = Colors.Black;
+            _Password.StatusIcon = null;
+            _Password.StatusText = "";
+        }
+    }
+
     private async void Register(object sender, ClickedEventArgs e)
     {
         await this.Navigation.PushAsync(new RegisterPage(_LanguageService, _LoginViewModel));
@@ -149,6 +185,13 @@ public class LoginPage : BasePage
         if (string.IsNullOrEmpty(_Username.Text) ||
             string.IsNullOrEmpty(_Password.Text))
         {
+            _Username.StatusColor = Colors.Red;
+            _Username.StatusIcon = "info.png";
+            _Username.StatusText = _LanguageService.StringForKey("NotEmpty");
+
+            _Password.StatusColor = Colors.Red;
+            _Password.StatusIcon = "info.png";
+            _Password.StatusText = _LanguageService.StringForKey("NotEmpty");
             return;
         }
 
