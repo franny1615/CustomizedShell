@@ -25,9 +25,6 @@ public class CategoriesViewModel : ISearchViewModel
 
     public ObservableCollection<ISearchable> Items { get; set; } = new();
 
-    public EditSearchableArgs AddArgs { get; set; } = new();
-    public EditSearchableArgs EditArgs { get; set; } = new();
-
     public CategoriesViewModel(
         ILanguageService languageService,
         IDAL<Category> categoryDAL,
@@ -40,45 +37,6 @@ public class CategoriesViewModel : ISearchViewModel
         _UserDAL = userDAL;
         PageTitle = _LanguageService.StringForKey("Categories");
         SearchPlaceholder = _LanguageService.StringForKey("Search");
-
-        AddArgs.SaveIcon = "add.png";
-        AddArgs.CloseIcon = "close.png";
-        AddArgs.Title = _LanguageService.StringForKey("AddCategory");
-        AddArgs.NamePlaceholder = _LanguageService.StringForKey("Category");
-        AddArgs.DescriptionPlaceholder = _LanguageService.StringForKey("Description");
-        AddArgs.SavePlaceholder = _LanguageService.StringForKey("Save");
-        AddArgs.SaveErrorTitle = _LanguageService.StringForKey("ErrorOccurred");
-        AddArgs.SaveErrorMessage = _LanguageService.StringForKey("ErrorMessage");
-        AddArgs.SaveErrorAcknowledgement = _LanguageService.StringForKey("Ok");
-
-        EditArgs.DeleteIcon = "trash.png";
-        EditArgs.SaveIcon = "add.png";
-        EditArgs.CloseIcon = "close.png";
-        EditArgs.Title = _LanguageService.StringForKey("EditCategory");
-        EditArgs.NamePlaceholder = _LanguageService.StringForKey("Category");
-        EditArgs.DescriptionPlaceholder = _LanguageService.StringForKey("Description");
-        EditArgs.SavePlaceholder = _LanguageService.StringForKey("Save");
-        EditArgs.DeletePlaceholder = _LanguageService.StringForKey("Delete");
-
-        EditArgs.HasDeleteConfirmation = true;
-        EditArgs.DeleteConfirmationTitle = _LanguageService.StringForKey("AreYouSure");
-        EditArgs.DeleteConfirmationMessage = _LanguageService.StringForKey("DeletePrompt");
-        EditArgs.ConfirmDelete = _LanguageService.StringForKey("Yes");
-        EditArgs.DenyDelete = _LanguageService.StringForKey("No");
-        EditArgs.SaveErrorTitle = _LanguageService.StringForKey("ErrorOccurred");
-        EditArgs.SaveErrorMessage = _LanguageService.StringForKey("ErrorMessage");
-        EditArgs.SaveErrorAcknowledgement = _LanguageService.StringForKey("Ok");
-
-        EditArgs.HasSaveConfirmation = true;
-        EditArgs.SaveConfirmationTitle = _LanguageService.StringForKey("AreYouSure");
-        EditArgs.SaveConfirmationMessage = _LanguageService.StringForKey("SaveCategoryPrompt");
-        EditArgs.ConfirmSave = _LanguageService.StringForKey("Save");
-        EditArgs.DenySave = _LanguageService.StringForKey("Cancel");
-        EditArgs.DeleteErrorTitle = _LanguageService.StringForKey("ErrorOccurred");
-        EditArgs.DeleteErrorMessage = _LanguageService.StringForKey("CannotDeleteCategory") + "\n" +
-                                      _LanguageService.StringForKey("Or") + "\n" +
-                                      _LanguageService.StringForKey("ErrorMessage");
-        EditArgs.DeleteErrorAcknowledgement = _LanguageService.StringForKey("Ok");
     }
 
     public async Task GetAllItems(string search)
