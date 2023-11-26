@@ -101,6 +101,14 @@ public class StyledEntry : ContentView
         get => (Color)GetValue(StatusColorProperty);
         set => SetValue(StatusColorProperty, value);
     }
+
+    public Entry TextInput
+    {
+        get
+        {
+            return _Entry;
+        }
+    }
     #endregion
 
     #region Private Properties

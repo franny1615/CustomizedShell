@@ -139,12 +139,14 @@ public class EditCategoryPage : PopupPage
         base.OnAppearing();
         _SaveButton.Clicked += Save;
         _DeleteButton.Clicked += Delete;
+        _NameEntry.TextChanged += CategoryTextChanged;
     }
 
     protected override void OnDisappearing()
     {
         _SaveButton.Clicked -= Save;
         _DeleteButton.Clicked -= Delete;
+        _NameEntry.TextChanged -= CategoryTextChanged;
         base.OnDisappearing();
     }
     #endregion
@@ -181,6 +183,15 @@ public class EditCategoryPage : PopupPage
 
     private async void Save(object sender, ClickedEventArgs e)
     {
+        if (string.IsNullOrEmpty(_NameEntry.Text))
+        {
+            _NameEntry.StatusColor = Colors.Red;
+            _NameEntry.StatusIcon = "info.png";
+            _NameEntry.StatusText = _LanguageService.StringForKey("CategoryRequired");
+            
+            return;
+        }
+
         bool save = true;
 
         if (!_IsNew)
@@ -212,6 +223,20 @@ public class EditCategoryPage : PopupPage
         {
             await this.Navigation.PopModalAsync();
         }
+    }
+
+    private void CategoryTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (e.NewTextValue.Length > 0)
+        {
+            _NameEntry.StatusColor = Colors.Black;
+        }
+        else 
+        {
+            _NameEntry.StatusColor = Colors.Red;
+        }
+        _NameEntry.StatusIcon = null;
+        _NameEntry.StatusText = "";
     }
     #endregion
 }

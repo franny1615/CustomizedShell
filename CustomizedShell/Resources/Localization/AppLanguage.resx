@@ -204,6 +204,9 @@ Delete account?
   <data name="Inventory" xml:space="preserve">
     <value>Inventory</value>
   </data>
+  <data name="Barcode" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
   <data name="Barcodes" xml:space="preserve">
     <value>Barcodes</value>
   </data>
@@ -311,5 +314,17 @@ Save Changes?</value>
   </data>
   <data name="NotEmpty" xml:space="preserve">
     <value>Must not be empty.</value>
+  </data>
+  <data name="BarcodeRequired" xml:space="preserve">
+    <value>Barcode required.</value>
+  </data>
+  <data name="DescriptionRequired" xml:space="preserve">
+    <value>Description Required</value>
+  </data>
+  <data name="StatusRequired" xml:space="preserve">
+    <value>Status required.</value>
+  </data>
+  <data name="CategoryRequired" xml:space="preserve">
+    <value>Category Required</value>
   </data>
 </root>
