@@ -11,6 +11,7 @@ public class StyledEntry : ContentView
 {
     #region Events
     public event EventHandler<TextChangedEventArgs> TextChanged;
+    public event EventHandler ActionClicked;
     #endregion
 
     #region Public Properties
@@ -102,6 +103,19 @@ public class StyledEntry : ContentView
         set => SetValue(StatusColorProperty, value);
     }
 
+    public static readonly BindableProperty ActionIconProperty = BindableProperty.Create(
+        nameof(ActionIconProperty),
+        typeof(ImageSource),
+        typeof(StyledEntry),
+        null
+    );
+
+    public ImageSource ActionIcon
+    {
+        get => (ImageSource) GetValue(ActionIconProperty);
+        set => SetValue(ActionIconProperty, value);
+    }
+
     public Entry TextInput
     {
         get
@@ -135,6 +149,11 @@ public class StyledEntry : ContentView
         BackgroundColor = Colors.Transparent,
         Padding = 0,
     };
+    private readonly Grid _EntryLayout = new()
+    {
+        ColumnSpacing = 8,
+        ColumnDefinitions = Columns.Define(Star, 30)
+    };
     private readonly Entry _Entry = new()
     {
         FontSize = 20,
@@ -145,6 +164,11 @@ public class StyledEntry : ContentView
         Keyboard = Keyboard.Plain,
         IsPassword = false,
         Margin = new Thickness(16, 0, 16, 0)
+    };
+    private readonly Image _ActionImage = new()
+    {
+        HeightRequest = 25,
+        WidthRequest = 25
     };
     private readonly HorizontalStackLayout _StatusContainer = new() 
     { 
@@ -175,8 +199,18 @@ public class StyledEntry : ContentView
             Application.Current.Resources["CardColorLight"] as Color,
             Application.Current.Resources["CardColorDark"] as Color);
         
+        _EntryLayout.Children.Add(_EntryContainer.Column(0).ColumnSpan(2));
+
         _ContentLayout.Children.Add(_PlaceholderLabel.Row(0));
-        _ContentLayout.Children.Add(_EntryContainer.Row(1));
+        _ContentLayout.Children.Add(_EntryLayout.Row(1));
+
+        _ActionImage.TapGesture(async () => 
+        {
+            await _ActionImage.ScaleTo(0.95, 70);
+            await _ActionImage.ScaleTo(1.0, 70);
+
+            ActionClicked?.Invoke(this, null);
+        });
 
         _Entry.SetBinding(Entry.TextProperty, nameof(Text));
 
@@ -228,6 +262,20 @@ public class StyledEntry : ContentView
                 _ContentLayout.Children.Add(_StatusContainer.Row(2).Start());
             }
         } 
+        else if (propertyName == ActionIconProperty.PropertyName)
+        {
+            _EntryLayout.Children.Remove(_ActionImage);
+            if (ActionIcon != null)
+            {
+                _ActionImage.Source = ActionIcon;
+                _EntryContainer.ColumnSpan(1);
+                _EntryLayout.Children.Add(_ActionImage.Column(1));
+            }
+            else
+            {
+                _EntryContainer.ColumnSpan(2);
+            }
+        }
     }
     #endregion
 

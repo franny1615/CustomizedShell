@@ -12,8 +12,6 @@ public class Barcode : ISearchable
 
     public int UserID { get; set; } = -1;
 
-    public int Number { get; set; } = -1;
-
     public string Name { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
@@ -23,7 +21,7 @@ public class Barcode : ISearchable
         get 
         {
             List<string> words = [.. Description.Split(" ", StringSplitOptions.RemoveEmptyEntries)];
-            words.Add($"{Number}");
+            words.Add(Name); // name should always be a number
 
             return words.ToArray();
         }

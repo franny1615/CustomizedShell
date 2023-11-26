@@ -327,4 +327,10 @@ Save Changes?</value>
   <data name="CategoryRequired" xml:space="preserve">
     <value>Category Required</value>
   </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="ScanBarcode" xml:space="preserve">
+    <value>Scan</value>
+  </data>
 </root>

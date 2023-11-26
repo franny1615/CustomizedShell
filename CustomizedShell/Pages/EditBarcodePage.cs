@@ -7,6 +7,8 @@ using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Enums;
 using Maui.Components.Pages;
+using ZXing.Net.Maui.Controls;
+using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace CustomizedShell.Pages;
 
@@ -18,6 +20,10 @@ public class EditBarcodePage : PopupPage
     private readonly Barcode _Barcode;
     private bool _IsNew;
     private readonly IconTintColorBehavior _CloseIconTint = new();
+    private readonly ScrollView _ContenScroll = new()
+    {
+        VerticalScrollBarVisibility = ScrollBarVisibility.Never
+    };
     private readonly VerticalStackLayout _ContentLayout = new()
     {
         Spacing = 8,
@@ -35,10 +41,16 @@ public class EditBarcodePage : PopupPage
         HeightRequest = 30,
         WidthRequest = 30,
     };
+    private readonly BarcodeGeneratorView _BarcodeGeneratorView = new()
+    {
+        Format = ZXing.Net.Maui.BarcodeFormat.Code128,
+        HeightRequest = 100,
+    };
     private readonly StyledEntry _NameEntry = new();
     private readonly StyledEntry _DescriptionEntry = new();
     private readonly FloatingActionButton _SaveButton = new();
     private readonly FloatingActionButton _DeleteButton = new();
+    private readonly FloatingActionButton _PrintButton = new();
     #endregion
 
     #region Constructor
@@ -75,6 +87,9 @@ public class EditBarcodePage : PopupPage
         _SaveButton.ImageSource = "add.png";
         _DeleteButton.Text = _LanguageService.StringForKey("Delete");
         _DeleteButton.ImageSource = "trash.png";
+        _PrintButton.Text = _LanguageService.StringForKey("Print");
+        _PrintButton.ImageSource = "print.png";
+        _NameEntry.ActionIcon = "barcode_scanner.png";
 
         _ContentLayout.Children.Add(new Grid 
         {
@@ -89,18 +104,18 @@ public class EditBarcodePage : PopupPage
             Color = Colors.Transparent,
             HeightRequest = 16
         });
+        _ContentLayout.Children.Add(_BarcodeGeneratorView);
+        _ContentLayout.Children.Add(new BoxView
+        {
+            Color = Colors.Transparent,
+            HeightRequest = 8
+        });
         switch (barcodesViewModel.CardStyle)
         {
             case CardStyle.Mini:
-                _ContentLayout.Children.Add(_NameEntry);
                 break;
             case CardStyle.Regular:
                 _ContentLayout.Children.Add(_NameEntry);
-                _ContentLayout.Children.Add(new BoxView
-                {
-                    Color = Colors.Transparent,
-                    HeightRequest = 8
-                });
                 _ContentLayout.Children.Add(_DescriptionEntry);
                 break;
         }
@@ -109,16 +124,28 @@ public class EditBarcodePage : PopupPage
             Color = Colors.Transparent,
             HeightRequest = 16
         });
-        _ContentLayout.Children.Add(_SaveButton);
+        
         
         if (!isNew)
         { 
-            _ContentLayout.Children.Add(new BoxView
+            _ContentLayout.Children.Add(new Grid
             {
-                Color = Colors.Transparent,
-                HeightRequest = 8
+                ColumnDefinitions = Columns.Define(
+                    Star, 
+                    new GridLength(0.25, GridUnitType.Star),
+                    new GridLength(0.25, GridUnitType.Star)),
+                ColumnSpacing = 4,
+                Children = 
+                {
+                    _SaveButton.Column(0),
+                    _PrintButton.Column(1),
+                    _DeleteButton.Column(2)
+                }
             });
-            _ContentLayout.Children.Add(_DeleteButton);
+        }
+        else
+        {
+            _ContentLayout.Children.Add(_SaveButton);
         }
 
         _ContentLayout.Children.Add(new BoxView
@@ -130,12 +157,16 @@ public class EditBarcodePage : PopupPage
         _SaveButton.FABStyle = FloatingActionButtonStyle.Extended;
         _SaveButton.FABBackgroundColor = Colors.Green;
         _SaveButton.TextColor = Colors.White;
-        _DeleteButton.FABStyle = FloatingActionButtonStyle.Extended;
+        _DeleteButton.FABStyle = FloatingActionButtonStyle.Regular;
         _DeleteButton.TextColor = Colors.White;
         _DeleteButton.FABBackgroundColor = Colors.Red;
+        _PrintButton.FABStyle = FloatingActionButtonStyle.Regular;
+        _PrintButton.TextColor = Colors.White;
+        _PrintButton.FABBackgroundColor = Application.Current.Resources["Primary"] as Color;
 
+        _ContenScroll.Content = _ContentLayout;
         PopupStyle = PopupStyle.BottomSheet;
-        PopupContent = _ContentLayout;
+        PopupContent = _ContenScroll;
 
         _ContentLayout.TapGesture(() => 
         {
@@ -157,15 +188,21 @@ public class EditBarcodePage : PopupPage
         base.OnAppearing();
         _SaveButton.Clicked += Save;
         _DeleteButton.Clicked += Delete;
+        _PrintButton.Clicked += PrintBarcode;
+        _NameEntry.ActionClicked += ScanBarcode;
         _NameEntry.TextChanged += BarcodeTextChanged;
         _DescriptionEntry.TextChanged += DescriptionChanged;
+
+        _BarcodeGeneratorView.Value = _Barcode.Name;
     }
 
     protected override void OnDisappearing()
     {
         _SaveButton.Clicked -= Save;
         _DeleteButton.Clicked -= Delete;
+        _PrintButton.Clicked -= PrintBarcode;
         _NameEntry.TextChanged -= BarcodeTextChanged;
+        _NameEntry.ActionClicked -= ScanBarcode;
         _DescriptionEntry.TextChanged -= DescriptionChanged;
         base.OnDisappearing();
     }
@@ -260,6 +297,7 @@ public class EditBarcodePage : PopupPage
         if (e.NewTextValue.Length > 0)
         {
             _NameEntry.StatusColor = Colors.Black;
+            _BarcodeGeneratorView.Value = e.NewTextValue;
         }
         else
         {
@@ -281,6 +319,16 @@ public class EditBarcodePage : PopupPage
         }
         _DescriptionEntry.StatusIcon = null;
         _DescriptionEntry.StatusText = "";
+    }
+
+    private void ScanBarcode(object sender, EventArgs e)
+    {
+        
+    }
+
+    private void PrintBarcode(object sender, EventArgs e)
+    {
+
     }
     #endregion
 }

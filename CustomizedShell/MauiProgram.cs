@@ -7,6 +7,7 @@ using CustomizedShell.ViewModels;
 using CustomizedShell.Services;
 using Maui.Components.Interfaces;
 using CustomizedShell.Models;
+using ZXing.Net.Maui.Controls;
 
 namespace CustomizedShell;
 
@@ -21,6 +22,7 @@ public static class MauiProgram
 			.UseMauiCommunityToolkit()
 			.UseMauiCommunityToolkitCore()
 			.UseMauiCommunityToolkitMarkup()
+			.UseBarcodeReader()
 			.RegisterPages()
 			.RegisterViewModels()
 			.RegisterServices()
