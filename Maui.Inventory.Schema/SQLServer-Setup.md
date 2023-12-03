@@ -94,17 +94,7 @@ sudo ufw allow 1433/tcp
 echo 'export INV_DB_CS="Data Source=<ip>,1433;Initial Catalog=<db name>;User ID=<db user>;Password=<db user password>"' >> ~/.bashrc
 source ~/.bashrc
 
-// if developing on mac, add the variable to bashrc
-// if it doesn't exist
-touch ~/.bashrc 
-// open file in a text editor
-vim ~/.bashrc
-// add the following into it, edit for proper creds
-export INV_DB_CS="Data Source=<ip>,1433;Initial Catalog=<db name>;User ID=<db user>;Password=<db user password>"
-// save, and then in terminal confirm 
-echo $INV_DB_CS
-
-// then if you're using vscode, add vscode to the path
-// open the project folder from terminal using the code .
-// otherwise the variables won't be read.
+// if developing on mac using vscode, add vscode to the path
+// open the project folder from terminal using the `code .`
+// otherwise the variables won't be read when running in debug
 ```

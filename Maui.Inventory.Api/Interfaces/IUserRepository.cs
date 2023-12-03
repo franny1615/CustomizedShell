@@ -1,4 +1,6 @@
-﻿namespace Maui.Inventory.Api.Interfaces;
+﻿using Maui.Inventory.Api.Models;
+
+namespace Maui.Inventory.Api.Interfaces;
 
 public interface IUserRepository
 {
@@ -6,4 +8,8 @@ public interface IUserRepository
         string username,
         string password,
         bool isAdmin);
+
+    public Task<AuthenticatedUser> AuthenticateUser(
+        string username, 
+        string password);
 }

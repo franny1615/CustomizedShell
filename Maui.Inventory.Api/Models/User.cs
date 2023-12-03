@@ -15,3 +15,8 @@ public class RegisterUser
     public string Password { get; set; } = string.Empty;
     public bool IsAdmin { get; set; } = false;
 }
+
+public class AuthenticatedUser
+{
+    public string AccessToken { get; set; } = string.Empty;
+}

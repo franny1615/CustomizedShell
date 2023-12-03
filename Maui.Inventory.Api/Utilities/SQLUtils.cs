@@ -7,7 +7,7 @@ public static class SQLUtils
 {
     public static async Task<IEnumerable<T>> QueryAsync<T>(string query)
     {
-        string connectionString = Environment.GetEnvironmentVariable(Constants.INV_DB_CS) ?? "";
+        string connectionString = Env.String(EnvironmentConstant.INV_DB_CS);
         using var connection = new SqlConnection(connectionString);
 
         return await connection.QueryAsync<T>(query);
