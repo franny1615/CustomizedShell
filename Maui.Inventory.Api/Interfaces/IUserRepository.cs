@@ -12,4 +12,6 @@ public interface IUserRepository
     public Task<AuthenticatedUser> AuthenticateUser(
         string username, 
         string password);
+
+    public Task<bool> AdminCheck();
 }

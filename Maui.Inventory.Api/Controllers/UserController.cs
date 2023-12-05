@@ -1,6 +1,5 @@
 ﻿using Maui.Inventory.Api.Interfaces;
 using Maui.Inventory.Api.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Maui.Inventory.Api.Controllers;
@@ -43,10 +42,15 @@ public class UserController : BaseController
     }
 
     [HttpGet]
-    [Route("profile")]
-    [Authorize]
-    public async Task<APIResponse<string>> GetUserProfile()
+    [Route("adminCheck")]
+    public async Task<APIResponse<string>> AdminCheck()
     {
-        return new() { Success = true, Data = "profile data" };
+        bool adminExists = await _UserRepository.AdminCheck();
+
+        return new() 
+        {
+            Success = adminExists, 
+            Data = adminExists ? "admin exists": "admin NOT exists" 
+        };
     }
 }

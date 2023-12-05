@@ -149,4 +149,15 @@ SELECT @userID;";
 
         return result;
     }
+
+    public async Task<bool> AdminCheck()
+    {
+        #region QUERY
+        string query = $@"SELECT 1 FROM user_table WHERE IsAdmin = 1;";
+        #endregion
+
+        var queryResult = (await SQLUtils.QueryAsync<int>(query)).ToList();
+
+        return queryResult.Count > 0;
+    }
 }
