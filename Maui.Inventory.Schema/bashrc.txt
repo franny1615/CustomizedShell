@@ -1,4 +1,0 @@
-export INV_DB_CS="Data Source=<ipaddress>,1433;Initial Catalog=<db name>;User ID=<db user>;Password=<db password>;Trust Server Certificate=True;"
-export JWT_ISS=""
-export JWT_AUD=""
-export JWT_KEY=""
