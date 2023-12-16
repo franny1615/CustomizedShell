@@ -72,8 +72,9 @@ select @success;";
                 success = successes.FirstOrDefault();
             }
         }
-        catch 
+        catch (Exception ex)
         {
+            // TODO: add logging
             success = 0;
         }
 
@@ -142,9 +143,7 @@ SELECT @userID;";
         }
         catch (Exception ex)
         {
-            #if DEBUG
-            System.Diagnostics.Debug.WriteLine(ex);
-            #endif
+            // TODO: add logging
         }
 
         return result;
@@ -156,7 +155,15 @@ SELECT @userID;";
         string query = $@"SELECT 1 FROM user_table WHERE IsAdmin = 1;";
         #endregion
 
-        var queryResult = (await SQLUtils.QueryAsync<int>(query)).ToList();
+        List<int> queryResult = new();
+        try
+        {
+            queryResult = (await SQLUtils.QueryAsync<int>(query)).ToList();
+        }
+        catch (Exception ex)
+        {
+            // TODO: add logging
+        }
 
         return queryResult.Count > 0;
     }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Maui.Inventory.Api.Controllers;
 
-[Route("api/v1/user")]
+[Route("api/user")]
 public class UserController : BaseController
 {
     private readonly IUserRepository _UserRepository;
