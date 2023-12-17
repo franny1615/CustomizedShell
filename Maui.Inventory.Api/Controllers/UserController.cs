@@ -5,52 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace Maui.Inventory.Api.Controllers;
 
 [Route("api/user")]
-public class UserController : BaseController
+public class UserController(IUserRepository userRepository) : BaseController()
 {
-    private readonly IUserRepository _UserRepository;
-
-    public UserController(IUserRepository userRepository) : base()
-    {
-        _UserRepository = userRepository;
-    }
+    private readonly IUserRepository _UserRepository = userRepository;
 
     [HttpPost]
     [Route("register")]
-    public async Task<APIResponse<string>> RegisterNewUser([FromBody] RegisterUser potentialNewUser)
+    public async Task<APIResponse<UserResponse>> RegisterNewUser([FromBody] UserRegistration potentialNewUser)
     {
-        bool success = await _UserRepository.RegisterNewUser(
+        return await _UserRepository.RegisterUser(
+            potentialNewUser.AdminID,
             potentialNewUser.UserName,
-            potentialNewUser.Password,
-            potentialNewUser.IsAdmin);
-
-        return new APIResponse<string> { Success = success, Data = "" };
+            potentialNewUser.Password);
     }
 
     [HttpPost]
     [Route("login")]
-    public async Task<APIResponse<AuthenticatedUser>> Login([FromBody] RegisterUser potentialExistingUser)
+    public async Task<APIResponse<AuthenticatedUser>> Login([FromBody] UserRegistration potentialExistingUser)
     {
-        AuthenticatedUser user = await _UserRepository.AuthenticateUser(
+        return await _UserRepository.AuthenticateUser(
             potentialExistingUser.UserName,
             potentialExistingUser.Password);
-
-        return new()
-        {
-            Success = !string.IsNullOrEmpty(user.AccessToken),
-            Data = user
-        };
-    }
-
-    [HttpGet]
-    [Route("adminCheck")]
-    public async Task<APIResponse<string>> AdminCheck()
-    {
-        bool adminExists = await _UserRepository.AdminCheck();
-
-        return new() 
-        {
-            Success = adminExists, 
-            Data = adminExists ? "admin exists": "admin NOT exists" 
-        };
     }
 }

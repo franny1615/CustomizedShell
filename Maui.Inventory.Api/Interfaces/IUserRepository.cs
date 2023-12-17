@@ -4,14 +4,20 @@ namespace Maui.Inventory.Api.Interfaces;
 
 public interface IUserRepository
 {
-    public Task<bool> RegisterNewUser(
+    public Task<APIResponse<UserResponse>> RegisterUser(
+        int adminId,
         string username,
-        string password,
-        bool isAdmin);
+        string password);
 
-    public Task<AuthenticatedUser> AuthenticateUser(
+    public Task<APIResponse<UserResponse>> RegisterAdmin(
+        string username,
+        string password);
+
+    public Task<APIResponse<AuthenticatedUser>> AuthenticateUser(
         string username, 
         string password);
 
-    public Task<bool> AdminCheck();
+    public Task<APIResponse<AuthenticatedUser>> AuthenticateAdmin(
+        string username,
+        string password);
 }
