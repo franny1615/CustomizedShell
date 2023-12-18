@@ -21,10 +21,13 @@ public interface IUserRepository
         string username,
         string password);
 
-    public Task<APIResponse<PaginatedQueryResponse<UserSmall>>> GetUsersForAdmin(
+    public Task<APIResponse<PaginatedQueryResponse<UserRegistration>>> GetUsersForAdmin(
         UsersRequest request);
 
     public Task<APIResponse<bool>> DeleteUserForAdmin(
         int adminId,
         int userId);
+
+    public Task<APIResponse<bool>> EditUser(
+        UserRegistration user);
 }

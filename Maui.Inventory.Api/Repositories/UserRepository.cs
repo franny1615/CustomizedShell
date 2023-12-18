@@ -427,7 +427,7 @@ WHERE admin.Id = @adminId";
     #endregion
 
     #region GET USERS
-    public async Task<APIResponse<PaginatedQueryResponse<UserSmall>>> GetUsersForAdmin(
+    public async Task<APIResponse<PaginatedQueryResponse<UserRegistration>>> GetUsersForAdmin(
         UsersRequest request)
     {
         #region SEARCH
@@ -456,7 +456,7 @@ SELECT COUNT(*)
 FROM ({query}) users";
         #endregion
 
-        APIResponse<PaginatedQueryResponse<UserSmall>> response = new();
+        APIResponse<PaginatedQueryResponse<UserRegistration>> response = new();
         try
         {
             response.Data = new();
@@ -467,7 +467,7 @@ ORDER BY UserName
 OFFSET {request.Quantities.Page * request.Quantities.ItemsPerPage} ROWS
 FETCH NEXT {request.Quantities.ItemsPerPage} ROWS ONLY";
 
-            response.Data.Items = (await SQLUtils.QueryAsync<UserSmall>(query)).ToList();
+            response.Data.Items = (await SQLUtils.QueryAsync<UserRegistration>(query)).ToList();
         }
         catch (Exception ex)
         {
@@ -505,6 +505,79 @@ AND app_user.AdminID = {adminId}";
             response.Success = false;
             response.Data = false;
             response.Message = $"ERROR >>> {e.Message} <<<";
+        }
+
+        return response;
+    }
+    #endregion
+
+    #region EDIT USER
+    public async Task<APIResponse<bool>> EditUser(UserRegistration user)
+    {
+        #region SANITY CHECKS
+        if (string.IsNullOrEmpty(user.UserName))
+        {
+            return new()
+            {
+                Success = false,
+                Message = "no username."
+            };
+        }
+        #endregion
+
+        #region UPDATING PASSWORD
+        string updatingPS = "";
+        if (!string.IsNullOrEmpty(user.Password))
+        {
+            updatingPS = $@"
+PasswordHash = HASHBYTES('SHA2_512', @password+CAST(@salt AS NVARCHAR(36))),
+Salt = @salt,";
+        }
+        #endregion
+
+        #region QUERY
+        string query = $@"
+SET NOCOUNT ON
+
+DECLARE 
+@id       INT          = {user.Id},
+@username NVARCHAR(50) = '{user.UserName}',
+@password NVARCHAR(50) = '{user.Password}',
+@adminId  INT          = {user.AdminID},
+@salt     UNIQUEIDENTIFIER = NEWID(),
+@success  BIT = 0
+
+BEGIN TRY
+    UPDATE app_user
+    SET
+        UserName = @username,
+        {updatingPS}
+        AdminID = @adminId
+    WHERE app_user.Id = @id
+    AND   app_user.AdminID = @adminId
+
+    SET @success=1
+END TRY
+BEGIN CATCH
+    SET @success=0 
+END CATCH
+
+select @success;";
+        #endregion
+
+        APIResponse<bool> response = new();
+        try
+        {
+            var successes = await SQLUtils.QueryAsync<int>(query);
+
+            response.Success = successes.FirstOrDefault() == 1;
+            response.Message = "Successfully updated user";
+            response.Data = successes.FirstOrDefault() == 1;
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Message = $"ERROR >>> {ex.Message} <<<";
         }
 
         return response;

@@ -31,7 +31,7 @@ public class AdminController(IUserRepository userRepository) : BaseController
     [HttpGet]
     [Route("users")]
     [Authorize]
-    public async Task<APIResponse<PaginatedQueryResponse<UserSmall>>> GetAllUsers([FromQuery] UsersRequest request)
+    public async Task<APIResponse<PaginatedQueryResponse<UserRegistration>>> GetAllUsers([FromQuery] UsersRequest request)
     {
         return await _UserRepository.GetUsersForAdmin(request);
     }
@@ -39,8 +39,16 @@ public class AdminController(IUserRepository userRepository) : BaseController
     [HttpPost]
     [Route("deleteUser")]
     [Authorize]
-    public async Task<APIResponse<bool>> DeleteUser([FromBody] UserSmall user)
+    public async Task<APIResponse<bool>> DeleteUser([FromBody] UserRegistration user)
     {
         return await _UserRepository.DeleteUserForAdmin(user.AdminID, user.Id);
+    }
+
+    [HttpPost]
+    [Route("updateUser")]
+    [Authorize]
+    public async Task<APIResponse<bool>> UpdateUser([FromBody] UserRegistration user)
+    {
+        return await _UserRepository.EditUser(user);
     }
 }
