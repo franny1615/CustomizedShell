@@ -1,5 +1,6 @@
 ﻿using Maui.Inventory.Api.Interfaces;
 using Maui.Inventory.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Maui.Inventory.Api.Controllers;
@@ -25,5 +26,21 @@ public class AdminController(IUserRepository userRepository) : BaseController
         return await _UserRepository.AuthenticateAdmin(
             potentialExistingUser.UserName,
             potentialExistingUser.Password);
+    }
+
+    [HttpGet]
+    [Route("users")]
+    [Authorize]
+    public async Task<APIResponse<PaginatedQueryResponse<UserSmall>>> GetAllUsers([FromQuery] UsersRequest request)
+    {
+        return await _UserRepository.GetUsersForAdmin(request);
+    }
+
+    [HttpPost]
+    [Route("deleteUser")]
+    [Authorize]
+    public async Task<APIResponse<bool>> DeleteUser([FromBody] UserSmall user)
+    {
+        return await _UserRepository.DeleteUserForAdmin(user.AdminID, user.Id);
     }
 }

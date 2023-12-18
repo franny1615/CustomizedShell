@@ -20,4 +20,11 @@ public interface IUserRepository
     public Task<APIResponse<AuthenticatedUser>> AuthenticateAdmin(
         string username,
         string password);
+
+    public Task<APIResponse<PaginatedQueryResponse<UserSmall>>> GetUsersForAdmin(
+        UsersRequest request);
+
+    public Task<APIResponse<bool>> DeleteUserForAdmin(
+        int adminId,
+        int userId);
 }

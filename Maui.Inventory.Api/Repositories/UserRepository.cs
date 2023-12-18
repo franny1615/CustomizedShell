@@ -48,10 +48,27 @@ SELECT Id, UserName, LicenseID FROM admin WHERE Id = {adminId}";
             admin = adminQueryResponse.FirstOrDefault();
             #endregion
 
+            bool exists = false;
+            #region CHECK IF user ALREADY EXISTS QUERY
+            string existsQuery = $@"
+SELECT UserName 
+FROM app_user  
+WHERE UserName = '{username}'
+AND app_user.AdminID = {adminId}";
+
+            var usernames = await SQLUtils.QueryAsync<string>(existsQuery);
+            exists = usernames.FirstOrDefault() != null;
+            #endregion
+
             if (admin == null)
             {
                 response.Success = false;
                 response.Data = UserResponse.AdminDoesNotExist;
+            }
+            else if (exists)
+            {
+                response.Success = false;
+                response.Data = UserResponse.AlreadyExists;
             }
             else
             {
@@ -406,6 +423,91 @@ WHERE admin.Id = @adminId";
         var jwtToken = tokenHandler.WriteToken(token);
 
         return jwtToken;
+    }
+    #endregion
+
+    #region GET USERS
+    public async Task<APIResponse<PaginatedQueryResponse<UserSmall>>> GetUsersForAdmin(
+        UsersRequest request)
+    {
+        #region SEARCH
+        string searchQuery = "";
+        if (!string.IsNullOrEmpty(request.Quantities.Search))
+        {
+            string[] words = request.Quantities.Search.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            foreach (var item in words)
+            {
+                searchQuery += $"AND UserName LIKE '{item}%'";
+            }
+        }
+        #endregion
+
+        #region QUERY
+        string query = $@"
+SELECT Id, UserName, AdminID
+FROM app_user
+WHERE app_user.AdminID = {request.AdminId}
+{searchQuery}";
+        #endregion
+
+        #region TOTAL
+        string totalQuery = $@"
+SELECT COUNT(*)
+FROM ({query}) users";
+        #endregion
+
+        APIResponse<PaginatedQueryResponse<UserSmall>> response = new();
+        try
+        {
+            response.Data = new();
+            response.Data.Total = (await SQLUtils.QueryAsync<int>(totalQuery)).First();
+
+            query += $@"
+ORDER BY UserName
+OFFSET {request.Quantities.Page * request.Quantities.ItemsPerPage} ROWS
+FETCH NEXT {request.Quantities.ItemsPerPage} ROWS ONLY";
+
+            response.Data.Items = (await SQLUtils.QueryAsync<UserSmall>(query)).ToList();
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Message = $"ERROR >>> {ex.Message} <<<";
+        }
+
+        return response;
+    }
+    #endregion
+
+    #region DELETE USER
+    public async Task<APIResponse<bool>> DeleteUserForAdmin(
+        int adminId,
+        int userId)
+    {
+        #region QUERY
+        string query = $@"
+DELETE FROM app_user
+WHERE app_user.Id = {userId}
+AND app_user.AdminID = {adminId}";
+        #endregion
+
+        APIResponse<bool> response = new();
+        try
+        {
+            await SQLUtils.QueryAsync<object>(query);
+
+            response.Success = true;
+            response.Message = $"Deleted user with id {userId}";
+            response.Data = true;
+        }
+        catch (Exception e)
+        {
+            response.Success = false;
+            response.Data = false;
+            response.Message = $"ERROR >>> {e.Message} <<<";
+        }
+
+        return response;
     }
     #endregion
 }
