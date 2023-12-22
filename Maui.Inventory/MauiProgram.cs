@@ -70,6 +70,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<IDAL<Status>, StatusDAL>();
 		builder.Services.AddTransient<IDAL<Barcode>, BarcodeDAL>();
 		builder.Services.AddTransient<IDAL<User>, UserDAL>();
+		builder.Services.AddTransient<IDAL<ApiUrl>, ApiUrlDAL>();
+		builder.Services.AddSingleton<IAPIService, APIService>();
 
 		return builder;
 	}

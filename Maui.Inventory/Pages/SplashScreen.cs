@@ -12,13 +12,18 @@ public class SplashScreen : BasePage
     #region Private Properties
     private readonly ILanguageService _LanguageService;
     private readonly IDAL<User> _UserDAL;
+    private readonly IDAL<ApiUrl> _ApiDAL;
     #endregion
 
     #region Constructor
-    public SplashScreen(ILanguageService languageService, IDAL<User> userDAL) : base(languageService)
+    public SplashScreen(
+        ILanguageService languageService, 
+        IDAL<User> userDAL,
+        IDAL<ApiUrl> apiDAL) : base(languageService)
     {
         _LanguageService = languageService;
         _UserDAL = userDAL;
+        _ApiDAL = apiDAL;
 
         NavigationPage.SetHasNavigationBar(this, false);
         Shell.SetNavBarIsVisible(this, false);
@@ -53,6 +58,9 @@ public class SplashScreen : BasePage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        
+        await SetupAPI();
+
         var users = await _UserDAL.GetAll();
 
         if (users != null && users.Count > 0)
@@ -84,6 +92,26 @@ public class SplashScreen : BasePage
         }
 
         return null;
+    }
+
+    private async Task SetupAPI()
+    {
+        // check if we have 
+        int apiUrlId = Preferences.Get(Constants.ApiUrlId, -1);
+        if (apiUrlId != -1)
+            return;
+
+        // setup API URLs
+        var api = await _ApiDAL.GetAll();
+        foreach (var item in api)
+        {
+            await _ApiDAL.Delete(item);
+        }
+        ApiUrl dev = new() { URL = "https://localhost:7263" };
+        ApiUrl prod = new() { URL = "https://mauiinventoryapi20231216094131.azurewebsites.net" };
+        await _ApiDAL.Save(dev);
+        await _ApiDAL.Save(prod);
+        Preferences.Set(Constants.ApiUrlId, prod.Id);
     }
     #endregion
 }

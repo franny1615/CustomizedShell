@@ -19,6 +19,8 @@ public class User
     public string Email { get; set; }
 
     public bool IsLoggedIn { get; set; }
+
+    public string AccessToken { get; set; }
 }
 
 public class UserDAL : BaseDAL<User>, IDAL<User> { }

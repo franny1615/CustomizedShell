@@ -16,6 +16,7 @@ public class App : Application
     public App(
         ILanguageService languageService, 
         IDAL<User> userDAL,
+        IDAL<ApiUrl> apiDAL,
         LoginViewModel loginViewModel)
     {
         _UserDAL = userDAL;
@@ -25,7 +26,7 @@ public class App : Application
         Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
-        MainPage = new SplashScreen(languageService, userDAL);
+        MainPage = new SplashScreen(languageService, userDAL, apiDAL);
 
         RegisterListeners();
     }
