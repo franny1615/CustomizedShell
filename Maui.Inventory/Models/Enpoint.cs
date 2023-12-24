@@ -4,7 +4,7 @@ using SQLite;
 
 namespace Maui.Inventory.Models;
 
-public class Enpoints
+public class Endpoint
 {
     #region Admin
     public const string AdminLogin = "/api/admin/login";

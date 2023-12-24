@@ -11,6 +11,8 @@ public class BasePage(ILanguageService languageService) : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        HideSoftInputOnTapped = true;
+
         try
         {
             _StatusBarBehavior.StatusBarColor = Application.Current.Resources["Primary"] as Color;
@@ -27,11 +29,12 @@ public class BasePage(ILanguageService languageService) : ContentPage
     public void OverrideBackButtonText()
     {
         // android default back button is good enough 
-        #if IOS
-        Shell.SetBackButtonBehavior(this, new BackButtonBehavior
+        if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
         {
-            TextOverride = LanguageService.StringForKey("GoBack")
-        });
-        #endif
+            Shell.SetBackButtonBehavior(this, new BackButtonBehavior
+            {
+                TextOverride = LanguageService.StringForKey("GoBack")
+            });
+        }
     }
 }

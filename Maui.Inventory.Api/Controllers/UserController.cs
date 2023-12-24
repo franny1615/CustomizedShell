@@ -11,7 +11,7 @@ public class UserController(IUserRepository userRepository) : BaseController()
 
     [HttpPost]
     [Route("register")]
-    public async Task<APIResponse<UserResponse>> RegisterNewUser([FromBody] UserRegistration potentialNewUser)
+    public async Task<APIResponse<UserResponse>> RegisterNewUser([FromBody] User potentialNewUser)
     {
         return await _UserRepository.RegisterUser(
             potentialNewUser.AdminID,
@@ -21,9 +21,10 @@ public class UserController(IUserRepository userRepository) : BaseController()
 
     [HttpPost]
     [Route("login")]
-    public async Task<APIResponse<AuthenticatedUser>> Login([FromBody] UserRegistration potentialExistingUser)
+    public async Task<APIResponse<User>> Login([FromBody] User potentialExistingUser)
     {
         return await _UserRepository.AuthenticateUser(
+            potentialExistingUser.AdminID,
             potentialExistingUser.UserName,
             potentialExistingUser.Password);
     }

@@ -93,4 +93,9 @@
 	    <BaseSize>124,124</BaseSize>
 	  </MauiImage>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Pages\Admin\" />
+	  <Folder Include="Pages\User\" />
+	  <Folder Include="ViewModels\" />
+	</ItemGroup>
 </Project>

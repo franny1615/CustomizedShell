@@ -1,22 +1,19 @@
-﻿namespace Maui.Inventory.Api.Models;
+﻿using System.Text.Json.Serialization;
 
-public class UserRegistration
+namespace Maui.Inventory.Api.Models;
+
+public class User
 {
     public int Id { get; set; } = -1;
     public string UserName { get; set; } = string.Empty;
-    public string Password { get; set ; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
     public int AdminID { get; set; } = -1;
-}
-
-public class User : UserRegistration
-{
-    public BinaryData? PasswordHash { get; set; } = null;
-    public string Salt { get; set; } = string.Empty;
-}
-
-public class AuthenticatedUser
-{
     public string AccessToken { get; set; } = string.Empty;
+
+    [JsonIgnore]
+    public BinaryData? PasswordHash { get; set; } = null;
+    [JsonIgnore]
+    public string Salt { get; set; } = string.Empty;
 }
 
 public class UsersRequest

@@ -51,6 +51,12 @@ public class BaseDAL<T> where T : new()
         return false;
     }
 
+    public async Task DeleteAll()
+    {
+        await Init();
+        await AppDB.DBConnection.DeleteAllAsync<int>();
+    }
+
     private int GetIDFromItem(T item)
     {
         var property = item.GetType().GetProperty("Id");

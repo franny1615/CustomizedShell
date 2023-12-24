@@ -13,15 +13,16 @@ public interface IUserRepository
         string username,
         string password);
 
-    public Task<APIResponse<AuthenticatedUser>> AuthenticateUser(
+    public Task<APIResponse<User>> AuthenticateUser(
+        int adminId,
         string username, 
         string password);
 
-    public Task<APIResponse<AuthenticatedUser>> AuthenticateAdmin(
+    public Task<APIResponse<Admin>> AuthenticateAdmin(
         string username,
         string password);
 
-    public Task<APIResponse<PaginatedQueryResponse<UserRegistration>>> GetUsersForAdmin(
+    public Task<APIResponse<PaginatedQueryResponse<User>>> GetUsersForAdmin(
         UsersRequest request);
 
     public Task<APIResponse<bool>> DeleteUserForAdmin(
@@ -29,5 +30,5 @@ public interface IUserRepository
         int userId);
 
     public Task<APIResponse<bool>> EditUser(
-        UserRegistration user);
+        User user);
 }

@@ -249,11 +249,11 @@ select @success;";
     #endregion
 
     #region AUTH ADMIN
-    public async Task<APIResponse<AuthenticatedUser>> AuthenticateAdmin(
+    public async Task<APIResponse<Admin>> AuthenticateAdmin(
         string username,
         string password)
     {
-        APIResponse<AuthenticatedUser> response = new();
+        APIResponse<Admin> response = new();
 
         try
         {
@@ -277,11 +277,18 @@ BEGIN
     )
 END
 
-SELECT @userID;";
+SELECT 
+    Id, 
+    UserName, 
+    LicenseID, 
+    '' as AccessToken, 
+    '' as Password
+FROM admin
+WHERE admin.Id = @userID;";
             #endregion
 
-            int authenticatedUserID = (await SQLUtils.QueryAsync<int>(query)).FirstOrDefault();
-            if (authenticatedUserID != -1)
+            var authenticatedUser = (await SQLUtils.QueryAsync<Admin>(query)).First();
+            if (authenticatedUser.Id != -1)
             {
                 bool licenseValid = false;
                 #region VALIDATE LICENSE
@@ -290,7 +297,7 @@ SELECT ExpirationDate
 FROM license
 INNER JOIN admin
 ON admin.LicenseId = license.Id
-WHERE admin.Id = {authenticatedUserID}";
+WHERE admin.Id = {authenticatedUser.Id}";
 
                 var expirationDatesResponse = await SQLUtils.QueryAsync<DateTime>(getExpirationDate);
                 DateTime expirationDate = expirationDatesResponse.First();
@@ -301,8 +308,10 @@ WHERE admin.Id = {authenticatedUserID}";
                 }
                 #endregion
 
+                authenticatedUser.AccessToken = licenseValid ? GenerateJWT(authenticatedUser.Id, username) : "";
+
                 response.Success = licenseValid;
-                response.Data = new() { AccessToken = licenseValid ? GenerateJWT(authenticatedUserID, username) : "" };
+                response.Data = authenticatedUser;
             }
             else
             {
@@ -321,11 +330,12 @@ WHERE admin.Id = {authenticatedUserID}";
     #endregion
 
     #region AUTH USER
-    public async Task<APIResponse<AuthenticatedUser>> AuthenticateUser(
+    public async Task<APIResponse<User>> AuthenticateUser(
+        int adminID,
         string username,
         string password)
     {
-        APIResponse<AuthenticatedUser> response = new();
+        APIResponse<User> response = new();
 
         try 
         {
@@ -334,6 +344,7 @@ WHERE admin.Id = {authenticatedUserID}";
 SET NOCOUNT ON
 
 DECLARE 
+@adminID INT = {adminID},
 @userID INT = -1,
 @username NVARCHAR(50) = '{username}',
 @password NVARCHAR(50) = '{password}'
@@ -344,23 +355,31 @@ BEGIN
     (
         SELECT Id 
         FROM app_user 
-        WHERE UserName=@username 
-        AND PasswordHash=HASHBYTES('SHA2_512', @password+CAST(Salt AS NVARCHAR(36)))
+        WHERE UserName = @username 
+        AND PasswordHash = HASHBYTES('SHA2_512', @password+CAST(Salt AS NVARCHAR(36)))
+        AND AdminID = @adminID
     )
 END
 
-SELECT @userID;";
+SELECT 
+    Id,
+    UserName,
+    AdminID,
+    '' as Password,
+    '' as AccessToke
+FROM app_user
+WHERE app_user.Id = @userID;";
         #endregion
 
-            int authenticatedUserID = (await SQLUtils.QueryAsync<int>(query)).FirstOrDefault();
-            if (authenticatedUserID != -1)
+            var authenticatedUser = (await SQLUtils.QueryAsync<User>(query)).First();
+            if (authenticatedUser.Id != -1)
             {
                 bool licenseValid = false;
                 #region VALIDATE LICENSE
                 string getExpirationDate = $@"
 DECLARE @adminId INT = -1
 
-SET @adminId = (SELECT AdminId from app_user WHERE app_user.Id = {authenticatedUserID})
+SET @adminId = (SELECT AdminId from app_user WHERE app_user.Id = {authenticatedUser.Id})
 
 SELECT ExpirationDate
 FROM license
@@ -377,8 +396,10 @@ WHERE admin.Id = @adminId";
                 }
                 #endregion
 
+                authenticatedUser.AccessToken = licenseValid ? GenerateJWT(authenticatedUser.Id, username) : "";
+
                 response.Success = licenseValid;
-                response.Data = new() { AccessToken = licenseValid ? GenerateJWT(authenticatedUserID, username) : "" };
+                response.Data = authenticatedUser;
             }
             else
             {
@@ -427,7 +448,7 @@ WHERE admin.Id = @adminId";
     #endregion
 
     #region GET USERS
-    public async Task<APIResponse<PaginatedQueryResponse<UserRegistration>>> GetUsersForAdmin(
+    public async Task<APIResponse<PaginatedQueryResponse<User>>> GetUsersForAdmin(
         UsersRequest request)
     {
         #region SEARCH
@@ -444,7 +465,14 @@ WHERE admin.Id = @adminId";
 
         #region QUERY
         string query = $@"
-SELECT Id, UserName, AdminID
+SELECT 
+    Id,
+    UserName,
+    AdminID,
+    '' as Password,
+    '' as AccessToken,
+    -1 as PasswordHash,
+    '' as Salt
 FROM app_user
 WHERE app_user.AdminID = {request.AdminId}
 {searchQuery}";
@@ -456,7 +484,7 @@ SELECT COUNT(*)
 FROM ({query}) users";
         #endregion
 
-        APIResponse<PaginatedQueryResponse<UserRegistration>> response = new();
+        APIResponse<PaginatedQueryResponse<User>> response = new();
         try
         {
             response.Data = new();
@@ -467,7 +495,7 @@ ORDER BY UserName
 OFFSET {request.Quantities.Page * request.Quantities.ItemsPerPage} ROWS
 FETCH NEXT {request.Quantities.ItemsPerPage} ROWS ONLY";
 
-            response.Data.Items = (await SQLUtils.QueryAsync<UserRegistration>(query)).ToList();
+            response.Data.Items = (await SQLUtils.QueryAsync<User>(query)).ToList();
         }
         catch (Exception ex)
         {
@@ -512,7 +540,7 @@ AND app_user.AdminID = {adminId}";
     #endregion
 
     #region EDIT USER
-    public async Task<APIResponse<bool>> EditUser(UserRegistration user)
+    public async Task<APIResponse<bool>> EditUser(User user)
     {
         #region SANITY CHECKS
         if (string.IsNullOrEmpty(user.UserName))

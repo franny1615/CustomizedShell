@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Maui.Inventory.Models;
-using Maui.Inventory.Pages;
 using Maui.Inventory.ViewModels;
 using Maui.Components;
 using Maui.Components.Interfaces;
@@ -10,23 +9,20 @@ namespace Maui.Inventory;
 public class App : Application
 {
     private readonly ILanguageService _LanguageService;
-    private readonly IDAL<User> _UserDAL;
     private readonly LoginViewModel _LoginViewModel;
 
     public App(
         ILanguageService languageService, 
-        IDAL<User> userDAL,
         IDAL<ApiUrl> apiDAL,
         LoginViewModel loginViewModel)
     {
-        _UserDAL = userDAL;
         _LanguageService = languageService;
         _LoginViewModel = loginViewModel;
 
         Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
-        MainPage = new SplashScreen(languageService, userDAL, apiDAL);
+        // TODO: main page equal to loadin page
 
         RegisterListeners();
     }
@@ -41,13 +37,22 @@ public class App : Application
 
     private void HandleInternalMessage(InternalMessage message)
     {
-        if (message.Value == "signed-out")
+        if (message.Value is AccessMessage access)
         {
-            MainPage = new NavigationPage(new LoginPage(_LanguageService, _LoginViewModel));
+            AccessControl(access);
         }
-        else if (message.Value == "signed-in")
+    }
+
+    private void AccessControl(AccessMessage access)
+    {
+        switch (access)
         {
-            MainPage = new AppShell(_LanguageService, _UserDAL);
+            case AccessMessage.SignedIn:
+                // TODO: assign main page to user app shell
+                break;
+            case AccessMessage.LoggedOut:
+            case AccessMessage.AccessTokenExpired:
+                break;
         }
     }
 }

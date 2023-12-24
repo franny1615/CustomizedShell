@@ -1,20 +1,11 @@
-﻿using Maui.Components.Interfaces;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
+using Maui.Inventory.Services.Interfaces;
 using System.Text;
 using System.Text.Json;
 
 namespace Maui.Inventory.Services;
-
-public interface IAPIService
-{
-    public Task<T> Get<T>(
-        string endpoint,
-        Dictionary<string, string> parameters) where T : new();
-
-    public Task<T> Post<T>(
-        string endpoint, 
-        object jsonParams) where T : new();
-}
 
 public class APIService : IAPIService
 {
@@ -63,7 +54,7 @@ public class APIService : IAPIService
 
             return await DealWithResponse<T>(response);
         }
-        catch { /* TODO: add logging */}
+        catch { /* TODO: add logging */ }
 
         return new();
     }
@@ -92,7 +83,7 @@ public class APIService : IAPIService
 
             return await DealWithResponse<T>(response);
         }
-        catch { /* TODO: add logging */}
+        catch { /* TODO: add logging */ }
 
         return new();
     }
@@ -103,11 +94,13 @@ public class APIService : IAPIService
         {
             case System.Net.HttpStatusCode.OK:
                 var content = await response.Content.ReadAsStreamAsync();
-                return await JsonSerializer.DeserializeAsync<T>(content);
+                var apiResponse = await JsonSerializer.DeserializeAsync<APIResponse<T>>(content);
+                // TODO: add logging for failures 
+                return apiResponse.Data;
             case System.Net.HttpStatusCode.Unauthorized:
             case System.Net.HttpStatusCode.Forbidden:
             default:
-                // TODO: forward log out message to main app
+                WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.AccessTokenExpired));
                 return new();
         }
     }

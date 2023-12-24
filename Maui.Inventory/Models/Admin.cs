@@ -4,8 +4,8 @@ using SQLite;
 
 namespace Maui.Inventory.Models;
 
-[Table("user")]
-public class User
+[Table("admin")]
+public class Admin
 {
     [PrimaryKey, Column("_id")]
     public int Id { get; set; } = -1;
@@ -16,8 +16,8 @@ public class User
     [Column("access_token")]
     public string AccessToken { get; set; } = string.Empty;
 
-    [Column("admin_id")]
-    public int AdminID { get; set; } = -1;
+    [Column("license_id")]
+    public int LicenseID { get; set; } = -1;
 }
 
-public class UserDAL : BaseDAL<User>, IDAL<User> { }
+public class AdminDAL : BaseDAL<Admin>, IDAL<Admin> { }

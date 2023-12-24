@@ -12,7 +12,7 @@ public class AdminController(IUserRepository userRepository) : BaseController
 
     [HttpPost]
     [Route("register")]
-    public async Task<APIResponse<UserResponse>> RegisterNewUser([FromBody] AdminRegistration potentialNewUser)
+    public async Task<APIResponse<UserResponse>> RegisterNewUser([FromBody] Admin potentialNewUser)
     {
         return await _UserRepository.RegisterAdmin(
             potentialNewUser.UserName,
@@ -21,7 +21,7 @@ public class AdminController(IUserRepository userRepository) : BaseController
 
     [HttpPost]
     [Route("login")]
-    public async Task<APIResponse<AuthenticatedUser>> Login([FromBody] AdminRegistration potentialExistingUser)
+    public async Task<APIResponse<Admin>> Login([FromBody] Admin potentialExistingUser)
     {
         return await _UserRepository.AuthenticateAdmin(
             potentialExistingUser.UserName,
@@ -31,7 +31,7 @@ public class AdminController(IUserRepository userRepository) : BaseController
     [HttpGet]
     [Route("users")]
     [Authorize]
-    public async Task<APIResponse<PaginatedQueryResponse<UserRegistration>>> GetAllUsers([FromQuery] UsersRequest request)
+    public async Task<APIResponse<PaginatedQueryResponse<User>>> GetAllUsers([FromQuery] UsersRequest request)
     {
         return await _UserRepository.GetUsersForAdmin(request);
     }
@@ -39,7 +39,7 @@ public class AdminController(IUserRepository userRepository) : BaseController
     [HttpPost]
     [Route("deleteUser")]
     [Authorize]
-    public async Task<APIResponse<bool>> DeleteUser([FromBody] UserRegistration user)
+    public async Task<APIResponse<bool>> DeleteUser([FromBody] User user)
     {
         return await _UserRepository.DeleteUserForAdmin(user.AdminID, user.Id);
     }
@@ -47,7 +47,7 @@ public class AdminController(IUserRepository userRepository) : BaseController
     [HttpPost]
     [Route("updateUser")]
     [Authorize]
-    public async Task<APIResponse<bool>> UpdateUser([FromBody] UserRegistration user)
+    public async Task<APIResponse<bool>> UpdateUser([FromBody] User user)
     {
         return await _UserRepository.EditUser(user);
     }

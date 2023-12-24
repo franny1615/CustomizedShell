@@ -72,10 +72,7 @@ public class PopupPage : BasePage
         On<iOS>().SetUseSafeArea(false);
         On<iOS>().SetModalPresentationStyle(UIModalPresentationStyle.FullScreen);
 
-        _ContentContainer.SetAppThemeColor(
-            Border.BackgroundColorProperty, 
-            Colors.White,
-            Color.FromRgb(28,28,30));
+        // TODO: set the background color of content to something user controlled.
 
         _ContentContainer.Content = _ContentLayout;
         _OuterLayout.Children.Add(_ContentContainer);
