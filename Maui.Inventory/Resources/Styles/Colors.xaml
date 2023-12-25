@@ -5,8 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Inventory.Resources.Styles.Colors">
 
+    <Color x:Key="PageLight">#FFFFFF</Color>
+    <Color x:Key="PageDark">#000000</Color>
+    <Color x:Key="PageColor">#FFFFFF</Color>
+
+    <Color x:Key="TextLight">#000000</Color>
+    <Color x:Key="TextDark">#FFFFFF</Color>
+    <Color x:Key="TextColor">#000000</Color>
+    
     <Color x:Key="Primary">#1F5673</Color>
-    <Color x:Key="PrimaryShade">#8fabb9</Color>
+    <Color x:Key="PrimaryShade">#102b3a</Color>
     <Color x:Key="Secondary">#FFA500</Color>
     <Color x:Key="Tertiary">#E8AE68</Color>
     <Color x:Key="Positive">#70AE6E</Color>

@@ -11,7 +11,8 @@ public enum AccessMessage
 {
     SignedIn,
     LoggedOut,
-    AccessTokenExpired
+    AccessTokenExpired,
+    FirstTimeLogin
 }
 
 public enum RegistrationResponse

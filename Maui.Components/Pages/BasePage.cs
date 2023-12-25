@@ -12,6 +12,7 @@ public class BasePage(ILanguageService languageService) : ContentPage
     {
         base.OnAppearing();
         HideSoftInputOnTapped = true;
+        this.SetDynamicResource(BackgroundColorProperty, "PageColor");
 
         try
         {

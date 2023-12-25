@@ -3,26 +3,24 @@ using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels;
 using Maui.Components;
 using Maui.Components.Interfaces;
+using MauiApp1;
 
 namespace Maui.Inventory;
 
 public class App : Application
 {
     private readonly ILanguageService _LanguageService;
-    private readonly LoginViewModel _LoginViewModel;
 
     public App(
-        ILanguageService languageService, 
-        IDAL<ApiUrl> apiDAL,
-        LoginViewModel loginViewModel)
+        ILanguageService languageService,
+        SplashViewModel splashViewModel)
     {
         _LanguageService = languageService;
-        _LoginViewModel = loginViewModel;
 
         Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
-        // TODO: main page equal to loadin page
+        MainPage = new SplashPage(_LanguageService, splashViewModel);
 
         RegisterListeners();
     }
@@ -49,6 +47,9 @@ public class App : Application
         {
             case AccessMessage.SignedIn:
                 // TODO: assign main page to user app shell
+                break;
+            case AccessMessage.FirstTimeLogin:
+                MainPage = new LandingPage(_LanguageService);
                 break;
             case AccessMessage.LoggedOut:
             case AccessMessage.AccessTokenExpired:

@@ -10,7 +10,7 @@ public static class AppBuilderHostExtensions
 {
     public static MauiAppBuilder UseMauiComponents(this MauiAppBuilder builder)
     {
-        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(StyledEntry), (handler, view) =>
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
         {
 #if ANDROID
             handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());

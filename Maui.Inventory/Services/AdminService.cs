@@ -35,7 +35,7 @@ public class AdminService : IAdminService
             { "Search", request.Search }
         };
 
-        return await _apiService.Get<ListNetworkResponse<User>>(Endpoint.AdminGetAllUsers, );
+        return await _apiService.Get<ListNetworkResponse<User>>(Endpoint.AdminGetAllUsers, parameters);
     }
 
     public async Task<bool> Login(string username, string password)

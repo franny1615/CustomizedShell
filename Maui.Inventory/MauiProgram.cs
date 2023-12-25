@@ -7,6 +7,8 @@ using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using ZXing.Net.Maui.Controls;
 using Maui.Inventory.Services.Interfaces;
+using MauiApp1;
+using Maui.Inventory.ViewModels;
 
 namespace Maui.Inventory;
 
@@ -36,13 +38,14 @@ public static class MauiProgram
 
 	public static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
 	{
-		
+		builder.Services.AddTransient<SplashPage>();
 
 		return builder;
 	}
 
 	public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
 	{
+		builder.Services.AddTransient<SplashViewModel>();
 
         return builder;
 	}
