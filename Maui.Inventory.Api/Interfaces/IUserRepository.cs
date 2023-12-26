@@ -11,7 +11,8 @@ public interface IUserRepository
 
     public Task<APIResponse<UserResponse>> RegisterAdmin(
         string username,
-        string password);
+        string password,
+        string email);
 
     public Task<APIResponse<User>> AuthenticateUser(
         int adminId,
@@ -31,4 +32,8 @@ public interface IUserRepository
 
     public Task<APIResponse<bool>> EditUser(
         User user);
+
+    public Task<APIResponse<bool>> BeginEmailVerification(string email);
+
+    public Task<APIResponse<bool>> VerifyEmail(string email, int code);
 }

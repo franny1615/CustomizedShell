@@ -26,4 +26,14 @@ public static class EnvironmentConstant
     /// Json Web Token Private Key
     /// </summary>
     public const string JWT_KEY = "JWT_KEY";
+
+    /// <summary>
+    /// Business Email
+    /// </summary>
+    public const string BUS_EML = "BUS_EML";
+
+    /// <summary>
+    /// Business Email Password
+    /// </summary>
+    public const string BUS_PASS = "BUS_PASS";
 }

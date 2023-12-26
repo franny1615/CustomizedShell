@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using Maui.Inventory.Api.Interfaces;
@@ -127,7 +128,8 @@ select @success;";
     #region ADMIN REGISTRATION
     public async Task<APIResponse<UserResponse>> RegisterAdmin(
         string username,
-        string password)
+        string password,
+        string email)
     {
         #region BASIC SANITY CHECKS
         if (string.IsNullOrEmpty(username))
@@ -145,6 +147,15 @@ select @success;";
             {
                 Success = false,
                 Data = UserResponse.NoPassword
+            };
+        }
+
+        if (string.IsNullOrEmpty(email))
+        {
+            return new APIResponse<UserResponse>
+            {
+                Success = false,
+                Data = UserResponse.NoEmail
             };
         }
         #endregion
@@ -201,9 +212,10 @@ SELECT @insertedID;";
 SET NOCOUNT ON
 
 DECLARE 
-@username NVARCHAR(50) = '{username}',
-@password NVARCHAR(50) = '{password}',
-@license  INT          = {licenseId},
+@username NVARCHAR(50)  = '{username}',
+@password NVARCHAR(50)  = '{password}',
+@license  INT           = {licenseId},
+@email    NVARCHAR(300) = '{email}',
 @salt UNIQUEIDENTIFIER=NEWID(),
 @success BIT = 0
 
@@ -213,14 +225,16 @@ BEGIN TRY
         UserName, 
         PasswordHash, 
         Salt, 
-        LicenseID
+        LicenseID,
+        Email
     )
     VALUES
     (
         @username, 
         HASHBYTES('SHA2_512', @password+CAST(@salt AS NVARCHAR(36))), 
         @salt, 
-        @license
+        @license,
+        @email
     )
     SET @success=1
 END TRY
@@ -611,4 +625,111 @@ select @success;";
         return response;
     }
     #endregion
+
+    public async Task<APIResponse<bool>> BeginEmailVerification(string email)
+    {
+        string businessEmail = Env.String(EnvironmentConstant.BUS_EML);
+        string businessEmailPass = Env.String(EnvironmentConstant.BUS_PASS);
+
+        int generatedNumber = new Random().Next(1000, 9999);
+
+        #region EMAIL BOILER PLATE
+        MailMessage mail = new();
+        mail.To.Add(email);
+        mail.From = new MailAddress(businessEmail, "Verify Email", Encoding.UTF8);
+        mail.Subject = "Verify Email";
+        mail.SubjectEncoding = Encoding.UTF8;
+        mail.Body = $"<h1>Your verification code is : <b>{generatedNumber}</b> </h1>";
+        mail.BodyEncoding = Encoding.UTF8;
+        mail.IsBodyHtml = true;
+        mail.Priority = MailPriority.High;
+        SmtpClient client = new()
+        {
+            Credentials = new System.Net.NetworkCredential(
+                businessEmail, 
+                businessEmailPass),
+            Port = 587,
+            Host = "smtp.gmail.com",
+            EnableSsl = true
+        };
+        #endregion
+
+        var response = new APIResponse<bool>();
+        try
+        {
+            client.Send(mail);
+
+            #region QUERY
+            string query = $@"
+            INSERT INTO email_validation
+            (
+                Email,
+                Code
+            )
+            VALUES
+            (
+                '{email}',
+                {generatedNumber}
+            )";
+
+            await SQLUtils.QueryAsync<object>(query);
+            #endregion
+
+            response.Data = true;
+            response.Message = "";
+            response.Success = true;
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Data = false;
+            response.Message = $"ERROR >>> {ex.Message} <<<";
+        }
+
+        return response;
+    }
+
+    public async Task<APIResponse<bool>> VerifyEmail(string email, int code)
+    {
+        var response = new APIResponse<bool>();
+        try
+        {
+            #region QUERY
+            string query = $@"
+            SELECT Email, Code 
+            FROM email_validation
+            WHERE Email = '{email}'
+            AND Code = {code}";
+            #endregion
+
+            var emailValidation = (await SQLUtils.QueryAsync<EmailValidation>(query)).FirstOrDefault();
+
+            if (emailValidation == null)
+            {
+                response.Success = false;
+                response.Data = false;
+                response.Message = $"ERROR >>> failed validation <<<";    
+            }
+            else
+            {
+                // it is temporary so clean it up,
+                // keep table slim
+                await SQLUtils.QueryAsync<object>($@"
+                    DELETE FROM email_validation 
+                    WHERE Id = {emailValidation.Id}");
+
+                response.Success = true;
+                response.Data = true;
+                response.Message = "";
+            }
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Data = false;
+            response.Message = $"ERROR >>> {ex.Message} <<<";
+        }
+
+        return response;
+    }
 }

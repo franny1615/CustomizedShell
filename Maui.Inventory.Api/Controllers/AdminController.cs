@@ -16,7 +16,8 @@ public class AdminController(IUserRepository userRepository) : BaseController
     {
         return await _UserRepository.RegisterAdmin(
             potentialNewUser.UserName,
-            potentialNewUser.Password);
+            potentialNewUser.Password,
+            potentialNewUser.Email);
     }
 
     [HttpPost]

@@ -6,6 +6,7 @@ public class Admin
 {
     public int Id { get; set; } = -1;
     public string UserName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
     public int LicenseID { get; set; } = -1;
     public string Password { get; set; } = string.Empty;
     public string AccessToken { get; set; } = string.Empty;
