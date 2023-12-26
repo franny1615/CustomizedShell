@@ -17,7 +17,8 @@ public class AdminController(IUserRepository userRepository) : BaseController
         return await _UserRepository.RegisterAdmin(
             potentialNewUser.UserName,
             potentialNewUser.Password,
-            potentialNewUser.Email);
+            potentialNewUser.Email,
+            potentialNewUser.EmailVerified);
     }
 
     [HttpPost]
@@ -51,5 +52,13 @@ public class AdminController(IUserRepository userRepository) : BaseController
     public async Task<APIResponse<bool>> UpdateUser([FromBody] User user)
     {
         return await _UserRepository.EditUser(user);
+    }
+
+    [HttpPost]
+    [Route("updateAdmin")]
+    [Authorize]
+    public async Task<APIResponse<bool>> UpdateAdmin([FromBody] Admin admin)
+    {
+        return await _UserRepository.EditAdmin(admin);
     }
 }

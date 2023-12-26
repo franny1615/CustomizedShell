@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
@@ -129,7 +130,8 @@ select @success;";
     public async Task<APIResponse<UserResponse>> RegisterAdmin(
         string username,
         string password,
-        string email)
+        string email,
+        bool emailVerified)
     {
         #region BASIC SANITY CHECKS
         if (string.IsNullOrEmpty(username))
@@ -208,16 +210,18 @@ SELECT @insertedID;";
                 #endregion
 
                 #region INSERT NEW ADMIN QUERY
+                int emailBit = emailVerified ? 1 : 0;
                 string query = $@"
 SET NOCOUNT ON
 
 DECLARE 
-@username NVARCHAR(50)  = '{username}',
-@password NVARCHAR(50)  = '{password}',
-@license  INT           = {licenseId},
-@email    NVARCHAR(300) = '{email}',
-@salt UNIQUEIDENTIFIER=NEWID(),
-@success BIT = 0
+@username      NVARCHAR(50)  = '{username}',
+@password      NVARCHAR(50)  = '{password}',
+@license       INT           = {licenseId},
+@email         NVARCHAR(300) = '{email}',
+@emailVerified BIT           = {emailBit},
+@salt          UNIQUEIDENTIFIER=NEWID(),
+@success       BIT = 0
 
 BEGIN TRY
     INSERT INTO admin 
@@ -226,7 +230,8 @@ BEGIN TRY
         PasswordHash, 
         Salt, 
         LicenseID,
-        Email
+        Email,
+	    EmailVerified
     )
     VALUES
     (
@@ -234,7 +239,8 @@ BEGIN TRY
         HASHBYTES('SHA2_512', @password+CAST(@salt AS NVARCHAR(36))), 
         @salt, 
         @license,
-        @email
+        @email,
+	    @emailVerified
     )
     SET @success=1
 END TRY
@@ -296,7 +302,9 @@ SELECT
     UserName, 
     LicenseID, 
     '' as AccessToken, 
-    '' as Password
+    '' as Password,
+    Email,
+    EmailVerified
 FROM admin
 WHERE admin.Id = @userID;";
             #endregion
@@ -557,6 +565,15 @@ AND app_user.AdminID = {adminId}";
     public async Task<APIResponse<bool>> EditUser(User user)
     {
         #region SANITY CHECKS
+        if (user == null)
+        {
+            return new()
+            {
+                Success = false,
+                Message = "No user"
+            };
+        }
+
         if (string.IsNullOrEmpty(user.UserName))
         {
             return new()
@@ -626,6 +643,7 @@ select @success;";
     }
     #endregion
 
+    #region BEGIN EMAIL REGISTRATION
     public async Task<APIResponse<bool>> BeginEmailVerification(string email)
     {
         string businessEmail = Env.String(EnvironmentConstant.BUS_EML);
@@ -643,15 +661,13 @@ select @success;";
         mail.BodyEncoding = Encoding.UTF8;
         mail.IsBodyHtml = true;
         mail.Priority = MailPriority.High;
-        SmtpClient client = new()
-        {
-            Credentials = new System.Net.NetworkCredential(
-                businessEmail, 
-                businessEmailPass),
-            Port = 587,
-            Host = "smtp.gmail.com",
-            EnableSsl = true
-        };
+
+        SmtpClient client = new();
+        client.UseDefaultCredentials = false;
+        client.Credentials = new NetworkCredential(businessEmail, businessEmailPass);
+        client.EnableSsl = true;
+        client.Port = 587;
+        client.Host = "smtp.gmail.com";
         #endregion
 
         var response = new APIResponse<bool>();
@@ -688,7 +704,9 @@ select @success;";
 
         return response;
     }
+    #endregion
 
+    #region VERIFY EMAIL
     public async Task<APIResponse<bool>> VerifyEmail(string email, int code)
     {
         var response = new APIResponse<bool>();
@@ -696,7 +714,7 @@ select @success;";
         {
             #region QUERY
             string query = $@"
-            SELECT Email, Code 
+            SELECT Email, Code, Id 
             FROM email_validation
             WHERE Email = '{email}'
             AND Code = {code}";
@@ -732,4 +750,87 @@ select @success;";
 
         return response;
     }
+    #endregion
+
+    #region EDIT ADMIN
+    public async Task<APIResponse<bool>> EditAdmin(Admin admin)
+    {
+        #region SANITY CHECKS
+        if (admin == null)
+        {
+            return new() { Success = false, Data = false, Message = "No admin provided" };
+        }
+
+        if (string.IsNullOrEmpty(admin.UserName))
+        {
+            return new() { Success = false, Data = false, Message = "No username." };
+        }
+
+        if (string.IsNullOrEmpty(admin.Email))
+        {
+            return new() { Success = false, Data = false, Message = "No email." };
+        }
+        #endregion
+
+        #region PASSWORD UPDATE
+        string updatingPS = "";
+        if (!string.IsNullOrEmpty(admin.Password))
+        {
+            updatingPS = $@"
+PasswordHash = HASHBYTES('SHA2_512', @password+CAST(@salt AS NVARCHAR(36))),
+Salt = @salt,";
+        }
+        #endregion
+
+        #region QUERY
+        int emailBit = admin.EmailVerified ? 1 : 0;
+        string query = $@"
+SET NOCOUNT ON
+
+DECLARE 
+@id            INT           = {admin.Id},
+@username      NVARCHAR(50)  = '{admin.UserName}',
+@password      NVARCHAR(50)  = '{admin.Password}',
+@email         NVARCHAR(300) = '{admin.Email}',
+@emailVerified BIT           = '{emailBit}',
+@salt     UNIQUEIDENTIFIER = NEWID(),
+@success  BIT = 0
+
+BEGIN TRY
+    UPDATE admin
+    SET
+        UserName = @username,
+        {updatingPS}
+        Email = @email,
+        EmailVerified = @emailVerified
+    WHERE admin.Id = @id
+
+    SET @success=1
+END TRY
+BEGIN CATCH
+    SET @success=0 
+END CATCH
+
+select @success;";
+        #endregion
+
+        var response = new APIResponse<bool>();
+        try
+        {
+            var successes = await SQLUtils.QueryAsync<int>(query);
+
+            response.Success = successes.FirstOrDefault() == 1;
+            response.Message = "Successfully updated admin";
+            response.Data = successes.FirstOrDefault() == 1;
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Data = false;
+            response.Message = $"ERROR >>> {ex.Message} <<<";
+        }
+
+        return response;
+    }
+    #endregion
 }
