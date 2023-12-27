@@ -135,6 +135,27 @@
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="SampleEmail" xml:space="preserve">
+    <value>email@provider.com</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Invalid email format.</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
   <data name="ForgotPassword" xml:space="preserve">
     <value>Forgot your password?</value>
   </data>

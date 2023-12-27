@@ -10,12 +10,15 @@ namespace Maui.Inventory;
 public class App : Application
 {
     private readonly ILanguageService _LanguageService;
+    private readonly AdminRegisterViewModel _AdminVM;
 
     public App(
         ILanguageService languageService,
-        SplashViewModel splashViewModel)
+        SplashViewModel splashViewModel,
+        AdminRegisterViewModel adminVM)
     {
         _LanguageService = languageService;
+        _AdminVM = adminVM;
 
         Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
@@ -49,7 +52,7 @@ public class App : Application
                 // TODO: assign main page to user app shell
                 break;
             case AccessMessage.FirstTimeLogin:
-                MainPage = new LandingPage(_LanguageService);
+                MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM));
                 break;
             case AccessMessage.LoggedOut:
             case AccessMessage.AccessTokenExpired:

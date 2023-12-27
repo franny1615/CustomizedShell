@@ -13,6 +13,9 @@ public class Admin
     [Column("username")]
     public string UserName { get; set; } = string.Empty;
 
+    [Column("email")]
+    public string Email { get; set; } = string.Empty;
+
     [Column("access_token")]
     public string AccessToken { get; set; } = string.Empty;
 
