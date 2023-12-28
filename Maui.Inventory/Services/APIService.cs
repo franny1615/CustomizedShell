@@ -22,7 +22,10 @@ public class APIService : IAPIService
         _UserDAL = userDAL;
         _AdminDAL = adminDAL;
         _ApiUrl = apiURL;
-        _Client = new();   
+        _Client = new()
+        {
+            Timeout = TimeSpan.FromMinutes(5)
+        };   
     }
 
     public async Task<T> Get<T>(

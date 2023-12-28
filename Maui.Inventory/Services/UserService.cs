@@ -32,7 +32,8 @@ public class UserService : IUserService
         {
             await _adminDAL.DeleteAll();
             await _userDAL.DeleteAll();
-            await _userDAL.Save(user);
+            
+            await _userDAL.Insert(user);
         }
 
         return user.AccessToken.Length > 0;

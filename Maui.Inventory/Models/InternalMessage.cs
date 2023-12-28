@@ -9,10 +9,12 @@ public class InternalMessage : ValueChangedMessage<object>
 
 public enum AccessMessage
 {
-    SignedIn,
-    LoggedOut,
+    AdminSignedIn,
+    UserSignedIn,
+    AdminLogout,
+    UserLogout,
     AccessTokenExpired,
-    FirstTimeLogin
+    LandingPage
 }
 
 public enum RegistrationResponse

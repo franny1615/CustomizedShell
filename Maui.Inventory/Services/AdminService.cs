@@ -54,7 +54,7 @@ public class AdminService : IAdminService
             await _userDAL.DeleteAll();
             await _adminDAL.DeleteAll();
 
-            await _adminDAL.Save(admin);
+            await _adminDAL.Insert(admin);
         }
 
         return admin.AccessToken.Length > 0;
@@ -63,13 +63,15 @@ public class AdminService : IAdminService
     public async Task<RegistrationResponse> Register(
         string username, 
         string pwd,
-        string eml)
+        string eml,
+        bool emlVerfied)
     {
         return await _apiService.Post<RegistrationResponse>(Endpoint.AdminRegister, new
         {
             userName = username,
             password = pwd,
-            email = eml 
+            email = eml,
+            emailVerified = emlVerfied
         });
     }
 

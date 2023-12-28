@@ -46,25 +46,25 @@ public class App : Application
         }
     }
 
-    private async void AccessControl(AccessMessage access)
+    private void AccessControl(AccessMessage access)
     {
         switch (access)
         {
-            case AccessMessage.SignedIn:
-                if (await _AppVM.AdminSignedIn())
-                {
-                    MainPage = new AdminShell();
-                }
-                else if (await _AppVM.UserSignedIn())
-                {
-                    // TODO: user shell
-                }
+            case AccessMessage.AdminSignedIn:
+                MainPage = new AdminShell();
                 break;
-            case AccessMessage.FirstTimeLogin:
-                MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM));
+            case AccessMessage.UserSignedIn:
+                MainPage = new UserShell();
                 break;
-            case AccessMessage.LoggedOut:
+            case AccessMessage.AdminLogout:
+                // TODO: go to admin login page
+                break;
+            case AccessMessage.UserLogout:
+                // TODO: go to user login page
+                break;
+            case AccessMessage.LandingPage:
             case AccessMessage.AccessTokenExpired:
+                MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM));
                 break;
         }
     }

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Markup;
+﻿using System.Runtime.CompilerServices;
+using CommunityToolkit.Maui.Markup;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Maui.Components.Controls;
 using Microsoft.Maui.Controls.Shapes;
@@ -165,6 +166,24 @@ public class MaterialEntry : ContentView
                 HorizontalTextAlignment = TextAlignment.Start
             };
             _SupportLayout.Add(label);
+        }
+    }
+    #endregion
+
+    #region Overrides
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+        if (propertyName == IsEnabledProperty.PropertyName)
+        {
+            if (!IsEnabled)
+            {
+                _EntryBorder.BackgroundColor = Colors.Gray.WithAlpha(0.5f);
+            }
+            else
+            {
+                _EntryBorder.BackgroundColor = Colors.Transparent;
+            }
         }
     }
     #endregion

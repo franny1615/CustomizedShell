@@ -41,6 +41,7 @@ public static class MauiProgram
 	public static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
 	{
 		builder.Services.AddTransient<SplashPage>();
+		builder.Services.AddTransient<AdminDashboardPage>();
 		builder.Services.AddTransient<AdminRegisterPage>();
 		builder.Services.AddTransient<AdminEmailVerificationPage>();
 

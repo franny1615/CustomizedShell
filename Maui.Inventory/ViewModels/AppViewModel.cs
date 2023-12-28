@@ -16,14 +16,4 @@ public partial class AppViewModel : ObservableObject
         _UserDAL = userDAL;
         _AdminDAL = adminDAL;
     }
-
-    public async Task<bool> AdminSignedIn()
-    {
-        return (await _AdminDAL.GetAll()).Count > 0;
-    }
-
-    public async Task<bool> UserSignedIn()
-    {
-        return (await _UserDAL.GetAll()).Count > 0;
-    }
 }

@@ -1,4 +1,5 @@
-﻿using Maui.Components.DAL;
+﻿using System.Text.Json.Serialization;
+using Maui.Components.DAL;
 using Maui.Components.Interfaces;
 using SQLite;
 
@@ -8,18 +9,23 @@ namespace Maui.Inventory.Models;
 public class Admin
 {
     [PrimaryKey, Column("_id")]
+    [JsonPropertyName("id")]
     public int Id { get; set; } = -1;
 
     [Column("username")]
+    [JsonPropertyName("userName")]
     public string UserName { get; set; } = string.Empty;
 
     [Column("email")]
+    [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 
     [Column("access_token")]
+    [JsonPropertyName("accessToken")]
     public string AccessToken { get; set; } = string.Empty;
 
     [Column("license_id")]
+    [JsonPropertyName("licenseID")]
     public int LicenseID { get; set; } = -1;
 }
 

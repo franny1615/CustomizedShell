@@ -137,6 +137,7 @@ public class AdminRegisterPage : BasePage
         bool sentConfirmation = await _AdminVM.BeginEmailVerification();
         if (sentConfirmation)
         {
+            _AdminVM.VerificationCode.Text = "";
             await Navigation.PushAsync(new AdminEmailVerificationPage(_LanguageService, _AdminVM));
         }
         _Register.Text = _LanguageService.StringForKey("Submit");

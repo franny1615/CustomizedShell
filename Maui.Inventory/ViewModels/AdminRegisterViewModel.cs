@@ -76,7 +76,8 @@ public partial class AdminRegisterViewModel : ObservableObject
         return await _AdminService.Register(
             username: Username.Text,
             password: Password.Text,
-            email: Email.Text 
+            email: Email.Text,
+            true
         );
     }
 

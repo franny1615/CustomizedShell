@@ -20,23 +20,6 @@ public partial class SplashViewModel : ObservableObject
         _APIDAL = apiDAL;
     }
 
-    public async Task<bool> SomeoneHasLoggedInBefore()
-    {
-        bool loggedIn = false;
-        try
-        {
-            bool admin = (await _AdminDAL.GetAll()).FirstOrDefault() != null;
-            bool user = (await _UserDAL.GetAll()).FirstOrDefault() != null;
-            
-            loggedIn = admin || user;
-        }
-        catch (Exception ex)
-        {
-        }
-
-        return loggedIn;
-    }
-
     public async void CheckAPIURL()
     {
         List<ApiUrl> apis = await _APIDAL.GetAll();

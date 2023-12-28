@@ -46,18 +46,11 @@ public class SplashPage : BasePage
     #endregion
 
     #region Overrides
-    protected override async void OnAppearing()
+    protected override void OnAppearing()
     {
         base.OnAppearing();
         _ViewModel.CheckAPIURL();
-		if (await _ViewModel.SomeoneHasLoggedInBefore())
-		{
-			WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.LoggedOut));
-		}
-		else
-		{
-			WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.FirstTimeLogin));
-		}
+        WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.LandingPage));
     }
     #endregion
 }

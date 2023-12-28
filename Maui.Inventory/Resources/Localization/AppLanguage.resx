@@ -189,4 +189,16 @@ May delete account at any time.
   <data name="Loading" xml:space="preserve">
     <value>Loading...</value>
   </data>
+  <data name="EmailVerified" xml:space="preserve">
+    <value>Email Verified</value>
+  </data>
+  <data name="Review" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="UsernameInUse" xml:space="preserve">
+    <value>Username taken. Please choose another.</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
 </root>

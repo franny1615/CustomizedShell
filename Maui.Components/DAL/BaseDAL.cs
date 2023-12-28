@@ -38,6 +38,36 @@ public class BaseDAL<T> where T : new()
         return true;
     }
 
+    public async Task<bool> Insert(T item)
+    {
+        try
+        {
+            await Init();
+            await AppDB.DBConnection.InsertAsync(item);
+
+            return true;
+        }
+        catch 
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> Update(T item)
+    {
+        try
+        {
+            await Init();
+            await AppDB.DBConnection.UpdateAsync(item);
+
+            return true;
+        }
+        catch 
+        {
+            return false;
+        }
+    }
+
     public async Task<bool> Delete(T item)
     {
         await Init();
@@ -53,8 +83,12 @@ public class BaseDAL<T> where T : new()
 
     public async Task DeleteAll()
     {
-        await Init();
-        await AppDB.DBConnection.DeleteAllAsync<int>();
+        try
+        {
+            await Init();
+            await AppDB.DBConnection.DeleteAllAsync<object>();
+        }
+        catch { }
     }
 
     private int GetIDFromItem(T item)

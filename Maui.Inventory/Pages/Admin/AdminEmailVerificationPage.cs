@@ -48,7 +48,18 @@ public class AdminEmailVerificationPage : BasePage
 		TextColor = Colors.White,
 		FABStyle = FloatingActionButtonStyle.Extended
     };
-
+    private readonly Label _VerifiedEmail = new()
+    {
+        FontSize = 18,
+        FontAttributes = FontAttributes.Bold,
+        HorizontalTextAlignment = TextAlignment.Start
+    };
+    private readonly MaterialImage _VerifiedIcon = new()
+    {
+        Icon = MaterialIcon.Check_circle,
+        IconColor = Colors.Green,
+        IconSize = 18
+    };
     private readonly Label _ReviewLabel = new()
     {
         FontSize = 16,
@@ -69,9 +80,18 @@ public class AdminEmailVerificationPage : BasePage
         BindingContext = adminVM;
 
         _CodeEntry = new(_AdminVM.VerificationCode);
+        _Username = new(_AdminVM.Username);
+        _Password = new(_AdminVM.Password);
+        _Email = new(_AdminVM.Email);
+
+        _Password.IsEnabled = false;
+        _Email.IsEnabled = false;
+
+        _VerifiedEmail.Text = _LangService.StringForKey("EmailVerified");
+        _ReviewLabel.Text = _LangService.StringForKey("Review");
 
         Title = _LangService.StringForKey("Verify");
-        _Register.Text = _LangService.StringForKey("FinishRegistration");
+        _Register.Text = _LangService.StringForKey("VerifyEmail");
 
         _Instructions.Text = _LangService.StringForKey("VerificationCodeSent");
         _EmailLabel.Text = _AdminVM.Email.Text;
@@ -118,6 +138,22 @@ public class AdminEmailVerificationPage : BasePage
             bool verified = await _AdminVM.VerifyCode();
             if (verified)
             {
+                _CodeEntry.IsEnabled = false;
+                _ContentLayout.Add(new Grid
+                {
+                    ColumnDefinitions = Columns.Define(Star, 20),
+                    ColumnSpacing = 8,
+                    Children = 
+                    {
+                        _VerifiedEmail.Column(0),
+                        _VerifiedIcon.Column(1)
+                    }
+                });
+                _ContentLayout.Add(_ReviewLabel);
+                _ContentLayout.Add(_Username);
+                _ContentLayout.Add(_Password);
+                _ContentLayout.Add(_Email);
+
                 _Register.Text = _LangService.StringForKey("FinishRegistration");
             }
             else
@@ -132,16 +168,28 @@ public class AdminEmailVerificationPage : BasePage
             switch (registered)
             {
                 case RegistrationResponse.SuccessfullyRegistered:
-                    _Register.Text = _LangService.StringForKey("Loading");
-                    bool loggedIn = await _AdminVM.Login();
-                    if (loggedIn)
-                    {
-                        WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.SignedIn));
-                    }
+                    _Register.Text = _LangService.StringForKey("Login");
+                    break;
+                case RegistrationResponse.AlreadyExists:
+                    _Username.ShowStatus(_LangService.StringForKey("UsernameInUse"), MaterialIcon.Info, Colors.Red);
+                    _Register.Text = _LangService.StringForKey("FinishRegistration");
                     break;
                 default:
                     _Register.Text = _LangService.StringForKey("FinishRegistration");
                     break;
+            }
+        }
+        else if (_Register.Text == _LangService.StringForKey("Login"))
+        {
+            _Register.Text = _LangService.StringForKey("Loading");
+            bool loggedIn = await _AdminVM.Login();
+            if (loggedIn)
+            {
+                WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.AdminSignedIn));
+            }
+            else
+            {
+                _Register.Text = _LangService.StringForKey("Login");
             }
         }
     }
