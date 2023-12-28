@@ -44,6 +44,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminDashboardPage>();
 		builder.Services.AddTransient<AdminRegisterPage>();
 		builder.Services.AddTransient<AdminEmailVerificationPage>();
+		builder.Services.AddTransient<AdminLoginPage>();
 
 		return builder;
 	}
@@ -53,6 +54,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<SplashViewModel>();
 		builder.Services.AddTransient<AdminRegisterViewModel>();
 		builder.Services.AddTransient<AppViewModel>();
+		builder.Services.AddTransient<AdminLoginViewModel>();
 
         return builder;
 	}

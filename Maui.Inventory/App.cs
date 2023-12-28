@@ -10,16 +10,19 @@ public class App : Application
 {
     private readonly ILanguageService _LanguageService;
     private readonly AdminRegisterViewModel _AdminVM;
+    private readonly AdminLoginViewModel _AdminLoginVM;
     private readonly AppViewModel _AppVM;
 
     public App(
         ILanguageService languageService,
         SplashViewModel splashViewModel,
         AdminRegisterViewModel adminVM,
+        AdminLoginViewModel adminLoginVM,
         AppViewModel appVM)
     {
         _LanguageService = languageService;
         _AdminVM = adminVM;
+        _AdminLoginVM = adminLoginVM;
         _AppVM = appVM;
 
         Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
@@ -64,7 +67,7 @@ public class App : Application
                 break;
             case AccessMessage.LandingPage:
             case AccessMessage.AccessTokenExpired:
-                MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM));
+                MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM));
                 break;
         }
     }

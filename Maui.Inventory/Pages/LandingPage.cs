@@ -3,6 +3,7 @@ using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Inventory.Pages.Admin;
+using Maui.Inventory.ViewModels;
 using Microsoft.Maui.Controls.Shapes;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
@@ -13,6 +14,7 @@ public class LandingPage : BasePage
 	#region Private Properties
 	private readonly ILanguageService _LangService;
 	private readonly AdminRegisterViewModel _AdminVM;
+	private readonly AdminLoginViewModel _AdminLoginVM;
 	private readonly VerticalStackLayout _ProductContainer = new()
 	{
 		Spacing = 16,
@@ -79,7 +81,8 @@ public class LandingPage : BasePage
 	#region Constructor
 	public LandingPage(
 		ILanguageService languageService,
-		AdminRegisterViewModel adminVM) : base(languageService)
+		AdminRegisterViewModel adminVM,
+		AdminLoginViewModel adminLoginVM) : base(languageService)
 	{
 		Shell.SetNavBarIsVisible(this, false);
 		Shell.SetTabBarIsVisible(this, false);
@@ -87,6 +90,7 @@ public class LandingPage : BasePage
 
 		_LangService = languageService;
 		_AdminVM = adminVM;
+		_AdminLoginVM = adminLoginVM;
 
 		_ProductContainer.Add(_ProductName);
 		_ProductName.Text = LanguageService.StringForKey("Product");
@@ -137,7 +141,7 @@ public class LandingPage : BasePage
 
 	private void EmployerLogin(object sender, EventArgs e)
 	{
-
+		Navigation.PushAsync(new AdminLoginPage(_LangService, _AdminLoginVM));
 	}
 
 	private void EmployerRegister(object sender, EventArgs e)

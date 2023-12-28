@@ -201,4 +201,13 @@ May delete account at any time.
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="OwnerLogin" xml:space="preserve">
+    <value>Owner Login</value>
+  </data>
+  <data name="UsernamePossiblyWrong" xml:space="preserve">
+    <value>Username possibly incorrect.</value>
+  </data>
+  <data name="PasswordPossiblyWrong" xml:space="preserve">
+    <value>Password possibly incorrect.</value>
+  </data>
 </root>

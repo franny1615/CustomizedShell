@@ -49,7 +49,7 @@ public class AdminService : IAdminService
             password = pwd
         });
 
-        if (admin.AccessToken.Length > 0)
+        if (admin != null && admin.AccessToken.Length > 0)
         {
             await _userDAL.DeleteAll();
             await _adminDAL.DeleteAll();
@@ -57,7 +57,7 @@ public class AdminService : IAdminService
             await _adminDAL.Insert(admin);
         }
 
-        return admin.AccessToken.Length > 0;
+        return admin != null && admin.AccessToken.Length > 0;
     }
 
     public async Task<RegistrationResponse> Register(
