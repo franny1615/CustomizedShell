@@ -148,7 +148,7 @@
     <value>Email</value>
   </data>
   <data name="SampleEmail" xml:space="preserve">
-    <value>email@provider.com</value>
+    <value>Email needed for password resets.</value>
   </data>
   <data name="InvalidEmail" xml:space="preserve">
     <value>Invalid email format.</value>
@@ -158,5 +158,35 @@
   </data>
   <data name="ForgotPassword" xml:space="preserve">
     <value>Forgot your password?</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="AccountCreation" xml:space="preserve">
+    <value>
+Account creation is free. 
+
+All features are enabled at no cost for the first three months.
+
+May delete account at any time. 
+    </value>
+  </data>
+  <data name="VerificationCodeSent" xml:space="preserve">
+    <value>A verification code was sent to</value>
+  </data>
+  <data name="VerificationCodeEnter" xml:space="preserve">
+    <value>Please enter the code below</value>
+  </data>
+  <data name="VerificationCode" xml:space="preserve">
+    <value>Verification Code</value>
+  </data>
+  <data name="VerifyEmail" xml:space="preserve">
+    <value>Verify Email</value>
+  </data>
+  <data name="FinishRegistration" xml:space="preserve">
+    <value>Finish Registration</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
   </data>
 </root>

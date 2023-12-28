@@ -5,7 +5,7 @@ using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels;
 using Microsoft.Maui.Controls.Shapes;
 
-namespace MauiApp1;
+namespace Maui.Inventory.Pages;
 
 public class SplashPage : BasePage
 {
@@ -49,7 +49,7 @@ public class SplashPage : BasePage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-
+        _ViewModel.CheckAPIURL();
 		if (await _ViewModel.SomeoneHasLoggedInBefore())
 		{
 			WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.LoggedOut));

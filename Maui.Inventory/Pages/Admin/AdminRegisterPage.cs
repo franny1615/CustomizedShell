@@ -23,25 +23,20 @@ public class AdminRegisterPage : BasePage
     {
         Spacing = 12,
     };
-    private readonly MaterialEntry _Username = new()
-    {
-        Keyboard = Keyboard.Text,
-        IsSpellCheckEnabled = false
-    };
-    private readonly MaterialEntry _Password = new()
-    {
-        IsPassword = true
-    };
-    private readonly MaterialEntry _Email = new()
-    {
-        Keyboard = Keyboard.Email,
-        IsSpellCheckEnabled = false
-    };
+    private readonly MaterialEntry _Username;
+    private readonly MaterialEntry _Password;
+    private readonly MaterialEntry _Email;
     private readonly FloatingActionButton _Register = new()
     {
         FABBackgroundColor = Application.Current.Resources["Primary"] as Color,
 		TextColor = Colors.White,
 		FABStyle = FloatingActionButtonStyle.Extended
+    };
+    private readonly Label _RegisterSample = new()
+    {
+        FontSize = 14,
+        FontAttributes = FontAttributes.Bold,
+        HorizontalTextAlignment = TextAlignment.Center
     };
     #endregion
 
@@ -52,16 +47,23 @@ public class AdminRegisterPage : BasePage
     {
         BindingContext = adminVM;
 
+        _Username = new(_AdminVM.Username);
+        _Password = new(_AdminVM.Password);
+        _Email = new(_AdminVM.Email);
+
         _LanguageService = languageService;
 
         Title = _LanguageService.StringForKey("Register");
         _Register.Text = _LanguageService.StringForKey("Submit");
+        _RegisterSample.Text = LanguageService.StringForKey("AccountCreation");
 
-        _Username.Placeholder = LanguageService.StringForKey("Username");
-        _Password.Placeholder = LanguageService.StringForKey("Password");
-        _Email.Placeholder = LanguageService.StringForKey("Email");
-        _Email.SupportingText = LanguageService.StringForKey("SampleEmail");
+        _Email.ShowStatus(
+            _LanguageService.StringForKey("SampleEmail"), 
+            MaterialIcon.Info, 
+            Application.Current.Resources["Primary"] as Color,
+            updateBorder: false);
 
+        _ContentLayout.Add(_RegisterSample);
         _ContentLayout.Add(_Username);
         _ContentLayout.Add(_Password);
         _ContentLayout.Add(_Email);
@@ -90,27 +92,54 @@ public class AdminRegisterPage : BasePage
     #endregion
 
     #region Helpers
-    private void RegisterClicked(object sender, EventArgs e)
+    private async void RegisterClicked(object sender, EventArgs e)
     {
-        bool haveUsername = !string.IsNullOrEmpty(_Username.Text);
-        bool havePassword = !string.IsNullOrEmpty(_Password.Text);
-        bool haveEmail = !string.IsNullOrEmpty(_Email.Text);
-        bool emailProperFormat = StringUtils.IsValidEmail(_Email.Text);
-
-        _Username.BorderColor = haveUsername ? Colors.Green : Colors.Red;
-        _Password.BorderColor = havePassword ? Colors.Green : Colors.Red;
-        _Email.BorderColor = (haveEmail && emailProperFormat) ? Colors.Green : Colors.Red;
-
-        _Username.SupportingText = haveUsername ? "" : LanguageService.StringForKey("Required");
-        _Password.SupportingText = havePassword ? "" : LanguageService.StringForKey("Required");
-        _Email.SupportingText = haveEmail ? "" : LanguageService.StringForKey("Required");
-
-        _Email.SupportingText = emailProperFormat ? "" : LanguageService.StringForKey("InvalidEmail");
-
-        if (!haveUsername || !havePassword || !haveEmail)
+        if (_Register.Text == _LanguageService.StringForKey("Loading"))
         {
             return;
         }
+
+        bool haveUsername = !string.IsNullOrEmpty(_AdminVM.Username.Text);
+        bool havePassword = !string.IsNullOrEmpty(_AdminVM.Password.Text);
+        bool haveEmail = !string.IsNullOrEmpty(_AdminVM.Email.Text);
+        bool emailProperFormat = StringUtils.IsValidEmail(_AdminVM.Email.Text);
+
+        if (haveUsername)
+            _Username.ShowStatus(null, null, Colors.Green);
+        else
+            _Username.ShowStatus(_LanguageService.StringForKey("Required"), MaterialIcon.Info, Colors.Red);
+        
+        if (havePassword)
+            _Password.ShowStatus(null, null, Colors.Green);
+        else
+            _Password.ShowStatus(_LanguageService.StringForKey("Required"), MaterialIcon.Info, Colors.Red);
+
+        if (haveEmail && emailProperFormat)
+            _Email.ShowStatus(null, null, Colors.Green);
+        else
+        {
+            if (!emailProperFormat && haveEmail)
+            {
+                _Email.ShowStatus(_LanguageService.StringForKey("InvalidEmail"), MaterialIcon.Info, Colors.Red);
+            }
+            else
+            {
+                _Email.ShowStatus(_LanguageService.StringForKey("Required"), MaterialIcon.Info, Colors.Red);
+            }
+        }
+
+        if (!haveUsername || !havePassword || !haveEmail || !emailProperFormat)
+        {
+            return;
+        }
+
+        _Register.Text = _LanguageService.StringForKey("Loading");
+        bool sentConfirmation = await _AdminVM.BeginEmailVerification();
+        if (sentConfirmation)
+        {
+            await Navigation.PushAsync(new AdminEmailVerificationPage(_LanguageService, _AdminVM));
+        }
+        _Register.Text = _LanguageService.StringForKey("Submit");
     }
     #endregion
 }

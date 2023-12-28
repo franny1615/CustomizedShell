@@ -28,22 +28,25 @@ public class AdminService : IAdminService
 
     public async Task<ListNetworkResponse<User>> GetUsers(ListRequest request)
     {
+        Admin admin = (await _adminDAL.GetAll()).First();
+
         Dictionary<string, string> parameters = new()
         {
-            { "Page", request.Page.ToString() },
-            { "ItemsPerPage", request.ItemsPerPage.ToString() },
-            { "Search", request.Search }
+            { "AdminID", $"{admin.Id}" },
+            { "Quantities.Page", request.Page.ToString() },
+            { "Quantities.ItemsPerPage", request.ItemsPerPage.ToString() },
+            { "Quantities.Search", request.Search }
         };
 
         return await _apiService.Get<ListNetworkResponse<User>>(Endpoint.AdminGetAllUsers, parameters);
     }
 
-    public async Task<bool> Login(string username, string password)
+    public async Task<bool> Login(string username, string pwd)
     {
         var admin = await _apiService.Post<Admin>(Endpoint.AdminLogin, new
         {
-            UserName = username,
-            Password = password
+            userName = username,
+            password = pwd
         });
 
         if (admin.AccessToken.Length > 0)
@@ -57,12 +60,16 @@ public class AdminService : IAdminService
         return admin.AccessToken.Length > 0;
     }
 
-    public async Task<RegistrationResponse> Register(string username, string password)
+    public async Task<RegistrationResponse> Register(
+        string username, 
+        string pwd,
+        string eml)
     {
         return await _apiService.Post<RegistrationResponse>(Endpoint.AdminRegister, new
         {
-            UserName = username,
-            Password = password
+            userName = username,
+            password = pwd,
+            email = eml 
         });
     }
 

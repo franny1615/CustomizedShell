@@ -1,9 +1,31 @@
-﻿using System.Runtime.CompilerServices;
-using CommunityToolkit.Maui.Markup;
+﻿using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Maui.Components.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Components;
+
+public partial class MaterialEntryModel : ObservableObject
+{
+    [ObservableProperty]
+    public string text = string.Empty;
+
+    [ObservableProperty]
+    public string placeholder = string.Empty;
+
+    [ObservableProperty]
+    public string placeholderIcon = null;
+
+    [ObservableProperty]
+    public bool isSpellCheckEnabled = false;
+
+    [ObservableProperty]
+    public bool isPassword = false;
+
+    [ObservableProperty]
+    public Keyboard keyboard = Keyboard.Plain;
+}
 
 public class MaterialEntry : ContentView
 {
@@ -13,109 +35,21 @@ public class MaterialEntry : ContentView
     public event EventHandler<TextChangedEventArgs> TextChanged;
     #endregion
 
-    #region Public Properties
-    public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(
-        nameof(PlaceholderProperty),
-        typeof(string),
-        typeof(MaterialEntry),
-        null
-    );
-
-    public string Placeholder
-    {
-        get => (string)GetValue(PlaceholderProperty);
-        set => SetValue(PlaceholderProperty, value);
-    }
-
-    public static readonly BindableProperty TextProperty = BindableProperty.Create(
-        nameof(TextProperty),
-        typeof(string),
-        typeof(MaterialEntry),
-        null
-    );
-
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
-
-    public static readonly BindableProperty SupportingTextProperty = BindableProperty.Create(
-        nameof(SupportingTextProperty),
-        typeof(string),
-        typeof(MaterialEntry),
-        null
-    );
-
-    public string SupportingText
-    {
-        get => (string)GetValue(SupportingTextProperty);
-        set => SetValue(SupportingTextProperty, value);
-    }
-
-    public static readonly BindableProperty KeyboardProperty = BindableProperty.Create(
-        nameof(KeyboardProperty),
-        typeof(Keyboard),
-        typeof(MaterialEntry),
-        Keyboard.Plain
-    );
-
-    public Keyboard Keyboard
-    {
-        get => (Keyboard)GetValue(KeyboardProperty);
-        set => SetValue(KeyboardProperty, value);
-    } 
-
-    public static readonly BindableProperty IsPasswordProperty = BindableProperty.Create(
-        nameof(IsPasswordProperty),
-        typeof(bool),
-        typeof(MaterialEntry),
-        false
-    );
-
-    public bool IsPassword
-    {
-        get => (bool)GetValue(IsPasswordProperty);
-        set => SetValue(IsPasswordProperty, value);
-    }
-
-    public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(
-        nameof(BorderColorProperty),
-        typeof(Color),
-        typeof(MaterialEntry),
-        null
-    );
-
-    public Color BorderColor
-    {
-        get => (Color)GetValue(BorderColorProperty);
-        set => SetValue(BorderColorProperty, value);
-    }
-
-    public static readonly BindableProperty IsSpellCheckEnabledProperty = BindableProperty.Create(
-        nameof(IsSpellCheckEnabledProperty),
-        typeof(bool),
-        typeof(MaterialEntry),
-        false
-    );
-
-    public bool IsSpellCheckEnabled
-    {
-        get => (bool)GetValue(IsSpellCheckEnabledProperty);
-        set => SetValue(IsSpellCheckEnabledProperty, value);
-    }
-    #endregion
-
     #region Private Properties
+    private readonly MaterialImage _PlaceholderIcon = new()
+    {
+        IconSize = 16,
+        VerticalOptions = LayoutOptions.Center
+    };
     private readonly Label _PlaceholderLabel = new()
     {
         FontSize = 12,
         FontAttributes = FontAttributes.Bold,
-        Padding = new Thickness(8, 0, 8, 0)
+        VerticalOptions = LayoutOptions.Center
     };
-    private readonly Label _SupportingLabel = new()
+    private readonly HorizontalStackLayout _PlaceholderContainer = new()
     {
-        FontSize = 12,
+        Spacing = 4,
         Padding = new Thickness(8, 0, 8, 0)
     };
     private readonly Entry _Entry = new()
@@ -133,18 +67,34 @@ public class MaterialEntry : ContentView
         StrokeShape = new RoundRectangle { CornerRadius = 5 },
         Padding = new Thickness(8, 0, 8, 0)
     };
+    private readonly HorizontalStackLayout _SupportLayout = new()
+    {
+        Spacing = 4,
+        Padding = new Thickness(8, 0, 8, 0)
+    };
     #endregion
 
     #region Constructor
-    public MaterialEntry()
+    public MaterialEntry(MaterialEntryModel model)
     {
-        BindingContext = this;
+        BindingContext = model;
+
+        _Entry.SetBinding(Entry.TextProperty, "Text");
+        _Entry.SetBinding(Entry.IsPasswordProperty, "IsPassword");
+        _Entry.SetBinding(Entry.IsSpellCheckEnabledProperty, "IsSpellCheckEnabled");
+        _Entry.SetBinding(Entry.KeyboardProperty, "Keyboard");
+        _PlaceholderLabel.SetBinding(Label.TextProperty, "Placeholder");
+        _PlaceholderIcon.SetBinding(MaterialImage.IconProperty, "PlaceholderIcon");
+        _PlaceholderIcon.SetDynamicResource(MaterialImage.IconColorProperty, "TextColor");
 
         _EntryBorder.Content = _Entry;
 
-        _ContentLayout.Children.Add(_PlaceholderLabel.Row(0));
+        _PlaceholderContainer.Add(_PlaceholderIcon);
+        _PlaceholderContainer.Add(_PlaceholderLabel);
+
+        _ContentLayout.Children.Add(_PlaceholderContainer.Row(0));
         _ContentLayout.Children.Add(_EntryBorder.Row(1));
-        _ContentLayout.Children.Add(_SupportingLabel.Row(2));
+        _ContentLayout.Children.Add(_SupportLayout.Row(2));
 
         Content = _ContentLayout;
 
@@ -167,58 +117,55 @@ public class MaterialEntry : ContentView
     }
     #endregion
 
-    #region Overrides
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
-        if (propertyName == TextProperty.PropertyName)
-        {
-            _Entry.Text = Text;
-        }
-        else if (propertyName == PlaceholderProperty.PropertyName)
-        {
-            _PlaceholderLabel.Text = Placeholder;
-        }
-        else if (propertyName == SupportingTextProperty.PropertyName)
-        {
-            _SupportingLabel.Text = SupportingText;
-        }
-        else if (propertyName == IsPasswordProperty.PropertyName)
-        {
-            _Entry.IsPassword = IsPassword;
-        }
-        else if (propertyName == KeyboardProperty.PropertyName)
-        {
-            _Entry.Keyboard = Keyboard;
-        }
-        else if (propertyName == BorderColorProperty.PropertyName)
-        {
-            _EntryBorder.Stroke = BorderColor;
-        }
-        else if (propertyName == IsSpellCheckEnabledProperty.PropertyName)
-        {
-            _Entry.IsSpellCheckEnabled = IsSpellCheckEnabled;
-        }
-    }
-    #endregion
-
     #region Helpers
     private void HasFocused(object sender, EventArgs e)
     {
-        _EntryBorder.Stroke = Application.Current.Resources["Primary"] as Color;
+        ShowStatus(null, null, Application.Current.Resources["Primary"] as Color);
         EntryFocused?.Invoke(sender, e);
     }
 
     private void HasUnfocused(object sender, EventArgs e)
     {
-        _EntryBorder.Stroke = Colors.DarkGray;
+        ShowStatus(null, null, Colors.DarkGray);
         EntryUnfocused?.Invoke(sender, e);
     }
 
     private void TextHasChanged(object sender, TextChangedEventArgs e)
     {
-        Text = e.NewTextValue;
         TextChanged?.Invoke(sender, e);
+    }
+
+    public void ShowStatus(string status, string materialIcon, Color color, bool updateBorder = true)
+    {
+        _SupportLayout.Clear();
+
+        if (updateBorder)
+        {
+            _EntryBorder.Stroke = color;
+        }
+
+        if (!string.IsNullOrEmpty(materialIcon))
+        {
+            var icon = new MaterialImage
+            {
+                Icon = materialIcon,
+                IconSize = 12,
+                IconColor = color
+            };
+            _SupportLayout.Add(icon);
+        }
+
+        if (!string.IsNullOrEmpty(status))
+        {
+            var label = new Label
+            {
+                Text = status,
+                TextColor = color,
+                FontSize = 12,
+                HorizontalTextAlignment = TextAlignment.Start
+            };
+            _SupportLayout.Add(label);
+        }
     }
     #endregion
 }

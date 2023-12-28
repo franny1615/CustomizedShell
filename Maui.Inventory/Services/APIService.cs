@@ -12,6 +12,18 @@ public class APIService : IAPIService
     private readonly HttpClient _Client;
     private readonly IDAL<User> _UserDAL;
     private readonly IDAL<ApiUrl> _ApiUrl;
+    private readonly IDAL<Admin> _AdminDAL;
+
+    public APIService(
+        IDAL<User> userDAL, 
+        IDAL<Admin> adminDAL,
+        IDAL<ApiUrl> apiURL)
+    {
+        _UserDAL = userDAL;
+        _AdminDAL = adminDAL;
+        _ApiUrl = apiURL;
+        _Client = new();   
+    }
 
     public async Task<T> Get<T>(
         string endpoint,
@@ -21,8 +33,6 @@ public class APIService : IAPIService
         {
             int apiUrlId = Preferences.Get(Constants.ApiUrlId, 1);
             var api = (await _ApiUrl.GetAll()).First(api => api.Id == apiUrlId);
-            
-            string accessToken = (await _UserDAL.GetAll()).First().AccessToken;
 
             string queryParams = "";
             #region BUILD QUERY PARAMETERS
@@ -43,12 +53,17 @@ public class APIService : IAPIService
             }
             #endregion
 
-            string apiFull = $"{api}{endpoint}?{queryParams}";
+            string apiFull = $"{api.URL}{endpoint}?{queryParams}";
 
             var request = new HttpRequestMessage();
             request.Method = HttpMethod.Get;
             request.RequestUri = new Uri(apiFull);
-            request.Headers.Add("Authorization", $"Bearer {accessToken}");
+            
+            string accessToken = await GetAccessToken();
+            if (accessToken.Length > 0)
+            {
+                request.Headers.Add("Authorization", $"Bearer {accessToken}");
+            }
 
             var response = await _Client.SendAsync(request);
 
@@ -67,13 +82,18 @@ public class APIService : IAPIService
         {
             int apiUrlId = Preferences.Get(Constants.ApiUrlId, 1);
             var api = (await _ApiUrl.GetAll()).First(api => api.Id == apiUrlId);
-            string accessToken = (await _UserDAL.GetAll()).First().AccessToken;
-            string apiFull = $"{api}{endpoint}";
+            string apiFull = $"{api.URL}{endpoint}";
 
             var request = new HttpRequestMessage();
             request.Method = HttpMethod.Post;
             request.RequestUri = new Uri(apiFull);
-            request.Headers.Add("Authorization", $"Bearer {accessToken}");
+
+            string accessToken = await GetAccessToken();
+            if (accessToken.Length > 0)
+            {
+                request.Headers.Add("Authorization", $"Bearer {accessToken}");
+            }
+
             request.Content = new StringContent(
                 JsonSerializer.Serialize(jsonParams), 
                 Encoding.UTF8, 
@@ -86,6 +106,24 @@ public class APIService : IAPIService
         catch { /* TODO: add logging */ }
 
         return new();
+    }
+
+    private async Task<string> GetAccessToken()
+    {
+        var users = await _UserDAL.GetAll();
+        var admins = await _AdminDAL.GetAll();
+        
+        string accessToken = "";
+        if (users.Count > 0)
+        {
+            accessToken = users.First().AccessToken;
+        }
+        else if (admins.Count > 0)
+        {
+            accessToken = admins.First().AccessToken;
+        }
+
+        return accessToken;
     }
 
     private async Task<T> DealWithResponse<T>(HttpResponseMessage response) where T : new()

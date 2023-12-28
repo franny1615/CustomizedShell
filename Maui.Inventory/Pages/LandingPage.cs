@@ -2,12 +2,11 @@ using CommunityToolkit.Maui.Markup;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
-using Maui.Inventory;
 using Maui.Inventory.Pages.Admin;
 using Microsoft.Maui.Controls.Shapes;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
-namespace MauiApp1;
+namespace Maui.Inventory.Pages;
 
 public class LandingPage : BasePage
 {
@@ -143,6 +142,7 @@ public class LandingPage : BasePage
 
 	private void EmployerRegister(object sender, EventArgs e)
 	{
+		_AdminVM.Clear();
 		Navigation.PushAsync(new AdminRegisterPage(_LangService, _AdminVM));
 	}
 	#endregion

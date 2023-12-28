@@ -7,9 +7,9 @@ using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using ZXing.Net.Maui.Controls;
 using Maui.Inventory.Services.Interfaces;
-using MauiApp1;
 using Maui.Inventory.ViewModels;
 using Maui.Inventory.Pages.Admin;
+using Maui.Inventory.Pages;
 
 namespace Maui.Inventory;
 
@@ -32,6 +32,7 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+				fonts.AddFont("MaterialIcons-Regular.ttf", MaterialIcon.FontName);
 			});
 
 		return builder.Build();
@@ -41,6 +42,7 @@ public static class MauiProgram
 	{
 		builder.Services.AddTransient<SplashPage>();
 		builder.Services.AddTransient<AdminRegisterPage>();
+		builder.Services.AddTransient<AdminEmailVerificationPage>();
 
 		return builder;
 	}
@@ -49,6 +51,7 @@ public static class MauiProgram
 	{
 		builder.Services.AddTransient<SplashViewModel>();
 		builder.Services.AddTransient<AdminRegisterViewModel>();
+		builder.Services.AddTransient<AppViewModel>();
 
         return builder;
 	}
@@ -62,6 +65,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IAPIService, APIService>();
 		builder.Services.AddTransient<IAdminService, AdminService>();
 		builder.Services.AddTransient<IUserService, UserService>();
+		builder.Services.AddTransient<IEmailService, EmailService>();
 
 		return builder;
 	}
