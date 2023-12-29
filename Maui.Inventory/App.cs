@@ -54,7 +54,7 @@ public class App : Application
         switch (access)
         {
             case AccessMessage.AdminSignedIn:
-                MainPage = new AdminShell();
+                MainPage = new AdminShell(_LanguageService);
                 break;
             case AccessMessage.UserSignedIn:
                 MainPage = new UserShell();

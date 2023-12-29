@@ -45,6 +45,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminRegisterPage>();
 		builder.Services.AddTransient<AdminEmailVerificationPage>();
 		builder.Services.AddTransient<AdminLoginPage>();
+		builder.Services.AddTransient<AdminUsersPage>();
+		builder.Services.AddTransient<AdminProfilePage>();
 
 		return builder;
 	}

@@ -210,4 +210,13 @@ May delete account at any time.
   <data name="PasswordPossiblyWrong" xml:space="preserve">
     <value>Password possibly incorrect.</value>
   </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Employees" xml:space="preserve">
+    <value>Employees</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
 </root>
