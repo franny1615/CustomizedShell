@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(options =>
         (Encoding.UTF8.GetBytes(Env.String(EnvironmentConstant.JWT_KEY))),
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = false,
+        ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
 });

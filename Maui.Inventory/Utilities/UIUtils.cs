@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui.Markup;
-using CoreBluetooth;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Inventory;

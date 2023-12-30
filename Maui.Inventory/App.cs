@@ -8,11 +8,14 @@ namespace Maui.Inventory;
 
 public class App : Application
 {
+    #region Private Properties
     private readonly ILanguageService _LanguageService;
     private readonly AdminRegisterViewModel _AdminVM;
     private readonly AdminLoginViewModel _AdminLoginVM;
     private readonly AppViewModel _AppVM;
+    #endregion
 
+    #region Constructor
     public App(
         ILanguageService languageService,
         SplashViewModel splashViewModel,
@@ -32,7 +35,35 @@ public class App : Application
 
         RegisterListeners();
     }
+    #endregion
 
+    #region Overrides
+    protected override Window CreateWindow(IActivationState activationState)
+    {
+        Window window = base.CreateWindow(activationState);
+
+        window.Resumed += AppResumed;
+        window.Stopped += AppStopped;
+
+        return window;
+    }
+
+    private async void AppResumed(object sender, EventArgs e)
+    {
+        if ((MainPage is AdminShell || MainPage is UserShell) &&
+            !await _AppVM.IsAccessTokenValid()) // were signed in at some page, now we're not
+        {
+            MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM));
+        }
+    }
+
+    private void AppStopped(object sender, EventArgs e)
+    {
+        // TODO: 
+    }
+    #endregion
+
+    #region Helpers
     private void RegisterListeners()
     {
         WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, message) =>
@@ -71,4 +102,5 @@ public class App : Application
                 break;
         }
     }
+    #endregion
 }

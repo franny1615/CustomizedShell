@@ -33,6 +33,12 @@ public partial class AdminLoginViewModel : ObservableObject
         Password.IsPassword = true;
     }
 
+    public void Clear()
+    {
+        Username.Text = "";
+        Password.Text = "";
+    }
+
     public async Task<bool> Login()
     {
         return await _AdminService.Login(Username.Text, Password.Text);

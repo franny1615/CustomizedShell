@@ -141,6 +141,7 @@ public class LandingPage : BasePage
 
 	private void EmployerLogin(object sender, EventArgs e)
 	{
+		_AdminLoginVM.Clear();
 		Navigation.PushAsync(new AdminLoginPage(_LangService, _AdminLoginVM));
 	}
 
