@@ -72,6 +72,12 @@ public class MaterialEntry : ContentView
     {
         FontSize = 18
     };
+    private readonly Label _DisabledLabel = new()
+    {
+        VerticalOptions = LayoutOptions.Center,
+        TextColor = Colors.DarkGray,
+        FontSize = 18
+    };
     private readonly Grid _ContentLayout = new()
     {
         RowDefinitions = Rows.Define(18, Star, Auto),
@@ -79,6 +85,7 @@ public class MaterialEntry : ContentView
     };
     private readonly Border _EntryBorder = new()
     {
+        HeightRequest = 40,
         Stroke = Colors.DarkGray,
         StrokeShape = new RoundRectangle { CornerRadius = 5 },
         Padding = new Thickness(8, 0, 8, 0)
@@ -94,6 +101,8 @@ public class MaterialEntry : ContentView
     public MaterialEntry(MaterialEntryModel model)
     {
         BindingContext = model;
+
+        _DisabledLabel.SetBinding(Label.TextProperty, "Text");
 
         _Entry.SetBinding(Entry.TextProperty, "Text");
         _Entry.SetBinding(Entry.IsPasswordProperty, "IsPassword");
@@ -197,13 +206,11 @@ public class MaterialEntry : ContentView
             // TODO: this doesn't work
             if (!IsDisabled)
             {
-                _Entry.TextColor = Application.Current.Resources["TextColor"] as Color;
-                _Entry.IsReadOnly = true;
+                _EntryBorder.Content = _Entry;
             }
             else
             {
-                _Entry.TextColor = Application.Current.Resources["TextColor"] as Color;
-                _Entry.IsReadOnly = false;
+                _EntryBorder.Content = _DisabledLabel;
             }
         }
     }

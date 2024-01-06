@@ -36,8 +36,8 @@ public partial class AdminRegisterViewModel : ObservableObject
         Email.PlaceholderIcon = MaterialIcon.Email;
         VerificationCode.PlaceholderIcon = MaterialIcon.Numbers;
 
-        Username.Keyboard = Keyboard.Text;
-        Password.Keyboard = Keyboard.Text;
+        Username.Keyboard = Keyboard.Plain;
+        Password.Keyboard = Keyboard.Plain;
         Email.Keyboard = Keyboard.Email;
         VerificationCode.Keyboard = Keyboard.Numeric;
 

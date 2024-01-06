@@ -86,9 +86,14 @@ public class BaseDAL<T> where T : new()
         try
         {
             await Init();
-            await AppDB.DBConnection.DeleteAllAsync<object>();
+            await AppDB.DBConnection.DeleteAllAsync<T>();
         }
-        catch { }
+        catch (Exception ex) 
+        { 
+            #if DEBUG
+            System.Diagnostics.Debug.WriteLine(ex);
+            #endif
+        }
     }
 
     private int GetIDFromItem(T item)

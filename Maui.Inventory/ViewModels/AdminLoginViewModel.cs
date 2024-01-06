@@ -24,8 +24,8 @@ public partial class AdminLoginViewModel : ObservableObject
         Username.PlaceholderIcon = MaterialIcon.Person;
         Password.PlaceholderIcon = MaterialIcon.Password;
 
-        Username.Keyboard = Keyboard.Text;
-        Password.Keyboard = Keyboard.Text;
+        Username.Keyboard = Keyboard.Plain;
+        Password.Keyboard = Keyboard.Plain;
 
         Username.IsSpellCheckEnabled = false;
         Password.IsSpellCheckEnabled = false;

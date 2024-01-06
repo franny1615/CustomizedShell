@@ -36,7 +36,8 @@ public partial class AdminProfileViewModel : ObservableObject
     {
         try
         {
-            var admin = (await _AdminDAL.GetAll()).First();
+            var admins = await _AdminDAL.GetAll();
+            var admin = admins.First();
             Username.Text = admin.UserName;
             Email.Text = admin.Email;
             CompanyId.Text = admin.Id.ToString();
