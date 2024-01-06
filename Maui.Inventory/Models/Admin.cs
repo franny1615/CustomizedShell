@@ -27,6 +27,10 @@ public class Admin
     [Column("license_id")]
     [JsonPropertyName("licenseID")]
     public int LicenseID { get; set; } = -1;
+
+    [Column("is_dark_mode_on")]
+    [JsonPropertyName("isDarkModeOn")]
+    public bool IsDarkModeOn { get; set; } = false;
 }
 
 public class AdminDAL : BaseDAL<Admin>, IDAL<Admin> { }

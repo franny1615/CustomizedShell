@@ -72,7 +72,13 @@ public class APIService : IAPIService
 
             return await DealWithResponse<T>(response);
         }
-        catch { /* TODO: add logging */ }
+        catch (Exception ex)
+        {
+            /* TODO: add logging to app center or firebase */
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+#endif
+        }
 
         return new();
     }
@@ -106,7 +112,13 @@ public class APIService : IAPIService
 
             return await DealWithResponse<T>(response);
         }
-        catch { /* TODO: add logging */ }
+        catch (Exception ex) 
+        {
+            /* TODO: add logging to app center or firebase */
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+#endif
+        }
 
         return new();
     }

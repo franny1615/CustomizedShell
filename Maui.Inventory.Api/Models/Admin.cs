@@ -11,6 +11,8 @@ public class Admin
     public int LicenseID { get; set; } = -1;
     public string Password { get; set; } = string.Empty;
     public string AccessToken { get; set; } = string.Empty;
+    public bool IsDarkModeOn { get; set; } = false;
+    public bool IsLicenseValid { get; set; } = false;
 
     [JsonIgnore]
     public BinaryData? PasswordHash { get; set; } = null;

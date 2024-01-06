@@ -6,5 +6,6 @@ CREATE TABLE admin
     EmailVerified BIT           NOT NULL,
     PasswordHash  BINARY(64)    NOT NULL,
     Salt          NVARCHAR(250) NOT NULL,
-    LicenseID     INT           FOREIGN KEY REFERENCES license(Id)
+    LicenseID     INT           FOREIGN KEY REFERENCES license(Id),
+    IsDarkModeOn  BIT			NOT NULL DEFAULT 0 
 );

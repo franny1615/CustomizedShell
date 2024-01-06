@@ -304,7 +304,8 @@ SELECT
     '' as AccessToken, 
     '' as Password,
     Email,
-    EmailVerified
+    EmailVerified,
+    IsDarkModeOn
 FROM admin
 WHERE admin.Id = @userID;";
             #endregion
@@ -330,9 +331,10 @@ WHERE admin.Id = {authenticatedUser.Id}";
                 }
                 #endregion
 
-                authenticatedUser.AccessToken = licenseValid ? GenerateJWT(authenticatedUser.Id, username) : "";
+                authenticatedUser.IsLicenseValid = licenseValid;
+                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username);
 
-                response.Success = licenseValid;
+                response.Success = true;
                 response.Data = authenticatedUser;
             }
             else
@@ -388,7 +390,8 @@ SELECT
     UserName,
     AdminID,
     '' as Password,
-    '' as AccessToke
+    '' as AccessToken,
+    IsDarkModeOn
 FROM app_user
 WHERE app_user.Id = @userID;";
         #endregion
@@ -418,9 +421,10 @@ WHERE admin.Id = @adminId";
                 }
                 #endregion
 
-                authenticatedUser.AccessToken = licenseValid ? GenerateJWT(authenticatedUser.Id, username) : "";
+                authenticatedUser.IsLicenseValid = licenseValid;
+                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username);
 
-                response.Success = licenseValid;
+                response.Success = true;
                 response.Data = authenticatedUser;
             }
             else
@@ -492,9 +496,7 @@ SELECT
     UserName,
     AdminID,
     '' as Password,
-    '' as AccessToken,
-    -1 as PasswordHash,
-    '' as Salt
+    '' as AccessToken
 FROM app_user
 WHERE app_user.AdminID = {request.AdminId}
 {searchQuery}";
@@ -595,6 +597,7 @@ Salt = @salt,";
         #endregion
 
         #region QUERY
+        int darkModeOn = user.IsDarkModeOn ? 1 : 0;
         string query = $@"
 SET NOCOUNT ON
 
@@ -603,6 +606,7 @@ DECLARE
 @username NVARCHAR(50) = '{user.UserName}',
 @password NVARCHAR(50) = '{user.Password}',
 @adminId  INT          = {user.AdminID},
+@darkMode BIT          = '{darkModeOn}',
 @salt     UNIQUEIDENTIFIER = NEWID(),
 @success  BIT = 0
 
@@ -611,7 +615,8 @@ BEGIN TRY
     SET
         UserName = @username,
         {updatingPS}
-        AdminID = @adminId
+        AdminID = @adminId,
+        IsDarkModeOn = @darkMode
     WHERE app_user.Id = @id
     AND   app_user.AdminID = @adminId
 
@@ -784,6 +789,7 @@ Salt = @salt,";
 
         #region QUERY
         int emailBit = admin.EmailVerified ? 1 : 0;
+        int darkModeBit = admin.IsDarkModeOn ? 1 : 0;
         string query = $@"
 SET NOCOUNT ON
 
@@ -793,6 +799,7 @@ DECLARE
 @password      NVARCHAR(50)  = '{admin.Password}',
 @email         NVARCHAR(300) = '{admin.Email}',
 @emailVerified BIT           = '{emailBit}',
+@darkMode      BIT           = '{darkModeBit}',
 @salt     UNIQUEIDENTIFIER = NEWID(),
 @success  BIT = 0
 
@@ -802,7 +809,8 @@ BEGIN TRY
         UserName = @username,
         {updatingPS}
         Email = @email,
-        EmailVerified = @emailVerified
+        EmailVerified = @emailVerified,
+        IsDarkModeOn = @darkMode
     WHERE admin.Id = @id
 
     SET @success=1

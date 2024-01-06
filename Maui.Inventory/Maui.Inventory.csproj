@@ -40,6 +40,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
 	  <None Remove="Resources\Images\app_ic.svg" />
 	  <None Remove="Resources\Images\barcode.svg" />
 	  <None Remove="Resources\Images\category.svg" />
@@ -89,11 +94,16 @@
 	<ItemGroup>
 	  <MauiImage Update="Resources\Images\app_ic.svg">
 	    <BaseSize>124,124</BaseSize>
+	    <Color>#1F5673</Color>
+	    <ForegroundScale>0.5</ForegroundScale>
 	  </MauiImage>
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Pages\Admin\" />
 	  <Folder Include="Pages\User\" />
 	  <Folder Include="ViewModels\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <AndroidResource Include="Platforms\Android\Resources\xml\network_security_config.xml" />
 	</ItemGroup>
 </Project>
