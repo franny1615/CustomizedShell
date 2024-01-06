@@ -84,8 +84,8 @@ public class AdminEmailVerificationPage : BasePage
         _Password = new(_AdminVM.Password);
         _Email = new(_AdminVM.Email);
 
-        _Password.IsEnabled = false;
-        _Email.IsEnabled = false;
+        _Password.IsDisabled = true;
+        _Email.IsDisabled = true;
 
         _VerifiedEmail.Text = _LangService.StringForKey("EmailVerified");
         _ReviewLabel.Text = _LangService.StringForKey("Review");
@@ -138,7 +138,7 @@ public class AdminEmailVerificationPage : BasePage
             bool verified = await _AdminVM.VerifyCode();
             if (verified)
             {
-                _CodeEntry.IsEnabled = false;
+                _CodeEntry.IsDisabled = true;
                 _ContentLayout.Add(new Grid
                 {
                     ColumnDefinitions = Columns.Define(Star, 20),

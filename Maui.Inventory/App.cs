@@ -3,6 +3,7 @@ using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels;
 using Maui.Components;
 using Maui.Inventory.Pages;
+using Maui.Inventory.Pages.Admin;
 
 namespace Maui.Inventory;
 
@@ -91,7 +92,8 @@ public class App : Application
                 MainPage = new UserShell();
                 break;
             case AccessMessage.AdminLogout:
-                // TODO: go to admin login page
+                _AdminLoginVM.Clear();
+                MainPage = new NavigationPage(new AdminLoginPage(_LanguageService, _AdminLoginVM));
                 break;
             case AccessMessage.UserLogout:
                 // TODO: go to user login page

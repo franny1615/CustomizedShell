@@ -36,6 +36,21 @@ public class MaterialEntry : ContentView
     public event EventHandler<TextChangedEventArgs> TextChanged;
     #endregion
 
+    #region Public Properties
+    public static readonly BindableProperty IsDisabledProperty = BindableProperty.Create(
+        nameof(IsDisabledProperty),
+        typeof(bool),
+        typeof(MaterialEntry),
+        false
+    );
+
+    public bool IsDisabled
+    {
+        get => (bool)GetValue(IsDisabledProperty);
+        set => SetValue(IsDisabledProperty, value);
+    }
+    #endregion
+
     #region Private Properties
     private readonly MaterialImage _PlaceholderIcon = new()
     {
@@ -84,6 +99,9 @@ public class MaterialEntry : ContentView
         _Entry.SetBinding(Entry.IsPasswordProperty, "IsPassword");
         _Entry.SetBinding(Entry.IsSpellCheckEnabledProperty, "IsSpellCheckEnabled");
         _Entry.SetBinding(Entry.KeyboardProperty, "Keyboard");
+        
+        _Entry.TextColor = Application.Current.Resources["TextColor"] as Color;
+
         _PlaceholderLabel.SetBinding(Label.TextProperty, "Placeholder");
         _PlaceholderIcon.SetBinding(MaterialImage.IconProperty, "PlaceholderIcon");
         _PlaceholderIcon.SetDynamicResource(MaterialImage.IconColorProperty, "TextColor");
@@ -174,15 +192,18 @@ public class MaterialEntry : ContentView
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
-        if (propertyName == IsEnabledProperty.PropertyName)
+        if (propertyName == IsDisabledProperty.PropertyName)
         {
-            if (!IsEnabled)
+            // TODO: this doesn't work
+            if (!IsDisabled)
             {
-                _EntryBorder.BackgroundColor = Colors.Gray.WithAlpha(0.5f);
+                _Entry.TextColor = Application.Current.Resources["TextColor"] as Color;
+                _Entry.IsReadOnly = true;
             }
             else
             {
-                _EntryBorder.BackgroundColor = Colors.Transparent;
+                _Entry.TextColor = Application.Current.Resources["TextColor"] as Color;
+                _Entry.IsReadOnly = false;
             }
         }
     }

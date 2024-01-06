@@ -219,4 +219,25 @@ May delete account at any time.
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="CompanyId" xml:space="preserve">
+    <value>Company ID</value>
+  </data>
+  <data name="CompanyIdSupportText" xml:space="preserve">
+    <value>Employees need this value to sign into app.</value>
+  </data>
+  <data name="LicenseId" xml:space="preserve">
+    <value>License ID</value>
+  </data>
+  <data name="UpdateEmail" xml:space="preserve">
+    <value>Update Email</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
 </root>

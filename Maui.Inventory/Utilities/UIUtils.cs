@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Markup;
+using Maui.Components;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Inventory;
@@ -9,7 +10,7 @@ public static class UIUtils
     {
         return new Grid 
         {
-            ColumnDefinitions = Columns.Define(Star, 50, Star),
+            ColumnDefinitions = Columns.Define(Star, Auto, Star),
             ColumnSpacing = 8,
             Children = 
             {
@@ -31,6 +32,20 @@ public static class UIUtils
                     Color = Application.Current.Resources["Primary"] as Color
                 }.Column(2)
             }
+        };
+    }
+
+    public static FontImageSource MaterialIconFIS(
+        string icon, 
+        Color color,
+        int size = 20)
+    {
+        return new() 
+        {
+            Glyph = icon,
+            FontFamily = MaterialIcon.FontName,
+            Size = size,
+            Color = color
         };
     }
 }
