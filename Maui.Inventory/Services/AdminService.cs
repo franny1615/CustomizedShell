@@ -79,4 +79,9 @@ public class AdminService : IAdminService
     {
         return await _apiService.Post<bool>(Endpoint.AdminUpdateUser, user);
     }
+
+    public async Task<bool> UpdateAdmin(Admin admin)
+    {
+        return await _apiService.Post<bool>(Endpoint.AdminUpdateSelf, admin);
+    }
 }

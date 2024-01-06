@@ -2,22 +2,29 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Maui.Components;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
+using Maui.Inventory.Services.Interfaces;
 
 namespace Maui.Inventory.ViewModels;
 
 public partial class AdminProfileViewModel : ObservableObject
 {
+    private readonly IAdminService _AdminService;
     private readonly ILanguageService _LangService;
     private readonly IDAL<Admin> _AdminDAL;
     public MaterialEntryModel Username = new();
     public MaterialEntryModel Email = new();
     public MaterialEntryModel CompanyId = new();
     public MaterialEntryModel LicenseId = new();
+    
+    [ObservableProperty]
+    public bool isDarkModeOn = false;
 
     public AdminProfileViewModel(
+        IAdminService adminService,
         ILanguageService langService,
         IDAL<Admin> adminDAL)
     {
+        _AdminService = adminService;
         _LangService = langService;
         _AdminDAL = adminDAL;
 
@@ -42,11 +49,24 @@ public partial class AdminProfileViewModel : ObservableObject
             Email.Text = admin.Email;
             CompanyId.Text = admin.Id.ToString();
             LicenseId.Text = admin.LicenseID.ToString();
+
+            IsDarkModeOn = admin.IsDarkModeOn;
         }
         catch (Exception ex)
         {
             // TODO: add logging
         }
+    }
+
+    public async Task SaveDarkModeSettings()
+    {
+        var admins = await _AdminDAL.GetAll();
+        var admin = admins.First();
+
+        admin.IsDarkModeOn = IsDarkModeOn;
+
+        await _AdminDAL.Update(admin);
+        await _AdminService.UpdateAdmin(admin);
     }
 
     public async Task Logout()

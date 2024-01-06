@@ -1,5 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Maui.Components;
+using Maui.Components.Interfaces;
+using Maui.Inventory.Models;
 using Maui.Inventory.Services.Interfaces;
 
 namespace Maui.Inventory.ViewModels;
@@ -8,15 +10,18 @@ public partial class AdminLoginViewModel : ObservableObject
 {
     private readonly ILanguageService _LangService;
     private readonly IAdminService _AdminService;
+    private readonly IDAL<Admin> _AdminDAL;
     public MaterialEntryModel Username = new();
     public MaterialEntryModel Password = new();
 
     public AdminLoginViewModel(
         ILanguageService languageService,
-        IAdminService adminService)
+        IAdminService adminService,
+        IDAL<Admin> adminDAL)
     {
         _LangService = languageService;
         _AdminService = adminService;
+        _AdminDAL = adminDAL;
 
         Username.Placeholder = _LangService.StringForKey("Username");
         Password.Placeholder = _LangService.StringForKey("Password");
@@ -41,6 +46,17 @@ public partial class AdminLoginViewModel : ObservableObject
 
     public async Task<bool> Login()
     {
-        return await _AdminService.Login(Username.Text, Password.Text);
+        bool signedIn = await _AdminService.Login(Username.Text, Password.Text);
+        if (signedIn)
+        {
+            try
+            {
+                var admin = (await _AdminDAL.GetAll()).First();
+                UIUtils.ToggleDarkMode(admin.IsDarkModeOn);
+            }
+            catch { }
+        }
+
+        return signedIn;
     }
 }

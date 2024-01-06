@@ -93,6 +93,7 @@ public class App : Application
                 break;
             case AccessMessage.AdminLogout:
                 _AdminLoginVM.Clear();
+                UIUtils.ToggleDarkMode(false);
                 MainPage = new NavigationPage(new AdminLoginPage(_LanguageService, _AdminLoginVM));
                 break;
             case AccessMessage.UserLogout:

@@ -9,4 +9,5 @@ public interface IAdminService
     Task<ListNetworkResponse<User>> GetUsers(ListRequest request);
     Task<bool> DeleteUser(User user);
     Task<bool> UpdateUser(User user);
+    Task<bool> UpdateAdmin(Admin admin);
 }

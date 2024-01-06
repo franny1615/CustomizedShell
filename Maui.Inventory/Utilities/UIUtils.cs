@@ -48,4 +48,18 @@ public static class UIUtils
             Color = color
         };
     }
+
+    public static void ToggleDarkMode(bool darkModeEnabled)
+    {
+        if (darkModeEnabled)
+        {
+            Application.Current.Resources["PageColor"] = Application.Current.Resources["PageDark"];
+            Application.Current.Resources["TextColor"] = Application.Current.Resources["TextDark"];
+        }
+        else
+        {
+            Application.Current.Resources["PageColor"] = Application.Current.Resources["PageLight"];
+            Application.Current.Resources["TextColor"] = Application.Current.Resources["TextLight"];
+        }
+    }
 }

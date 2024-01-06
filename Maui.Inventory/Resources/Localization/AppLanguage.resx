@@ -225,6 +225,9 @@ May delete account at any time.
   <data name="CompanyIdSupportText" xml:space="preserve">
     <value>Employees need this value to sign into app.</value>
   </data>
+  <data name="EmailSupportText" xml:space="preserve">
+    <value>Used for communications and password resets.</value>
+  </data>
   <data name="LicenseId" xml:space="preserve">
     <value>License ID</value>
   </data>
@@ -239,5 +242,11 @@ May delete account at any time.
   </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
+  </data>
+  <data name="Customize" xml:space="preserve">
+    <value>Customize</value>
+  </data>
+  <data name="DarkMode" xml:space="preserve">
+    <value>Dark Mode</value>
   </data>
 </root>

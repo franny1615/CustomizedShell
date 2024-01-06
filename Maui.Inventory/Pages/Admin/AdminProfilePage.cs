@@ -1,10 +1,12 @@
 using System.Net.Http.Headers;
+using CommunityToolkit.Maui.Markup;
 using CommunityToolkit.Mvvm.Messaging;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels;
+using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Inventory.Pages.Admin;
 
@@ -44,6 +46,27 @@ public class AdminProfilePage : BasePage
         ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Logout, Colors.White),
 		FABStyle = FloatingActionButtonStyle.Extended
     };
+    private readonly Grid _DarkModeToggleLayout = new()
+    {
+        ColumnDefinitions = Columns.Define(30, Star, Auto),
+        ColumnSpacing = 8
+    };
+    private readonly MaterialImage _DarkModeIcon = new()
+    {
+        Icon = MaterialIcon.Dark_mode,
+        IconSize = 25,
+        IconColor = Colors.DarkGray
+    };
+    private readonly Label _DarkModeLabel = new()
+    {
+        FontSize = 18,
+        VerticalOptions = LayoutOptions.Center,
+        FontAttributes = FontAttributes.Bold,
+    };
+    private readonly Switch _DarkModeSwitch = new()
+    {
+        ThumbColor = Application.Current.Resources["Primary"] as Color
+    };
     #endregion
 
     #region Constructor
@@ -65,6 +88,12 @@ public class AdminProfilePage : BasePage
             Application.Current.Resources["Primary"] as Color,
             updateBorder: false);
 
+        _Email.ShowStatus(
+            _LangService.StringForKey("EmailSupportText"),
+            MaterialIcon.Info,
+            Application.Current.Resources["Primary"] as Color,
+            updateBorder: false);
+
         _Username.IsDisabled = true;
         _Email.IsDisabled = true;
         _CompanyId.IsDisabled = true;
@@ -75,10 +104,20 @@ public class AdminProfilePage : BasePage
         _ResetPassword.Text = _LangService.StringForKey("ResetPassword");
         _Logout.Text = _LangService.StringForKey("Logout");
 
+        _DarkModeToggleLayout.Children.Add(_DarkModeIcon.Column(0));
+        _DarkModeToggleLayout.Children.Add(_DarkModeLabel.Column(1));
+        _DarkModeToggleLayout.Children.Add(_DarkModeSwitch.Column(2));
+
+        _DarkModeLabel.Text = _LangService.StringForKey("DarkMode");
+
         _ContentLayout.Add(_Username);
         _ContentLayout.Add(_Email);
         _ContentLayout.Add(_CompanyId);
         _ContentLayout.Add(_LicenseId);
+
+        _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LangService.StringForKey("Customize")));
+
+        _ContentLayout.Add(_DarkModeToggleLayout);
 
         _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LangService.StringForKey("Options")));
 
@@ -92,17 +131,20 @@ public class AdminProfilePage : BasePage
     #endregion
 
     #region Overrides
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        _ = _AdminProfileVM.GetProfile();
-
+        _DarkModeSwitch.Toggled += DarkModeToggled;
         _Logout.Clicked += Logout;
+
+        await _AdminProfileVM.GetProfile();
+        _DarkModeSwitch.IsToggled = _AdminProfileVM.IsDarkModeOn;
     }
 
     protected override void OnDisappearing()
     {
         _Logout.Clicked -= Logout;
+        _DarkModeSwitch.Toggled -= DarkModeToggled;
         base.OnDisappearing();
     }
     #endregion
@@ -112,6 +154,16 @@ public class AdminProfilePage : BasePage
     {
         await _AdminProfileVM.Logout();
         WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.AdminLogout));
+    }
+
+    private async void DarkModeToggled(object sender, ToggledEventArgs e)
+    {
+        _AdminProfileVM.IsDarkModeOn = e.Value;
+        await _AdminProfileVM.SaveDarkModeSettings();
+        MainThread.BeginInvokeOnMainThread(() => 
+        {
+            UIUtils.ToggleDarkMode(_AdminProfileVM.IsDarkModeOn);
+        });
     }
     #endregion
 }

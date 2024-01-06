@@ -12,10 +12,6 @@
     <Color x:Key="TextLight">#000000</Color>
     <Color x:Key="TextDark">#FFFFFF</Color>
     <Color x:Key="TextColor">#000000</Color>
-
-    <Color x:Key="DisabledTextLight">#CC000000</Color>
-    <Color x:Key="DisabledTextDark">#CCFFFFFF</Color>
-    <Color x:Key="DisabledTextColor">#CC000000</Color>
     
     <Color x:Key="Primary">#1F5673</Color>
     <Color x:Key="PrimaryShade">#102b3a</Color>
