@@ -9,6 +9,10 @@
     <Color x:Key="PageDark">#000000</Color>
     <Color x:Key="PageColor">#FFFFFF</Color>
 
+    <Color x:Key="PopupLight">#C7C7CC</Color>
+    <Color x:Key="PopupDark">#3A3A3C</Color>
+    <Color x:Key="PopupColor">#C7C7CC</Color>
+
     <Color x:Key="TextLight">#000000</Color>
     <Color x:Key="TextDark">#FFFFFF</Color>
     <Color x:Key="TextColor">#000000</Color>

@@ -54,6 +54,7 @@ public class App : Application
         if ((MainPage is AdminShell || MainPage is UserShell) &&
             !await _AppVM.IsAccessTokenValid()) // were signed in at some page, now we're not
         {
+            UIUtils.ToggleDarkMode(false);
             MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM));
         }
     }

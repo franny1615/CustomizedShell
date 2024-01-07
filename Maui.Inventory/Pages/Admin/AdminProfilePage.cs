@@ -136,6 +136,8 @@ public class AdminProfilePage : BasePage
         base.OnAppearing();
         _DarkModeSwitch.Toggled += DarkModeToggled;
         _Logout.Clicked += Logout;
+        _UpdateEmail.Clicked += UpdateEmail;
+        _ResetPassword.Clicked += ResetPassword;
 
         await _AdminProfileVM.GetProfile();
         _DarkModeSwitch.IsToggled = _AdminProfileVM.IsDarkModeOn;
@@ -145,6 +147,9 @@ public class AdminProfilePage : BasePage
     {
         _Logout.Clicked -= Logout;
         _DarkModeSwitch.Toggled -= DarkModeToggled;
+        _UpdateEmail.Clicked -= UpdateEmail;
+        _ResetPassword.Clicked -= ResetPassword;
+
         base.OnDisappearing();
     }
     #endregion
@@ -164,6 +169,16 @@ public class AdminProfilePage : BasePage
         {
             UIUtils.ToggleDarkMode(_AdminProfileVM.IsDarkModeOn);
         });
+    }
+
+    private async void UpdateEmail(object sender, EventArgs e)
+    {
+        await Navigation.PushModalAsync(new AdminUpdateEmailPage(_LangService));
+    }
+
+    private void ResetPassword(object sender, EventArgs e)
+    {
+
     }
     #endregion
 }
