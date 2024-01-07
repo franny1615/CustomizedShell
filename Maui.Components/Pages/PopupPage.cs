@@ -144,7 +144,7 @@ public class PopupPage : BasePage
             case PopupStyle.BottomSheet:
             case PopupStyle.Unknown:
                 _ContentContainer.WidthRequest = info.Width / info.Density;
-                _ContentContainer.MaximumHeightRequest = info.Height / info.Density * 0.75;
+                _ContentContainer.HeightRequest = info.Height / info.Density * 0.75;
                 break;
         }
     }

@@ -56,7 +56,7 @@ public partial class AppViewModel : ObservableObject
 
         try
         {
-            var expirationClaim = jsonToken.Claims.First(claim => claim.Type == ClaimTypes.Expiration);
+            var expirationClaim = jsonToken.Claims.First(claim => claim.Type == "exp");
             var ticks = long.Parse(expirationClaim.Value);
 
             var tokenDate = DateTimeOffset.FromUnixTimeSeconds(ticks).UtcDateTime;
