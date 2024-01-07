@@ -14,6 +14,7 @@ public class AdminProfilePage : BasePage
 {
     #region Private Properties
     private AdminProfileViewModel _AdminProfileVM => (AdminProfileViewModel) BindingContext;
+    private readonly AdminUpdateEmailViewModel _AdminUpdateEmail;
     private readonly ILanguageService _LangService;
     private readonly ScrollView _ContentScroll = new();
     private readonly VerticalStackLayout _ContentLayout = new()
@@ -72,10 +73,12 @@ public class AdminProfilePage : BasePage
     #region Constructor
     public AdminProfilePage(
         ILanguageService languageService,
-        AdminProfileViewModel adminProfileVM) : base(languageService)
+        AdminProfileViewModel adminProfileVM,
+        AdminUpdateEmailViewModel adminUpdateEmailVM) : base(languageService)
     {
         _LangService = languageService;
         BindingContext = adminProfileVM;
+        _AdminUpdateEmail = adminUpdateEmailVM;
 
         _Username = new(_AdminProfileVM.Username);
         _Email = new(_AdminProfileVM.Email);
@@ -173,7 +176,7 @@ public class AdminProfilePage : BasePage
 
     private async void UpdateEmail(object sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new AdminUpdateEmailPage(_LangService));
+        await Navigation.PushModalAsync(new AdminUpdateEmailPage(_LangService, _AdminUpdateEmail));
     }
 
     private void ResetPassword(object sender, EventArgs e)

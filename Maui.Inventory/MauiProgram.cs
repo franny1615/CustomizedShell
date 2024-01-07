@@ -58,6 +58,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AppViewModel>();
 		builder.Services.AddTransient<AdminLoginViewModel>();
 		builder.Services.AddTransient<AdminProfileViewModel>();
+		builder.Services.AddTransient<AdminUpdateEmailViewModel>();
 
         return builder;
 	}

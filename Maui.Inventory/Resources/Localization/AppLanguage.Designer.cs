@@ -61,236 +61,80 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add.
+        ///   Looks up a localized string similar to 
+        ///Account creation is free. 
+        ///
+        ///All features are enabled at no cost for the first three months.
+        ///
+        ///May delete account at any time. 
+        ///    .
         /// </summary>
-        internal static string Add {
+        internal static string AccountCreation {
             get {
-                return ResourceManager.GetString("Add", resourceCulture);
+                return ResourceManager.GetString("AccountCreation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add a Barcode.
+        ///   Looks up a localized string similar to Owner.
         /// </summary>
-        internal static string AddBarcode {
+        internal static string AdminLogin {
             get {
-                return ResourceManager.GetString("AddBarcode", resourceCulture);
+                return ResourceManager.GetString("AdminLogin", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add a Category.
+        ///   Looks up a localized string similar to Already registered?.
         /// </summary>
-        internal static string AddCategory {
+        internal static string AlreadyRegistered {
             get {
-                return ResourceManager.GetString("AddCategory", resourceCulture);
+                return ResourceManager.GetString("AlreadyRegistered", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add a Status.
+        ///   Looks up a localized string similar to Company ID.
         /// </summary>
-        internal static string AddStatus {
+        internal static string CompanyId {
             get {
-                return ResourceManager.GetString("AddStatus", resourceCulture);
+                return ResourceManager.GetString("CompanyId", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure?.
+        ///   Looks up a localized string similar to Employees need this value to sign into app..
         /// </summary>
-        internal static string AreYouSure {
+        internal static string CompanyIdSupportText {
             get {
-                return ResourceManager.GetString("AreYouSure", resourceCulture);
+                return ResourceManager.GetString("CompanyIdSupportText", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Barcode.
+        ///   Looks up a localized string similar to Customize.
         /// </summary>
-        internal static string Barcode {
+        internal static string Customize {
             get {
-                return ResourceManager.GetString("Barcode", resourceCulture);
+                return ResourceManager.GetString("Customize", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} stored barcodes.
+        ///   Looks up a localized string similar to Dark Mode.
         /// </summary>
-        internal static string BarcodeCount {
+        internal static string DarkMode {
             get {
-                return ResourceManager.GetString("BarcodeCount", resourceCulture);
+                return ResourceManager.GetString("DarkMode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Barcodes.
+        ///   Looks up a localized string similar to Dashboard.
         /// </summary>
-        internal static string Barcodes {
+        internal static string Dashboard {
             get {
-                return ResourceManager.GetString("Barcodes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cancel.
-        /// </summary>
-        internal static string Cancel {
-            get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot delete a barcode that is linked to inventory items..
-        /// </summary>
-        internal static string CannotDeleteBarcode {
-            get {
-                return ResourceManager.GetString("CannotDeleteBarcode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot delete a category that is associated with inventory items..
-        /// </summary>
-        internal static string CannotDeleteCategory {
-            get {
-                return ResourceManager.GetString("CannotDeleteCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot delete a status that has associated inventory..
-        /// </summary>
-        internal static string CannotDeleteStatus {
-            get {
-                return ResourceManager.GetString("CannotDeleteStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An empty status cannot be saved..
-        /// </summary>
-        internal static string CannotSaveEmptyStatus {
-            get {
-                return ResourceManager.GetString("CannotSaveEmptyStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Categories.
-        /// </summary>
-        internal static string Categories {
-            get {
-                return ResourceManager.GetString("Categories", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Category.
-        /// </summary>
-        internal static string Category {
-            get {
-                return ResourceManager.GetString("Category", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} stored categories.
-        /// </summary>
-        internal static string CategoryCount {
-            get {
-                return ResourceManager.GetString("CategoryCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Changes have been saved..
-        /// </summary>
-        internal static string ChangesSaved {
-            get {
-                return ResourceManager.GetString("ChangesSaved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data.
-        /// </summary>
-        internal static string Data {
-            get {
-                return ResourceManager.GetString("Data", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
-        /// </summary>
-        internal static string Delete {
-            get {
-                return ResourceManager.GetString("Delete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete Account.
-        /// </summary>
-        internal static string DeleteAccount {
-            get {
-                return ResourceManager.GetString("DeleteAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deleting is an irreversible action. Proceed?.
-        /// </summary>
-        internal static string DeletePrompt {
-            get {
-                return ResourceManager.GetString("DeletePrompt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        internal static string Description {
-            get {
-                return ResourceManager.GetString("Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit.
-        /// </summary>
-        internal static string Edit {
-            get {
-                return ResourceManager.GetString("Edit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit a Barcode.
-        /// </summary>
-        internal static string EditBarcode {
-            get {
-                return ResourceManager.GetString("EditBarcode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit a Category.
-        /// </summary>
-        internal static string EditCategory {
-            get {
-                return ResourceManager.GetString("EditCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit a Status.
-        /// </summary>
-        internal static string EditStatus {
-            get {
-                return ResourceManager.GetString("EditStatus", resourceCulture);
+                return ResourceManager.GetString("Dashboard", resourceCulture);
             }
         }
         
@@ -304,65 +148,101 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email is required to register..
+        ///   Looks up a localized string similar to Used for communications and password resets..
         /// </summary>
-        internal static string EmailRequired {
+        internal static string EmailSupportText {
             get {
-                return ResourceManager.GetString("EmailRequired", resourceCulture);
+                return ResourceManager.GetString("EmailSupportText", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Some error occurred processing request. Please try again..
+        ///   Looks up a localized string similar to Email Verified.
         /// </summary>
-        internal static string ErrorMessage {
+        internal static string EmailVerified {
             get {
-                return ResourceManager.GetString("ErrorMessage", resourceCulture);
+                return ResourceManager.GetString("EmailVerified", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error Occurred.
+        ///   Looks up a localized string similar to Employee.
         /// </summary>
-        internal static string ErrorOccurred {
+        internal static string EmployeeLogin {
             get {
-                return ResourceManager.GetString("ErrorOccurred", resourceCulture);
+                return ResourceManager.GetString("EmployeeLogin", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back.
+        ///   Looks up a localized string similar to Employees.
         /// </summary>
-        internal static string GoBack {
+        internal static string Employees {
             get {
-                return ResourceManager.GetString("GoBack", resourceCulture);
+                return ResourceManager.GetString("Employees", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dashboard.
+        ///   Looks up a localized string similar to Enter verification code..
         /// </summary>
-        internal static string Home {
+        internal static string EnterCode {
             get {
-                return ResourceManager.GetString("Home", resourceCulture);
+                return ResourceManager.GetString("EnterCode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username/Password incorrect or invalid combination..
+        ///   Looks up a localized string similar to Enter a new email address..
         /// </summary>
-        internal static string InvalidLogin {
+        internal static string EnterNewEmail {
             get {
-                return ResourceManager.GetString("InvalidLogin", resourceCulture);
+                return ResourceManager.GetString("EnterNewEmail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inventory.
+        ///   Looks up a localized string similar to Finish Registration.
         /// </summary>
-        internal static string Inventory {
+        internal static string FinishRegistration {
             get {
-                return ResourceManager.GetString("Inventory", resourceCulture);
+                return ResourceManager.GetString("FinishRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forgot your password?.
+        /// </summary>
+        internal static string ForgotPassword {
+            get {
+                return ResourceManager.GetString("ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email format..
+        /// </summary>
+        internal static string InvalidEmail {
+            get {
+                return ResourceManager.GetString("InvalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License ID.
+        /// </summary>
+        internal static string LicenseId {
+            get {
+                return ResourceManager.GetString("LicenseId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        internal static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
         
@@ -376,47 +256,38 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Logout.
         /// </summary>
-        internal static string Name {
+        internal static string Logout {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("Logout", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Status.
+        ///   Looks up a localized string similar to Options.
         /// </summary>
-        internal static string NewStatus {
+        internal static string Options {
             get {
-                return ResourceManager.GetString("NewStatus", resourceCulture);
+                return ResourceManager.GetString("Options", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No.
+        ///   Looks up a localized string similar to OR.
         /// </summary>
-        internal static string No {
+        internal static string OR {
             get {
-                return ResourceManager.GetString("No", resourceCulture);
+                return ResourceManager.GetString("OR", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok.
+        ///   Looks up a localized string similar to Owner Login.
         /// </summary>
-        internal static string Ok {
+        internal static string OwnerLogin {
             get {
-                return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to - OR -.
-        /// </summary>
-        internal static string Or {
-            get {
-                return ResourceManager.GetString("Or", resourceCulture);
+                return ResourceManager.GetString("OwnerLogin", resourceCulture);
             }
         }
         
@@ -430,11 +301,20 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password is required to register..
+        ///   Looks up a localized string similar to Password possibly incorrect..
         /// </summary>
-        internal static string PasswordRequired {
+        internal static string PasswordPossiblyWrong {
             get {
-                return ResourceManager.GetString("PasswordRequired", resourceCulture);
+                return ResourceManager.GetString("PasswordPossiblyWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory Management.
+        /// </summary>
+        internal static string Product {
+            get {
+                return ResourceManager.GetString("Product", resourceCulture);
             }
         }
         
@@ -448,26 +328,47 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///Deleting account is irreversible. 
-        ///
-        ///All data associated with account will be deleted, and you will be signed out.
-        ///
-        ///Delete account?
-        ///    .
-        /// </summary>
-        internal static string ProfileDeletePrompt {
-            get {
-                return ResourceManager.GetString("ProfileDeletePrompt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         internal static string Register {
             get {
                 return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required.
+        /// </summary>
+        internal static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Password.
+        /// </summary>
+        internal static string ResetPassword {
+            get {
+                return ResourceManager.GetString("ResetPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review.
+        /// </summary>
+        internal static string Review {
+            get {
+                return ResourceManager.GetString("Review", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email needed for password resets..
+        /// </summary>
+        internal static string SampleEmail {
+            get {
+                return ResourceManager.GetString("SampleEmail", resourceCulture);
             }
         }
         
@@ -481,80 +382,56 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Barcode number or description alters all inventory items using this barcode.
-        ///
-        ///Save Changes?.
+        ///   Looks up a localized string similar to Send Code.
         /// </summary>
-        internal static string SaveBarcodePrompt {
+        internal static string SendCode {
             get {
-                return ResourceManager.GetString("SaveBarcodePrompt", resourceCulture);
+                return ResourceManager.GetString("SendCode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category name changes alters all inventory items using this category.
-        ///
-        ///Save changes?.
+        ///   Looks up a localized string similar to Step One.
         /// </summary>
-        internal static string SaveCategoryPrompt {
+        internal static string StepOne {
             get {
-                return ResourceManager.GetString("SaveCategoryPrompt", resourceCulture);
+                return ResourceManager.GetString("StepOne", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status name change alters all inventory items using this status.
-        ///
-        ///Save changes?.
+        ///   Looks up a localized string similar to Step Three.
         /// </summary>
-        internal static string SaveStatusPrompt {
+        internal static string StepThree {
             get {
-                return ResourceManager.GetString("SaveStatusPrompt", resourceCulture);
+                return ResourceManager.GetString("StepThree", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search.
+        ///   Looks up a localized string similar to Step Two.
         /// </summary>
-        internal static string Search {
+        internal static string StepTwo {
             get {
-                return ResourceManager.GetString("Search", resourceCulture);
+                return ResourceManager.GetString("StepTwo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status.
+        ///   Looks up a localized string similar to Submit.
         /// </summary>
-        internal static string Status {
+        internal static string Submit {
             get {
-                return ResourceManager.GetString("Status", resourceCulture);
+                return ResourceManager.GetString("Submit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} stored statuses.
+        ///   Looks up a localized string similar to Update Email.
         /// </summary>
-        internal static string StatusCount {
+        internal static string UpdateEmail {
             get {
-                return ResourceManager.GetString("StatusCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Statuses.
-        /// </summary>
-        internal static string Statuses {
-            get {
-                return ResourceManager.GetString("Statuses", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Try again.
-        /// </summary>
-        internal static string TryAgain {
-            get {
-                return ResourceManager.GetString("TryAgain", resourceCulture);
+                return ResourceManager.GetString("UpdateEmail", resourceCulture);
             }
         }
         
@@ -568,38 +445,74 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username is required to register..
+        ///   Looks up a localized string similar to Username taken. Please choose another..
         /// </summary>
-        internal static string UsernameRequired {
+        internal static string UsernameInUse {
             get {
-                return ResourceManager.GetString("UsernameRequired", resourceCulture);
+                return ResourceManager.GetString("UsernameInUse", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome back.
+        ///   Looks up a localized string similar to Username possibly incorrect..
         /// </summary>
-        internal static string WelcomeBack {
+        internal static string UsernamePossiblyWrong {
             get {
-                return ResourceManager.GetString("WelcomeBack", resourceCulture);
+                return ResourceManager.GetString("UsernamePossiblyWrong", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inventory Management Portal.
+        ///   Looks up a localized string similar to Verification Code.
         /// </summary>
-        internal static string WelcomeTo {
+        internal static string VerificationCode {
             get {
-                return ResourceManager.GetString("WelcomeTo", resourceCulture);
+                return ResourceManager.GetString("VerificationCode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yes.
+        ///   Looks up a localized string similar to Please enter the code below.
         /// </summary>
-        internal static string Yes {
+        internal static string VerificationCodeEnter {
             get {
-                return ResourceManager.GetString("Yes", resourceCulture);
+                return ResourceManager.GetString("VerificationCodeEnter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A verification code was sent to.
+        /// </summary>
+        internal static string VerificationCodeSent {
+            get {
+                return ResourceManager.GetString("VerificationCodeSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify.
+        /// </summary>
+        internal static string Verify {
+            get {
+                return ResourceManager.GetString("Verify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify Code.
+        /// </summary>
+        internal static string VerifyCode {
+            get {
+                return ResourceManager.GetString("VerifyCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify Email.
+        /// </summary>
+        internal static string VerifyEmail {
+            get {
+                return ResourceManager.GetString("VerifyEmail", resourceCulture);
             }
         }
     }

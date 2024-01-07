@@ -59,7 +59,7 @@ public class MaterialEntry : ContentView
     };
     private readonly Label _PlaceholderLabel = new()
     {
-        FontSize = 12,
+        FontSize = 16,
         FontAttributes = FontAttributes.Bold,
         VerticalOptions = LayoutOptions.Center
     };
@@ -70,6 +70,7 @@ public class MaterialEntry : ContentView
     };
     private readonly Entry _Entry = new()
     {
+        VerticalOptions = LayoutOptions.Center,
         FontSize = 18
     };
     private readonly Label _DisabledLabel = new()
@@ -80,12 +81,12 @@ public class MaterialEntry : ContentView
     };
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(18, Star, Auto),
+        RowDefinitions = Rows.Define(Auto, Star, Auto),
         RowSpacing = 4
     };
     private readonly Border _EntryBorder = new()
     {
-        HeightRequest = 40,
+        HeightRequest = DeviceInfo.Current.Platform == DevicePlatform.iOS ? 40 : 50,
         Stroke = Colors.DarkGray,
         StrokeShape = new RoundRectangle { CornerRadius = 5 },
         Padding = new Thickness(8, 0, 8, 0)
@@ -177,8 +178,9 @@ public class MaterialEntry : ContentView
             var icon = new MaterialImage
             {
                 Icon = materialIcon,
-                IconSize = 12,
-                IconColor = color
+                IconSize = 16,
+                IconColor = color,
+                VerticalOptions = LayoutOptions.Center
             };
             _SupportLayout.Add(icon);
         }
@@ -189,8 +191,10 @@ public class MaterialEntry : ContentView
             {
                 Text = status,
                 TextColor = color,
-                FontSize = 12,
-                HorizontalTextAlignment = TextAlignment.Start
+                FontSize = 14,
+                FontAttributes = FontAttributes.None,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalOptions = LayoutOptions.Center
             };
             _SupportLayout.Add(label);
         }
@@ -203,7 +207,6 @@ public class MaterialEntry : ContentView
         base.OnPropertyChanged(propertyName);
         if (propertyName == IsDisabledProperty.PropertyName)
         {
-            // TODO: this doesn't work
             if (!IsDisabled)
             {
                 _EntryBorder.Content = _Entry;

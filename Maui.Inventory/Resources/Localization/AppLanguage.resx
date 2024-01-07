@@ -249,4 +249,28 @@ May delete account at any time.
   <data name="DarkMode" xml:space="preserve">
     <value>Dark Mode</value>
   </data>
+  <data name="EnterCode" xml:space="preserve">
+    <value>Enter verification code.</value>
+  </data>
+  <data name="EnterNewEmail" xml:space="preserve">
+    <value>Enter a new email address.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SendCode" xml:space="preserve">
+    <value>Send Code</value>
+  </data>
+  <data name="StepOne" xml:space="preserve">
+    <value>Step One</value>
+  </data>
+  <data name="StepThree" xml:space="preserve">
+    <value>Step Three</value>
+  </data>
+  <data name="StepTwo" xml:space="preserve">
+    <value>Step Two</value>
+  </data>
+  <data name="VerifyCode" xml:space="preserve">
+    <value>Verify Code</value>
+  </data>
 </root>
