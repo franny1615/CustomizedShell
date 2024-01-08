@@ -273,4 +273,13 @@ May delete account at any time.
   <data name="VerifyCode" xml:space="preserve">
     <value>Verify Code</value>
   </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="EnterCodeSentTo" xml:space="preserve">
+    <value>Enter code sent to {0}.</value>
+  </data>
+  <data name="NewPasswordInstruction" xml:space="preserve">
+    <value>Enter a new password.</value>
+  </data>
 </root>

@@ -31,6 +31,10 @@ public class Admin
     [Column("is_dark_mode_on")]
     [JsonPropertyName("isDarkModeOn")]
     public bool IsDarkModeOn { get; set; } = false;
+
+    [Column("password")]
+    [JsonPropertyName("password")]
+    public string Password { get; set; } = string.Empty;
 }
 
 public class AdminDAL : BaseDAL<Admin>, IDAL<Admin> { }

@@ -10,6 +10,7 @@ public partial class AdminProfileViewModel : ObservableObject
 {
     private readonly IAdminService _AdminService;
     private readonly ILanguageService _LangService;
+    private readonly IEmailService _EmailService;
     private readonly IDAL<Admin> _AdminDAL;
     public MaterialEntryModel Username = new();
     public MaterialEntryModel Email = new();
@@ -22,11 +23,13 @@ public partial class AdminProfileViewModel : ObservableObject
     public AdminProfileViewModel(
         IAdminService adminService,
         ILanguageService langService,
+        IEmailService emailService,
         IDAL<Admin> adminDAL)
     {
         _AdminService = adminService;
         _LangService = langService;
         _AdminDAL = adminDAL;
+        _EmailService = emailService;
 
         Username.Placeholder = _LangService.StringForKey("Username");
         Email.Placeholder = _LangService.StringForKey("Email");
@@ -75,5 +78,24 @@ public partial class AdminProfileViewModel : ObservableObject
         {
             await _AdminDAL.DeleteAll();
         } catch { }
+    }
+
+    public async Task<bool> SendCode()
+    {
+        try
+        {
+            var admins = await _AdminDAL.GetAll();
+            var admin = admins.First();
+
+            return await _EmailService.BeginVerification(admin.Email);
+        }
+        catch (Exception ex)
+        {
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(ex.Message);
+#endif
+        }
+
+        return false;
     }
 }

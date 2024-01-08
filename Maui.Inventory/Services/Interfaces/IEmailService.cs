@@ -1,4 +1,4 @@
-﻿namespace Maui.Inventory;
+﻿namespace Maui.Inventory.Services.Interfaces;
 
 public interface IEmailService
 {

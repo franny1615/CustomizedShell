@@ -193,6 +193,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter code sent to {0}..
+        /// </summary>
+        internal static string EnterCodeSentTo {
+            get {
+                return ResourceManager.GetString("EnterCodeSentTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter a new email address..
         /// </summary>
         internal static string EnterNewEmail {
@@ -261,6 +270,24 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Logout {
             get {
                 return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Password.
+        /// </summary>
+        internal static string NewPassword {
+            get {
+                return ResourceManager.GetString("NewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a new password..
+        /// </summary>
+        internal static string NewPasswordInstruction {
+            get {
+                return ResourceManager.GetString("NewPasswordInstruction", resourceCulture);
             }
         }
         
