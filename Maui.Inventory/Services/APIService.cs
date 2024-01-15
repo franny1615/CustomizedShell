@@ -2,6 +2,7 @@
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using Maui.Inventory.Services.Interfaces;
+using Microsoft.AppCenter.Crashes;
 using System.Text;
 using System.Text.Json;
 
@@ -70,14 +71,11 @@ public class APIService : IAPIService
 
             var response = await _Client.SendAsync(request);
 
-            return await DealWithResponse<T>(response);
+            return await DealWithResponse<T>($"{apiFull}{endpoint}", response);
         }
         catch (Exception ex)
         {
-            /* TODO: add logging to app center or firebase */
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine(ex.ToString());
-#endif
+            Crashes.TrackError(ex);
         }
 
         return new();
@@ -110,14 +108,11 @@ public class APIService : IAPIService
 
             var response = await _Client.SendAsync(request);
 
-            return await DealWithResponse<T>(response);
+            return await DealWithResponse<T>($"{apiFull}{endpoint}", response);
         }
         catch (Exception ex) 
         {
-            /* TODO: add logging to app center or firebase */
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine(ex.ToString());
-#endif
+            Crashes.TrackError(ex);
         }
 
         return new();
@@ -141,14 +136,14 @@ public class APIService : IAPIService
         return accessToken;
     }
 
-    private async Task<T> DealWithResponse<T>(HttpResponseMessage response) where T : new()
+    private async Task<T> DealWithResponse<T>(string endpoint, HttpResponseMessage response) where T : new()
     {
         switch (response.StatusCode)
         {
             case System.Net.HttpStatusCode.OK:
                 var content = await response.Content.ReadAsStreamAsync();
                 var apiResponse = await JsonSerializer.DeserializeAsync<APIResponse<T>>(content);
-                // TODO: add logging for failures 
+
                 return apiResponse.Data;
             case System.Net.HttpStatusCode.Unauthorized:
             case System.Net.HttpStatusCode.Forbidden:

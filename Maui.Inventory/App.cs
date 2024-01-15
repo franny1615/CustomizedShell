@@ -4,6 +4,9 @@ using Maui.Inventory.ViewModels;
 using Maui.Components;
 using Maui.Inventory.Pages;
 using Maui.Inventory.Pages.Admin;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Maui.Inventory;
 
@@ -45,8 +48,16 @@ public class App : Application
 
         window.Resumed += AppResumed;
         window.Stopped += AppStopped;
+        window.Created += AppCreated;
 
         return window;
+    }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        string keyString = $"{Constants.iOSAppCenterSecret}{Constants.AndroidAppCenterSecret}";
+        AppCenter.Start(keyString, typeof(Analytics), typeof(Crashes));
     }
 
     private async void AppResumed(object sender, EventArgs e)
@@ -59,10 +70,8 @@ public class App : Application
         }
     }
 
-    private void AppStopped(object sender, EventArgs e)
-    {
-        // TODO: 
-    }
+    private void AppCreated(object sender, EventArgs e) { }
+    private void AppStopped(object sender, EventArgs e) { }
     #endregion
 
     #region Helpers

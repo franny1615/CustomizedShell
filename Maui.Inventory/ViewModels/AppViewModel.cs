@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
+using Microsoft.AppCenter.Crashes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -27,13 +28,19 @@ public partial class AppViewModel : ObservableObject
         {
             user = (await _UserDAL.GetAll()).First();
         }
-        catch (Exception ex) { /* TODO: add logging */ }
+        catch (Exception ex) 
+        { 
+            Crashes.TrackError(ex);
+        }
 
         try
         {
             admin = (await _AdminDAL.GetAll()).First();
         }
-        catch (Exception ex) { /* TODO: add logging */ }
+        catch (Exception ex) 
+        {
+            Crashes.TrackError(ex);
+        }
 
         if (user is not null)
         {
@@ -66,7 +73,8 @@ public partial class AppViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            // TODO: add logging
+            Crashes.TrackError(ex);
+
             return false;
         }
     }

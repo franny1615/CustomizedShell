@@ -3,6 +3,7 @@ using Maui.Components;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using Maui.Inventory.Services.Interfaces;
+using Microsoft.AppCenter.Crashes;
 
 namespace Maui.Inventory;
 
@@ -62,10 +63,8 @@ public partial class AdminUpdateEmailViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            // TODO: add logging
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine(ex);
-#endif
+            Crashes.TrackError(ex);
+
             return false;
         }
     }

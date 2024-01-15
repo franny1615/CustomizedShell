@@ -3,6 +3,7 @@ using Maui.Components;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using Maui.Inventory.Services.Interfaces;
+using Microsoft.AppCenter.Crashes;
 
 namespace Maui.Inventory.ViewModels;
 
@@ -57,7 +58,7 @@ public partial class AdminProfileViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            // TODO: add logging
+            Crashes.TrackError(ex);
         }
     }
 
@@ -91,9 +92,7 @@ public partial class AdminProfileViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine(ex.Message);
-#endif
+            Crashes.TrackError(ex);
         }
 
         return false;

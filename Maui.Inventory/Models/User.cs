@@ -31,6 +31,10 @@ public class User
     [Column("password")]
     [JsonPropertyName("password")]
     public string Password { get; set; } = string.Empty;
+
+    [Column("is_license_valid")]
+    [JsonPropertyName("isLicenseValid")]
+    public bool IsLicenseValid { get; set; } = false;
 }
 
 public class UserDAL : BaseDAL<User>, IDAL<User> { }

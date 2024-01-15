@@ -3,6 +3,7 @@ using Maui.Components;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using Maui.Inventory.Services.Interfaces;
+using Microsoft.AppCenter.Crashes;
 
 namespace Maui.Inventory.ViewModels;
 
@@ -49,10 +50,7 @@ public partial class AdminResetPasswordViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            // TODO: logging
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine(ex); 
-#endif
+            Crashes.TrackError(ex);
         }
     }
 
