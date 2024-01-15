@@ -1,5 +1,5 @@
 ﻿using Maui.Components;
-using Maui.Inventory.Pages.Admin;
+using Maui.Inventory.Pages.AdminPages;
 
 namespace Maui.Inventory;
 

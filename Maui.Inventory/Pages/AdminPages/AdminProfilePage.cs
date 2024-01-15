@@ -6,9 +6,10 @@ using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels;
+using Maui.Inventory.ViewModels.AdminVM;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
-namespace Maui.Inventory.Pages.Admin;
+namespace Maui.Inventory.Pages.AdminPages;
 
 public class AdminProfilePage : BasePage
 {

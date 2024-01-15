@@ -8,8 +8,11 @@ using Maui.Inventory.Models;
 using ZXing.Net.Maui.Controls;
 using Maui.Inventory.Services.Interfaces;
 using Maui.Inventory.ViewModels;
-using Maui.Inventory.Pages.Admin;
+using Maui.Inventory.Pages.AdminPages;
 using Maui.Inventory.Pages;
+using Maui.Inventory.ViewModels.AdminVM;
+using Maui.Inventory.Models.AdminModels;
+using Maui.Inventory.Models.UserModels;
 
 namespace Maui.Inventory;
 

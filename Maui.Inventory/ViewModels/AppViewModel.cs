@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Maui.Components.Interfaces;
-using Maui.Inventory.Models;
+using Maui.Inventory.Models.AdminModels;
+using Maui.Inventory.Models.UserModels;
 using Microsoft.AppCenter.Crashes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

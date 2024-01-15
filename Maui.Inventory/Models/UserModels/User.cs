@@ -3,10 +3,10 @@ using Maui.Components.DAL;
 using Maui.Components.Interfaces;
 using SQLite;
 
-namespace Maui.Inventory.Models;
+namespace Maui.Inventory.Models.UserModels;
 
-[Table("admin")]
-public class Admin
+[Table("user")]
+public class User
 {
     [PrimaryKey, Column("_id")]
     [JsonPropertyName("id")]
@@ -16,17 +16,13 @@ public class Admin
     [JsonPropertyName("userName")]
     public string UserName { get; set; } = string.Empty;
 
-    [Column("email")]
-    [JsonPropertyName("email")]
-    public string Email { get; set; } = string.Empty;
-
     [Column("access_token")]
     [JsonPropertyName("accessToken")]
     public string AccessToken { get; set; } = string.Empty;
 
-    [Column("license_id")]
-    [JsonPropertyName("licenseID")]
-    public int LicenseID { get; set; } = -1;
+    [Column("admin_id")]
+    [JsonPropertyName("adminID")]
+    public int AdminID { get; set; } = -1;
 
     [Column("is_dark_mode_on")]
     [JsonPropertyName("isDarkModeOn")]
@@ -41,4 +37,4 @@ public class Admin
     public bool IsLicenseValid { get; set; } = false;
 }
 
-public class AdminDAL : BaseDAL<Admin>, IDAL<Admin> { }
+public class UserDAL : BaseDAL<User>, IDAL<User> { }

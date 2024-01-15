@@ -3,9 +3,10 @@ using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Components.Utilities;
+using Maui.Inventory.ViewModels.AdminVM;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
-namespace Maui.Inventory.Pages.Admin;
+namespace Maui.Inventory.Pages.AdminPages;
 
 public class AdminRegisterPage : BasePage
 {

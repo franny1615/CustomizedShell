@@ -44,6 +44,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Pages\User\**" />
+	  <Compile Remove="Pages\User\**" />
+	  <EmbeddedResource Remove="Pages\User\**" />
+	  <MauiCss Remove="Pages\User\**" />
+	  <MauiXaml Remove="Pages\User\**" />
+	  <None Remove="Pages\User\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <AndroidResource Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
 	</ItemGroup>
 
@@ -104,9 +113,6 @@
 	    <Color>#1F5673</Color>
 	    <ForegroundScale>0.5</ForegroundScale>
 	  </MauiImage>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Pages\User\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <AndroidResource Include="Platforms\Android\Resources\xml\network_security_config.xml" />

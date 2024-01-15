@@ -2,8 +2,8 @@ using CommunityToolkit.Maui.Markup;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
-using Maui.Inventory.Pages.Admin;
-using Maui.Inventory.ViewModels;
+using Maui.Inventory.Pages.AdminPages;
+using Maui.Inventory.ViewModels.AdminVM;
 using Microsoft.Maui.Controls.Shapes;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 

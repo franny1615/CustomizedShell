@@ -1,7 +1,7 @@
 using Maui.Components;
 using Maui.Components.Pages;
 
-namespace Maui.Inventory.Pages.Admin;
+namespace Maui.Inventory.Pages.AdminPages;
 
 public class AdminDashboardPage : BasePage
 {

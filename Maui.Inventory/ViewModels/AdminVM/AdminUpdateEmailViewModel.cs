@@ -1,25 +1,23 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Maui.Components;
 using Maui.Components.Interfaces;
-using Maui.Inventory.Models;
+using Maui.Inventory.Models.AdminModels;
 using Maui.Inventory.Services.Interfaces;
 using Microsoft.AppCenter.Crashes;
 
-namespace Maui.Inventory.ViewModels;
+namespace Maui.Inventory.ViewModels.AdminVM;
 
-public partial class AdminResetPasswordViewModel : ObservableObject
+public partial class AdminUpdateEmailViewModel : ObservableObject
 {
     private readonly ILanguageService _LangService;
     private readonly IDAL<Admin> _AdminDAL;
     private readonly IEmailService _EmailService;
     private readonly IAdminService _AdminService;
 
+    public MaterialEntryModel Email = new();
     public MaterialEntryModel VerificationCode = new();
-    public MaterialEntryModel NewPassword = new();
 
-    public Admin CurrentAdmin = null;
-
-    public AdminResetPasswordViewModel(
+    public AdminUpdateEmailViewModel(
         ILanguageService languageService,
         IDAL<Admin> adminDAL,
         IEmailService emailService,
@@ -30,44 +28,44 @@ public partial class AdminResetPasswordViewModel : ObservableObject
         _EmailService = emailService;
         _AdminService = adminService;
 
+        Email.Placeholder = _LangService.StringForKey("Email");
+        Email.PlaceholderIcon = MaterialIcon.Email;
+        Email.Keyboard = Keyboard.Email;
+        Email.IsSpellCheckEnabled = false;
+
         VerificationCode.Placeholder = _LangService.StringForKey("VerificationCode");
         VerificationCode.PlaceholderIcon = MaterialIcon.Numbers;
         VerificationCode.Keyboard = Keyboard.Numeric;
         VerificationCode.IsSpellCheckEnabled = false;
-
-        NewPassword.Placeholder = _LangService.StringForKey("NewPassword");
-        NewPassword.PlaceholderIcon = MaterialIcon.Password;
-        NewPassword.Keyboard = Keyboard.Plain;
-        NewPassword.IsSpellCheckEnabled = false;
-        NewPassword.IsPassword = true;
-    }
-
-    public async Task GetDetails()
-    {
-        try
-        {
-            CurrentAdmin = (await _AdminDAL.GetAll()).First();
-        }
-        catch (Exception ex)
-        {
-            Crashes.TrackError(ex);
-        }
     }
 
     public async Task<bool> SendCode()
     {
-        return await _EmailService.BeginVerification(CurrentAdmin.Email);
+        return await _EmailService.BeginVerification(Email.Text);
     }
 
     public async Task<bool> VerifyCode()
     {
         bool parsedInt = int.TryParse(VerificationCode.Text, out int result);
-        return parsedInt ? await _EmailService.Verify(CurrentAdmin.Email, result) : false;
+        return parsedInt ? await _EmailService.Verify(Email.Text, result) : false;
     }
 
-    public async Task<bool> SavePassword()
+    public async Task<bool> SaveEmail()
     {
-        CurrentAdmin.Password = NewPassword.Text;
-        return await _AdminService.UpdateAdmin(CurrentAdmin);
+        try
+        {
+            var admin = (await _AdminDAL.GetAll()).First();
+            admin.Email = Email.Text;
+
+            await _AdminDAL.Update(admin);
+
+            return await _AdminService.UpdateAdmin(admin);
+        }
+        catch (Exception ex)
+        {
+            Crashes.TrackError(ex);
+
+            return false;
+        }
     }
 }

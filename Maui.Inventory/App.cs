@@ -3,10 +3,11 @@ using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels;
 using Maui.Components;
 using Maui.Inventory.Pages;
-using Maui.Inventory.Pages.Admin;
+using Maui.Inventory.Pages.AdminPages;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Maui.Inventory.ViewModels.AdminVM;
 
 namespace Maui.Inventory;
 
