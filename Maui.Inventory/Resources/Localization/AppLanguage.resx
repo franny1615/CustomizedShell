@@ -282,4 +282,7 @@ May delete account at any time.
   <data name="NewPasswordInstruction" xml:space="preserve">
     <value>Enter a new password.</value>
   </data>
+  <data name="NoUsers" xml:space="preserve">
+    <value>No Employees Added Yet.</value>
+  </data>
 </root>

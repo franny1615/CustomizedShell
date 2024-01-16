@@ -16,7 +16,10 @@ public class APIResponse<T> where T : new()
 
 public class ListNetworkResponse<T>
 {
+    [JsonPropertyName("items")]
     public List<T> Items { get; set; } = [];
+
+    [JsonPropertyName("total")]
     public int Total { get; set; } = 0;
 }
 

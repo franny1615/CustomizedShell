@@ -34,11 +34,15 @@ public class AdminService : IAdminService
 
         Dictionary<string, string> parameters = new()
         {
-            { "AdminID", $"{admin.Id}" },
+            { "AdminId", $"{admin.Id}" },
             { "Quantities.Page", request.Page.ToString() },
             { "Quantities.ItemsPerPage", request.ItemsPerPage.ToString() },
-            { "Quantities.Search", request.Search }
         };
+
+        if (!string.IsNullOrEmpty(request.Search))
+        {
+            parameters.Add("Quantities.Search", request.Search);
+        }
 
         return await _apiService.Get<ListNetworkResponse<User>>(Endpoint.AdminGetAllUsers, parameters);
     }

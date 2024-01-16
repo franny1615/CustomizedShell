@@ -63,6 +63,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminProfileViewModel>();
 		builder.Services.AddTransient<AdminUpdateEmailViewModel>();
 		builder.Services.AddTransient<AdminResetPasswordViewModel>();
+		builder.Services.AddTransient<AdminUsersViewModel>();
 
         return builder;
 	}

@@ -16,6 +16,10 @@
     <Color x:Key="TextLight">#000000</Color>
     <Color x:Key="TextDark">#FFFFFF</Color>
     <Color x:Key="TextColor">#000000</Color>
+
+    <Color x:Key="CardLight">#1F5673</Color>
+    <Color x:Key="CardDark">#102b3a</Color>
+    <Color x:Key="CardColor">#1F5673</Color>
     
     <Color x:Key="Primary">#1F5673</Color>
     <Color x:Key="PrimaryShade">#102b3a</Color>

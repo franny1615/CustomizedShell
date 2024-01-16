@@ -56,12 +56,14 @@ public static class UIUtils
             Application.Current.Resources["PageColor"] = Application.Current.Resources["PageDark"];
             Application.Current.Resources["TextColor"] = Application.Current.Resources["TextDark"];
             Application.Current.Resources["PopupColor"] = Application.Current.Resources["PopupDark"];
+            Application.Current.Resources["CardColor"] = Application.Current.Resources["CardDark"];
         }
         else
         {
             Application.Current.Resources["PageColor"] = Application.Current.Resources["PageLight"];
             Application.Current.Resources["TextColor"] = Application.Current.Resources["TextLight"];
             Application.Current.Resources["PopupColor"] = Application.Current.Resources["PopupLight"];
+            Application.Current.Resources["CardColor"] = Application.Current.Resources["CardLight"];
         }
     }
 }
