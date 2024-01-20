@@ -30,18 +30,15 @@ public class AdminService : IAdminService
 
     public async Task<ListNetworkResponse<User>> GetUsers(ListRequest request)
     {
-        Admin admin = (await _adminDAL.GetAll()).First();
-
         Dictionary<string, string> parameters = new()
         {
-            { "AdminId", $"{admin.Id}" },
-            { "Quantities.Page", request.Page.ToString() },
-            { "Quantities.ItemsPerPage", request.ItemsPerPage.ToString() },
+            { "Page", request.Page.ToString() },
+            { "ItemsPerPage", request.ItemsPerPage.ToString() },
         };
 
         if (!string.IsNullOrEmpty(request.Search))
         {
-            parameters.Add("Quantities.Search", request.Search);
+            parameters.Add("Search", request.Search);
         }
 
         return await _apiService.Get<ListNetworkResponse<User>>(Endpoint.AdminGetAllUsers, parameters);

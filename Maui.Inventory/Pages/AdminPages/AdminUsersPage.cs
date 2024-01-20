@@ -25,6 +25,12 @@ public class AdminUsersPage : BasePage
         ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical),
         ZIndex = 0,
     };
+    private readonly MaterialImage _UserIcon = new()
+    {
+        Icon = MaterialIcon.Group,
+        IconColor = Application.Current.Resources["TextColor"] as Color,
+        IconSize = 40
+    };
     private readonly Label _NoUsers = new()
     {
         FontSize = 21,
@@ -32,6 +38,12 @@ public class AdminUsersPage : BasePage
         HorizontalTextAlignment = TextAlignment.Center,
         HorizontalOptions = LayoutOptions.Center,
         VerticalOptions = LayoutOptions.Center,
+    };
+    private readonly VerticalStackLayout _NoUsersUI = new()
+    {
+        Spacing = 8,
+        VerticalOptions = LayoutOptions.Center,
+        HorizontalOptions = LayoutOptions.Center
     };
     private bool _IsLoading = false;
     private readonly ProgressBar _BusyIndicator = new() { ZIndex = 1, WidthRequest = 200 };
@@ -47,6 +59,9 @@ public class AdminUsersPage : BasePage
 
         _NoUsers.Text = _LangService.StringForKey("NoUsers");
         Title = _LangService.StringForKey("Employees");
+
+        _NoUsersUI.Add(_UserIcon.Center());
+        _NoUsersUI.Add(_NoUsers);
 
         _UsersCollection.SetBinding(CollectionView.ItemsSourceProperty, "Users");
         _UsersCollection.ItemTemplate = new DataTemplate(() =>
@@ -68,6 +83,15 @@ public class AdminUsersPage : BasePage
 
         _ContentLayout.Children.Add(_UsersCollection);
         _ContentLayout.Children.Add(_AddUser.End().Bottom());
+
+        ToolbarItems.Add(new ToolbarItem
+        {
+            IconImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Refresh, Colors.White, 30),
+            Command = new Command(() =>
+            {
+                FetchUsers();
+            })
+        });
 
         Content = _ContentLayout;
     }
@@ -96,13 +120,13 @@ public class AdminUsersPage : BasePage
 
         if (_ViewModel.Users.Count > 0)
         {
-            _ContentLayout.Children.Remove(_NoUsers);
+            _ContentLayout.Children.Remove(_NoUsersUI);
         }
         else
         {
-            if (!_ContentLayout.Children.Contains(_NoUsers))
+            if (!_ContentLayout.Children.Contains(_NoUsersUI))
             {
-                _ContentLayout.Children.Add(_NoUsers);
+                _ContentLayout.Children.Add(_NoUsersUI);
             }
         }
 

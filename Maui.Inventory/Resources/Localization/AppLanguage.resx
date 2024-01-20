@@ -283,6 +283,6 @@ May delete account at any time.
     <value>Enter a new password.</value>
   </data>
   <data name="NoUsers" xml:space="preserve">
-    <value>No Employees Added Yet.</value>
+    <value>No Employees</value>
   </data>
 </root>

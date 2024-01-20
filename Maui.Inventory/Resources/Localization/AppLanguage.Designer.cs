@@ -292,7 +292,7 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Employees Added Yet..
+        ///   Looks up a localized string similar to No Employees.
         /// </summary>
         internal static string NoUsers {
             get {
