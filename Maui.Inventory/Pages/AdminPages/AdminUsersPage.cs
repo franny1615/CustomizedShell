@@ -2,8 +2,10 @@ using CommunityToolkit.Maui.Markup;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
+using Maui.Components.Utilities;
 using Maui.Inventory.Models.UserModels;
 using Maui.Inventory.ViewModels.AdminVM;
+using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Inventory.Pages.AdminPages;
 
@@ -12,7 +14,13 @@ public class AdminUsersPage : BasePage
     #region Private Properties
     private AdminUsersViewModel _ViewModel => (AdminUsersViewModel) BindingContext;
     private readonly ILanguageService _LangService;
-    private readonly Grid _ContentLayout = new();
+    private readonly Debouncer _SearchDebouncer = new(0.5);
+    private readonly Grid _ContentLayout = new()
+    {
+        RowDefinitions = Rows.Define(Auto, Star, Auto),
+        RowSpacing = 8,
+        Padding = 16
+    };
     private readonly FloatingActionButton _AddUser = new()
     {
         ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Add, Colors.White),
@@ -47,6 +55,7 @@ public class AdminUsersPage : BasePage
     };
     private bool _IsLoading = false;
     private readonly ProgressBar _BusyIndicator = new() { ZIndex = 1, WidthRequest = 200 };
+    private readonly MaterialEntry _Search;
     #endregion
 
     #region Constructor
@@ -56,6 +65,8 @@ public class AdminUsersPage : BasePage
     {
         BindingContext = adminUsersVM;
         _LangService = languageService;
+
+        _Search = new(adminUsersVM.SearchModel);
 
         _NoUsers.Text = _LangService.StringForKey("NoUsers");
         Title = _LangService.StringForKey("Employees");
@@ -81,8 +92,9 @@ public class AdminUsersPage : BasePage
             return view;
         });
 
-        _ContentLayout.Children.Add(_UsersCollection);
-        _ContentLayout.Children.Add(_AddUser.End().Bottom());
+        _ContentLayout.Children.Add(_Search.Row(0));
+        _ContentLayout.Children.Add(_UsersCollection.Row(1));
+        _ContentLayout.Children.Add(_AddUser.Row(1).End().Bottom());
 
         ToolbarItems.Add(new ToolbarItem
         {
@@ -103,11 +115,13 @@ public class AdminUsersPage : BasePage
         base.OnAppearing();
         FetchUsers();
         _AddUser.Clicked += AddUser;
+        _Search.TextChanged += SearchChanged;
     }
 
     protected override void OnDisappearing()
     {
         _AddUser.Clicked -= AddUser;
+        _Search.TextChanged -= SearchChanged;
         base.OnDisappearing();
     }
     #endregion
@@ -126,7 +140,7 @@ public class AdminUsersPage : BasePage
         {
             if (!_ContentLayout.Children.Contains(_NoUsersUI))
             {
-                _ContentLayout.Children.Add(_NoUsersUI);
+                _ContentLayout.Children.Add(_NoUsersUI.Row(1));
             }
         }
 
@@ -135,9 +149,8 @@ public class AdminUsersPage : BasePage
 
     private void StartBusyIndicator()
     {
-        _ContentLayout.Padding = new Thickness(16, 0, 16, 16);
         _IsLoading = true;
-        _ContentLayout.Children.Add(_BusyIndicator.Top().CenterHorizontal());
+        _ContentLayout.Children.Add(_BusyIndicator.Top().CenterHorizontal().Row(1));
         _BusyIndicator.ProgressColor = Application.Current.Resources["Secondary"] as Color;
         _BusyIndicator.Progress = 1;
         Task.Run(async () =>
@@ -152,7 +165,6 @@ public class AdminUsersPage : BasePage
 
     private void EndBusyIndicator()
     {
-        _ContentLayout.Padding = 16;
         _ContentLayout.Children.Remove(_BusyIndicator);
         _IsLoading = false;
     }
@@ -169,6 +181,14 @@ public class AdminUsersPage : BasePage
     private void AddUser(object sender, ClickedEventArgs e)
     {
         // TODO: go to add user page
+    }
+
+    private void SearchChanged(object sender, TextChangedEventArgs e)
+    {
+        _SearchDebouncer.Debounce(() =>
+        {
+            FetchUsers();
+        });
     }
     #endregion
 }

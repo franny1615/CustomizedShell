@@ -7,6 +7,12 @@ using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Components;
 
+public enum EntryStyle
+{
+    Default,
+    Search
+}
+
 public partial class MaterialEntryModel : ObservableObject
 {
     [ObservableProperty]
@@ -26,6 +32,9 @@ public partial class MaterialEntryModel : ObservableObject
 
     [ObservableProperty]
     public Keyboard keyboard = Keyboard.Plain;
+
+    [ObservableProperty]
+    public EntryStyle entryStyle = EntryStyle.Default;
 }
 
 public class MaterialEntry : ContentView
@@ -79,11 +88,7 @@ public class MaterialEntry : ContentView
         TextColor = Colors.DarkGray,
         FontSize = 18
     };
-    private readonly Grid _ContentLayout = new()
-    {
-        RowDefinitions = Rows.Define(Auto, Star, Auto),
-        RowSpacing = 4
-    };
+    private readonly Grid _ContentLayout = new();
     private readonly Border _EntryBorder = new()
     {
         HeightRequest = DeviceInfo.Current.Platform == DevicePlatform.iOS ? 40 : 50,
@@ -116,16 +121,42 @@ public class MaterialEntry : ContentView
         _PlaceholderIcon.SetBinding(MaterialImage.IconProperty, "PlaceholderIcon");
         _PlaceholderIcon.SetDynamicResource(MaterialImage.IconColorProperty, "TextColor");
 
-        _EntryBorder.Content = _Entry;
+        switch (model.EntryStyle)
+        {
+            case EntryStyle.Default:
+                _EntryBorder.Content = _Entry;
 
-        _PlaceholderContainer.Add(_PlaceholderIcon);
-        _PlaceholderContainer.Add(_PlaceholderLabel);
+                _ContentLayout.RowDefinitions = Rows.Define(Auto, Star, Auto);
+                _ContentLayout.RowSpacing = 4;
 
-        _ContentLayout.Children.Add(_PlaceholderContainer.Row(0));
-        _ContentLayout.Children.Add(_EntryBorder.Row(1));
-        _ContentLayout.Children.Add(_SupportLayout.Row(2));
+                _PlaceholderContainer.Add(_PlaceholderIcon);
+                _PlaceholderContainer.Add(_PlaceholderLabel);
 
-        Content = _ContentLayout;
+                _ContentLayout.Children.Add(_PlaceholderContainer.Row(0));
+                _ContentLayout.Children.Add(_EntryBorder.Row(1));
+                _ContentLayout.Children.Add(_SupportLayout.Row(2));
+
+                Content = _ContentLayout;
+
+                break;
+            case EntryStyle.Search:
+                _ContentLayout.RowDefinitions = Rows.Define(Star, Auto);
+                _ContentLayout.ColumnDefinitions = Columns.Define(30, Star);
+                _ContentLayout.RowSpacing = 0;
+                _ContentLayout.ColumnSpacing = 4;
+
+                _PlaceholderIcon.IconSize = 25;
+
+                _Entry.SetBinding(Entry.PlaceholderProperty, "Placeholder");
+
+                _ContentLayout.Children.Add(_PlaceholderIcon.Row(0).Column(0).Center());
+                _ContentLayout.Children.Add(_Entry.Row(0).Column(1).CenterVertical());
+
+                _EntryBorder.Content = _ContentLayout;
+                Content = _EntryBorder;
+
+                break;
+        }
 
         Loaded += HasLoaded;
         Unloaded += HasUnloaded;

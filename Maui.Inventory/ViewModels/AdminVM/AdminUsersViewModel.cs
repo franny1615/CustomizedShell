@@ -3,6 +3,7 @@ using Maui.Inventory.Models.UserModels;
 using Maui.Inventory.Services.Interfaces;
 using System.Collections.ObjectModel;
 using Maui.Inventory.Models;
+using Maui.Components;
 
 namespace Maui.Inventory.ViewModels.AdminVM;
 
@@ -10,11 +11,9 @@ public partial class AdminUsersViewModel : ObservableObject
 {
     private const int ITEMS_PER_PAGE = 20;
     private readonly IAdminService _AdminService;
+    private readonly ILanguageService _LanguageService;
 
     public ObservableCollection<User> Users { get; set; } = new();
-
-    [ObservableProperty]
-    public string searchText = string.Empty;
 
     [ObservableProperty]
     public int currentPage = 0;
@@ -22,9 +21,19 @@ public partial class AdminUsersViewModel : ObservableObject
     [ObservableProperty]
     public int totalPages = 1;
 
-    public AdminUsersViewModel(IAdminService adminService)
+    public MaterialEntryModel SearchModel = new();
+
+    public AdminUsersViewModel(
+        IAdminService adminService,
+        ILanguageService languageService)
     {
         _AdminService = adminService;
+        _LanguageService = languageService;
+
+        SearchModel.Placeholder = _LanguageService.StringForKey("Search");
+        SearchModel.PlaceholderIcon = MaterialIcon.Search;
+        SearchModel.Keyboard = Keyboard.Plain;
+        SearchModel.EntryStyle = EntryStyle.Search;
     }
 
     public async Task GetUsers()
@@ -35,7 +44,7 @@ public partial class AdminUsersViewModel : ObservableObject
         {
             Page = CurrentPage,
             ItemsPerPage = ITEMS_PER_PAGE,
-            Search = SearchText,
+            Search = SearchModel.Text,
         });
 
         for (int i = 0; i < users.Items.Count; i++)

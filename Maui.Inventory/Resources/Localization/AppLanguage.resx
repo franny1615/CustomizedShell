@@ -285,4 +285,7 @@ May delete account at any time.
   <data name="NoUsers" xml:space="preserve">
     <value>No Employees</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>
