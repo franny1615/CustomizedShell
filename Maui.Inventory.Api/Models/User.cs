@@ -17,9 +17,3 @@ public class User
     [JsonIgnore]
     public string Salt { get; set; } = string.Empty;
 }
-
-public class UsersRequest
-{
-    public int AdminId { get; set; } = -1;
-    public PaginatedRequest Quantities { get; set; } = new();
-}

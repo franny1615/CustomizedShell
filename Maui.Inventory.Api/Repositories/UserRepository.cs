@@ -332,7 +332,7 @@ WHERE admin.Id = {authenticatedUser.Id}";
                 #endregion
 
                 authenticatedUser.IsLicenseValid = licenseValid;
-                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username);
+                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username, authenticatedUser.Id);
 
                 response.Success = true;
                 response.Data = authenticatedUser;
@@ -422,7 +422,7 @@ WHERE admin.Id = @adminId";
                 #endregion
 
                 authenticatedUser.IsLicenseValid = licenseValid;
-                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username);
+                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username, authenticatedUser.AdminID);
 
                 response.Success = true;
                 response.Data = authenticatedUser;
@@ -444,7 +444,7 @@ WHERE admin.Id = @adminId";
     #endregion
 
     #region HELPERS
-    private string GenerateJWT(int id, string username)
+    private string GenerateJWT(int id, string username, int adminId)
     {
         string issuer = Env.String(EnvironmentConstant.JWT_ISS);
         var audience = Env.String(EnvironmentConstant.JWT_AUD);
@@ -456,9 +456,10 @@ WHERE admin.Id = @adminId";
                 new Claim("Id", Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("UserID", $"{id}"),
+                new Claim("AdminID", $"{adminId}"),
                 new Claim("UserName", username)
             }),
-            Expires = DateTime.UtcNow.AddMinutes(5),
+            Expires = DateTime.UtcNow.AddDays(1),
             Issuer = issuer,
             Audience = audience,
             SigningCredentials = new SigningCredentials
@@ -475,13 +476,13 @@ WHERE admin.Id = @adminId";
 
     #region GET USERS
     public async Task<APIResponse<PaginatedQueryResponse<User>>> GetUsersForAdmin(
-        UsersRequest request)
+        PaginatedRequest request, int adminId)
     {
         #region SEARCH
         string searchQuery = "";
-        if (!string.IsNullOrEmpty(request.Quantities.Search))
+        if (!string.IsNullOrEmpty(request.Search))
         {
-            string[] words = request.Quantities.Search.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] words = request.Search.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in words)
             {
                 searchQuery += $"AND UserName LIKE '{item}%'";
@@ -498,7 +499,7 @@ SELECT
     '' as Password,
     '' as AccessToken
 FROM app_user
-WHERE app_user.AdminID = {request.AdminId}
+WHERE app_user.AdminID = {adminId}
 {searchQuery}";
         #endregion
 
@@ -516,8 +517,8 @@ FROM ({query}) users";
 
             query += $@"
 ORDER BY UserName
-OFFSET {request.Quantities.Page * request.Quantities.ItemsPerPage} ROWS
-FETCH NEXT {request.Quantities.ItemsPerPage} ROWS ONLY";
+OFFSET {request.Page * request.ItemsPerPage} ROWS
+FETCH NEXT {request.ItemsPerPage} ROWS ONLY";
 
             response.Data.Items = (await SQLUtils.QueryAsync<User>(query)).ToList();
         }

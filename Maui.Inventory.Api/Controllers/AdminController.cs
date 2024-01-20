@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Maui.Inventory.Api.Controllers;
 
 [Route("api/admin")]
-public class AdminController(IUserRepository userRepository) : BaseController
+public class AdminController(
+    IUserRepository userRepository, 
+    IHttpContextAccessor httpContextAccessor) : BaseController
 {
     private readonly IUserRepository _UserRepository = userRepository;
+    private readonly IHttpContextAccessor _HttpContextAccessor = httpContextAccessor;
 
     [HttpPost]
     [Route("register")]
@@ -33,9 +36,26 @@ public class AdminController(IUserRepository userRepository) : BaseController
     [HttpGet]
     [Route("users")]
     [Authorize]
-    public async Task<APIResponse<PaginatedQueryResponse<User>>> GetAllUsers([FromQuery] UsersRequest request)
+    public async Task<APIResponse<PaginatedQueryResponse<User>>> GetAllUsers([FromQuery] PaginatedRequest paginatedRequest)
     {
-        return await _UserRepository.GetUsersForAdmin(request);
+        APIResponse<PaginatedQueryResponse<User>> response;
+
+        try
+        {
+            var user = _HttpContextAccessor.HttpContext?.User!;
+            int adminId = Env.GetAdminIDFromIdentity(user);
+
+            response = await _UserRepository.GetUsersForAdmin(paginatedRequest, adminId);
+        }
+        catch (Exception ex) 
+        {
+            response = new();
+            response.Success = false;
+            response.Message = ex.Message;
+            response.Data = new();
+        }
+
+        return response;
     }
 
     [HttpPost]

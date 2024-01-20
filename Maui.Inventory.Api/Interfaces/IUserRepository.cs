@@ -25,7 +25,8 @@ public interface IUserRepository
         string password);
 
     public Task<APIResponse<PaginatedQueryResponse<User>>> GetUsersForAdmin(
-        UsersRequest request);
+        PaginatedRequest request, 
+        int adminId);
 
     public Task<APIResponse<bool>> DeleteUserForAdmin(
         int adminId,
