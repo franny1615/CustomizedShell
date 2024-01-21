@@ -115,7 +115,7 @@ public class MaterialEntry : ContentView
         _Entry.SetBinding(Entry.IsSpellCheckEnabledProperty, "IsSpellCheckEnabled");
         _Entry.SetBinding(Entry.KeyboardProperty, "Keyboard");
         
-        _Entry.TextColor = Application.Current.Resources["TextColor"] as Color;
+        _Entry.SetDynamicResource(Entry.TextColorProperty, "TextColor");
 
         _PlaceholderLabel.SetBinding(Label.TextProperty, "Placeholder");
         _PlaceholderIcon.SetBinding(MaterialImage.IconProperty, "PlaceholderIcon");

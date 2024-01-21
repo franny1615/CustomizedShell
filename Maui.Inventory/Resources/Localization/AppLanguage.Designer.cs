@@ -76,6 +76,24 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Employee.
+        /// </summary>
+        internal static string AddEmployee {
+            get {
+                return ResourceManager.GetString("AddEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding....
+        /// </summary>
+        internal static string Adding {
+            get {
+                return ResourceManager.GetString("Adding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Owner.
         /// </summary>
         internal static string AdminLogin {
@@ -135,6 +153,51 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Dashboard {
             get {
                 return ResourceManager.GetString("Dashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete User.
+        /// </summary>
+        internal static string DeleteUser {
+            get {
+                return ResourceManager.GetString("DeleteUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete user?.
+        /// </summary>
+        internal static string DeleteUserPrompt {
+            get {
+                return ResourceManager.GetString("DeleteUserPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting....
+        /// </summary>
+        internal static string Deleting {
+            get {
+                return ResourceManager.GetString("Deleting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Employee.
+        /// </summary>
+        internal static string EditEmployee {
+            get {
+                return ResourceManager.GetString("EditEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave blank if not changing password.
+        /// </summary>
+        internal static string EditUserPasswordInfo {
+            get {
+                return ResourceManager.GetString("EditUserPasswordInfo", resourceCulture);
             }
         }
         
@@ -211,6 +274,24 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occurred. Please try again..
+        /// </summary>
+        internal static string ErrorOccurred {
+            get {
+                return ResourceManager.GetString("ErrorOccurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Finish Registration.
         /// </summary>
         internal static string FinishRegistration {
@@ -274,6 +355,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Employee.
+        /// </summary>
+        internal static string NewEmployee {
+            get {
+                return ResourceManager.GetString("NewEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Password.
         /// </summary>
         internal static string NewPassword {
@@ -292,11 +382,29 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Employees.
         /// </summary>
         internal static string NoUsers {
             get {
                 return ResourceManager.GetString("NoUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        internal static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         
@@ -414,6 +522,24 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Changes.
+        /// </summary>
+        internal static string SaveChanges {
+            get {
+                return ResourceManager.GetString("SaveChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving....
+        /// </summary>
+        internal static string Saving {
+            get {
+                return ResourceManager.GetString("Saving", resourceCulture);
             }
         }
         
@@ -558,6 +684,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string VerifyEmail {
             get {
                 return ResourceManager.GetString("VerifyEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

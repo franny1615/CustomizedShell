@@ -139,7 +139,8 @@ public class PopupPage : BasePage
         switch(PopupStyle)
         {
             case PopupStyle.Center:
-                _ContentContainer.WidthRequest = info.Width / info.Density * 0.75;
+                _ContentContainer.WidthRequest = info.Width / info.Density * 0.85;
+                _ContentContainer.HeightRequest = info.Height / info.Density * 0.85;
                 break;
             case PopupStyle.BottomSheet:
             case PopupStyle.Unknown:

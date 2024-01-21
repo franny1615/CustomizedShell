@@ -288,4 +288,49 @@ May delete account at any time.
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="AddEmployee" xml:space="preserve">
+    <value>Add Employee</value>
+  </data>
+  <data name="EditEmployee" xml:space="preserve">
+    <value>Edit Employee</value>
+  </data>
+  <data name="NewEmployee" xml:space="preserve">
+    <value>New Employee</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="Adding" xml:space="preserve">
+    <value>Adding...</value>
+  </data>
+  <data name="DeleteUser" xml:space="preserve">
+    <value>Delete User</value>
+  </data>
+  <data name="DeleteUserPrompt" xml:space="preserve">
+    <value>Are you sure you want to delete user?</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Deleting...</value>
+  </data>
+  <data name="EditUserPasswordInfo" xml:space="preserve">
+    <value>Leave blank if not changing password</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>Error occurred. Please try again.</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Saving" xml:space="preserve">
+    <value>Saving...</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>
