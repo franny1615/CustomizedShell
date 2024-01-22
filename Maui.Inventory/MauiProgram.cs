@@ -71,6 +71,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminUsersViewModel>();
 
 		builder.Services.AddTransient<UserLoginViewModel>();
+		builder.Services.AddTransient<UserProfileViewModel>();
 
         return builder;
 	}

@@ -31,7 +31,8 @@ public class UserService : IUserService
             Password = password
         });
 
-        if (user.AccessToken.Length > 0)
+        bool success = user != null && user.AccessToken.Length > 0;
+        if (success)
         {
             await _adminDAL.DeleteAll();
             await _userDAL.DeleteAll();
@@ -39,7 +40,7 @@ public class UserService : IUserService
             await _userDAL.Insert(user);
         }
 
-        return user.AccessToken.Length > 0;
+        return success;
     }
 
     public async Task<RegistrationResponse> Register(

@@ -110,7 +110,7 @@ public class APIService : IAPIService
 
             var response = await _Client.SendAsync(request);
 
-            return await DealWithResponse<T>($"{apiFull}{endpoint}", response);
+            return await DealWithResponse<T>(endpoint, response);
         }
         catch (Exception ex) 
         {
