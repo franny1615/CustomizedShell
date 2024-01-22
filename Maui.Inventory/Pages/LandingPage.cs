@@ -3,7 +3,9 @@ using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Inventory.Pages.AdminPages;
+using Maui.Inventory.Pages.UserPages;
 using Maui.Inventory.ViewModels.AdminVM;
+using Maui.Inventory.ViewModels.UserVM;
 using Microsoft.Maui.Controls.Shapes;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
@@ -15,6 +17,7 @@ public class LandingPage : BasePage
 	private readonly ILanguageService _LangService;
 	private readonly AdminRegisterViewModel _AdminVM;
 	private readonly AdminLoginViewModel _AdminLoginVM;
+	private readonly UserLoginViewModel _UserLoginVM;
 	private readonly VerticalStackLayout _ProductContainer = new()
 	{
 		Spacing = 16,
@@ -82,7 +85,8 @@ public class LandingPage : BasePage
 	public LandingPage(
 		ILanguageService languageService,
 		AdminRegisterViewModel adminVM,
-		AdminLoginViewModel adminLoginVM) : base(languageService)
+		AdminLoginViewModel adminLoginVM,
+		UserLoginViewModel userLoginVM) : base(languageService)
 	{
 		Shell.SetNavBarIsVisible(this, false);
 		Shell.SetTabBarIsVisible(this, false);
@@ -91,6 +95,7 @@ public class LandingPage : BasePage
 		_LangService = languageService;
 		_AdminVM = adminVM;
 		_AdminLoginVM = adminLoginVM;
+		_UserLoginVM = userLoginVM;
 
 		_ProductContainer.Add(_ProductName);
 		_ProductName.Text = LanguageService.StringForKey("Product");
@@ -136,7 +141,8 @@ public class LandingPage : BasePage
 	#region Helpers
 	private void EmployeeLogin(object sender, EventArgs e)
 	{
-
+		_UserLoginVM.Clear();
+		Navigation.PushAsync(new UserLoginPage(_LangService, _UserLoginVM));
 	}
 
 	private void EmployerLogin(object sender, EventArgs e)

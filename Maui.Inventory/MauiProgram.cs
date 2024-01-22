@@ -13,6 +13,8 @@ using Maui.Inventory.Pages;
 using Maui.Inventory.ViewModels.AdminVM;
 using Maui.Inventory.Models.AdminModels;
 using Maui.Inventory.Models.UserModels;
+using Maui.Inventory.Pages.UserPages;
+using Maui.Inventory.ViewModels.UserVM;
 
 namespace Maui.Inventory;
 
@@ -51,6 +53,9 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminUsersPage>();
 		builder.Services.AddTransient<AdminProfilePage>();
 
+		builder.Services.AddTransient<UserLoginPage>();
+		builder.Services.AddTransient<UserProfilePage>();
+
 		return builder;
 	}
 
@@ -64,6 +69,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminUpdateEmailViewModel>();
 		builder.Services.AddTransient<AdminResetPasswordViewModel>();
 		builder.Services.AddTransient<AdminUsersViewModel>();
+
+		builder.Services.AddTransient<UserLoginViewModel>();
 
         return builder;
 	}

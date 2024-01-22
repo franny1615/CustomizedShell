@@ -8,6 +8,8 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Maui.Inventory.ViewModels.AdminVM;
+using Maui.Inventory.ViewModels.UserVM;
+using Maui.Inventory.Pages.UserPages;
 
 namespace Maui.Inventory;
 
@@ -17,6 +19,7 @@ public class App : Application
     private readonly ILanguageService _LanguageService;
     private readonly AdminRegisterViewModel _AdminVM;
     private readonly AdminLoginViewModel _AdminLoginVM;
+    private readonly UserLoginViewModel _UserLoginVM;
     private readonly AppViewModel _AppVM;
     #endregion
 
@@ -26,11 +29,13 @@ public class App : Application
         SplashViewModel splashViewModel,
         AdminRegisterViewModel adminVM,
         AdminLoginViewModel adminLoginVM,
+        UserLoginViewModel userLoginVM,
         AppViewModel appVM)
     {
         _LanguageService = languageService;
         _AdminVM = adminVM;
         _AdminLoginVM = adminLoginVM;
+        _UserLoginVM = userLoginVM;
         _AppVM = appVM;
 
         Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
@@ -67,7 +72,7 @@ public class App : Application
             !await _AppVM.IsAccessTokenValid()) // were signed in at some page, now we're not
         {
             UIUtils.ToggleDarkMode(false);
-            MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM));
+            MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM, _UserLoginVM));
         }
     }
 
@@ -100,7 +105,7 @@ public class App : Application
                 MainPage = new AdminShell(_LanguageService);
                 break;
             case AccessMessage.UserSignedIn:
-                MainPage = new UserShell();
+                MainPage = new UserShell(_LanguageService);
                 break;
             case AccessMessage.AdminLogout:
                 _AdminLoginVM.Clear();
@@ -108,11 +113,13 @@ public class App : Application
                 MainPage = new NavigationPage(new AdminLoginPage(_LanguageService, _AdminLoginVM));
                 break;
             case AccessMessage.UserLogout:
-                // TODO: go to user login page
+                _UserLoginVM.Clear();
+                UIUtils.ToggleDarkMode(false);
+                MainPage = new NavigationPage(new UserLoginPage(_LanguageService, _UserLoginVM));
                 break;
             case AccessMessage.LandingPage:
             case AccessMessage.AccessTokenExpired:
-                MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM));
+                MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM, _UserLoginVM));
                 break;
         }
     }

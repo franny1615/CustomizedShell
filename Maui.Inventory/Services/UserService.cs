@@ -22,10 +22,11 @@ public class UserService : IUserService
         _apiService = apiService;
     }
 
-    public async Task<bool> Login(string username, string password)
+    public async Task<bool> Login(int adminId, string username, string password)
     {
         var user = await _apiService.Post<User>(Endpoint.UserLogin, new
         {
+            AdminId = adminId,
             UserName = username,
             Password = password
         });

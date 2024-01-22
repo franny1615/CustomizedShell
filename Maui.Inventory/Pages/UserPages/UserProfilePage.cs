@@ -5,7 +5,15 @@ namespace Maui.Inventory.Pages.UserPages;
 
 public class UserProfilePage : BasePage
 {
-    public UserProfilePage(ILanguageService languageService) : base(languageService)
+    #region Private Properties
+    private readonly ILanguageService _LanguageService;
+    #endregion
+
+    #region Constructor
+    public UserProfilePage(
+        ILanguageService languageService) : base(languageService)
     {
+        _LanguageService = languageService;
     }
+    #endregion
 }

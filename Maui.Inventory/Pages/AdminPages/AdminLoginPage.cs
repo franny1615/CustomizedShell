@@ -79,16 +79,15 @@ public class AdminLoginPage : BasePage
     #region Helpers
     private async void Login(object sender, EventArgs e)
     {
+        if (_Login.Text == _LangService.StringForKey("Loading"))
+        {
+            return;
+        }
+
         _Login.Text = _LangService.StringForKey("Loading");
         bool loggedIn = await _AdminLoginVM.Login();
         if (loggedIn)
         {
-            // TODO: need a way to check if their license has expired and they need to re-purchase subscription
-            // changed backend to not check if license is valid on login, instead 
-            // pass back a new LicenseValid boolean as part of Admin model
-            // based on that flag, disable app features. 
-            // user should have free access to all their data, always. 
-            // if they do not pay, omit adding new data to servers, and omit barcode generation and printing features.
             WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.AdminSignedIn));
         }
         else

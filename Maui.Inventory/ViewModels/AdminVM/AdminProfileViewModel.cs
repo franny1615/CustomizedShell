@@ -39,8 +39,8 @@ public partial class AdminProfileViewModel : ObservableObject
 
         Username.PlaceholderIcon = MaterialIcon.Person;
         Email.PlaceholderIcon = MaterialIcon.Email;
-        CompanyId.PlaceholderIcon = MaterialIcon.Numbers;
-        LicenseId.PlaceholderIcon = MaterialIcon.Numbers;
+        CompanyId.PlaceholderIcon = MaterialIcon.Storefront;
+        LicenseId.PlaceholderIcon = MaterialIcon.Folder;
     }
 
     public async Task GetProfile()
