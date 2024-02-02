@@ -336,4 +336,7 @@ May delete account at any time.
   <data name="UserLogin" xml:space="preserve">
     <value>Employee Login</value>
   </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
 </root>

@@ -39,6 +39,12 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 				fonts.AddFont("MaterialIcons-Regular.ttf", MaterialIcon.FontName);
 			});
+		
+		builder.Services.AddMauiBlazorWebView();
+
+#if DEBUG
+        builder.Services.AddBlazorWebViewDeveloperTools();
+#endif
 
 		return builder.Build();
 	}
@@ -56,6 +62,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<UserLoginPage>();
 		builder.Services.AddTransient<UserProfilePage>();
 
+		builder.Services.AddTransient<InventoryPage>();
+
 		return builder;
 	}
 
@@ -72,6 +80,8 @@ public static class MauiProgram
 
 		builder.Services.AddTransient<UserLoginViewModel>();
 		builder.Services.AddTransient<UserProfileViewModel>();
+
+		builder.Services.AddTransient<InventoryViewModel>();
 
         return builder;
 	}

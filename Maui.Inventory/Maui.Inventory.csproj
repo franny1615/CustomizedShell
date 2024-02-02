@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-android;net8.0-ios</TargetFrameworks>
 		<OutputType>Exe</OutputType>
@@ -116,5 +116,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <AndroidResource Include="Platforms\Android\Resources\xml\network_security_config.xml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="wwwroot/css/" />
+	  <Folder Include="wwwroot/js/" />
 	</ItemGroup>
 </Project>

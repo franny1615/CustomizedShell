@@ -1,4 +1,5 @@
 ﻿using Maui.Components;
+using Maui.Inventory.Pages;
 using Maui.Inventory.Pages.AdminPages;
 
 namespace Maui.Inventory;
@@ -11,6 +12,11 @@ public class AdminShell : Shell
     {
         ContentTemplate = new DataTemplate(typeof(AdminDashboardPage)),
         Icon = "home.png",
+    };
+    private readonly ShellContent _inventory = new()
+    {
+        ContentTemplate = new DataTemplate(typeof(InventoryPage)),
+        Icon = "package.png",
     };
     private readonly ShellContent _users = new()
     {
@@ -31,10 +37,12 @@ public class AdminShell : Shell
         _LangService = languageService;
 
         _dashboard.Title = _LangService.StringForKey("Dashboard");
+        _inventory.Title = _LangService.StringForKey("Inventory");
         _users.Title = _LangService.StringForKey("Employees");
         _profile.Title = _LangService.StringForKey("Profile");
 
         _tabBar.Items.Add(_dashboard);
+        _tabBar.Items.Add(_inventory);
         _tabBar.Items.Add(_users);
         _tabBar.Items.Add(_profile);
         Items.Add(_tabBar);
