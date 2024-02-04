@@ -1,0 +1,49 @@
+﻿@page "/"
+
+<div class="flex-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-1">
+                <img id="inv-brand" src="images/app_ic_web.svg" width="72" height="72" style="border-radius: 12px;" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h4 style="text-align: left;margin-top:8px;"><b>@Title</b></h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <p>@AlreadyRegistered</p>
+    </div>
+    <div class="row">
+        <div class="col-12 d-grid">
+            <a class="btn btn-secondary" href="/login?type=employee"><b>@Employee</b></a>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 8px;">
+        <div class="col-12 d-grid">
+            <a class="btn btn-primary" href="/login?type=owner"><b>@Owner</b></a>
+        </div>
+    </div>
+    <div class="row">
+        <p class="rule-heading"><span><b>@OR</b></span></p>
+    </div>
+    <div class="row">
+        <div class="col-12 d-grid">
+            <a class="btn btn-secondary" href="/"><b>@Register</b></a>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string Title = LanguageService.Instance["Inventory Management"];
+    private string AlreadyRegistered = LanguageService.Instance["Already registered?"];
+    private string Employee = LanguageService.Instance["Employee"];
+    private string Owner = LanguageService.Instance["Owner"];
+    private string OR = LanguageService.Instance["OR"];
+    private string Register = LanguageService.Instance["Register"];
+}

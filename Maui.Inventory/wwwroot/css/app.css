@@ -1,0 +1,41 @@
+body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+}
+
+.flex-content {
+    flex-grow: 1;
+}
+
+.rule-heading {
+    position: relative;
+    text-align: center;
+    color: black;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.rule-heading:before {
+    content: "";
+    display: block;
+    border-top: solid 2px black;
+    position: inherit;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    z-index: 0;
+}
+
+.rule-heading span {
+    background: #fff;
+    padding: 0 10px;
+    position: relative;
+    z-index: 1;
+}
+

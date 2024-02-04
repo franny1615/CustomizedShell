@@ -8,7 +8,6 @@ using Maui.Inventory.Models;
 using ZXing.Net.Maui.Controls;
 using Maui.Inventory.Services.Interfaces;
 using Maui.Inventory.ViewModels;
-using Maui.Inventory.Pages;
 using Maui.Inventory.Models.AdminModels;
 using Maui.Inventory.Models.UserModels;
 
@@ -26,7 +25,6 @@ public static class MauiProgram
 			.UseMauiCommunityToolkitCore()
 			.UseMauiCommunityToolkitMarkup()
 			.UseBarcodeReader()
-			.RegisterPages()
 			.RegisterViewModels()
 			.RegisterServices()
 			.ConfigureFonts(fonts =>
@@ -45,20 +43,9 @@ public static class MauiProgram
 		return builder.Build();
 	}
 
-	public static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
-	{
-		builder.Services.AddTransient<SplashPage>();
-		builder.Services.AddTransient<InventoryPage>();
-		builder.Services.AddTransient<ProfilePage>();
-
-		return builder;
-	}
-
 	public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
 	{
-		builder.Services.AddTransient<SplashViewModel>();
 		builder.Services.AddTransient<AppViewModel>();
-		builder.Services.AddTransient<InventoryViewModel>();
 
         return builder;
 	}

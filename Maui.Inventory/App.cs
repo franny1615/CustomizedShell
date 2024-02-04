@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using Maui.Inventory.Models;
-using Maui.Inventory.ViewModels;
-using Maui.Inventory.Pages;
+﻿using Maui.Inventory.ViewModels;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -15,16 +12,15 @@ public class App : Application
     #endregion
 
     #region Constructor
-    public App(SplashViewModel splashViewModel, AppViewModel appVM)
+    public App(AppViewModel appVM)
     {
         _AppVM = appVM;
-
+        _AppVM.CheckAPIURL();
+        
         Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
-        MainPage = new SplashPage(splashViewModel);
-
-        RegisterListeners();
+        MainPage = new MainPage();
     }
     #endregion
 
@@ -47,58 +43,8 @@ public class App : Application
         AppCenter.Start(keyString, typeof(Analytics), typeof(Crashes));
     }
 
-    private async void AppResumed(object sender, EventArgs e)
-    {
-        if ((MainPage is AdminShell || MainPage is UserShell) &&
-            !await _AppVM.IsAccessTokenValid()) // were signed in at some page, now we're not
-        {
-            UIUtils.ToggleDarkMode(false);
-            MainPage = new NavigationPage(new LandingPage());
-        }
-    }
-
+    private void AppResumed(object sender, EventArgs e) { }
     private void AppCreated(object sender, EventArgs e) { }
     private void AppStopped(object sender, EventArgs e) { }
-    #endregion
-
-    #region Helpers
-    private void RegisterListeners()
-    {
-        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, message) =>
-        {
-            MainThread.BeginInvokeOnMainThread(() => { HandleInternalMessage(message); });
-        });
-    }
-
-    private void HandleInternalMessage(InternalMessage message)
-    {
-        if (message.Value is AccessMessage access)
-        {
-            AccessControl(access);
-        }
-    }
-
-    private void AccessControl(AccessMessage access)
-    {
-        switch (access)
-        {
-            case AccessMessage.AdminSignedIn:
-                MainPage = new AdminShell();
-                break;
-            case AccessMessage.UserSignedIn:
-                MainPage = new UserShell();
-                break;
-            case AccessMessage.AdminLogout:
-                // TODO: bring this back
-                break;
-            case AccessMessage.UserLogout:
-                // TODO: bring this back
-                break;
-            case AccessMessage.LandingPage:
-            case AccessMessage.AccessTokenExpired:
-                MainPage = new NavigationPage(new LandingPage());
-                break;
-        }
-    }
     #endregion
 }
