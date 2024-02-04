@@ -94,20 +94,20 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Owner.
+        ///   Looks up a localized string similar to Already registered?.
         /// </summary>
-        internal static string AdminLogin {
+        internal static string Already_registered_ {
             get {
-                return ResourceManager.GetString("AdminLogin", resourceCulture);
+                return ResourceManager.GetString("Already registered?", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Already registered?.
+        ///   Looks up a localized string similar to Back.
         /// </summary>
-        internal static string AlreadyRegistered {
+        internal static string Back {
             get {
-                return ResourceManager.GetString("AlreadyRegistered", resourceCulture);
+                return ResourceManager.GetString("Back", resourceCulture);
             }
         }
         
@@ -231,9 +231,9 @@ namespace Maui.Inventory.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Employee.
         /// </summary>
-        internal static string EmployeeLogin {
+        internal static string Employee {
             get {
-                return ResourceManager.GetString("EmployeeLogin", resourceCulture);
+                return ResourceManager.GetString("Employee", resourceCulture);
             }
         }
         
@@ -315,6 +315,24 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string InvalidEmail {
             get {
                 return ResourceManager.GetString("InvalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory.
+        /// </summary>
+        internal static string Inventory {
+            get {
+                return ResourceManager.GetString("Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory Management.
+        /// </summary>
+        internal static string Inventory_Management {
+            get {
+                return ResourceManager.GetString("Inventory Management", resourceCulture);
             }
         }
         
@@ -427,6 +445,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Owner.
+        /// </summary>
+        internal static string Owner {
+            get {
+                return ResourceManager.GetString("Owner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Owner Login.
         /// </summary>
         internal static string OwnerLogin {
@@ -450,15 +477,6 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string PasswordPossiblyWrong {
             get {
                 return ResourceManager.GetString("PasswordPossiblyWrong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inventory Management.
-        /// </summary>
-        internal static string Product {
-            get {
-                return ResourceManager.GetString("Product", resourceCulture);
             }
         }
         

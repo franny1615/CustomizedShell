@@ -1,20 +1,16 @@
-using Maui.Components;
+using Maui.Components.Pages;
 using Maui.Inventory.Components.Pages;
+using Maui.Inventory.Services;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 
 namespace Maui.Inventory.Pages;
 
-public class InventoryPage : ContentPage
+public class InventoryPage : BasePage
 {
-	#region Private Properties
-	private readonly ILanguageService _languageService;
-	#endregion
-
-	public InventoryPage(ILanguageService languageService)
+    #region Constructor
+    public InventoryPage() : base(LanguageService.Instance["Back"])
 	{
-		_languageService = languageService;
-
-		Title = _languageService.StringForKey("Inventory");
+		Title = LanguageService.Instance["Inventory"];
 		Content = new BlazorWebView
 		{
 			HostPage = "wwwroot/index.html",
@@ -28,4 +24,5 @@ public class InventoryPage : ContentPage
 			}
 		};
 	}
+    #endregion
 }

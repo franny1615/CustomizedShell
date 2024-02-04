@@ -2,11 +2,9 @@
 
 namespace Maui.Components.Pages;
 
-public class BasePage(ILanguageService languageService) : ContentPage
+public class BasePage(string backButtonText) : ContentPage
 {
     private readonly StatusBarBehavior _StatusBarBehavior = new();
-    
-    public readonly ILanguageService LanguageService = languageService;
 
     protected override void OnAppearing()
     {
@@ -34,7 +32,7 @@ public class BasePage(ILanguageService languageService) : ContentPage
         {
             Shell.SetBackButtonBehavior(this, new BackButtonBehavior
             {
-                TextOverride = LanguageService.StringForKey("GoBack")
+                TextOverride = backButtonText
             });
         }
     }

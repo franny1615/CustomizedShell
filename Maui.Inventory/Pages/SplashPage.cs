@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.Messaging;
-using Maui.Components;
 using Maui.Components.Pages;
 using Maui.Inventory.Models;
+using Maui.Inventory.Services;
 using Maui.Inventory.ViewModels;
 using Microsoft.Maui.Controls.Shapes;
 
@@ -14,9 +14,7 @@ public class SplashPage : BasePage
 	#endregion
 
 	#region Constructor
-	public SplashPage(
-		ILanguageService languageService,
-		SplashViewModel splashViewModel) : base(languageService)
+	public SplashPage(SplashViewModel splashViewModel) : base(LanguageService.Instance["Back"])
 	{
 		BindingContext = splashViewModel;
 

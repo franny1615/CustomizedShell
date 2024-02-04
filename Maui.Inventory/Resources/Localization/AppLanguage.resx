@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Product" xml:space="preserve">
+  <data name="Inventory Management" xml:space="preserve">
     <value>Inventory Management</value>
   </data>
-  <data name="AlreadyRegistered" xml:space="preserve">
+  <data name="Already registered?" xml:space="preserve">
     <value>Already registered?</value>
   </data>
-  <data name="EmployeeLogin" xml:space="preserve">
+  <data name="Employee" xml:space="preserve">
     <value>Employee</value>
   </data>
-  <data name="AdminLogin" xml:space="preserve">
+  <data name="Owner" xml:space="preserve">
     <value>Owner</value>
   </data>
   <data name="OR" xml:space="preserve">
@@ -338,5 +338,8 @@ May delete account at any time.
   </data>
   <data name="Inventory" xml:space="preserve">
     <value>Inventory</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
   </data>
 </root>

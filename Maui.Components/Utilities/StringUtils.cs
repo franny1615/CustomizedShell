@@ -6,42 +6,7 @@ namespace Maui.Components.Utilities;
 
 public static class StringUtils
 {
-    public static List<ISearchable> FilterList(
-        this List<ISearchable> list, 
-        string search)
-    {
-        if (string.IsNullOrEmpty(search))
-        {
-            return list;
-        }
-
-        string[] userInput = search.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-
-        List<ISearchable> filtered = new();
-        foreach(ISearchable searchable in list)
-        {
-            int foundCount = 0;
-            foreach(string checkAgainst in userInput)
-            {
-                foreach (string validWord in searchable.SearchableTerms)
-                {
-                    if (validWord.ToLower().Contains(checkAgainst.ToLower()))
-                    {
-                        foundCount++;
-                    }   
-                }    
-            }
-
-            if (foundCount == userInput.Length)
-            {
-                filtered.Add(searchable);
-            }
-        }
-
-        return filtered;
-    }
-
-    // from microsoft: https://learn.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format?redirectedfrom=MSDN
+    // from Microsoft: https://learn.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format?redirectedfrom=MSDN
     public static bool IsValidEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))

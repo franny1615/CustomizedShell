@@ -1,51 +1,31 @@
-﻿using Maui.Components;
-using Maui.Inventory.Pages;
-using Maui.Inventory.Pages.AdminPages;
+﻿using Maui.Inventory.Pages;
+using Maui.Inventory.Services;
 
 namespace Maui.Inventory;
 
 public class AdminShell : Shell
 {
-    #region Private Properties
-    private readonly ILanguageService _LangService;
-    private readonly ShellContent _dashboard = new()
-    {
-        ContentTemplate = new DataTemplate(typeof(AdminDashboardPage)),
-        Icon = "home.png",
-    };
-    private readonly ShellContent _inventory = new()
-    {
-        ContentTemplate = new DataTemplate(typeof(InventoryPage)),
-        Icon = "package.png",
-    };
-    private readonly ShellContent _users = new()
-    {
-        ContentTemplate = new DataTemplate(typeof(AdminUsersPage)),
-        Icon = "users.png"
-    };
-    private readonly ShellContent _profile = new()
-    {
-        ContentTemplate = new DataTemplate(typeof(AdminProfilePage)),
-        Icon = "user.png"
-    };
-    private readonly TabBar _tabBar = new();
-    #endregion
-
     #region Constructor
-    public AdminShell(ILanguageService languageService)
+    public AdminShell()
     {
-        _LangService = languageService;
-
-        _dashboard.Title = _LangService.StringForKey("Dashboard");
-        _inventory.Title = _LangService.StringForKey("Inventory");
-        _users.Title = _LangService.StringForKey("Employees");
-        _profile.Title = _LangService.StringForKey("Profile");
-
-        _tabBar.Items.Add(_dashboard);
-        _tabBar.Items.Add(_inventory);
-        _tabBar.Items.Add(_users);
-        _tabBar.Items.Add(_profile);
-        Items.Add(_tabBar);
+        Items.Add(new TabBar
+        {
+            Items =
+            {
+                new ShellContent
+                {
+                    ContentTemplate = new DataTemplate(typeof(InventoryPage)),
+                    Title = LanguageService.Instance["Inventory"],
+                    Icon = "package_ic.png"
+                },
+                new ShellContent
+                {
+                    ContentTemplate = new DataTemplate(typeof(ProfilePage)),
+                    Title = LanguageService.Instance["Profile"],
+                    Icon = "user.png"
+                }
+            }
+        });
     }
     #endregion
 }

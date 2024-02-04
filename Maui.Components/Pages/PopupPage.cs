@@ -61,7 +61,7 @@ public class PopupPage : BasePage
     #endregion
 
     #region Constructor
-    public PopupPage(ILanguageService languageService) : base(languageService)
+    public PopupPage() : base("")
     {
         Microsoft.Maui.Controls.NavigationPage.SetHasNavigationBar(this, false);
         Shell.SetNavBarIsVisible(this, false);

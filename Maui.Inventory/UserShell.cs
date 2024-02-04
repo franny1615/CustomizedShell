@@ -1,29 +1,25 @@
-﻿using Maui.Components;
-using Maui.Inventory.Pages.UserPages;
+﻿using Maui.Inventory.Pages;
+using Maui.Inventory.Services;
 
 namespace Maui.Inventory;
 
 public class UserShell : Shell
 {
-    #region Private Properties
-    private readonly ILanguageService _LangService;
-    private readonly ShellContent _profile = new()
-    {
-        ContentTemplate = new DataTemplate(typeof(UserProfilePage)),
-        Icon = "users.png"
-    };
-    private readonly TabBar _tabBar = new();
-    #endregion
-
     #region Constructor
-    public UserShell(ILanguageService languageService)
+    public UserShell()
     {
-        _LangService = languageService;
-
-        _profile.Title = _LangService.StringForKey("Profile");
-
-        _tabBar.Items.Add(_profile);
-        Items.Add(_tabBar);
+        Items.Add(new TabBar
+        {
+            Items = 
+            {
+                new ShellContent
+                {
+                    ContentTemplate = new DataTemplate(typeof(ProfilePage)),
+                    Title = LanguageService.Instance["Profile"],
+                    Icon = "users.png",
+                }
+            }
+        });
     }
     #endregion
 }
