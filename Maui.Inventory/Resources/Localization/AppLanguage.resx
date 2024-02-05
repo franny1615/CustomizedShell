@@ -201,7 +201,7 @@ May delete account at any time.
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="OwnerLogin" xml:space="preserve">
+  <data name="Owner Login" xml:space="preserve">
     <value>Owner Login</value>
   </data>
   <data name="UsernamePossiblyWrong" xml:space="preserve">
@@ -219,7 +219,7 @@ May delete account at any time.
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
-  <data name="CompanyId" xml:space="preserve">
+  <data name="Company ID" xml:space="preserve">
     <value>Company ID</value>
   </data>
   <data name="CompanyIdSupportText" xml:space="preserve">

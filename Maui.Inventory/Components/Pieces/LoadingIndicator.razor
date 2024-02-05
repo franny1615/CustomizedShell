@@ -1,0 +1,36 @@
+<div class="modal @LoadingIndicatorClass" tabindex="-1" style="display: @IsLoadingDisplay;" role="dialog">
+    <div style="display:table;height: 100%;width: auto;pointer-events:none;margin-right:auto;margin-left:auto;">
+        <div class="modal-dialog" style="display: table-cell;vertical-align: middle;pointer-events:none;">
+            <div class="modal-content" style="width:inherit;max-width:inherit;height:inherit;margin: 0 auto;pointer-events:all;padding:8px;">
+                <div class="modal-body">
+                    <div class="spinner-border text-primary" role="status" style="padding: 8px;">
+                        <span class="visually-hidden"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade @LoadingIndicatorClass" style="display: @IsLoadingDisplay"></div>
+
+@code {
+    private string IsLoadingDisplay = "none";
+    private string LoadingIndicatorClass = "";
+
+    public async Task OpenLoadingIndicator()
+    {
+        IsLoadingDisplay = "block";
+        await Task.Delay(250);
+        LoadingIndicatorClass = "show";
+        StateHasChanged();
+    }
+
+    public async Task CloseLoadingIndicator()
+    {
+        LoadingIndicatorClass = "";
+        await Task.Delay(250);
+        IsLoadingDisplay = "none";
+        StateHasChanged();
+    }
+}

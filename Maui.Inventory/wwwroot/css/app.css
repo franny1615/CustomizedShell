@@ -39,3 +39,26 @@ body {
     z-index: 1;
 }
 
+.inv-btn {
+    border: none;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 16px;
+}
+
+a:active, a:visited, a:hover {
+    color: white;
+}
+
+.inv-btn-primary {
+    background-color: #1F5673;
+}
+
+.inv-btn-secondary {
+    background-color: #102b3a;
+}

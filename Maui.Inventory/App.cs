@@ -1,4 +1,5 @@
-﻿using Maui.Inventory.ViewModels;
+﻿using Maui.Components.Interfaces;
+using Maui.Inventory.Models;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -7,15 +8,10 @@ namespace Maui.Inventory;
 
 public class App : Application
 {
-    #region Private Properties
-    private readonly AppViewModel _AppVM;
-    #endregion
-
     #region Constructor
-    public App(AppViewModel appVM)
+    public App(IDAL<ApiUrl> apiDAL)
     {
-        _AppVM = appVM;
-        _AppVM.CheckAPIURL();
+        CheckAPIURL(apiDAL);
         
         Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
@@ -46,5 +42,18 @@ public class App : Application
     private void AppResumed(object sender, EventArgs e) { }
     private void AppCreated(object sender, EventArgs e) { }
     private void AppStopped(object sender, EventArgs e) { }
+
+    public async void CheckAPIURL(IDAL<ApiUrl> apiDAL)
+    {
+        List<ApiUrl> apis = await apiDAL.GetAll();
+        if (apis == null || apis.Count == 0)
+        {
+            ApiUrl prod = new ApiUrl
+            {
+                URL = "https://mauiinventoryapi20231216094131.azurewebsites.net/"
+            };
+            await apiDAL.Save(prod);
+        }
+    }
     #endregion
 }

@@ -1,7 +1,103 @@
-﻿@page "/login"
+﻿@inject IAdminService AdminService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@using Maui.Inventory.Components.Pieces;
 
-<h3>LoginRazorPage</h3>
+@page "/login/{loginType}"
+
+<LoadingIndicator @ref="Indicator"></LoadingIndicator>
+
+<div class="flex-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-1">
+                <img id="inv-brand" src="../images/appIcon.svg" width="72" height="72" style="border-radius: 12px;" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h4 style="text-align: left;margin-top:8px;"><b>@Title</b></h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    @if (!string.IsNullOrEmpty(LoginType) && LoginType == "employee")
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <label for="company-input" class="form-label">@CompanyID</label>
+                <input type="text" id="company-input" class="form-control" aria-describedby="company-help-block">
+                <div id="company-help-block" class="form-text">@CompanyIDStatus</div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <label for="username-input" class="form-label">@Username</label>
+            <input type="text" id="username-input" class="form-control" aria-describedby="username-help-block">
+            <div id="username-help-block" class="form-text">@UsernameStatus</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label for="password-input" class="form-label">@Password</label>
+            <input type="password" id="password-input" class="form-control" aria-describedby="password-help-block">
+            <div id="password-help-block" class="form-text">@PasswordStatus</div>
+        </div>
+    </div>
+    <div class="row column-gap-1" style="margin-top: 32px;">
+        <div class="col-3 d-grid">
+            <button class="inv-btn inv-btn-secondary" type="button" @onclick=GoBack><b>@Back</b></button>
+        </div>
+        <div class="col-9 d-grid">
+            <button class="inv-btn inv-btn-primary" type="button" @onclick=LoginClicked><b>@Login</b></button>
+        </div>
+    </div>
+</div>
 
 @code {
-    
+    [Parameter]
+    public string LoginType { get; set; }
+
+    private string Title
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(LoginType) && LoginType == "employee")
+            {
+                return LanguageService.Instance["Employee Login"];
+            }
+            else if (!string.IsNullOrEmpty(LoginType) && LoginType == "owner")
+            {
+                return LanguageService.Instance["Owner Login"];
+            }
+
+            return LanguageService.Instance["Login"];
+        }
+    }
+
+    private LoadingIndicator Indicator { get; set; }
+    private string Login = LanguageService.Instance["Login"];
+    private string Back = LanguageService.Instance["Back"];
+    private string Password = LanguageService.Instance["Password"];
+    private string Username = LanguageService.Instance["Username"];
+    private string CompanyID = LanguageService.Instance["Company ID"];
+    private string UsernameStatus = "";
+    private string PasswordStatus = "";
+    private string CompanyIDStatus = "";
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/", false, true);
+    }
+
+    private async Task LoginClicked()
+    {
+        _ = Indicator.OpenLoadingIndicator();
+        // TODO:
+        _ = Indicator.CloseLoadingIndicator();
+    }
 }
