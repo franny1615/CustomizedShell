@@ -7,6 +7,8 @@ body {
     display: flex;
     flex-direction: column;
     min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .flex-content {
