@@ -16,7 +16,7 @@ public class AdminShell : Shell
     private readonly ShellContent _inventory = new()
     {
         ContentTemplate = new DataTemplate(typeof(InventoryPage)),
-        Icon = "package.png",
+        Icon = "package_ic.png",
     };
     private readonly ShellContent _users = new()
     {

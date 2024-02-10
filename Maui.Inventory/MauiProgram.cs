@@ -39,12 +39,6 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 				fonts.AddFont("MaterialIcons-Regular.ttf", MaterialIcon.FontName);
 			});
-		
-		builder.Services.AddMauiBlazorWebView();
-
-#if DEBUG
-        builder.Services.AddBlazorWebViewDeveloperTools();
-#endif
 
 		return builder.Build();
 	}

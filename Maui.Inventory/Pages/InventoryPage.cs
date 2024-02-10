@@ -1,6 +1,4 @@
 using Maui.Components;
-using Maui.Inventory.Components.Pages;
-using Microsoft.AspNetCore.Components.WebView.Maui;
 
 namespace Maui.Inventory.Pages;
 
@@ -15,17 +13,6 @@ public class InventoryPage : ContentPage
 		_languageService = languageService;
 
 		Title = _languageService.StringForKey("Inventory");
-		Content = new BlazorWebView
-		{
-			HostPage = "wwwroot/index.html",
-			RootComponents = 
-			{
-				new RootComponent
-				{
-					Selector = "#app",
-					ComponentType = typeof(InventoryRazorPage)
-				}
-			}
-		};
+		Content = new Grid();
 	}
 }
