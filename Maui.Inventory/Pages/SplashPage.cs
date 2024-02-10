@@ -50,7 +50,13 @@ public class SplashPage : BasePage
     {
         base.OnAppearing();
         _ViewModel.CheckAPIURL();
-        WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.LandingPage));
+        CheckAuth();
+    }
+
+    private async void CheckAuth()
+    {
+        AccessMessage auth = await _ViewModel.IsAccessTokenValid();
+        WeakReferenceMessenger.Default.Send(new InternalMessage(auth));
     }
     #endregion
 }

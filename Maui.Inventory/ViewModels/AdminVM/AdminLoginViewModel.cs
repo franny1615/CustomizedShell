@@ -47,16 +47,6 @@ public partial class AdminLoginViewModel : ObservableObject
     public async Task<bool> Login()
     {
         bool signedIn = await _AdminService.Login(Username.Text, Password.Text);
-        if (signedIn)
-        {
-            try
-            {
-                var admin = (await _AdminDAL.GetAll()).First();
-                UIUtils.ToggleDarkMode(admin.IsDarkModeOn);
-            }
-            catch { }
-        }
-
         return signedIn;
     }
 }

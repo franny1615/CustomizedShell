@@ -97,14 +97,16 @@ public class App : Application
         }
     }
 
-    private void AccessControl(AccessMessage access)
+    private async void AccessControl(AccessMessage access)
     {
         switch (access)
         {
             case AccessMessage.AdminSignedIn:
+                UIUtils.ToggleDarkMode(await _AppVM.ShouldEnableDarkMode());
                 MainPage = new AdminShell(_LanguageService);
                 break;
             case AccessMessage.UserSignedIn:
+                UIUtils.ToggleDarkMode(await _AppVM.ShouldEnableDarkMode());
                 MainPage = new UserShell(_LanguageService);
                 break;
             case AccessMessage.AdminLogout:

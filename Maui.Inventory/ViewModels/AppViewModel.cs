@@ -1,10 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Maui.Components.Interfaces;
+using Maui.Inventory.Models;
 using Maui.Inventory.Models.AdminModels;
 using Maui.Inventory.Models.UserModels;
+using Maui.Inventory.Utilities;
 using Microsoft.AppCenter.Crashes;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Maui.Inventory.ViewModels;
 
@@ -23,14 +23,20 @@ public partial class AppViewModel : ObservableObject
 
     public async Task<bool> IsAccessTokenValid()
     {
+        AccessMessage result = await StringUtils.IsAccessTokenValid(_UserDAL, _AdminDAL);
+        return result == AccessMessage.AdminSignedIn || result == AccessMessage.UserSignedIn;
+    }
+
+    public async Task<bool> ShouldEnableDarkMode()
+    {
         User user = null;
         Admin admin = null;
         try
         {
             user = (await _UserDAL.GetAll()).First();
         }
-        catch (Exception ex) 
-        { 
+        catch (Exception ex)
+        {
             Crashes.TrackError(ex);
         }
 
@@ -38,45 +44,20 @@ public partial class AppViewModel : ObservableObject
         {
             admin = (await _AdminDAL.GetAll()).First();
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             Crashes.TrackError(ex);
         }
 
         if (user is not null)
         {
-            return IsJWTExpired(user.AccessToken);
+            return user.IsDarkModeOn;
         }
         else if (admin is not null)
         {
-            return IsJWTExpired(admin.AccessToken);
+            return admin.IsDarkModeOn;
         }
-        else 
-        {
-            return false;
-        }
-    }
 
-    private bool IsJWTExpired(string accessToken)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        var jsonToken = handler.ReadToken(accessToken) as JwtSecurityToken;
-
-        try
-        {
-            var expirationClaim = jsonToken.Claims.First(claim => claim.Type == "exp");
-            var ticks = long.Parse(expirationClaim.Value);
-
-            var tokenDate = DateTimeOffset.FromUnixTimeSeconds(ticks).UtcDateTime;
-            var now = DateTime.UtcNow;
-
-            return tokenDate >= now;
-        }
-        catch (Exception ex)
-        {
-            Crashes.TrackError(ex);
-
-            return false;
-        }
+        return false;
     }
 }

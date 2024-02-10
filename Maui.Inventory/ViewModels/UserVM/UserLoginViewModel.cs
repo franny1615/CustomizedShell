@@ -60,16 +60,6 @@ public partial class UserLoginViewModel : ObservableObject
             Username.Text, 
             Password.Text);
 
-        if (signedIn)
-        {
-            try
-            {
-                var user = (await _UserDAL.GetAll()).First();
-                UIUtils.ToggleDarkMode(user.IsDarkModeOn);
-            }
-            catch { }
-        }
-
         return signedIn;
     }
 }

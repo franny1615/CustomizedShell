@@ -3,6 +3,7 @@ using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using Maui.Inventory.Models.AdminModels;
 using Maui.Inventory.Models.UserModels;
+using Maui.Inventory.Utilities;
 
 namespace Maui.Inventory.ViewModels;
 
@@ -34,4 +35,7 @@ public partial class SplashViewModel : ObservableObject
             await _APIDAL.Save(prod);
         }
     }
+
+    public async Task<AccessMessage> IsAccessTokenValid()
+        => await StringUtils.IsAccessTokenValid(_UserDAL, _AdminDAL);
 }
