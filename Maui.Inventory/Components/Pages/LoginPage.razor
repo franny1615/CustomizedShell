@@ -97,7 +97,7 @@
     private async Task LoginClicked()
     {
         _ = Indicator.OpenLoadingIndicator();
-        // TODO:
+        await Task.Delay(1000);
         _ = Indicator.CloseLoadingIndicator();
     }
 }
