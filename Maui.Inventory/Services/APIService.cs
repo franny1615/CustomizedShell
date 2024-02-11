@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
-using Maui.Inventory.Models.AdminModels;
-using Maui.Inventory.Models.UserModels;
 using Maui.Inventory.Services.Interfaces;
 using Microsoft.AppCenter.Crashes;
 using System.Text;

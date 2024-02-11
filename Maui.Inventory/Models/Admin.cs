@@ -3,7 +3,7 @@ using Maui.Components.DAL;
 using Maui.Components.Interfaces;
 using SQLite;
 
-namespace Maui.Inventory.Models.AdminModels;
+namespace Maui.Inventory.Models;
 
 [Table("admin")]
 public class Admin

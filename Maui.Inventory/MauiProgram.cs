@@ -11,8 +11,6 @@ using Maui.Inventory.ViewModels;
 using Maui.Inventory.Pages.AdminPages;
 using Maui.Inventory.Pages;
 using Maui.Inventory.ViewModels.AdminVM;
-using Maui.Inventory.Models.AdminModels;
-using Maui.Inventory.Models.UserModels;
 using Maui.Inventory.Pages.UserPages;
 using Maui.Inventory.ViewModels.UserVM;
 

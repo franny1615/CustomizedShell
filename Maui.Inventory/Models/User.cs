@@ -1,9 +1,10 @@
 ﻿using System.Text.Json.Serialization;
 using Maui.Components.DAL;
 using Maui.Components.Interfaces;
+
 using SQLite;
 
-namespace Maui.Inventory.Models.UserModels;
+namespace Maui.Inventory.Models;
 
 [Table("user")]
 public class User

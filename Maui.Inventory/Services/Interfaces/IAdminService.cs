@@ -1,6 +1,4 @@
 ﻿using Maui.Inventory.Models;
-using Maui.Inventory.Models.AdminModels;
-using Maui.Inventory.Models.UserModels;
 
 namespace Maui.Inventory.Services.Interfaces;
 

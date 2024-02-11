@@ -4,7 +4,6 @@ using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Components.Utilities;
 using Maui.Inventory.Models;
-using Maui.Inventory.Models.UserModels;
 using Maui.Inventory.ViewModels.AdminVM;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 using FloatingActionButton = Maui.Components.Controls.FloatingActionButton;

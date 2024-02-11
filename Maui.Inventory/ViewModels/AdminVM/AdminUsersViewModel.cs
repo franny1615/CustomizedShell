@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Maui.Inventory.Models.UserModels;
 using Maui.Inventory.Services.Interfaces;
 using System.Collections.ObjectModel;
 using Maui.Inventory.Models;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Interfaces;
-using Maui.Inventory.Models.AdminModels;
 using Microsoft.AppCenter.Crashes;
 
 namespace Maui.Inventory.ViewModels.AdminVM;
