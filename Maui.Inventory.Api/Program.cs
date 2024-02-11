@@ -36,6 +36,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IInventoryRepository, InventoryRepository>();
 
 var app = builder.Build();
 
