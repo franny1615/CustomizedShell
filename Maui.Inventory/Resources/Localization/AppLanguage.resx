@@ -339,4 +339,13 @@ May delete account at any time.
   <data name="Inventory" xml:space="preserve">
     <value>Inventory</value>
   </data>
+  <data name="Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="Statuses" xml:space="preserve">
+    <value>Statuses</value>
+  </data>
 </root>

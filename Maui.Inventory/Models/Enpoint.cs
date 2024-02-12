@@ -24,6 +24,27 @@ public class Endpoint
     public const string EmailStartVerifying = "api/email/beginValidation";
     public const string EmailVerify = "api/email/validate";
     #endregion
+
+    #region Inventory
+    public const string GetInventory = "api/inventory/list";
+    public const string InsertInventory = "api/inventory/insert";
+    public const string UpdateInventory = "api/inventory/update";
+    public const string DeleteInventory = "api/inventory/delete";
+    #endregion
+
+    #region Locations
+    public const string GetLocations  = "api/locations/list";
+    public const string InsertLocations  = "api/locations/insert";
+    public const string UpdateLocations = "api/locations/update";
+    public const string DeleteLocations = "api/locations/delete";
+    #endregion
+
+    #region Status
+    public const string GetStatus = "api/status/list";
+    public const string InsertStatus = "api/status/insert";
+    public const string UpdateStatus = "api/status/update";
+    public const string DeleteStatus = "api/status/delete";
+    #endregion
 }
 
 [Table("api_url")]

@@ -11,7 +11,7 @@ public class AdminShell : Shell
     private readonly ShellContent _dashboard = new()
     {
         ContentTemplate = new DataTemplate(typeof(AdminDashboardPage)),
-        Icon = "home.png",
+        Icon = "list_ic.png",
     };
     private readonly ShellContent _inventory = new()
     {
@@ -36,13 +36,13 @@ public class AdminShell : Shell
     {
         _LangService = languageService;
 
-        _dashboard.Title = _LangService.StringForKey("Dashboard");
+        _dashboard.Title = _LangService.StringForKey("Data");
         _inventory.Title = _LangService.StringForKey("Inventory");
         _users.Title = _LangService.StringForKey("Employees");
         _profile.Title = _LangService.StringForKey("Profile");
 
-        _tabBar.Items.Add(_dashboard);
         _tabBar.Items.Add(_inventory);
+        _tabBar.Items.Add(_dashboard);
         _tabBar.Items.Add(_users);
         _tabBar.Items.Add(_profile);
         Items.Add(_tabBar);

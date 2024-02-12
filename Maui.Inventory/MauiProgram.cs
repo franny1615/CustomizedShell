@@ -88,7 +88,10 @@ public static class MauiProgram
 		builder.Services.AddTransient<IAdminService, AdminService>();
 		builder.Services.AddTransient<IUserService, UserService>();
 		builder.Services.AddTransient<IEmailService, EmailService>();
+		builder.Services.AddTransient<ICRUDService<Models.Inventory>, InventoryService>();
+        builder.Services.AddTransient<ICRUDService<Models.Location>, LocationsService>();
+        builder.Services.AddTransient<ICRUDService<Models.Status>, StatusService>();
 
-		return builder;
+        return builder;
 	}
 }
