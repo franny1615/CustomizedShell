@@ -9,18 +9,18 @@ using Microsoft.AppCenter.Crashes;
 
 namespace Maui.Inventory.ViewModels.AdminVM;
 
-public partial class AdminUsersViewModel : ObservableObject
+public partial class AdminUsersViewModel : ObservableObject, IMaterialListVM<User>
 {
-    private const int ITEMS_PER_PAGE = 5;
     private readonly IAdminService _AdminService;
     private readonly ILanguageService _LanguageService;
     private readonly IUserService _UserService;
     private readonly IDAL<Admin> _AdminDAL;
 
-    public ObservableCollection<User> Users { get; set; } = new();
+    public int ItemsPerPage { get; set; } = 20;
+    public ObservableCollection<User> Items { get; set; } = new();
+    public MaterialPaginationModel PaginationModel { get; set; } = new();
+    public MaterialEntryModel SearchModel { get; set; } = new();
 
-    public MaterialPaginationModel PaginationModel = new();
-    public MaterialEntryModel SearchModel = new();
     public User SelectedUser = null;
 
     public AdminEditUsersViewModel EditUsersViewModel => new(_LanguageService, _UserService, _AdminService, _AdminDAL, SelectedUser);
@@ -42,27 +42,27 @@ public partial class AdminUsersViewModel : ObservableObject
         SearchModel.EntryStyle = EntryStyle.Search;
     }
 
-    public async Task GetUsers()
+    public async Task GetItems()
     {
-        Users.Clear();
+        Items.Clear();
 
         var users = await _AdminService.GetUsers(new ListRequest
         {
             Page = PaginationModel.CurrentPage - 1,
-            ItemsPerPage = ITEMS_PER_PAGE,
+            ItemsPerPage = ItemsPerPage,
             Search = SearchModel.Text,
         });
 
         for (int i = 0; i < users.Items.Count; i++)
         {
-            Users.Add(users.Items[i]);
+            Items.Add(users.Items[i]);
         }
 
-        var addendum = users.Total % ITEMS_PER_PAGE == 0 ? 0 : 1;
-        var division = users.Total / ITEMS_PER_PAGE; 
-        var calculatedTotal = (users.Total % ITEMS_PER_PAGE == 0) ? division : division + addendum;
+        var addendum = users.Total % ItemsPerPage == 0 ? 0 : 1;
+        var division = users.Total / ItemsPerPage; 
+        var calculatedTotal = (users.Total % ItemsPerPage == 0) ? division : division + addendum;
 
-        PaginationModel.TotalPages = users.Total > ITEMS_PER_PAGE ? calculatedTotal : 1;
+        PaginationModel.TotalPages = users.Total > ItemsPerPage ? calculatedTotal : 1;
     }
 }
 

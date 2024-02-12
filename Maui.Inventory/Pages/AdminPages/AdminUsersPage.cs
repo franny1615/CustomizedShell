@@ -2,7 +2,6 @@ using CommunityToolkit.Maui.Markup;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
-using Maui.Components.Utilities;
 using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels.AdminVM;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
@@ -15,24 +14,13 @@ public class AdminUsersPage : BasePage
     #region Private Properties
     private AdminUsersViewModel _ViewModel => (AdminUsersViewModel) BindingContext;
     private readonly ILanguageService _LangService;
-    private readonly Debouncer _SearchDebouncer = new(0.5);
-    private readonly Grid _ContentLayout = new()
-    {
-        RowDefinitions = Rows.Define(Auto, Star, Auto),
-        RowSpacing = 8,
-        Padding = 16
-    };
+    private readonly Grid _ContentLayout = new();
     private readonly FloatingActionButton _AddUser = new()
     {
         ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Add, Colors.White),
         FABBackgroundColor = Application.Current.Resources["Primary"] as Color,
         FABStyle = FloatingActionButtonStyle.Regular,
-        ZIndex = 1,
-    };
-    private readonly CollectionView _UsersCollection = new()
-    {
-        ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 8 },
-        ZIndex = 0,
+        Margin = 16
     };
     private readonly MaterialImage _UserIcon = new()
     {
@@ -54,10 +42,7 @@ public class AdminUsersPage : BasePage
         VerticalOptions = LayoutOptions.Center,
         HorizontalOptions = LayoutOptions.Center
     };
-    private bool _IsLoading = false;
-    private readonly ProgressBar _BusyIndicator = new() { ZIndex = 1, WidthRequest = 200 };
-    private readonly MaterialEntry _Search;
-    private readonly MaterialPagination _Pagination;
+    private readonly MaterialList<User> _Search;
     #endregion
 
     #region Constructor
@@ -68,20 +53,13 @@ public class AdminUsersPage : BasePage
         BindingContext = adminUsersVM;
         _LangService = languageService;
 
-        _Search = new(adminUsersVM.SearchModel);
-        _Pagination = new(adminUsersVM.PaginationModel);
-
         _NoUsers.Text = _LangService.StringForKey("NoUsers");
         Title = _LangService.StringForKey("Employees");
 
         _NoUsersUI.Add(_UserIcon.Center());
         _NoUsersUI.Add(_NoUsers);
 
-        _Pagination.ContentColor = Colors.White;
-        _Pagination.BackgroundColor = Application.Current.Resources["Primary"] as Color;
-
-        _UsersCollection.SetBinding(CollectionView.ItemsSourceProperty, "Users");
-        _UsersCollection.ItemTemplate = new DataTemplate(() =>
+        _Search = new(_NoUsersUI, new DataTemplate(() =>
         {
             var view = new MaterialCardView();
             view.SetBinding(MaterialCardView.BindingContextProperty, ".");
@@ -96,19 +74,17 @@ public class AdminUsersPage : BasePage
             view.Clicked += UserClicked;
 
             return view;
-        });
+        }), adminUsersVM);
 
-        _ContentLayout.Children.Add(_Search.Row(0));
-        _ContentLayout.Children.Add(_UsersCollection.Row(1));
-        _ContentLayout.Children.Add(_AddUser.Row(1).End().Bottom().RowSpan(2));
-        _ContentLayout.Children.Add(_Pagination.Row(2).Center());
+        _ContentLayout.Children.Add(_Search.ZIndex(0));
+        _ContentLayout.Children.Add(_AddUser.End().Bottom().ZIndex(1));
 
         ToolbarItems.Add(new ToolbarItem
         {
             IconImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Refresh, Colors.White, 30),
             Command = new Command(() =>
             {
-                FetchUsers();
+                _Search.Fetch();
             })
         });
 
@@ -120,64 +96,18 @@ public class AdminUsersPage : BasePage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        FetchUsers();
+        _Search.Fetch();
         _AddUser.Clicked += AddUser;
-        _Search.TextChanged += SearchChanged;
-        _Pagination.PageChanged += PageChanged;
     }
 
     protected override void OnDisappearing()
     {
         _AddUser.Clicked -= AddUser;
-        _Search.TextChanged -= SearchChanged;
-        _Pagination.PageChanged -= PageChanged;
         base.OnDisappearing();
     }
     #endregion
 
     #region Helpers
-    private async void FetchUsers()
-    {
-        StartBusyIndicator();
-        await _ViewModel.GetUsers();
-
-        if (_ViewModel.Users.Count > 0)
-        {
-            _ContentLayout.Children.Remove(_NoUsersUI);
-        }
-        else
-        {
-            if (!_ContentLayout.Children.Contains(_NoUsersUI))
-            {
-                _ContentLayout.Children.Add(_NoUsersUI.Row(1));
-            }
-        }
-
-        EndBusyIndicator();
-    }
-
-    private void StartBusyIndicator()
-    {
-        _IsLoading = true;
-        _ContentLayout.Children.Add(_BusyIndicator.Top().CenterHorizontal().Row(1));
-        _BusyIndicator.ProgressColor = Application.Current.Resources["Secondary"] as Color;
-        _BusyIndicator.Progress = 1;
-        Task.Run(async () =>
-        {
-            while(_IsLoading)
-            {
-                await _BusyIndicator.FadeTo(0.25);
-                await _BusyIndicator.FadeTo(1);
-            }
-        });
-    }
-
-    private void EndBusyIndicator()
-    {
-        _ContentLayout.Children.Remove(_BusyIndicator);
-        _IsLoading = false;
-    }
-
     private void UserClicked(object sender, EventArgs e)
     {
         if (sender is MaterialCardView card && 
@@ -192,19 +122,6 @@ public class AdminUsersPage : BasePage
     {
         _ViewModel.SelectedUser = null;
         Navigation.PushModalAsync(new AdminEditUserPopupPage(_LangService, _ViewModel.EditUsersViewModel));
-    }
-
-    private void SearchChanged(object sender, TextChangedEventArgs e)
-    {
-        _SearchDebouncer.Debounce(() =>
-        {
-            FetchUsers();
-        });
-    }
-
-    private void PageChanged(object sender, PageChangedEventArgs e)
-    {
-        FetchUsers();
     }
     #endregion
 }
