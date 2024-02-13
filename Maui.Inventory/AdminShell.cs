@@ -46,6 +46,9 @@ public class AdminShell : Shell
         _tabBar.Items.Add(_users);
         _tabBar.Items.Add(_profile);
         Items.Add(_tabBar);
+
+        Routing.RegisterRoute(nameof(AdminLocationsPage), typeof(AdminLocationsPage));
+        Routing.RegisterRoute(nameof(AdminStatusesPage), typeof(AdminStatusesPage));
     }
     #endregion
 }

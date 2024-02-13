@@ -1,14 +1,15 @@
 using Maui.Components;
+using Maui.Components.Pages;
 
 namespace Maui.Inventory.Pages;
 
-public class InventoryPage : ContentPage
+public class InventoryPage : BasePage
 {
 	#region Private Properties
 	private readonly ILanguageService _languageService;
 	#endregion
 
-	public InventoryPage(ILanguageService languageService)
+	public InventoryPage(ILanguageService languageService) : base(languageService)
 	{
 		_languageService = languageService;
 

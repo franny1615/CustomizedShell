@@ -68,12 +68,12 @@ public class AdminDashboardPage : BasePage
     #region Helpers
     private void StatusesClicked(object sender, EventArgs e)
     {
-        // TODO:
+        Shell.Current.GoToAsync(nameof(AdminStatusesPage));
     }
 
     private void LocationsClicked(object sender, EventArgs e)
     {
-        // TODO:
+        Shell.Current.GoToAsync(nameof(AdminLocationsPage));
     }
     #endregion
 }

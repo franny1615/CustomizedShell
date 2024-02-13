@@ -55,6 +55,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<UserProfilePage>();
 
 		builder.Services.AddTransient<InventoryPage>();
+		builder.Services.AddTransient<AdminStatusesPage>();
+		builder.Services.AddTransient<AdminLocationsPage>();
 
 		return builder;
 	}
@@ -74,6 +76,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<UserProfileViewModel>();
 
 		builder.Services.AddTransient<InventoryViewModel>();
+		builder.Services.AddTransient<AdminStatusesViewModel>();
 
         return builder;
 	}

@@ -418,6 +418,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Statuses..
+        /// </summary>
+        internal static string No_Statuses_ {
+            get {
+                return ResourceManager.GetString("No Statuses.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Employees.
         /// </summary>
         internal static string NoUsers {
