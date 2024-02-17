@@ -14,11 +14,11 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.3" />
 		<PackageReference Include="sqlite-net-sqlcipher" Version="1.8.116" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.7" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="CommunityToolkit.Maui.Core" Version="7.0.1" />
 		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="4.0.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
 	</ItemGroup>
 
 	<!-- Android -->
@@ -31,5 +31,11 @@
 	<ItemGroup Condition="$(TargetFramework.StartsWith('net8.0-ios')) != true AND $(TargetFramework.StartsWith('net8.0-maccatalyst')) != true">
 		<Compile Remove="**\**\*.MaciOS.cs" />
 		<None Include="**\**\*.MaciOS.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.7" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
 	</ItemGroup>
 </Project>
