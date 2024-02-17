@@ -13,26 +13,6 @@ public class AdminStatusesPage : BasePage
     private AdminStatusesViewModel _ViewModel => (AdminStatusesViewModel)BindingContext;
     private readonly Grid _ContentLayout = new();
     private readonly MaterialList<Models.Status> _Search;
-    private readonly MaterialImage _NoItemIcon = new()
-    {
-        Icon = MaterialIcon.Check_circle,
-        IconColor = Application.Current.Resources["TextColor"] as Color,
-        IconSize = 40
-    };
-    private readonly Label _NoItems = new()
-    {
-        FontSize = 21,
-        FontAttributes = FontAttributes.Bold,
-        HorizontalTextAlignment = TextAlignment.Center,
-        HorizontalOptions = LayoutOptions.Center,
-        VerticalOptions = LayoutOptions.Center,
-    };
-    private readonly VerticalStackLayout _NoItemsUI = new()
-    {
-        Spacing = 8,
-        VerticalOptions = LayoutOptions.Center,
-        HorizontalOptions = LayoutOptions.Center
-    };
     #endregion
 
     #region Constructor
@@ -45,11 +25,7 @@ public class AdminStatusesPage : BasePage
         _LangService = languageService;
         Title = _LangService.StringForKey("Statuses");
 
-        _NoItems.Text = _LangService.StringForKey("No Statuses.");
-        _NoItemsUI.Add(_NoItemIcon.Center());
-        _NoItemsUI.Add(_NoItems);
-
-        _Search = new(_NoItemsUI, new DataTemplate(() =>
+        _Search = new(noItemsText: _LangService.StringForKey("No Statuses."), noItemsIcon: MaterialIcon.Check_circle, new DataTemplate(() =>
         {
             var view = new MaterialCardView();
             view.SetBinding(MaterialCardView.BindingContextProperty, ".");
@@ -63,10 +39,15 @@ public class AdminStatusesPage : BasePage
             view.Clicked += StatusClicked;
 
             return view;
-        }), statusesVM);
+        }), statusesVM, isEditable: true);
 
         _ContentLayout.Children.Add(_Search.ZIndex(0));
         Content = _ContentLayout;
+        _Search.AddItemClicked += AddStatus;
+    }
+    ~AdminStatusesPage()
+    {
+        _Search.AddItemClicked -= AddStatus;
     }
     #endregion
 
@@ -87,6 +68,11 @@ public class AdminStatusesPage : BasePage
     private void StatusClicked(object sender, EventArgs e)
     {
         // TODO: 
+    }
+
+    private void AddStatus(object sender, ClickedEventArgs e)
+    {
+        // TODO:
     }
     #endregion
 }

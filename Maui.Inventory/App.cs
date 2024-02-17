@@ -10,6 +10,7 @@ using Microsoft.AppCenter.Crashes;
 using Maui.Inventory.ViewModels.AdminVM;
 using Maui.Inventory.ViewModels.UserVM;
 using Maui.Inventory.Pages.UserPages;
+using Maui.Components.Utilities;
 
 namespace Maui.Inventory;
 

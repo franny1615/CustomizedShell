@@ -16,9 +16,13 @@ public interface IMaterialListVM<T>
 
 public class MaterialList<T> : ContentView
 {
+    #region Events
+    public event EventHandler<ClickedEventArgs> AddItemClicked;
+    #endregion
+
     #region Private Properties
     private IMaterialListVM<T> _ViewModel => (IMaterialListVM<T>) BindingContext;
-    private readonly Debouncer _SearchDebouncer = new(0.5);
+    private readonly Debouncer _SearchDebouncer = new(1.25);
     private readonly Grid _ContentLayout = new()
     {
         RowDefinitions = Rows.Define(Auto, Star, Auto),
@@ -34,16 +38,47 @@ public class MaterialList<T> : ContentView
     private readonly ProgressBar _BusyIndicator = new() { ZIndex = 1, WidthRequest = 200 };
     private readonly MaterialEntry _Search;
     private readonly MaterialPagination _Pagination;
-    private readonly View _NoItemsUI;
+    private readonly MaterialImage _NoItemIcon = new()
+    {
+        Icon = MaterialIcon.Check_circle,
+        IconColor = Application.Current.Resources["TextColor"] as Color,
+        IconSize = 40
+    };
+    private readonly Label _NoItems = new()
+    {
+        FontSize = 21,
+        FontAttributes = FontAttributes.Bold,
+        HorizontalTextAlignment = TextAlignment.Center,
+        HorizontalOptions = LayoutOptions.Center,
+        VerticalOptions = LayoutOptions.Center,
+    };
+    private readonly VerticalStackLayout _NoItemsUI = new()
+    {
+        Spacing = 8,
+        VerticalOptions = LayoutOptions.Center,
+        HorizontalOptions = LayoutOptions.Center
+    };
+    private readonly FloatingActionButton _Add = new()
+    {
+        ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Add, Colors.White),
+        FABBackgroundColor = Application.Current.Resources["Primary"] as Color,
+        FABStyle = FloatingActionButtonStyle.Regular,
+        Margin = new Thickness(0, 0, 0, 0)
+    };
     #endregion
 
     #region Constructor
     public MaterialList(
-        View emptyListUI,
+        string noItemsText,
+        string noItemsIcon,
         DataTemplate cardTemplate,
-        IMaterialListVM<T> viewModel)
+        IMaterialListVM<T> viewModel,
+        bool isEditable = false)
     {
-        _NoItemsUI = emptyListUI;
+        _NoItemIcon.Icon = noItemsIcon;
+        _NoItems.Text = noItemsText;
+        _NoItemsUI.Add(_NoItemIcon.Center());
+        _NoItemsUI.Add(_NoItems);
 
         BindingContext = viewModel;
 
@@ -60,15 +95,22 @@ public class MaterialList<T> : ContentView
         _ContentLayout.Children.Add(_Collection.Row(1));
         _ContentLayout.Children.Add(_Pagination.Row(2).Center());
 
+        if (isEditable)
+        {
+            _ContentLayout.Children.Add(_Add.Row(0).RowSpan(3).End().Bottom().ZIndex(1));
+        }
+
         Content = _ContentLayout;
 
         _Search.TextChanged += SearchChanged;
         _Pagination.PageChanged += PageChanged;
+        _Add.Clicked += AddClicked;
     }
     ~MaterialList()
     {
         _Search.TextChanged -= SearchChanged;
         _Pagination.PageChanged -= PageChanged;
+        _Add.Clicked -= AddClicked;
     }
     #endregion
 
@@ -120,6 +162,11 @@ public class MaterialList<T> : ContentView
     private void PageChanged(object sender, PageChangedEventArgs e)
     {
         Fetch();
+    }
+
+    private void AddClicked(object sender, ClickedEventArgs e)
+    {
+        AddItemClicked?.Invoke(sender, e);
     }
     #endregion
 }

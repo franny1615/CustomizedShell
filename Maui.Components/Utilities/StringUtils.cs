@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text.RegularExpressions;
 using Maui.Components.Interfaces;
+using Microsoft.AppCenter.Crashes;
 
 namespace Maui.Components.Utilities;
 
@@ -90,6 +92,29 @@ public static class StringUtils
         }
         catch (RegexMatchTimeoutException)
         {
+            return false;
+        }
+    }
+
+    public static bool IsJWTExpired(string accessToken)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(accessToken) as JwtSecurityToken;
+
+        try
+        {
+            var expirationClaim = jsonToken.Claims.First(claim => claim.Type == "exp");
+            var ticks = long.Parse(expirationClaim.Value);
+
+            var tokenDate = DateTimeOffset.FromUnixTimeSeconds(ticks).UtcDateTime;
+            var now = DateTime.UtcNow;
+
+            return tokenDate >= now;
+        }
+        catch (Exception ex)
+        {
+            Crashes.TrackError(ex);
+
             return false;
         }
     }
