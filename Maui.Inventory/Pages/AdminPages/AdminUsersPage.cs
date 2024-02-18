@@ -59,7 +59,6 @@ public class AdminUsersPage : BasePage
     {
         base.OnAppearing();
         _Search.FetchPublic();
-        
     }
 
     protected override void OnDisappearing()
@@ -186,6 +185,13 @@ public class AdminEditUserPopupPage : PopupPage
 
         PopupStyle = PopupStyle.Center;
         PopupContent = _ContentLayout;
+        _Save.Clicked += Save;
+        _DeleteUser.Clicked += Delete;
+    }
+    ~AdminEditUserPopupPage()
+    {
+        _Save.Clicked -= Save;
+        _DeleteUser.Clicked -= Delete;
     }
     #endregion
 
@@ -193,14 +199,10 @@ public class AdminEditUserPopupPage : PopupPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Save.Clicked += Save;
-        _DeleteUser.Clicked += Delete;
     }
 
     protected override void OnDisappearing()
     {
-        _Save.Clicked -= Save;
-        _DeleteUser.Clicked -= Delete;
         base.OnDisappearing();
     }
     #endregion

@@ -76,6 +76,24 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Location.
+        /// </summary>
+        internal static string Add_Location {
+            get {
+                return ResourceManager.GetString("Add Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Employee.
         /// </summary>
         internal static string AddEmployee {
@@ -108,6 +126,24 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string AlreadyRegistered {
             get {
                 return ResourceManager.GetString("AlreadyRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete?.
+        /// </summary>
+        internal static string Are_you_sure_you_want_to_delete_ {
+            get {
+                return ResourceManager.GetString("Are you sure you want to delete?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode.
+        /// </summary>
+        internal static string Barcode {
+            get {
+                return ResourceManager.GetString("Barcode", resourceCulture);
             }
         }
         
@@ -166,6 +202,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Location.
+        /// </summary>
+        internal static string Delete_Location {
+            get {
+                return ResourceManager.GetString("Delete Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete User.
         /// </summary>
         internal static string DeleteUser {
@@ -189,6 +234,24 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Deleting {
             get {
                 return ResourceManager.GetString("Deleting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Location.
+        /// </summary>
+        internal static string Edit_Location {
+            get {
+                return ResourceManager.GetString("Edit Location", resourceCulture);
             }
         }
         

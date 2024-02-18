@@ -354,4 +354,25 @@ May delete account at any time.
   <data name="No Locations." xml:space="preserve">
     <value>No Locations.</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Add Location" xml:space="preserve">
+    <value>Add Location</value>
+  </data>
+  <data name="Barcode" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Edit Location" xml:space="preserve">
+    <value>Edit Location</value>
+  </data>
+  <data name="Are you sure you want to delete?" xml:space="preserve">
+    <value>Are you sure you want to delete?</value>
+  </data>
+  <data name="Delete Location" xml:space="preserve">
+    <value>Delete Location</value>
+  </data>
 </root>
