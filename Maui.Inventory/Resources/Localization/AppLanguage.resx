@@ -351,4 +351,7 @@ May delete account at any time.
   <data name="No Statuses." xml:space="preserve">
     <value>No Statuses.</value>
   </data>
+  <data name="No Locations." xml:space="preserve">
+    <value>No Locations.</value>
+  </data>
 </root>

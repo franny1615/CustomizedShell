@@ -77,6 +77,7 @@ public static class MauiProgram
 
 		builder.Services.AddTransient<InventoryViewModel>();
 		builder.Services.AddTransient<AdminStatusesViewModel>();
+		builder.Services.AddTransient<AdminLocationsViewModel>();
 
         return builder;
 	}

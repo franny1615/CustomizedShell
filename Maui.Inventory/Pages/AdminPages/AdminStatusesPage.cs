@@ -11,7 +11,6 @@ public class AdminStatusesPage : BasePage
     #region Private Properties
     private readonly ILanguageService _LangService;
     private AdminStatusesViewModel _ViewModel => (AdminStatusesViewModel)BindingContext;
-    private readonly Grid _ContentLayout = new();
     private readonly MaterialList<Models.Status> _Search;
     #endregion
 
@@ -41,8 +40,7 @@ public class AdminStatusesPage : BasePage
             return view;
         }), statusesVM, isEditable: true);
 
-        _ContentLayout.Children.Add(_Search.ZIndex(0));
-        Content = _ContentLayout;
+        Content = _Search;
         _Search.AddItemClicked += AddStatus;
     }
     ~AdminStatusesPage()

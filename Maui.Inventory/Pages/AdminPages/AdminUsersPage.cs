@@ -15,7 +15,6 @@ public class AdminUsersPage : BasePage
     #region Private Properties
     private AdminUsersViewModel _ViewModel => (AdminUsersViewModel) BindingContext;
     private readonly ILanguageService _LangService;
-    private readonly Grid _ContentLayout = new();
     private readonly MaterialList<User> _Search;
     #endregion
 
@@ -46,9 +45,7 @@ public class AdminUsersPage : BasePage
             return view;
         }), adminUsersVM, isEditable: true);
 
-        _ContentLayout.Children.Add(_Search.ZIndex(0));
-
-        Content = _ContentLayout;
+        Content = _Search;
         _Search.AddItemClicked += AddUser;
     }
     ~AdminUsersPage()
