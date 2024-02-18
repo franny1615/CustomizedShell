@@ -135,6 +135,18 @@ public class AdminProfilePage : BasePage
 
         _ContentScroll.Content = _ContentLayout;
         Content = _ContentScroll;
+
+        _DarkModeSwitch.Toggled += DarkModeToggled;
+        _Logout.Clicked += Logout;
+        _UpdateEmail.Clicked += UpdateEmail;
+        _ResetPassword.Clicked += ResetPassword;
+    }
+    ~AdminProfilePage()
+    {
+        _Logout.Clicked -= Logout;
+        _DarkModeSwitch.Toggled -= DarkModeToggled;
+        _UpdateEmail.Clicked -= UpdateEmail;
+        _ResetPassword.Clicked -= ResetPassword;
     }
     #endregion
 
@@ -142,22 +154,12 @@ public class AdminProfilePage : BasePage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        _DarkModeSwitch.Toggled += DarkModeToggled;
-        _Logout.Clicked += Logout;
-        _UpdateEmail.Clicked += UpdateEmail;
-        _ResetPassword.Clicked += ResetPassword;
-
         await _AdminProfileVM.GetProfile();
         _DarkModeSwitch.IsToggled = _AdminProfileVM.IsDarkModeOn;
     }
 
     protected override void OnDisappearing()
     {
-        _Logout.Clicked -= Logout;
-        _DarkModeSwitch.Toggled -= DarkModeToggled;
-        _UpdateEmail.Clicked -= UpdateEmail;
-        _ResetPassword.Clicked -= ResetPassword;
-
         base.OnDisappearing();
     }
     #endregion
@@ -186,10 +188,12 @@ public class AdminProfilePage : BasePage
 
     private async void ResetPassword(object sender, EventArgs e)
     {
+        _ResetPassword.Text = _LangService.StringForKey("Loading");
         if (await _AdminProfileVM.SendCode())
         {
             await Navigation.PushModalAsync(new AdminResetPasswordPage(_LangService, _AdminResetVM));
         }
+        _ResetPassword.Text = _LangService.StringForKey("ResetPassword");
     }
     #endregion
 }

@@ -55,7 +55,7 @@ public class AdminStatusesPage : BasePage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Search.Fetch();
+        _Search.FetchPublic();
     }
 
     protected override void OnDisappearing()

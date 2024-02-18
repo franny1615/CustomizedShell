@@ -86,6 +86,14 @@ public class UserProfilePage : BasePage
 
         _ContentScroll.Content = _ContentLayout;
         Content = _ContentScroll;
+
+        _DarkModeSwitch.Toggled += DarkModeToggled;
+        _Logout.Clicked += Logout;
+    }
+    ~UserProfilePage()
+    {
+        _Logout.Clicked -= Logout;
+        _DarkModeSwitch.Toggled -= DarkModeToggled;
     }
     #endregion
 
@@ -93,18 +101,12 @@ public class UserProfilePage : BasePage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-
-        _DarkModeSwitch.Toggled += DarkModeToggled;
-        _Logout.Clicked += Logout;
-
         await _ViewModel.GetProfile();
         _DarkModeSwitch.IsToggled = _ViewModel.IsDarkModeOn;
     }
 
     protected override void OnDisappearing()
     {
-        _Logout.Clicked -= Logout;
-        _DarkModeSwitch.Toggled -= DarkModeToggled;
         base.OnDisappearing();
     }
     #endregion

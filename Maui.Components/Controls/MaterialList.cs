@@ -29,13 +29,12 @@ public class MaterialList<T> : ContentView
         RowSpacing = 8,
         Padding = 16
     };
+    private readonly RefreshView _Refresh = new();
     private readonly CollectionView _Collection = new()
     {
         ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 8 },
         ZIndex = 0,
     };
-    private bool _IsLoading = false;
-    private readonly ProgressBar _BusyIndicator = new() { ZIndex = 1, WidthRequest = 200 };
     private readonly MaterialEntry _Search;
     private readonly MaterialPagination _Pagination;
     private readonly MaterialImage _NoItemIcon = new()
@@ -91,8 +90,11 @@ public class MaterialList<T> : ContentView
         _Collection.SetBinding(CollectionView.ItemsSourceProperty, "Items");
         _Collection.ItemTemplate = cardTemplate;
 
+        _Refresh.Content = _Collection;
+        _Refresh.Command = new Command(Fetch);
+
         _ContentLayout.Children.Add(_Search.Row(0));
-        _ContentLayout.Children.Add(_Collection.Row(1));
+        _ContentLayout.Children.Add(_Refresh.Row(1));
         _ContentLayout.Children.Add(_Pagination.Row(2).Center());
 
         if (isEditable)
@@ -115,9 +117,10 @@ public class MaterialList<T> : ContentView
     #endregion
 
     #region Helpers
-    public async void Fetch()
+    public void FetchPublic() => _Refresh.IsRefreshing = true;
+
+    private async void Fetch()
     {
-        StartBusyIndicator();
         await _ViewModel.GetItems();
 
         _ContentLayout.Children.Remove(_NoItemsUI);
@@ -126,29 +129,7 @@ public class MaterialList<T> : ContentView
             _ContentLayout.Children.Add(_NoItemsUI.Row(1));
         }
 
-        EndBusyIndicator();
-    }
-
-    private void StartBusyIndicator()
-    {
-        _IsLoading = true;
-        _ContentLayout.Children.Add(_BusyIndicator.Top().CenterHorizontal().Row(1));
-        _BusyIndicator.ProgressColor = Application.Current.Resources["Secondary"] as Color;
-        _BusyIndicator.Progress = 1;
-        Task.Run(async () =>
-        {
-            while (_IsLoading)
-            {
-                await _BusyIndicator.FadeTo(0.25);
-                await _BusyIndicator.FadeTo(1);
-            }
-        });
-    }
-
-    private void EndBusyIndicator()
-    {
-        _ContentLayout.Children.Remove(_BusyIndicator);
-        _IsLoading = false;
+        _Refresh.IsRefreshing = false;
     }
 
     private void SearchChanged(object sender, TextChangedEventArgs e)

@@ -48,15 +48,6 @@ public class AdminUsersPage : BasePage
 
         _ContentLayout.Children.Add(_Search.ZIndex(0));
 
-        ToolbarItems.Add(new ToolbarItem
-        {
-            IconImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Refresh, Colors.White, 30),
-            Command = new Command(() =>
-            {
-                _Search.Fetch();
-            })
-        });
-
         Content = _ContentLayout;
         _Search.AddItemClicked += AddUser;
     }
@@ -70,7 +61,7 @@ public class AdminUsersPage : BasePage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Search.Fetch();
+        _Search.FetchPublic();
         
     }
 
