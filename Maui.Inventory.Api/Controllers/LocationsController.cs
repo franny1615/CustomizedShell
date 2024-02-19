@@ -1,7 +1,9 @@
-﻿using Maui.Inventory.Api.Interfaces;
+﻿using GenCode128;
+using Maui.Inventory.Api.Interfaces;
 using Maui.Inventory.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace Maui.Inventory.Api.Controllers;
 
@@ -58,5 +60,33 @@ public class LocationsController(
     public async Task<APIResponse<bool>> Delete([FromBody] Location location)
     {
         return await locationRepository.Delete(location);
+    }
+
+    [HttpGet]
+    [Route("generateBarcode")]
+    [Authorize]
+    public APIResponse<string> GenerateBarcode([FromQuery] Location location)
+    {
+        APIResponse<string> response = new();
+        try
+        {
+            Image barcodeImg = Code128Rendering.MakeBarcodeImage(location.Barcode, 2, true);
+            using (MemoryStream ms = new MemoryStream()) 
+            {
+                ImageConverter conventer = new();
+                object? imageBytes = conventer.ConvertTo(barcodeImg, typeof(byte[]));
+
+                response.Success = true;
+                response.Message = "success";
+                response.Data = Convert.ToBase64String((imageBytes as byte[]) ?? []);
+            }
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Message = $"ERROR >>> {ex.Message}";
+            response.Data = "";
+        }
+        return response;
     }
 }
