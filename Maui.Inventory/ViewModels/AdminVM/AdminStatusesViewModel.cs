@@ -13,43 +13,46 @@ public partial class AdminStatusesViewModel: ObservableObject, IMaterialListVM<S
     private readonly ICRUDService<Status> _statusService;
     private readonly ILanguageService _langService;
     private readonly IDAL<Admin> _adminDAL;
-    private readonly IDAL<User> _userDAL;
 
     public int ItemsPerPage { get; set; } = 20;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
     public ObservableCollection<Status> Items { get; set; } = new();
 
+    public MaterialEntryModel DescriptionModel { get; set; } = new();
+
+    public Status SelectedStatus = null;
+
+    public EditMode EditMode => SelectedStatus == null ? EditMode.Add : EditMode.Edit;
+
     public AdminStatusesViewModel(
         ICRUDService<Status> statusService,
         ILanguageService langService,
-        IDAL<Admin> adminDAl,
-        IDAL<User> userDAL)
+        IDAL<Admin> adminDAl)
     {
         _langService = langService;
         _statusService = statusService;
         _adminDAL = adminDAl;
-        _userDAL = userDAL;
 
         SearchModel.Placeholder = _langService.StringForKey("Search");
         SearchModel.PlaceholderIcon = MaterialIcon.Search;
         SearchModel.Keyboard = Keyboard.Plain;
         SearchModel.EntryStyle = EntryStyle.Search;
+
+        DescriptionModel.Placeholder = _langService.StringForKey("Description");
+        DescriptionModel.PlaceholderIcon = MaterialIcon.Description;
+        DescriptionModel.Keyboard = Keyboard.Plain;
+        DescriptionModel.IsSpellCheckEnabled = false;
     }
 
     public async Task GetItems()
     {
         Items.Clear();
 
-        User user = (await _userDAL.GetAll()).FirstOrDefault();
         Admin admin = (await _adminDAL.GetAll()).FirstOrDefault();
 
         int adminId = -1;
-        if(user != null)
-        {
-            adminId = user.AdminID;
-        }
-        else if (admin != null)
+        if (admin != null)
         {
             adminId = admin.Id;
         }
@@ -61,10 +64,68 @@ public partial class AdminStatusesViewModel: ObservableObject, IMaterialListVM<S
             Search = SearchModel.Text
         }, adminId);
 
+        for (int i = 0; i < statuses.Items.Count; i++)
+        {
+            Items.Add(statuses.Items[i]);
+        }
+
         var addendum = statuses.Total % ItemsPerPage == 0 ? 0 : 1;
         var division = statuses.Total / ItemsPerPage;
         var calculatedTotal = (statuses.Total % ItemsPerPage == 0) ? division : division + addendum;
 
         PaginationModel.TotalPages = statuses.Total > ItemsPerPage ? calculatedTotal : 1;
+    }
+
+    public async Task<bool> Update()
+    {
+        if (SelectedStatus == null)
+            return true;
+        if (string.IsNullOrEmpty(DescriptionModel.Text))
+            return false;
+
+        SelectedStatus.Description = DescriptionModel.Text;
+        return await _statusService.Update(SelectedStatus);
+    }
+
+    public async Task<bool> Insert()
+    {
+        if (string.IsNullOrEmpty(DescriptionModel.Text))
+            return false;
+
+        int adminID = await GetAdminID();
+        if (adminID == -1)
+        {
+            return false;
+        }
+
+        return await _statusService.Insert(new Status
+        {
+            AdminId = adminID,
+            Description = DescriptionModel.Text,
+        });
+    }
+
+    private async Task<int> GetAdminID()
+    {
+        int adminID = -1;
+        try
+        {
+            adminID = (await _adminDAL.GetAll()).First().Id;
+        }
+        catch { }
+        return adminID;
+    }
+
+    public void Clean()
+    {
+        DescriptionModel.Text = "";
+    }
+
+    public async Task<bool> Delete()
+    {
+        if (SelectedStatus == null)
+            return true;
+
+        return await _statusService.Delete(SelectedStatus);
     }
 }
