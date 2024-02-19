@@ -204,11 +204,13 @@ public class AdminEditLocationPage : PopupPage
 
         _Save.Clicked += Save;
         _Delete.Clicked += Delete;
+        _Print.Clicked += Print;
     }
     ~AdminEditLocationPage()
     {
         _Save.Clicked -= Save;
         _Delete.Clicked -= Delete;
+        _Print.Clicked -= Print;
     }
     #endregion
 
@@ -303,6 +305,14 @@ public class AdminEditLocationPage : PopupPage
             _LangService.StringForKey("Error"),
             _LangService.StringForKey("ErrorOccurred"),
             _LangService.StringForKey("OK"));
+    }
+
+    private void Print(object sender, ClickedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(_ViewModel.CurrentBarcodeBase64))
+            return;
+
+        PrintUtility.PrintBase64Image(_ViewModel.CurrentBarcodeBase64);
     }
     #endregion
 }
