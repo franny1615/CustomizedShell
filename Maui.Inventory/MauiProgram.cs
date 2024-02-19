@@ -5,7 +5,6 @@ using Maui.Components;
 using Maui.Inventory.Services;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
-using ZXing.Net.Maui.Controls;
 using Maui.Inventory.Services.Interfaces;
 using Maui.Inventory.ViewModels;
 using Maui.Inventory.Pages.AdminPages;
@@ -27,7 +26,6 @@ public static class MauiProgram
 			.UseMauiCommunityToolkit()
 			.UseMauiCommunityToolkitCore()
 			.UseMauiCommunityToolkitMarkup()
-			.UseBarcodeReader()
 			.RegisterPages()
 			.RegisterViewModels()
 			.RegisterServices()
@@ -94,7 +92,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<IUserService, UserService>();
 		builder.Services.AddTransient<IEmailService, EmailService>();
 		builder.Services.AddTransient<ICRUDService<Models.Inventory>, InventoryService>();
-        builder.Services.AddTransient<ICRUDService<Models.Location>, LocationsService>();
+        builder.Services.AddTransient<ILocationsService, LocationsService>();
         builder.Services.AddTransient<ICRUDService<Models.Status>, StatusService>();
 
         return builder;

@@ -32,7 +32,7 @@ public class AdminStatusesPage : BasePage
             var view = new MaterialCardView();
             view.SetBinding(MaterialCardView.BindingContextProperty, ".");
             view.SetBinding(MaterialCardView.HeadlineProperty, "Description");
-            view.SupportingText = null;
+            view.SupportingText = "";
             view.Icon = MaterialIcon.Check_circle;
             view.TrailingIcon = MaterialIcon.Chevron_right;
             view.IconColor = Colors.White;

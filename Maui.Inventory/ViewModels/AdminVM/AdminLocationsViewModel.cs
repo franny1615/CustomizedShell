@@ -10,7 +10,7 @@ namespace Maui.Inventory.ViewModels.AdminVM;
 
 public partial class AdminLocationsViewModel : ObservableObject, IMaterialListVM<Models.Location>
 {
-    private readonly ICRUDService<Models.Location> _locationService;
+    private readonly ILocationsService _locationService;
     private readonly ILanguageService _langService;
     private readonly IDAL<Admin> _adminDAL;
 
@@ -25,9 +25,10 @@ public partial class AdminLocationsViewModel : ObservableObject, IMaterialListVM
     public MaterialEntryModel BarcodeModel { get; set; } = new();
 
     public EditMode EditMode => SelectedLocation == null ? EditMode.Add : EditMode.Edit;
+    public string CurrentBarcodeBase64 = string.Empty;
 
     public AdminLocationsViewModel(
-        ICRUDService<Models.Location> locationService,
+        ILocationsService locationService,
         ILanguageService langService,
         IDAL<Admin> adminDAl)
     {
@@ -137,5 +138,15 @@ public partial class AdminLocationsViewModel : ObservableObject, IMaterialListVM
     {
         DescriptionModel.Text = "";
         BarcodeModel.Text = "";
+        CurrentBarcodeBase64 = string.Empty;
+    }
+
+    public async Task GenerateBarcode(string code)
+    {
+        string base64 = await _locationService.GenerateBarcode(code);
+        if (!string.IsNullOrEmpty(base64))
+        {
+            CurrentBarcodeBase64 = base64;
+        }
     }
 }

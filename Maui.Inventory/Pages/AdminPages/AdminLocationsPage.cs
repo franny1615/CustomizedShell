@@ -4,7 +4,6 @@ using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Components.Utilities;
 using Maui.Inventory.ViewModels.AdminVM;
-using ZXing.Net.Maui.Controls;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Inventory.Pages.AdminPages;
@@ -117,12 +116,7 @@ public class AdminEditLocationPage : PopupPage
     };
     private readonly MaterialEntry _Description;
     private readonly MaterialEntry _Barcode;
-    private readonly BarcodeGeneratorView _BarcodeView = new()
-    {
-        HeightRequest = 70,
-        Format = ZXing.Net.Maui.BarcodeFormat.Code128,
-        Margin = 8
-    };
+    private readonly Image _BarcodeView = new();
     private readonly FloatingActionButton _Save = new()
     {
         FABBackgroundColor = Application.Current.Resources["Primary"] as Color,
@@ -164,8 +158,8 @@ public class AdminEditLocationPage : PopupPage
         _ContentLayout.Children.Add(_Close.Row(0).Column(2).Center());
 
         _UserInputHolder.Add(_Description);
-        _UserInputHolder.Add(_BarcodeView);
         _UserInputHolder.Add(_Barcode);
+        _UserInputHolder.Add(_BarcodeView);
         _Scroll.Content = _UserInputHolder;
         _ContentLayout.Add(_Scroll.Row(1).Column(0).ColumnSpan(3));
 
@@ -178,7 +172,7 @@ public class AdminEditLocationPage : PopupPage
                 _Description.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
 
                 string ticks = $"{DateTime.Now.Ticks}";
-                _BarcodeView.Value = ticks;
+                PopulateBarcode(ticks);
                 viewModel.BarcodeModel.Text = ticks;
 
                 _ContentLayout.Add(_Save.Row(2).Column(0).ColumnSpan(3));
@@ -189,7 +183,7 @@ public class AdminEditLocationPage : PopupPage
 
                 viewModel.DescriptionModel.Text = viewModel.SelectedLocation.Description;
                 viewModel.BarcodeModel.Text = viewModel.SelectedLocation.Barcode;
-                _BarcodeView.Value = viewModel.SelectedLocation.Barcode;
+                PopulateBarcode(viewModel.SelectedLocation.Barcode);
 
                 _ContentLayout.Add(new Grid
                 {
@@ -231,6 +225,18 @@ public class AdminEditLocationPage : PopupPage
     #endregion
 
     #region Helpers
+    private async void PopulateBarcode(string code)
+    {
+        await _ViewModel.GenerateBarcode(code);
+        if (!string.IsNullOrEmpty(_ViewModel.CurrentBarcodeBase64))
+        {
+            _BarcodeView.Source = ImageSource.FromStream(() =>
+            {
+                return new MemoryStream(Convert.FromBase64String(_ViewModel.CurrentBarcodeBase64));
+            });
+        }
+    }
+
     private async void Save(object sender, ClickedEventArgs e)
     {
         if (_Save.Text == _LangService.StringForKey("Saving"))
