@@ -175,6 +175,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created.
+        /// </summary>
+        internal static string Created {
+            get {
+                return ResourceManager.GetString("Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customize.
         /// </summary>
         internal static string Customize {
@@ -427,6 +436,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last Edited.
+        /// </summary>
+        internal static string Last_Edited {
+            get {
+                return ResourceManager.GetString("Last Edited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to License ID.
         /// </summary>
         internal static string LicenseId {
@@ -504,6 +522,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Inventory..
+        /// </summary>
+        internal static string No_Inventory_ {
+            get {
+                return ResourceManager.GetString("No Inventory.", resourceCulture);
             }
         }
         
@@ -603,6 +630,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity.
+        /// </summary>
+        internal static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
         

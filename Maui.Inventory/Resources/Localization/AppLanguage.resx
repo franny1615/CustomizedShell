@@ -384,4 +384,16 @@ May delete account at any time.
   <data name="Edit Status" xml:space="preserve">
     <value>Edit Status</value>
   </data>
+  <data name="Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Last Edited" xml:space="preserve">
+    <value>Last Edited</value>
+  </data>
+  <data name="No Inventory." xml:space="preserve">
+    <value>No Inventory.</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
 </root>

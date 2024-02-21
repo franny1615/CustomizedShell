@@ -1,19 +1,74 @@
 using Maui.Components;
+using Maui.Components.Controls;
 using Maui.Components.Pages;
+using Maui.Inventory.ViewModels;
 
 namespace Maui.Inventory.Pages;
 
 public class InventoryPage : BasePage
 {
 	#region Private Properties
+	private InventoryViewModel _viewModel => (InventoryViewModel) BindingContext;
 	private readonly ILanguageService _languageService;
-	#endregion
+	private readonly MaterialList<Models.Inventory> _Search;
+    #endregion
 
-	public InventoryPage(ILanguageService languageService) : base(languageService)
+    #region Constructor
+    public InventoryPage(
+		ILanguageService languageService,
+		InventoryViewModel viewModel) : base(languageService)
 	{
 		_languageService = languageService;
+		BindingContext = viewModel;
 
 		Title = _languageService.StringForKey("Inventory");
-		Content = new Grid();
+
+		_Search = new(_languageService.StringForKey("No Inventory."), MaterialIcon.Inventory_2, new DataTemplate(() =>
+		{
+			var view = new MaterialArticleCardView();
+			view.SetBinding(MaterialArticleCardView.BindingContextProperty, ".");
+			view.SetBinding(MaterialArticleCardView.ArticleProperty, "Description");
+            view.SetBinding(MaterialArticleCardView.MainSupportOneProperty, "Location");
+            view.SetBinding(MaterialArticleCardView.SecondarySupportTwoProperty, "LastEditedOnStr");
+            view.SetBinding(MaterialArticleCardView.SecondarySupportOneProperty, "Status");
+            view.SetDynamicResource(MaterialCardView.BackgroundColorProperty, "CardColor");
+            view.Clicked += EditInventory;
+
+			return view;
+		}), viewModel, isEditable: true);
+
+		Content = _Search;
+
+        _Search.AddItemClicked += AddInventory;
 	}
+	~InventoryPage()
+	{
+		_Search.AddItemClicked -= AddInventory;	
+	}
+    #endregion
+
+    #region Overrides
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _Search.FetchPublic();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+    }
+    #endregion
+
+    #region Helpers
+    private void AddInventory(object sender, ClickedEventArgs e)
+    {
+        // TODO:
+    }
+
+    private void EditInventory(object sender, EventArgs e)
+    {
+        // TODO:
+    }
+    #endregion
 }
