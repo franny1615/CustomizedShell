@@ -5,6 +5,7 @@ CREATE TABLE inventory
     Description  NVARCHAR(1024) NOT NULL DEFAULT '',
     Status       NVARCHAR(300)  NOT NULL DEFAULT '',
     Quantity     INT NOT NULL DEFAULT 0,
+    QuantityType NVARCHAR(124)  NOT NULL DEFAULT '',
     Barcode      NVARCHAR(300)  NOT NULL DEFAULT '',
     Location     NVARCHAR(300)  NOT NULL DEFAULT '',
     LastEditedOn DATE NOT NULL DEFAULT GETDATE(),

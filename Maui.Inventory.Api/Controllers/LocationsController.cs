@@ -15,7 +15,7 @@ public class LocationsController(
     [HttpGet]
     [Route("list")]
     [Authorize]
-    public async Task<APIResponse<PaginatedQueryResponse<Location>>> GetInventory(
+    public async Task<APIResponse<PaginatedQueryResponse<Location>>> GetAll(
         [FromQuery] PaginatedRequest paginatedRequest)
     {
         APIResponse<PaginatedQueryResponse<Location>> response;

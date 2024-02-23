@@ -4,12 +4,10 @@ using Maui.Inventory.Api.Utilities;
 
 namespace Maui.Inventory.Api.Repositories;
 
-public class InventoryRepository : IInventoryRepository
+public class QuantityTypeRepository : IQuantityTypeRepository
 {
-    #region GET INVENTORY
-    public async Task<APIResponse<PaginatedQueryResponse<Models.Inventory>>> GetAll(
-        PaginatedRequest request, 
-        int adminId)
+    #region GET LIST
+    public async Task<APIResponse<PaginatedQueryResponse<QuantityType>>> GetAll(PaginatedRequest request, int adminId)
     {
         #region SEARCH
         string searchQuery = "";
@@ -18,7 +16,7 @@ public class InventoryRepository : IInventoryRepository
             string[] words = request.Search.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in words)
             {
-                searchQuery += $"AND (Description LIKE '%{item}%' OR Status LIKE '%{item}%' OR Quantity LIKE '%{item}%' OR Barcode LIKE '%{item}%' OR Location LIKE '%{item}%')";
+                searchQuery += $"AND Description LIKE '%{item}%'";
             }
         }
         #endregion
@@ -26,17 +24,10 @@ public class InventoryRepository : IInventoryRepository
         #region QUERY
         string query = $@"
 SELECT
-	Id,
-	AdminId,
-	Description,
-	Status,
-	Quantity,
-    QuantityType,
-	Barcode,
-	Location,
-	LastEditedOn,
-	CreatedOn
-FROM inventory
+    Id,
+    AdminId,
+    Description
+FROM quantity_types
 WHERE AdminId = {adminId}
 {searchQuery}";
         #endregion
@@ -44,21 +35,21 @@ WHERE AdminId = {adminId}
         #region TOTAL
         string totalQuery = $@"
 SELECT COUNT(*)
-FROM ({query}) inventory";
+FROM ({query}) qtyTypes";
         #endregion
 
-        APIResponse<PaginatedQueryResponse<Models.Inventory>> response = new();
+        APIResponse<PaginatedQueryResponse<QuantityType>> response = new();
         try
         {
             response.Data = new();
             response.Data.Total = (await SQLUtils.QueryAsync<int>(totalQuery)).First();
 
             query += $@"
-ORDER BY LastEditedOn DESC
+ORDER BY Description DESC
 OFFSET {request.Page * request.ItemsPerPage} ROWS
 FETCH NEXT {request.ItemsPerPage} ROWS ONLY";
 
-            response.Data.Items = (await SQLUtils.QueryAsync<Models.Inventory>(query)).ToList();
+            response.Data.Items = (await SQLUtils.QueryAsync<QuantityType>(query)).ToList();
         }
         catch (Exception ex)
         {
@@ -71,30 +62,20 @@ FETCH NEXT {request.ItemsPerPage} ROWS ONLY";
     #endregion
 
     #region INSERT
-    public async Task<APIResponse<bool>> Insert(Models.Inventory inventory)
+    public async Task<APIResponse<bool>> Insert(QuantityType quantityType)
     {
         #region QUERY
         string query = $@"
-INSERT INTO inventory 
+INSERT INTO quantity_types
 (
-	AdminId,
-	Description,
-	Status,
-	Quantity,
-	Barcode,
-	Location,
-    QuantityType
+    AdminId,
+    Description
 )
 VALUES
 (
-    {inventory.AdminId},
-    '{inventory.Description}',
-    '{inventory.Status}',
-    {inventory.Quantity},
-    '{inventory.Barcode}',
-    '{inventory.Location}',
-    '{inventory.QuantityType}'
-);";
+    {quantityType.AdminId},
+    '{quantityType.Description}'
+)";
         #endregion
 
         APIResponse<bool> response;
@@ -119,21 +100,15 @@ VALUES
     #endregion
 
     #region UPDATE
-    public async Task<APIResponse<bool>> Update(Models.Inventory inventory)
+    public async Task<APIResponse<bool>> Update(QuantityType quantityType)
     {
         #region QUERY
         string query = $@"
-UPDATE inventory
+UPDATE quantity_types
 SET
-    Description = '{inventory.Description}',
-    Status = '{inventory.Status}',
-    Quantity = {inventory.Quantity},
-    Barcode = '{inventory.Barcode}',
-    Location = '{inventory.Location}',
-    QuantityType = '{inventory.QuantityType}',
-    LastEditedOn = GETDATE()
-WHERE inventory.AdminId = {inventory.AdminId}
-AND   inventory.Id = {inventory.Id}";
+    Description = '{quantityType.Description}'
+WHERE quantity_types.AdminId = {quantityType.AdminId}
+AND quantity_types.Id = {quantityType.Id}";
         #endregion
 
         APIResponse<bool> response;
@@ -158,13 +133,13 @@ AND   inventory.Id = {inventory.Id}";
     #endregion
 
     #region DELETE
-    public async Task<APIResponse<bool>> Delete(Models.Inventory inventory)
+    public async Task<APIResponse<bool>> Delete(QuantityType location)
     {
         #region QUERY
         string query = $@"
-DELETE FROM inventory
-WHERE inventory.Id = {inventory.Id}
-AND   inventory.AdminId = {inventory.AdminId}";
+DELETE FROM quantity_types
+WHERE quantity_types.AdminId = {location.AdminId}
+AND quantity_types.Id = {location.Id}";
         #endregion
 
         APIResponse<bool> response;

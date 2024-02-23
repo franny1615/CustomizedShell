@@ -28,6 +28,10 @@ public class Inventory
     [JsonPropertyName("quantity")]
     public int Quantity { get; set; } = 0;
 
+    [Column("quantity_type")]
+    [JsonPropertyName("quantityType")]
+    public string QuantityType { get; set; } = string.Empty;
+
     [Column("barcode")]
     [JsonPropertyName("barcode")]
     public string Barcode { get; set; } = string.Empty;
