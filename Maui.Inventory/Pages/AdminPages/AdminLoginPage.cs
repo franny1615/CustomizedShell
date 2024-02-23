@@ -59,6 +59,11 @@ public class AdminLoginPage : BasePage
         _ContentLayout.Children.Add(_Login.Row(1));
 
         Content = _ContentLayout;
+        _Login.Clicked += Login;
+    }
+    ~AdminLoginPage()
+    {
+        _Login.Clicked -= Login;
     }
     #endregion
 
@@ -66,12 +71,10 @@ public class AdminLoginPage : BasePage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Login.Clicked += Login;
     }
 
     protected override void OnDisappearing()
     {
-        _Login.Clicked -= Login;
         base.OnDisappearing();
     }
     #endregion

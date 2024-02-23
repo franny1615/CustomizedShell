@@ -75,6 +75,11 @@ public class AdminRegisterPage : BasePage
         _OuterLayout.Children.Add(_Register.Row(1));
 
         Content = _OuterLayout;
+        _Register.Clicked += RegisterClicked;
+    }
+    ~AdminRegisterPage()
+    {
+        _Register.Clicked -= RegisterClicked;
     }
     #endregion
 
@@ -82,12 +87,10 @@ public class AdminRegisterPage : BasePage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Register.Clicked += RegisterClicked;
     }
 
     protected override void OnDisappearing()
     {
-        _Register.Clicked -= RegisterClicked;
         base.OnDisappearing();
     }
     #endregion

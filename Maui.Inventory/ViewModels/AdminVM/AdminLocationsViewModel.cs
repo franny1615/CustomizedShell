@@ -8,30 +8,32 @@ using System.Collections.ObjectModel;
 
 namespace Maui.Inventory.ViewModels.AdminVM;
 
-public partial class AdminStatusesViewModel: ObservableObject, IMaterialListVM<Status>
+public partial class AdminLocationsViewModel : ObservableObject, IMaterialListVM<Models.Location>
 {
-    private readonly ICRUDService<Status> _statusService;
+    private readonly ILocationsService _locationService;
     private readonly ILanguageService _langService;
     private readonly IDAL<Admin> _adminDAL;
 
     public int ItemsPerPage { get; set; } = 20;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
-    public ObservableCollection<Status> Items { get; set; } = new();
+    public ObservableCollection<Models.Location> Items { get; set; } = new();
+
+    public Models.Location SelectedLocation = null;
 
     public MaterialEntryModel DescriptionModel { get; set; } = new();
+    public MaterialEntryModel BarcodeModel { get; set; } = new();
 
-    public Status SelectedStatus = null;
+    public EditMode EditMode => SelectedLocation == null ? EditMode.Add : EditMode.Edit;
+    public string CurrentBarcodeBase64 = string.Empty;
 
-    public EditMode EditMode => SelectedStatus == null ? EditMode.Add : EditMode.Edit;
-
-    public AdminStatusesViewModel(
-        ICRUDService<Status> statusService,
+    public AdminLocationsViewModel(
+        ILocationsService locationService,
         ILanguageService langService,
         IDAL<Admin> adminDAl)
     {
         _langService = langService;
-        _statusService = statusService;
+        _locationService = locationService;
         _adminDAL = adminDAl;
 
         SearchModel.Placeholder = _langService.StringForKey("Search");
@@ -43,6 +45,11 @@ public partial class AdminStatusesViewModel: ObservableObject, IMaterialListVM<S
         DescriptionModel.PlaceholderIcon = MaterialIcon.Description;
         DescriptionModel.Keyboard = Keyboard.Plain;
         DescriptionModel.IsSpellCheckEnabled = false;
+
+        BarcodeModel.Placeholder = _langService.StringForKey("Barcode");
+        BarcodeModel.PlaceholderIcon = MaterialIcon.Looks_one;
+        BarcodeModel.Keyboard = Keyboard.Plain;
+        BarcodeModel.IsSpellCheckEnabled = false;
     }
 
     public async Task GetItems()
@@ -57,40 +64,50 @@ public partial class AdminStatusesViewModel: ObservableObject, IMaterialListVM<S
             adminId = admin.Id;
         }
 
-        var statuses = await _statusService.GetAll(new ListRequest
+        var locations = await _locationService.GetAll(new ListRequest
         {
             Page = PaginationModel.CurrentPage - 1,
             ItemsPerPage = ItemsPerPage,
             Search = SearchModel.Text
         }, adminId);
 
-        for (int i = 0; i < statuses.Items.Count; i++)
+        for (int i = 0; i < locations.Items.Count; i++)
         {
-            Items.Add(statuses.Items[i]);
+            Items.Add(locations.Items[i]);
         }
 
-        var addendum = statuses.Total % ItemsPerPage == 0 ? 0 : 1;
-        var division = statuses.Total / ItemsPerPage;
-        var calculatedTotal = (statuses.Total % ItemsPerPage == 0) ? division : division + addendum;
+        var addendum = locations.Total % ItemsPerPage == 0 ? 0 : 1;
+        var division = locations.Total / ItemsPerPage;
+        var calculatedTotal = (locations.Total % ItemsPerPage == 0) ? division : division + addendum;
 
-        PaginationModel.TotalPages = statuses.Total > ItemsPerPage ? calculatedTotal : 1;
+        PaginationModel.TotalPages = locations.Total > ItemsPerPage ? calculatedTotal : 1;
+    }
+
+    public async Task<bool> Delete()
+    {
+        if (SelectedLocation == null)
+            return true;
+
+        return await _locationService.Delete(SelectedLocation);
     }
 
     public async Task<bool> Update()
     {
-        if (SelectedStatus == null)
+        if (SelectedLocation == null)
             return true;
         if (string.IsNullOrEmpty(DescriptionModel.Text))
             return false;
 
-        SelectedStatus.Description = DescriptionModel.Text;
-        return await _statusService.Update(SelectedStatus);
+        SelectedLocation.Description = DescriptionModel.Text;
+        return await _locationService.Update(SelectedLocation);
     }
 
     public async Task<bool> Insert()
     {
-        if (string.IsNullOrEmpty(DescriptionModel.Text))
+        if (string.IsNullOrEmpty(DescriptionModel.Text) || string.IsNullOrEmpty(BarcodeModel.Text))
+        {
             return false;
+        }
 
         int adminID = await GetAdminID();
         if (adminID == -1)
@@ -98,10 +115,11 @@ public partial class AdminStatusesViewModel: ObservableObject, IMaterialListVM<S
             return false;
         }
 
-        return await _statusService.Insert(new Status
+        return await _locationService.Insert(new Models.Location
         {
             AdminId = adminID,
             Description = DescriptionModel.Text,
+            Barcode = BarcodeModel.Text
         });
     }
 
@@ -111,21 +129,24 @@ public partial class AdminStatusesViewModel: ObservableObject, IMaterialListVM<S
         try
         {
             adminID = (await _adminDAL.GetAll()).First().Id;
-        }
+        } 
         catch { }
-        return adminID;
+        return adminID;    
     }
 
     public void Clean()
     {
         DescriptionModel.Text = "";
+        BarcodeModel.Text = "";
+        CurrentBarcodeBase64 = string.Empty;
     }
 
-    public async Task<bool> Delete()
+    public async Task GenerateBarcode(string code)
     {
-        if (SelectedStatus == null)
-            return true;
-
-        return await _statusService.Delete(SelectedStatus);
+        string base64 = await _locationService.GenerateBarcode(code);
+        if (!string.IsNullOrEmpty(base64))
+        {
+            CurrentBarcodeBase64 = base64;
+        }
     }
 }

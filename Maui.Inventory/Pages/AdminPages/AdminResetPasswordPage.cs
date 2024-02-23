@@ -97,6 +97,11 @@ public class AdminResetPasswordPage : PopupPage
 
         PopupStyle = PopupStyle.BottomSheet;
         PopupContent = _ContentScroll;
+        _UpdatePassword.Clicked += UpdatePassword;
+    }
+    ~AdminResetPasswordPage()
+    {
+        _UpdatePassword.Clicked -= UpdatePassword;
     }
     #endregion
 
@@ -104,9 +109,6 @@ public class AdminResetPasswordPage : PopupPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-
-        _UpdatePassword.Clicked += UpdatePassword;
-
         await _ViewModel.GetDetails();
         _VerificationCode.ShowStatus(
             string.Format(_LangService.StringForKey("EnterCodeSentTo"), _ViewModel.CurrentAdmin.Email),
@@ -117,7 +119,6 @@ public class AdminResetPasswordPage : PopupPage
 
     protected override void OnDisappearing()
     {
-        _UpdatePassword.Clicked -= UpdatePassword;
         base.OnDisappearing();
     }
     #endregion

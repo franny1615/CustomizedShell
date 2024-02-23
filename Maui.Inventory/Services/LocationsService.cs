@@ -3,7 +3,7 @@ using Maui.Inventory.Services.Interfaces;
 
 namespace Maui.Inventory.Services;
 
-public class LocationsService(IAPIService apiService) : ICRUDService<Models.Location>
+public class LocationsService(IAPIService apiService) : ILocationsService
 {
     public async Task<ListNetworkResponse<Models.Location>> GetAll(ListRequest request, int adminId)
     {
@@ -34,5 +34,14 @@ public class LocationsService(IAPIService apiService) : ICRUDService<Models.Loca
     public async Task<bool> Delete(Models.Location itemToDelete)
     {
         return await apiService.Post<bool>(Endpoint.DeleteLocations, itemToDelete);
+    }
+
+    public async Task<string> GenerateBarcode(string code)
+    {
+        var result = await apiService.Get<object>(Endpoint.GenerateBarcode, new Dictionary<string, string>
+        {
+            { "Barcode", code }
+        });
+        return result.ToString();
     }
 }

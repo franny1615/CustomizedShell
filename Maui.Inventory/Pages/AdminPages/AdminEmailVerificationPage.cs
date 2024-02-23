@@ -108,19 +108,22 @@ public class AdminEmailVerificationPage : BasePage
         _OuterLayout.Children.Add(_Register.Row(1));
 
         Content = _OuterLayout;
+        _Register.Clicked += RegisterClicked;
+    }
+    ~AdminEmailVerificationPage()
+    {
+        _Register.Clicked -= RegisterClicked;
     }
     #endregion
 
     #region Overrides
     protected override void OnAppearing()
     {
-        base.OnAppearing();
-        _Register.Clicked += RegisterClicked;
+        base.OnAppearing();   
     }
 
     protected override void OnDisappearing()
     {
-        _Register.Clicked -= RegisterClicked;
         base.OnDisappearing();
     }
     #endregion

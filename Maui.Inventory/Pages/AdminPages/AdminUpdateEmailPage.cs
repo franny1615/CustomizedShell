@@ -101,19 +101,22 @@ public class AdminUpdateEmailPage : PopupPage
 
         PopupStyle = PopupStyle.BottomSheet;
         PopupContent = _ContentScroll;
+        _UpdateEmail.Clicked += UpdateEmail;
+    }
+    ~AdminUpdateEmailPage()
+    {
+        _UpdateEmail.Clicked -= UpdateEmail;
     }
     #endregion
 
     #region Overrides
     protected override void OnAppearing()
     {
-        base.OnAppearing();
-        _UpdateEmail.Clicked += UpdateEmail;
+        base.OnAppearing();   
     }
 
     protected override void OnDisappearing()
     {
-        _UpdateEmail.Clicked -= UpdateEmail;
         base.OnDisappearing();
     }
     #endregion

@@ -2,6 +2,7 @@ using CommunityToolkit.Maui.Markup;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
+using Maui.Components.Utilities;
 using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels.AdminVM;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
@@ -14,34 +15,6 @@ public class AdminUsersPage : BasePage
     #region Private Properties
     private AdminUsersViewModel _ViewModel => (AdminUsersViewModel) BindingContext;
     private readonly ILanguageService _LangService;
-    private readonly Grid _ContentLayout = new();
-    private readonly FloatingActionButton _AddUser = new()
-    {
-        ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Add, Colors.White),
-        FABBackgroundColor = Application.Current.Resources["Primary"] as Color,
-        FABStyle = FloatingActionButtonStyle.Regular,
-        Margin = 16
-    };
-    private readonly MaterialImage _UserIcon = new()
-    {
-        Icon = MaterialIcon.Group,
-        IconColor = Application.Current.Resources["TextColor"] as Color,
-        IconSize = 40
-    };
-    private readonly Label _NoUsers = new()
-    {
-        FontSize = 21,
-        FontAttributes = FontAttributes.Bold,
-        HorizontalTextAlignment = TextAlignment.Center,
-        HorizontalOptions = LayoutOptions.Center,
-        VerticalOptions = LayoutOptions.Center,
-    };
-    private readonly VerticalStackLayout _NoUsersUI = new()
-    {
-        Spacing = 8,
-        VerticalOptions = LayoutOptions.Center,
-        HorizontalOptions = LayoutOptions.Center
-    };
     private readonly MaterialList<User> _Search;
     #endregion
 
@@ -53,13 +26,9 @@ public class AdminUsersPage : BasePage
         BindingContext = adminUsersVM;
         _LangService = languageService;
 
-        _NoUsers.Text = _LangService.StringForKey("NoUsers");
         Title = _LangService.StringForKey("Employees");
 
-        _NoUsersUI.Add(_UserIcon.Center());
-        _NoUsersUI.Add(_NoUsers);
-
-        _Search = new(_NoUsersUI, new DataTemplate(() =>
+        _Search = new(_LangService.StringForKey("NoUsers"), MaterialIcon.Person, new DataTemplate(() =>
         {
             var view = new MaterialCardView();
             view.SetBinding(MaterialCardView.BindingContextProperty, ".");
@@ -74,21 +43,14 @@ public class AdminUsersPage : BasePage
             view.Clicked += UserClicked;
 
             return view;
-        }), adminUsersVM);
+        }), adminUsersVM, isEditable: true);
 
-        _ContentLayout.Children.Add(_Search.ZIndex(0));
-        _ContentLayout.Children.Add(_AddUser.End().Bottom().ZIndex(1));
-
-        ToolbarItems.Add(new ToolbarItem
-        {
-            IconImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Refresh, Colors.White, 30),
-            Command = new Command(() =>
-            {
-                _Search.Fetch();
-            })
-        });
-
-        Content = _ContentLayout;
+        Content = _Search;
+        _Search.AddItemClicked += AddUser;
+    }
+    ~AdminUsersPage()
+    {
+        _Search.AddItemClicked -= AddUser;
     }
     #endregion
 
@@ -96,13 +58,11 @@ public class AdminUsersPage : BasePage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Search.Fetch();
-        _AddUser.Clicked += AddUser;
+        _Search.FetchPublic();
     }
 
     protected override void OnDisappearing()
     {
-        _AddUser.Clicked -= AddUser;
         base.OnDisappearing();
     }
     #endregion
@@ -225,6 +185,13 @@ public class AdminEditUserPopupPage : PopupPage
 
         PopupStyle = PopupStyle.Center;
         PopupContent = _ContentLayout;
+        _Save.Clicked += Save;
+        _DeleteUser.Clicked += Delete;
+    }
+    ~AdminEditUserPopupPage()
+    {
+        _Save.Clicked -= Save;
+        _DeleteUser.Clicked -= Delete;
     }
     #endregion
 
@@ -232,14 +199,10 @@ public class AdminEditUserPopupPage : PopupPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Save.Clicked += Save;
-        _DeleteUser.Clicked += Delete;
     }
 
     protected override void OnDisappearing()
     {
-        _Save.Clicked -= Save;
-        _DeleteUser.Clicked -= Delete;
         base.OnDisappearing();
     }
     #endregion

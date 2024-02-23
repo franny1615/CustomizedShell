@@ -37,6 +37,7 @@ public class Endpoint
     public const string InsertLocations  = "api/locations/insert";
     public const string UpdateLocations = "api/locations/update";
     public const string DeleteLocations = "api/locations/delete";
+    public const string GenerateBarcode = "api/locations/generateBarcode";
     #endregion
 
     #region Status

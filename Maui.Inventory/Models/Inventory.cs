@@ -43,6 +43,36 @@ public class Inventory
     [Column("created_on")]
     [JsonPropertyName("createdOn")]
     public DateTime? CreatedOn { get; set; } = null;
+
+    public string LastEditedOnStr
+    {
+        get
+        {
+            try
+            {
+                return LastEditedOn?.ToString("MM/dd/yyyy");
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+    }
+
+    public string CreatedOnStr
+    {
+        get
+        {
+            try
+            {
+                return CreatedOn?.ToString("MM/dd/yyyy");
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+    }
 }
 
 public class InventoryDAL : BaseDAL<Inventory>, IDAL<Inventory> { }

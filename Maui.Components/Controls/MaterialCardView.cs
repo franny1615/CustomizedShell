@@ -167,6 +167,14 @@ public class MaterialCardView : Border
         else if (propertyName == SupportingTextProperty.PropertyName)
         {
             _SupportingText.Text = SupportingText;
+            if (string.IsNullOrEmpty(SupportingText))
+            {
+                _Headline.RowSpan(2).CenterVertical();
+            }
+            else 
+            {
+                _Headline.RowSpan(1);
+            }
         }
         else if (propertyName == IconProperty.PropertyName)
         {

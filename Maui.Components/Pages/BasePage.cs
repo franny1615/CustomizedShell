@@ -26,16 +26,4 @@ public class BasePage(ILanguageService languageService) : ContentPage
         Behaviors.Remove(_StatusBarBehavior);
         base.OnDisappearing();
     }
-
-    public void OverrideBackButtonText()
-    {
-        // android default back button is good enough 
-        if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
-        {
-            Shell.SetBackButtonBehavior(this, new BackButtonBehavior
-            {
-                TextOverride = LanguageService.StringForKey("GoBack")
-            });
-        }
-    }
 }

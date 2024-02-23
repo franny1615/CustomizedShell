@@ -2,6 +2,7 @@ using CommunityToolkit.Maui.Markup;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
+using Maui.Components.Utilities;
 using Maui.Inventory.Pages.AdminPages;
 using Maui.Inventory.Pages.UserPages;
 using Maui.Inventory.ViewModels.AdminVM;
@@ -117,23 +118,27 @@ public class LandingPage : BasePage
 		_ContentLayout.Add(_ActionsContainer.Row(1).Bottom());
 
 		Content = _ContentLayout;
-	}
+        
+		_EmployeeLogin.Clicked += EmployeeLogin;
+        _EmployerLogin.Clicked += EmployerLogin;
+        _Register.Clicked += EmployerRegister;
+    }
+	~LandingPage()
+	{
+        _EmployeeLogin.Clicked -= EmployeeLogin;
+        _EmployerLogin.Clicked -= EmployerLogin;
+        _Register.Clicked -= EmployerRegister;
+    }
     #endregion
 
     #region Overrides
     protected override void OnAppearing()
     {
-        base.OnAppearing();
-		_EmployeeLogin.Clicked += EmployeeLogin;
-		_EmployerLogin.Clicked += EmployerLogin;
-		_Register.Clicked += EmployerRegister;
+        base.OnAppearing();	
     }
 
     protected override void OnDisappearing()
     {
-		_EmployeeLogin.Clicked -= EmployeeLogin;
-		_EmployerLogin.Clicked -= EmployerLogin;
-		_Register.Clicked -= EmployerRegister;
         base.OnDisappearing();
     }
     #endregion
