@@ -31,9 +31,9 @@ public class EditInventoryPage : BasePage
     private readonly MaterialEntry _Quantity;
     private readonly MaterialEntry _LastEdited;
     private readonly MaterialEntry _CreatedOn;
-    private readonly FloatingActionButton _Location = new() { FABStyle = FloatingActionButtonStyle.Extended, TextColor = Colors.White, FABBackgroundColor = Application.Current.Resources["Primary"] as Color };
-    private readonly FloatingActionButton _QuantityType = new() { VerticalOptions = LayoutOptions.Center, FABStyle = FloatingActionButtonStyle.Extended, TextColor = Colors.White, FABBackgroundColor = Application.Current.Resources["Primary"] as Color };
-    private readonly FloatingActionButton _Status = new() { FABStyle = FloatingActionButtonStyle.Extended, TextColor = Colors.White, FABBackgroundColor = Application.Current.Resources["Primary"] as Color };
+    private readonly MaterialEntry _Status;
+    private readonly MaterialEntry _QtyType;
+    private readonly MaterialEntry _Location;
     private readonly FloatingActionButton _Save = new() { FABBackgroundColor = Application.Current.Resources["Primary"] as Color, TextColor = Colors.White, FABStyle = FloatingActionButtonStyle.Extended, };
     private readonly FloatingActionButton _Print = new() { FABBackgroundColor = Application.Current.Resources["Primary"] as Color, TextColor = Colors.White, ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Print, Colors.White), FABStyle = FloatingActionButtonStyle.Regular, };
     private readonly FloatingActionButton _Delete = new() { FABBackgroundColor = Colors.Red, TextColor = Colors.White, ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Delete, Colors.White), FABStyle = FloatingActionButtonStyle.Regular, };
@@ -52,10 +52,16 @@ public class EditInventoryPage : BasePage
         _Quantity = new(inventoryViewModel.QuantityModel);
         _LastEdited = new(inventoryViewModel.LastEditenOn);
         _CreatedOn = new(inventoryViewModel.CreatedOn);
+        _Status = new(inventoryViewModel.StatusModel);
+        _QtyType = new(inventoryViewModel.QuantityTypeModel);
+        _Location = new(inventoryViewModel.LocationModel);
 
         _Barcode.IsDisabled = true;
         _LastEdited.IsDisabled = true;
         _CreatedOn.IsDisabled = true;
+        _Status.IsDisabled = true;
+        _QtyType.IsDisabled = true;
+        _Location.IsDisabled = true;
 
         switch (inventoryViewModel.EditMode)
         {
@@ -68,9 +74,9 @@ public class EditInventoryPage : BasePage
                 _ViewModel.QuantityModel.Text = $"{_ViewModel.SelectedInventory.Quantity}";
                 _ViewModel.LastEditenOn.Text = $"{_ViewModel.SelectedInventory.LastEditedOn?.ToString("MM/dd/yyyy") ?? ""}";
                 _ViewModel.CreatedOn.Text = $"{_ViewModel.SelectedInventory.CreatedOn?.ToString("MM/dd/yyyy") ?? ""}";
-                _QuantityType.Text = _ViewModel.SelectedInventory.QuantityType;
-                _Status.Text = _ViewModel.SelectedInventory.Status;
-                _Location.Text = _ViewModel.SelectedInventory.Location;
+                _ViewModel.QuantityTypeModel.Text = _ViewModel.SelectedInventory.QuantityType;
+                _ViewModel.StatusModel.Text = _ViewModel.SelectedInventory.Status;
+                _ViewModel.LocationModel.Text = _ViewModel.SelectedInventory.Location;
                 PopulateBarcode(_ViewModel.SelectedInventory.Barcode);
 
                 _ContentLayout.Add(_Status);
@@ -82,7 +88,7 @@ public class EditInventoryPage : BasePage
                     Children =
                     {
                         _Quantity.Column(0),
-                        _QuantityType.Column(1)
+                        _QtyType.Column(1)
                     }
                 });
                 _ContentLayout.Add(_Location);
@@ -112,10 +118,6 @@ public class EditInventoryPage : BasePage
                 PopulateBarcode(ticks);
                 _ViewModel.BarcodeModel.Text = ticks;
 
-                _Status.Text = _LangService.StringForKey("Status");
-                _Location.Text = _LangService.StringForKey("Location");
-                _QuantityType.Text = _LangService.StringForKey("Qty Type");
-
                 _ContentLayout.Add(_Status);
                 _ContentLayout.Add(_Description);
                 _ContentLayout.Add(new Grid
@@ -125,7 +127,7 @@ public class EditInventoryPage : BasePage
                     Children =
                     {
                         _Quantity.Column(0),
-                        _QuantityType.Column(1)
+                        _QtyType.Column(1)
                     }
                 });
                 _ContentLayout.Add(_Location);
@@ -143,9 +145,13 @@ public class EditInventoryPage : BasePage
 
         Content = _ContentContainer;
 
-        _Status.Clicked += SelectStatus;
-        _QuantityType.Clicked += SelectQtyType;
-        _Location.Clicked += SelectLocation;
+        _Status.TapGesture(SelectStatus);
+        _QtyType.TapGesture(SelectQtyType);
+        _Location.TapGesture(SelectLocation);
+
+        _Location.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
+        _QtyType.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
+        _Status.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
 
         _Save.Clicked += Save;
         _Delete.Clicked += Delete;
@@ -153,10 +159,6 @@ public class EditInventoryPage : BasePage
     }
     ~EditInventoryPage()
     {
-        _Status.Clicked -= SelectStatus;
-        _QuantityType.Clicked -= SelectQtyType;
-        _Location.Clicked -= SelectLocation;
-
         _Save.Clicked -= Save;
         _Delete.Clicked -= Delete;
         _Print.Clicked -= Print;
@@ -175,7 +177,7 @@ public class EditInventoryPage : BasePage
         {
             if (!string.IsNullOrEmpty(selectedStatus.HeadLine))
             {
-                _Status.Text = selectedStatus.HeadLine;
+                _ViewModel.StatusModel.Text = selectedStatus.HeadLine;
             }
         }
 
@@ -183,7 +185,7 @@ public class EditInventoryPage : BasePage
         {
             if (!string.IsNullOrEmpty(selectedLocation.HeadLine))
             {
-                _Location.Text = selectedLocation.HeadLine;
+                _ViewModel.LocationModel.Text = selectedLocation.HeadLine;
             }
         }
 
@@ -191,7 +193,7 @@ public class EditInventoryPage : BasePage
         {
             if (!string.IsNullOrEmpty(selectedQtyType.HeadLine))
             {
-                _QuantityType.Text = selectedQtyType.HeadLine;
+                _ViewModel.QuantityTypeModel.Text = selectedQtyType.HeadLine;
             }
         }
     }
@@ -215,21 +217,21 @@ public class EditInventoryPage : BasePage
         }
     }
 
-    private async void SelectLocation(object sender, ClickedEventArgs e)
+    private async void SelectLocation()
     {
-        _Location.FABBackgroundColor = Application.Current.Resources["Primary"] as Color;
+        _Location.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
         await Navigation.PushModalAsync(new MaterialSelectPopupPage(_LangService, _ViewModel.LocationsVM));
     }
 
-    private async void SelectQtyType(object sender, ClickedEventArgs e)
+    private async void SelectQtyType()
     {
-        _QuantityType.FABBackgroundColor = Application.Current.Resources["Primary"] as Color;
+        _QtyType.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
         await Navigation.PushModalAsync(new MaterialSelectPopupPage(_LangService, _ViewModel.QuantityTypesViewModel));
     }
 
-    private async void SelectStatus(object sender, ClickedEventArgs e)
+    private async void SelectStatus()
     {
-        _Status.FABBackgroundColor = Application.Current.Resources["Primary"] as Color;
+        _Status.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
         await Navigation.PushModalAsync(new MaterialSelectPopupPage(_LangService, _ViewModel.StatusVM));
     }
 
@@ -282,9 +284,9 @@ public class EditInventoryPage : BasePage
     {
         bool haveDescription = !string.IsNullOrEmpty(_ViewModel.DescriptionModel.Text);
         bool haveQty = !string.IsNullOrEmpty(_ViewModel.QuantityModel.Text);
-        bool haveStatus = !string.IsNullOrEmpty(_Status.Text) && _Status.Text != _LangService.StringForKey("Status");
-        bool haveQtyType = !string.IsNullOrEmpty(_QuantityType.Text) && _QuantityType.Text != _LangService.StringForKey("Qty Type");
-        bool haveLocation = !string.IsNullOrEmpty(_Location.Text) && _Location.Text != _LangService.StringForKey("Location");
+        bool haveStatus = !string.IsNullOrEmpty(_ViewModel.StatusModel.Text);
+        bool haveQtyType = !string.IsNullOrEmpty(_ViewModel.QuantityTypeModel.Text);
+        bool haveLocation = !string.IsNullOrEmpty(_ViewModel.LocationModel.Text);
 
         if (!haveDescription)
         {
@@ -296,15 +298,15 @@ public class EditInventoryPage : BasePage
         }
         if (!haveStatus)
         {
-            _Status.FABBackgroundColor = Colors.Red;
+            _Status.ShowStatus(_LangService.StringForKey("Required"), MaterialIcon.Info, Colors.Red);
         }
         if (!haveQtyType)
         {
-            _QuantityType.FABBackgroundColor = Colors.Red;
+            _QtyType.ShowStatus(_LangService.StringForKey("Required"), MaterialIcon.Info, Colors.Red);
         }
         if (!haveLocation)
         {
-            _Location.FABBackgroundColor = Colors.Red;
+            _Location.ShowStatus(_LangService.StringForKey("Required"), MaterialIcon.Info, Colors.Red);
         }
 
         if (!haveDescription || !haveQty || !haveStatus || !haveQtyType || !haveLocation)

@@ -1,4 +1,5 @@
 ﻿using Maui.Components;
+using Maui.Inventory.Pages;
 using Maui.Inventory.Pages.UserPages;
 
 namespace Maui.Inventory;
@@ -12,6 +13,11 @@ public class UserShell : Shell
         ContentTemplate = new DataTemplate(typeof(UserProfilePage)),
         Icon = "users.png"
     };
+    private readonly ShellContent _inventory = new()
+    {
+        ContentTemplate = new DataTemplate(typeof(InventoryPage)),
+        Icon = "package_ic.png",
+    };
     private readonly TabBar _tabBar = new();
     #endregion
 
@@ -21,7 +27,9 @@ public class UserShell : Shell
         _LangService = languageService;
 
         _profile.Title = _LangService.StringForKey("Profile");
+        _inventory.Title = _LangService.StringForKey("Inventory");
 
+        _tabBar.Items.Add(_inventory);
         _tabBar.Items.Add(_profile);
         Items.Add(_tabBar);
     }

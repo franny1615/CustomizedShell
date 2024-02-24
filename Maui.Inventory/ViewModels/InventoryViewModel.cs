@@ -34,6 +34,9 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
     public MaterialEntryModel QuantityModel { get; set; } = new();
     public MaterialEntryModel LastEditenOn {  get; set; } = new();
     public MaterialEntryModel CreatedOn { get; set; } = new();
+    public MaterialEntryModel StatusModel { get; set; } = new();
+    public MaterialEntryModel QuantityTypeModel { get; set; } = new();
+    public MaterialEntryModel LocationModel { get; set; } = new();
 
     public InventoryViewModel(
         ICRUDService<Models.Inventory> inventoryService,
@@ -79,6 +82,21 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         CreatedOn.PlaceholderIcon = MaterialIcon.Today;
         CreatedOn.Keyboard = Keyboard.Plain;
         CreatedOn.IsSpellCheckEnabled = false;
+
+        StatusModel.Placeholder = languageService.StringForKey("Status");
+        StatusModel.PlaceholderIcon = MaterialIcon.Check_circle;
+        StatusModel.Keyboard = Keyboard.Plain;
+        StatusModel.IsSpellCheckEnabled = false;
+
+        QuantityTypeModel.Placeholder = languageService.StringForKey("Qty Type");
+        QuantityTypeModel.PlaceholderIcon = MaterialIcon.Video_label;
+        QuantityTypeModel.Keyboard = Keyboard.Plain;
+        QuantityTypeModel.IsSpellCheckEnabled = false;
+
+        LocationModel.Placeholder = languageService.StringForKey("Location");
+        LocationModel.PlaceholderIcon = MaterialIcon.Shelves;
+        LocationModel.Keyboard = Keyboard.Plain;
+        LocationModel.IsSpellCheckEnabled = false;
 
         LocationsVM = locationsVM;
         StatusVM = statusVM;
@@ -189,6 +207,9 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         DescriptionModel.Text = "";
         BarcodeModel.Text = "";
         QuantityModel.Text = "";
+        StatusModel.Text = "";
+        QuantityTypeModel.Text = "";
+        LocationModel.Text = "";
         CurrentBarcodeBase64 = string.Empty;
         StatusVM.SelectedItems.Clear();
         LocationsVM.SelectedItems.Clear();
