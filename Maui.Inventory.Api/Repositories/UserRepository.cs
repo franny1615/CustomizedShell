@@ -842,4 +842,41 @@ select @success;";
         return response;
     }
     #endregion
+
+    #region DELETE ENTIRE ACCOUNT
+    public async Task<APIResponse<bool>> DeleteEntireAccount(int adminId)
+    {
+        var response = new APIResponse<bool>();
+        try
+        {
+            #region QUERY
+            string sourceLicense = $@"
+SELECT LicenseId FROM admin WHERE Id = {adminId}";
+            int licenseId = (await SQLUtils.QueryAsync<int>(sourceLicense)).FirstOrDefault();
+
+            string query = $@"
+DELETE FROM app_user WHERE AdminID = {adminId}; 
+DELETE FROM inventory WHERE AdminId = {adminId};
+DELETE FROM locations WHERE AdminId = {adminId};
+DELETE FROM status WHERE AdminId = {adminId};
+DELETE FROM quantity_types WHERE AdminId = {adminId};
+DELETE FROM admin WHERE Id = {adminId};
+DELETE FROM license WHERE Id = {licenseId};";
+            #endregion
+
+            await SQLUtils.QueryAsync<object>(query);
+            response.Success = true;
+            response.Data = true;
+            response.Message = "";
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Data = false;
+            response.Message = $"ERROR >>> {ex.Message} <<<";
+        }
+
+        return response;
+    }
+    #endregion
 }

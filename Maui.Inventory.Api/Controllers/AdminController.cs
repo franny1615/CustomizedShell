@@ -81,4 +81,15 @@ public class AdminController(
     {
         return await _UserRepository.EditAdmin(admin);
     }
+
+    [HttpPost]
+    [Route("deleteAccount")]
+    [Authorize]
+    public async Task<APIResponse<bool>> DeleteAccount()
+    {
+        var user = httpContextAccessor.HttpContext?.User!;
+        int adminId = Env.GetAdminIDFromIdentity(user);
+
+        return await _UserRepository.DeleteEntireAccount(adminId);
+    }
 }

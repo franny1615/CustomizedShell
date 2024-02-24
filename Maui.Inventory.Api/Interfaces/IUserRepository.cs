@@ -40,4 +40,6 @@ public interface IUserRepository
     public Task<APIResponse<bool>> VerifyEmail(string email, int code);
 
     public Task<APIResponse<bool>> EditAdmin(Admin admin);
+
+    public Task<APIResponse<bool>> DeleteEntireAccount(int adminId);
 }
