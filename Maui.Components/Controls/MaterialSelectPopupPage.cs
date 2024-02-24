@@ -13,6 +13,7 @@ public enum SelectType
 
 public interface ISelectItem
 {
+    public int Id { get; set; }
     public string HeadLine { get; set; }
     public string SupportingText { get; set; }
     public bool IsSelected { get; set; }
@@ -35,11 +36,11 @@ public class MaterialSelectPopupPage : PopupPage
     private readonly ILanguageService _LangService;
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(50, Star, Auto),
-        ColumnDefinitions = Columns.Define(30, Star),
+        RowDefinitions = Rows.Define(50, Star),
+        ColumnDefinitions = Columns.Define(30, Star, 30),
         ColumnSpacing = 8,
-        RowSpacing = 8,
-        Padding = new Thickness(16, 8, 16, 8)
+        RowSpacing = 0,
+        Padding = 8
     };
     private readonly Label _Title = new()
     {
@@ -64,6 +65,8 @@ public class MaterialSelectPopupPage : PopupPage
         BindingContext = selectViewModel;
         _LangService = languageService;
 
+        _Title.Text = _ViewModel.Title;
+
         _Search = new(selectViewModel.NoItemsText, selectViewModel.ItemsIcon, new DataTemplate(() => 
         {
             var view = new MaterialCardView();
@@ -85,13 +88,39 @@ public class MaterialSelectPopupPage : PopupPage
 
         _ContentLayout.Children.Add(_Title.Row(0).Column(1).Center());
         _ContentLayout.Children.Add(_Close.Row(0).Column(2).Center());
-        _ContentLayout.Children.Add(_Search.Row(1).Column(0).ColumnSpan(2));
+        _ContentLayout.Children.Add(_Search.Row(1).Column(0).ColumnSpan(3));
 
         PopupStyle = PopupStyle.Center;
         PopupContent = _ContentLayout;
+
+        _Search.FetchedNewPage += RefreshSelectedItem;
+    }
+    ~MaterialSelectPopupPage()
+    {
+        _Search.FetchedNewPage -= RefreshSelectedItem;
     }
 
-    private void Clicked(object sender, EventArgs e)
+    private void RefreshSelectedItem(object sender, EventArgs e)
+    {
+        for (int item = 0; item < _ViewModel.Items.Count; item++)
+        {
+            for (int selected = 0; selected < _ViewModel.SelectedItems.Count; selected++)
+            {
+                if (_ViewModel.SelectedItems[selected].Id == _ViewModel.Items[item].Id)
+                {
+                    _ViewModel.Items[item].IsSelected = true;
+                }
+            }
+        }
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _Search.FetchPublic();
+    }
+
+    private async void Clicked(object sender, EventArgs e)
     {
         if (sender is MaterialCardView card && card.BindingContext is ISelectItem item)
         {
@@ -115,9 +144,9 @@ public class MaterialSelectPopupPage : PopupPage
                     }
 
                     // update ui list to reflect change
-                    for (int i = _ViewModel.Items.Count - 1; i > 0; i--)
+                    for (int i = 0;  i < _ViewModel.Items.Count; i++)
                     {
-                        if (_ViewModel.Items[i].HeadLine == item.HeadLine && _ViewModel.Items[i].SupportingText == item.SupportingText)
+                        if (_ViewModel.Items[i].Id == item.Id)
                         {
                             _ViewModel.Items[i].IsSelected = item.IsSelected;
                         }
@@ -127,18 +156,26 @@ public class MaterialSelectPopupPage : PopupPage
                         }
                     }
 
+                    await Navigation.PopModalAsync();
+
                     break;
                 case SelectType.MultiSelect:
                     // remove it from selected list when its unselected
-                    for (int i = _ViewModel.SelectedItems.Count - 1; i > 0; i--)
+                    int foundIndex = -1;
+                    for (int i = 0; i < _ViewModel.SelectedItems.Count; i++)
                     {
-                        if (_ViewModel.SelectedItems[i].HeadLine == item.HeadLine && _ViewModel.SelectedItems[i].SupportingText == item.SupportingText)
+                        if (_ViewModel.SelectedItems[i].Id == item.Id)
                         {
                             if (!item.IsSelected)
                             {
-                                _ViewModel.SelectedItems.RemoveAt(i);
+                                foundIndex = i; 
+                                break;
                             }
                         }
+                    }
+                    if (foundIndex > -1)
+                    {
+                        _ViewModel.SelectedItems.RemoveAt(foundIndex);
                     }
 
                     if (item.IsSelected)
@@ -147,9 +184,9 @@ public class MaterialSelectPopupPage : PopupPage
                     }
 
                     // update ui list to reflect change
-                    for (int i = _ViewModel.Items.Count - 1; i > 0; i--)
+                    for (int i = 0; i < _ViewModel.SelectedItems.Count; i++)
                     {
-                        if (_ViewModel.Items[i].HeadLine == item.HeadLine && _ViewModel.Items[i].SupportingText == item.SupportingText)
+                        if (_ViewModel.Items[i].Id == item.Id)
                         {
                             _ViewModel.Items[i].IsSelected = item.IsSelected;
                         }

@@ -39,6 +39,9 @@ public partial class AdminQuantityTypesViewModel : ObservableObject, ISelectView
         _langService = langService;
         _admin = admin;
 
+        Title = _langService.StringForKey("Select Qty Type");
+        NoItemsText = _langService.StringForKey("No Quantity Types.");
+
         SearchModel.Placeholder = _langService.StringForKey("Search");
         SearchModel.PlaceholderIcon = MaterialIcon.Search;
         SearchModel.Keyboard = Keyboard.Plain;

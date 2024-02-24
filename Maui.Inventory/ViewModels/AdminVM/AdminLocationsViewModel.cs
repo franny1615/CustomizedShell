@@ -42,6 +42,9 @@ public partial class AdminLocationsViewModel : ObservableObject, ISelectViewMode
         _locationService = locationService;
         _adminDAL = adminDAl;
 
+        Title = _langService.StringForKey("Select Location");
+        NoItemsText = _langService.StringForKey("No Locations.");
+
         SearchModel.Placeholder = _langService.StringForKey("Search");
         SearchModel.PlaceholderIcon = MaterialIcon.Search;
         SearchModel.Keyboard = Keyboard.Plain;

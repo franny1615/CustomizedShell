@@ -4,6 +4,7 @@ using Maui.Components.Controls;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using Maui.Inventory.Services.Interfaces;
+using Maui.Inventory.ViewModels.AdminVM;
 using System.Collections.ObjectModel;
 
 namespace Maui.Inventory.ViewModels;
@@ -14,6 +15,10 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
     private readonly ICRUDService<Models.Inventory> _inventoryService;
     private readonly IDAL<Admin> _adminDAL;
     private readonly IDAL<User> _userDAL;
+
+    public readonly AdminLocationsViewModel LocationsVM;
+    public readonly AdminStatusesViewModel StatusVM;
+    public readonly AdminQuantityTypesViewModel QuantityTypesViewModel;
 
     public int ItemsPerPage { get; set; } = 20;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
@@ -35,7 +40,10 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         ILanguageService languageService,
         ILocationsService locationService,
         IDAL<Admin> adminDAL,
-        IDAL<User> userDAL)
+        IDAL<User> userDAL,
+        AdminLocationsViewModel locationsVM,
+        AdminStatusesViewModel statusVM,
+        AdminQuantityTypesViewModel quantityTypesViewModel)
     {
         _inventoryService = inventoryService;
         _locationService = locationService;
@@ -71,6 +79,10 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         CreatedOn.PlaceholderIcon = MaterialIcon.Today;
         CreatedOn.Keyboard = Keyboard.Plain;
         CreatedOn.IsSpellCheckEnabled = false;
+
+        LocationsVM = locationsVM;
+        StatusVM = statusVM;
+        QuantityTypesViewModel = quantityTypesViewModel;
     }
 
     public async Task GetItems()
@@ -121,14 +133,46 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
     {
         if (SelectedInventory == null)
             return true;
-        // TODO: run validations, populate updated values
+
+        _ = int.TryParse(QuantityModel.Text, out int result);
+        SelectedInventory.Description = DescriptionModel.Text;
+        SelectedInventory.Quantity = result;
+        SelectedInventory.Status = StatusVM.SelectedItems.FirstOrDefault()?.HeadLine ?? "";
+        SelectedInventory.QuantityType = QuantityTypesViewModel.SelectedItems.FirstOrDefault()?.HeadLine ?? "";
+        SelectedInventory.Location = LocationsVM.SelectedItems.FirstOrDefault()?.HeadLine ?? "";
+
         return await _inventoryService.Update(SelectedInventory);
     }
 
     public async Task<bool> Insert()
     {
-        // TODO: do validations
-        return false;
+        _ = int.TryParse(QuantityModel.Text, out int result);
+        return await _inventoryService.Insert(new Models.Inventory
+        {
+            AdminId = await GetAdminID(),
+            Description = DescriptionModel.Text,
+            Status = StatusVM.SelectedItems.FirstOrDefault().HeadLine ?? "",
+            Quantity = result,
+            QuantityType = QuantityTypesViewModel.SelectedItems.FirstOrDefault()?.HeadLine ?? "",
+            Barcode = BarcodeModel.Text,
+            Location = LocationsVM.SelectedItems.FirstOrDefault()?.HeadLine ?? "",
+        });
+    }
+
+    private async Task<int> GetAdminID()
+    {
+        int adminID = -1;
+        try
+        {
+            adminID = (await _adminDAL.GetAll()).First().Id;
+        }
+        catch { }
+        try
+        {
+            adminID = (await _userDAL.GetAll()).First().AdminID;
+        }
+        catch { }
+        return adminID;
     }
 
     public async Task GenerateBarcode(string code)
@@ -138,5 +182,16 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         {
             CurrentBarcodeBase64 = base64;
         }
+    }
+
+    public void Clean()
+    {
+        DescriptionModel.Text = "";
+        BarcodeModel.Text = "";
+        QuantityModel.Text = "";
+        CurrentBarcodeBase64 = string.Empty;
+        StatusVM.SelectedItems.Clear();
+        LocationsVM.SelectedItems.Clear();
+        QuantityTypesViewModel.SelectedItems.Clear();
     }
 }

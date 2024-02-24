@@ -42,12 +42,15 @@ public class Inventory
 
     [Column("last_edited_on")]
     [JsonPropertyName("lastEditedOn")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public DateTime? LastEditedOn { get; set; } = null;
 
     [Column("created_on")]
     [JsonPropertyName("createdOn")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public DateTime? CreatedOn { get; set; } = null;
 
+    [JsonIgnore]
     public string LastEditedOnStr
     {
         get
@@ -63,6 +66,7 @@ public class Inventory
         }
     }
 
+    [JsonIgnore]
     public string CreatedOnStr
     {
         get
@@ -78,6 +82,7 @@ public class Inventory
         }
     }
 
+    [JsonIgnore]
     public string QuantityStr
     {
         get

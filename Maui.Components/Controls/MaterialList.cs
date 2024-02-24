@@ -18,6 +18,7 @@ public class MaterialList<T> : ContentView
 {
     #region Events
     public event EventHandler<ClickedEventArgs> AddItemClicked;
+    public event EventHandler FetchedNewPage;
     #endregion
 
     #region Private Properties
@@ -130,6 +131,7 @@ public class MaterialList<T> : ContentView
         }
 
         _Refresh.IsRefreshing = false;
+        FetchedNewPage?.Invoke(null, null);
     }
 
     private void SearchChanged(object sender, TextChangedEventArgs e)

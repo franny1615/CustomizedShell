@@ -420,4 +420,31 @@ May delete account at any time.
   <data name="DeleteAccountPrompt" xml:space="preserve">
     <value>Are you sure you want to delete account? It will NOT be recoverable, and all data will be lost. </value>
   </data>
+  <data name="Add Inventory" xml:space="preserve">
+    <value>Add Inventory</value>
+  </data>
+  <data name="Edit Inventory" xml:space="preserve">
+    <value>Edit Inventory</value>
+  </data>
+  <data name="Delete Inventory" xml:space="preserve">
+    <value>Delete Inventory</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Qty Type" xml:space="preserve">
+    <value>Qty Type</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Select Location" xml:space="preserve">
+    <value>Select Location</value>
+  </data>
+  <data name="Select Qty Type" xml:space="preserve">
+    <value>Select Qty Type</value>
+  </data>
+  <data name="Select Status" xml:space="preserve">
+    <value>Select Status</value>
+  </data>
 </root>

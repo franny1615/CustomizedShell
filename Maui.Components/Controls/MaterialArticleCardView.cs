@@ -71,6 +71,18 @@ public class MaterialArticleCardView : Border
         get => (string)(GetValue(SecondarySupportTwoProperty));
         set => SetValue(SecondarySupportTwoProperty, value);
     }
+
+    public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
+        nameof(TextColor),
+        typeof(Color),
+        typeof(MaterialArticleCardView),
+        Colors.Transparent);
+
+    public Color TextColor
+    {
+        get => (Color)(GetValue(TextColorProperty));
+        set => SetValue(TextColorProperty, value);
+    }
     #endregion
 
     #region Private Properties
@@ -162,6 +174,14 @@ public class MaterialArticleCardView : Border
         else if (propertyName == SecondarySupportTwoProperty.PropertyName)
         {
             _SecondTwo.Text = SecondarySupportTwo;
+        }
+        else if (propertyName == TextColorProperty.PropertyName)
+        {
+            _Article.TextColor = TextColor;
+            _MainOne.TextColor = TextColor;
+            _MainTwo.TextColor = TextColor;
+            _SecondOne.TextColor = TextColor;
+            _SecondTwo.TextColor = TextColor;
         }
     }
     #endregion

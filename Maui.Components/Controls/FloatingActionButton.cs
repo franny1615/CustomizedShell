@@ -91,7 +91,7 @@ public class FloatingActionButton : ContentView
 		HorizontalOptions = LayoutOptions.Center,
 		Spacing = 4,
 	};
-	private readonly Border _FABContainer = new() { Stroke = Colors.Transparent };
+	private readonly Border _FABContainer = new() { Stroke = Colors.Transparent, Padding = new Thickness(8, 0, 8, 0) };
 	private readonly Image _FABImage = new()
 	{
 		VerticalOptions = LayoutOptions.Center,

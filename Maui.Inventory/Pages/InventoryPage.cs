@@ -33,6 +33,8 @@ public class InventoryPage : BasePage
             view.SetBinding(MaterialArticleCardView.SecondarySupportTwoProperty, "QuantityStr");
             view.SetBinding(MaterialArticleCardView.SecondarySupportOneProperty, "Status");
             view.SetDynamicResource(MaterialCardView.BackgroundColorProperty, "CardColor");
+            view.TextColor = Colors.White;
+
             view.Clicked += EditInventory;
 
 			return view;
@@ -64,12 +66,19 @@ public class InventoryPage : BasePage
     #region Helpers
     private void AddInventory(object sender, ClickedEventArgs e)
     {
-        // TODO:
+        _viewModel.SelectedInventory = null;
+        _viewModel.Clean();
+        Navigation.PushAsync(new EditInventoryPage(_languageService, _viewModel));
     }
 
     private void EditInventory(object sender, EventArgs e)
     {
-        // TODO:
+        if (sender is MaterialArticleCardView card && card.BindingContext is Models.Inventory inventory)
+        {
+            _viewModel.SelectedInventory = inventory;
+            _viewModel.Clean();
+            Navigation.PushAsync(new EditInventoryPage(_languageService, _viewModel));
+        }
     }
     #endregion
 }

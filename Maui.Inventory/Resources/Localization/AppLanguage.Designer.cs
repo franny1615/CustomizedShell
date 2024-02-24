@@ -85,6 +85,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Inventory.
+        /// </summary>
+        internal static string Add_Inventory {
+            get {
+                return ResourceManager.GetString("Add Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Location.
         /// </summary>
         internal static string Add_Location {
@@ -238,6 +247,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Inventory.
+        /// </summary>
+        internal static string Delete_Inventory {
+            get {
+                return ResourceManager.GetString("Delete Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Location.
         /// </summary>
         internal static string Delete_Location {
@@ -306,6 +324,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Inventory.
+        /// </summary>
+        internal static string Edit_Inventory {
+            get {
+                return ResourceManager.GetString("Edit Inventory", resourceCulture);
             }
         }
         
@@ -517,6 +544,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        internal static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Locations.
         /// </summary>
         internal static string Locations {
@@ -697,6 +733,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Qty Type.
+        /// </summary>
+        internal static string Qty_Type {
+            get {
+                return ResourceManager.GetString("Qty Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantity.
         /// </summary>
         internal static string Quantity {
@@ -796,11 +841,47 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Location.
+        /// </summary>
+        internal static string Select_Location {
+            get {
+                return ResourceManager.GetString("Select Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Qty Type.
+        /// </summary>
+        internal static string Select_Qty_Type {
+            get {
+                return ResourceManager.GetString("Select Qty Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Status.
+        /// </summary>
+        internal static string Select_Status {
+            get {
+                return ResourceManager.GetString("Select Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Code.
         /// </summary>
         internal static string SendCode {
             get {
                 return ResourceManager.GetString("SendCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         

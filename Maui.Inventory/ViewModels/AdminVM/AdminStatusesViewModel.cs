@@ -40,6 +40,9 @@ public partial class AdminStatusesViewModel: ObservableObject, ISelectViewModel
         _statusService = statusService;
         _adminDAL = adminDAl;
 
+        Title = _langService.StringForKey("Select Status");
+        NoItemsText = _langService.StringForKey("No Statuses.");
+
         SearchModel.Placeholder = _langService.StringForKey("Search");
         SearchModel.PlaceholderIcon = MaterialIcon.Search;
         SearchModel.Keyboard = Keyboard.Plain;
