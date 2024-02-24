@@ -10,4 +10,5 @@ public interface IAdminService
     Task<bool> DeleteUser(User user);
     Task<bool> UpdateUser(User user);
     Task<bool> UpdateAdmin(Admin admin);
+    Task<bool> DeleteAccount();
 }

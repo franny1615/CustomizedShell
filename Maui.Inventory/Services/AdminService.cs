@@ -86,4 +86,9 @@ public class AdminService : IAdminService
     {
         return await _apiService.Post<bool>(Endpoint.AdminUpdateSelf, admin);
     }
+
+    public async Task<bool> DeleteAccount()
+    {
+        return await _apiService.Post<bool>(Endpoint.AdminDeleteAccount, new { });
+    }
 }

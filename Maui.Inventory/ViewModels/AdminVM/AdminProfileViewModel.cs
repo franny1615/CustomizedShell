@@ -97,4 +97,6 @@ public partial class AdminProfileViewModel : ObservableObject
 
         return false;
     }
+
+    public async Task<bool> DeleteAccount() => await _AdminService.DeleteAccount();
 }

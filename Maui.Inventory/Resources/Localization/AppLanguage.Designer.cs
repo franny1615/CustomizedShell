@@ -229,6 +229,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Account.
+        /// </summary>
+        internal static string Delete_Account {
+            get {
+                return ResourceManager.GetString("Delete Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Location.
         /// </summary>
         internal static string Delete_Location {
@@ -252,6 +261,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Delete_Status {
             get {
                 return ResourceManager.GetString("Delete Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete account? It will NOT be recoverable, and all data will be lost. .
+        /// </summary>
+        internal static string DeleteAccountPrompt {
+            get {
+                return ResourceManager.GetString("DeleteAccountPrompt", resourceCulture);
             }
         }
         

@@ -43,6 +43,13 @@ public class AdminProfilePage : BasePage
         ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Password, Colors.White),
 		FABStyle = FloatingActionButtonStyle.Extended
     };
+    private readonly FloatingActionButton _DeleteAccount = new()
+    {
+        FABBackgroundColor = Application.Current.Resources["PrimaryShade"] as Color,
+        TextColor = Colors.White,
+        ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Delete, Colors.White),
+        FABStyle = FloatingActionButtonStyle.Extended
+    };
     private readonly FloatingActionButton _Logout = new()
     {
         FABBackgroundColor = Colors.Red,
@@ -118,6 +125,7 @@ public class AdminProfilePage : BasePage
         _ResetPassword.Text = _LangService.StringForKey("ResetPassword");
         _Logout.Text = _LangService.StringForKey("Logout"); 
         _LicenseExpiredLabel.Text = _LangService.StringForKey("License Expired");
+        _DeleteAccount.Text = _LangService.StringForKey("Delete Account");
 
         _DarkModeToggleLayout.Children.Add(_DarkModeIcon.Column(0));
         _DarkModeToggleLayout.Children.Add(_DarkModeLabel.Column(1));
@@ -143,6 +151,7 @@ public class AdminProfilePage : BasePage
 
         _ContentLayout.Add(_UpdateEmail);
         _ContentLayout.Add(_ResetPassword);
+        _ContentLayout.Add(_DeleteAccount);
         _ContentLayout.Add(_Logout);
 
         _ContentScroll.Content = _ContentLayout;
@@ -152,6 +161,7 @@ public class AdminProfilePage : BasePage
         _Logout.Clicked += Logout;
         _UpdateEmail.Clicked += UpdateEmail;
         _ResetPassword.Clicked += ResetPassword;
+        _DeleteAccount.Clicked += DeleteAccountClicked;
     }
     ~AdminProfilePage()
     {
@@ -159,6 +169,7 @@ public class AdminProfilePage : BasePage
         _DarkModeSwitch.Toggled -= DarkModeToggled;
         _UpdateEmail.Clicked -= UpdateEmail;
         _ResetPassword.Clicked -= ResetPassword;
+        _DeleteAccount.Clicked -= DeleteAccountClicked;
     }
     #endregion
 
@@ -206,6 +217,21 @@ public class AdminProfilePage : BasePage
             await Navigation.PushModalAsync(new AdminResetPasswordPage(_LangService, _AdminResetVM));
         }
         _ResetPassword.Text = _LangService.StringForKey("ResetPassword");
+    }
+
+    private async void DeleteAccountClicked(object sender, ClickedEventArgs e)
+    {
+        bool wantsToDelete = await DisplayAlert(
+            _LangService.StringForKey("Delete Account"),
+            _LangService.StringForKey("DeleteAccountPrompt"),
+            _LangService.StringForKey("Yes"),
+            _LangService.StringForKey("No"));
+
+        if (wantsToDelete)
+        {
+            await _AdminProfileVM.DeleteAccount();
+            WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.LandingPage));
+        }
     }
     #endregion
 }
