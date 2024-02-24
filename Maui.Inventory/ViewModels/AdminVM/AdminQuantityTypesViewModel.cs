@@ -8,16 +8,22 @@ using System.Collections.ObjectModel;
 
 namespace Maui.Inventory.ViewModels.AdminVM;
 
-public partial class AdminQuantityTypesViewModel : ObservableObject, IMaterialListVM<QuantityType>
+public partial class AdminQuantityTypesViewModel : ObservableObject, ISelectViewModel
 {
     private readonly ICRUDService<QuantityType> _quantityTypeService;
     private readonly ILanguageService _langService;
     private readonly IDAL<Admin> _admin;
 
+    public ObservableCollection<ISelectItem> SelectedItems { get; set; } = [];
+    public string Title { get; set; } = "";
+    public string NoItemsText { get; set; } = "";
+    public string ItemsIcon { get; set; } = MaterialIcon.Video_label;
+    public SelectType SelectType { get; set; } = SelectType.SingleSelect;
+
     public int ItemsPerPage { get; set; } = 20;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
-    public ObservableCollection<QuantityType> Items { get; set; } = new();
+    public ObservableCollection<ISelectItem> Items { get; set; } = new();
 
     public MaterialEntryModel DescriptionModel { get; set; } = new();
     public QuantityType SelectedQtyType = null;

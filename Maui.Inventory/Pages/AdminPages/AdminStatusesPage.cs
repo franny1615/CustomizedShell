@@ -14,7 +14,7 @@ public class AdminStatusesPage : BasePage
     #region Private Properties
     private readonly ILanguageService _LangService;
     private AdminStatusesViewModel _ViewModel => (AdminStatusesViewModel)BindingContext;
-    private readonly MaterialList<Models.Status> _Search;
+    private readonly MaterialList<ISelectItem> _Search;
     #endregion
 
     #region Constructor

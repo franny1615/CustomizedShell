@@ -1,10 +1,12 @@
-﻿using SQLite;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Maui.Components.Controls;
+using SQLite;
 using System.Text.Json.Serialization;
 
 namespace Maui.Inventory.Models;
 
 [Table("location")]
-public class Location
+public partial class Location : ObservableObject, ISelectItem
 {
     [PrimaryKey, Column("_id")]
     [JsonPropertyName("id")]
@@ -16,9 +18,26 @@ public class Location
 
     [Column("description")]
     [JsonPropertyName("description")]
-    public string Description { get; set; } = string.Empty;
+    public string Description
+    {
+        get => HeadLine;
+        set => HeadLine = value;
+    }
 
     [Column("barcode")]
     [JsonPropertyName("barcode")]
-    public string Barcode { get; set; } = string.Empty;
+    public string Barcode 
+    { 
+        get => SupportingText; 
+        set => SupportingText = value; 
+    } 
+
+    [ObservableProperty]
+    public string headLine = "";
+
+    [ObservableProperty]
+    public string supportingText = "";
+
+    [ObservableProperty]
+    public bool isSelected = false;
 }

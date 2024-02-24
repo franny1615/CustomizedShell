@@ -8,16 +8,22 @@ using System.Collections.ObjectModel;
 
 namespace Maui.Inventory.ViewModels.AdminVM;
 
-public partial class AdminStatusesViewModel: ObservableObject, IMaterialListVM<Status>
+public partial class AdminStatusesViewModel: ObservableObject, ISelectViewModel
 {
     private readonly ICRUDService<Status> _statusService;
     private readonly ILanguageService _langService;
     private readonly IDAL<Admin> _adminDAL;
 
+    public ObservableCollection<ISelectItem> SelectedItems { get; set; } = [];
+    public string Title { get; set; } = "";
+    public string NoItemsText { get; set; } = "";
+    public string ItemsIcon { get; set; } = MaterialIcon.Check_circle;
+    public SelectType SelectType { get; set; } = SelectType.SingleSelect;
+
     public int ItemsPerPage { get; set; } = 20;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
-    public ObservableCollection<Status> Items { get; set; } = new();
+    public ObservableCollection<ISelectItem> Items { get; set; } = new();
 
     public MaterialEntryModel DescriptionModel { get; set; } = new();
 

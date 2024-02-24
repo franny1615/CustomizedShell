@@ -84,6 +84,18 @@ public class MaterialCardView : Border
         set => SetValue (TrailingIconColorProperty, value);
     }
 
+    public static readonly BindableProperty TrailingIconIsVisibleProperty = BindableProperty.Create(
+        nameof(TrailingIconIsVisible),
+        typeof(bool),
+        typeof(MaterialCardView),
+        true);
+
+    public bool TrailingIconIsVisible
+    {
+        get => (bool)GetValue(TrailingIconIsVisibleProperty);
+        set => SetValue(TrailingIconIsVisibleProperty, value);
+    }
+
     public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
         nameof(TextColorProperty),
         typeof(Color),
@@ -196,6 +208,10 @@ public class MaterialCardView : Border
         {
             _Headline.TextColor = TextColor;
             _SupportingText.TextColor = TextColor;  
+        }
+        else if (propertyName == TrailingIconIsVisibleProperty.PropertyName)
+        {
+            _TrailingIcon.IsVisible = TrailingIconIsVisible;
         }
     }
     #endregion

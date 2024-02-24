@@ -14,7 +14,7 @@ public class AdminLocationsPage : BasePage
     #region Private Properties
     private AdminLocationsViewModel _ViewModel => (AdminLocationsViewModel) BindingContext;
     private readonly ILanguageService _LangService;
-    private readonly MaterialList<Models.Location> _Search;
+    private readonly MaterialList<ISelectItem> _Search;
     #endregion
 
     #region Constructor

@@ -14,7 +14,7 @@ public class AdminQuantityTypesPage : BasePage
     #region Private Properties
     private readonly ILanguageService _LangService;
     private AdminQuantityTypesViewModel _ViewModel => (AdminQuantityTypesViewModel)BindingContext;
-    private readonly MaterialList<QuantityType> _Search;
+    private readonly MaterialList<ISelectItem> _Search;
     #endregion
 
     #region Constructor

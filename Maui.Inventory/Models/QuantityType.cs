@@ -1,10 +1,12 @@
-﻿using SQLite;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Maui.Components.Controls;
+using SQLite;
 using System.Text.Json.Serialization;
 
 namespace Maui.Inventory.Models;
 
 [Table("quantity_type_table")]
-public class QuantityType
+public partial class QuantityType : ObservableObject, ISelectItem
 {
     [PrimaryKey, Column("_id")]
     [JsonPropertyName("id")]
@@ -16,5 +18,18 @@ public class QuantityType
 
     [Column("description")]
     [JsonPropertyName("description")]
-    public string Description { get; set; } = string.Empty;
+    public string Description 
+    { 
+        get => HeadLine; 
+        set => HeadLine = value; 
+    }
+
+    [ObservableProperty]
+    public string headLine = "";
+
+    [ObservableProperty]
+    public string supportingText = "";
+
+    [ObservableProperty]
+    public bool isSelected = false;
 }
