@@ -113,12 +113,20 @@ public class App : Application
             case AccessMessage.AdminLogout:
                 _AdminLoginVM.Clear();
                 UIUtils.ToggleDarkMode(false);
-                MainPage = new NavigationPage(new AdminLoginPage(_LanguageService, _AdminLoginVM));
+                
+                var nav = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM, _UserLoginVM));
+                await nav.PushAsync(new AdminLoginPage(_LanguageService, _AdminLoginVM));
+
+                MainPage = nav;
                 break;
             case AccessMessage.UserLogout:
                 _UserLoginVM.Clear();
                 UIUtils.ToggleDarkMode(false);
-                MainPage = new NavigationPage(new UserLoginPage(_LanguageService, _UserLoginVM));
+
+                var nav2 = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM, _UserLoginVM));
+                await nav2.PushAsync(new UserLoginPage(_LanguageService, _UserLoginVM));
+
+                MainPage = nav2;
                 break;
             case AccessMessage.LandingPage:
             case AccessMessage.AccessTokenExpired:
