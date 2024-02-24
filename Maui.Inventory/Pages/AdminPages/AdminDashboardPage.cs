@@ -14,6 +14,7 @@ public class AdminDashboardPage : BasePage
     private readonly VerticalStackLayout _contentLayout = new()
     {
         Padding = 16,
+        Spacing = 8
     };
     private readonly MaterialTile _locations = new()
     {
@@ -24,6 +25,12 @@ public class AdminDashboardPage : BasePage
     private readonly MaterialTile _statuses = new()
     {
         Icon = MaterialIcon.Check_circle,
+        ForegroundColor = Colors.White,
+        BackgroundColor = Application.Current.Resources["Primary"] as Color
+    };
+    private readonly MaterialTile _quantityTypes = new()
+    {
+        Icon = MaterialIcon.Video_label,
         ForegroundColor = Colors.White,
         BackgroundColor = Application.Current.Resources["Primary"] as Color
     };
@@ -40,6 +47,7 @@ public class AdminDashboardPage : BasePage
 
         _locations.Title = _LangService.StringForKey("Locations");
         _statuses.Title = _LangService.StringForKey("Statuses");
+        _quantityTypes.Title = _LangService.StringForKey("Quantity Types");
 
         _contentLayout.Add(new Grid
         {
@@ -51,17 +59,28 @@ public class AdminDashboardPage : BasePage
                 _statuses.Column(1),
             } 
         });
+        _contentLayout.Add(new Grid
+        {
+            ColumnDefinitions = Columns.Define(Star, Star),
+            ColumnSpacing = 8,
+            Children =
+            {
+                _quantityTypes.Column(0),
+            }
+        });
 
         _scroll.Content = _contentLayout;
         Content = _scroll;
 
         _locations.Clicked += LocationsClicked;
         _statuses.Clicked += StatusesClicked;
+        _quantityTypes.Clicked += QuantityTypesClicked;
     }
     ~AdminDashboardPage()
     {
         _locations.Clicked -= LocationsClicked;
         _statuses.Clicked -= StatusesClicked;
+        _quantityTypes.Clicked -= QuantityTypesClicked;
     }
     #endregion
 
@@ -74,6 +93,11 @@ public class AdminDashboardPage : BasePage
     private void LocationsClicked(object sender, EventArgs e)
     {
         Shell.Current.GoToAsync(nameof(AdminLocationsPage));
+    }
+
+    private void QuantityTypesClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(AdminQuantityTypesPage));
     }
     #endregion
 }

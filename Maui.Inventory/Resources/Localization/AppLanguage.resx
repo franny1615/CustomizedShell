@@ -396,4 +396,19 @@ May delete account at any time.
   <data name="Quantity" xml:space="preserve">
     <value>Quantity</value>
   </data>
+  <data name="Add Quantity Type" xml:space="preserve">
+    <value>Add Quantity Type</value>
+  </data>
+  <data name="Delete Quantity Type" xml:space="preserve">
+    <value>Delete Quantity Type</value>
+  </data>
+  <data name="Edit Quantity Type" xml:space="preserve">
+    <value>Edit Quantity Type</value>
+  </data>
+  <data name="No Quantity Types." xml:space="preserve">
+    <value>No Quantity Types.</value>
+  </data>
+  <data name="Quantity Types" xml:space="preserve">
+    <value>Quantity Types</value>
+  </data>
 </root>

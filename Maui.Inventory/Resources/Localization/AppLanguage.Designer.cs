@@ -94,6 +94,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Quantity Type.
+        /// </summary>
+        internal static string Add_Quantity_Type {
+            get {
+                return ResourceManager.GetString("Add Quantity Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Status.
         /// </summary>
         internal static string Add_Status {
@@ -229,6 +238,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Quantity Type.
+        /// </summary>
+        internal static string Delete_Quantity_Type {
+            get {
+                return ResourceManager.GetString("Delete Quantity Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Status.
         /// </summary>
         internal static string Delete_Status {
@@ -279,6 +297,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Edit_Location {
             get {
                 return ResourceManager.GetString("Edit Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Quantity Type.
+        /// </summary>
+        internal static string Edit_Quantity_Type {
+            get {
+                return ResourceManager.GetString("Edit Quantity Type", resourceCulture);
             }
         }
         
@@ -544,6 +571,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Quantity Types..
+        /// </summary>
+        internal static string No_Quantity_Types_ {
+            get {
+                return ResourceManager.GetString("No Quantity Types.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Statuses..
         /// </summary>
         internal static string No_Statuses_ {
@@ -639,6 +675,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Quantity {
             get {
                 return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity Types.
+        /// </summary>
+        internal static string Quantity_Types {
+            get {
+                return ResourceManager.GetString("Quantity Types", resourceCulture);
             }
         }
         

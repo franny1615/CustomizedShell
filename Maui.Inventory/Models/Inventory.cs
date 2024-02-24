@@ -77,6 +77,14 @@ public class Inventory
             }
         }
     }
+
+    public string QuantityStr
+    {
+        get
+        {
+            return $"{Quantity} {QuantityType}";
+        }
+    }
 }
 
 public class InventoryDAL : BaseDAL<Inventory>, IDAL<Inventory> { }

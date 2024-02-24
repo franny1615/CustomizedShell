@@ -46,6 +46,13 @@ public class Endpoint
     public const string UpdateStatus = "api/status/update";
     public const string DeleteStatus = "api/status/delete";
     #endregion
+
+    #region Quantity Type
+    public const string GetQuantityType = "api/quantityTypes/list";
+    public const string InsertQuantityType = "api/quantityTypes/insert";
+    public const string UpdateQuantityType = "api/quantityTypes/update";
+    public const string DeleteQuantityType = "api/quantityTypes/delete";
+    #endregion
 }
 
 [Table("api_url")]

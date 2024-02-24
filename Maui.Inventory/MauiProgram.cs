@@ -56,6 +56,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminStatusesPage>();
 		builder.Services.AddTransient<AdminLocationsPage>();
 		builder.Services.AddTransient<AdminEditLocationPage>();
+		builder.Services.AddTransient<AdminQuantityTypesPage>();
 
 		return builder;
 	}
@@ -77,6 +78,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<InventoryViewModel>();
 		builder.Services.AddTransient<AdminStatusesViewModel>();
 		builder.Services.AddTransient<AdminLocationsViewModel>();
+		builder.Services.AddTransient<AdminQuantityTypesViewModel>();
 
         return builder;
 	}
@@ -93,7 +95,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<IEmailService, EmailService>();
 		builder.Services.AddTransient<ICRUDService<Models.Inventory>, InventoryService>();
         builder.Services.AddTransient<ILocationsService, LocationsService>();
-        builder.Services.AddTransient<ICRUDService<Models.Status>, StatusService>();
+        builder.Services.AddTransient<ICRUDService<Status>, StatusService>();
+		builder.Services.AddTransient<ICRUDService<QuantityType>, QuantityTypesService>();
 
         return builder;
 	}

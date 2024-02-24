@@ -49,6 +49,7 @@ public class AdminShell : Shell
 
         Routing.RegisterRoute(nameof(AdminLocationsPage), typeof(AdminLocationsPage));
         Routing.RegisterRoute(nameof(AdminStatusesPage), typeof(AdminStatusesPage));
+        Routing.RegisterRoute(nameof(AdminQuantityTypesPage), typeof(AdminQuantityTypesPage));
     }
     #endregion
 }

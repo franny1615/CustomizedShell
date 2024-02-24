@@ -29,7 +29,7 @@ public class InventoryPage : BasePage
 			view.SetBinding(MaterialArticleCardView.BindingContextProperty, ".");
 			view.SetBinding(MaterialArticleCardView.ArticleProperty, "Description");
             view.SetBinding(MaterialArticleCardView.MainSupportOneProperty, "Location");
-            view.SetBinding(MaterialArticleCardView.SecondarySupportTwoProperty, "LastEditedOnStr");
+            view.SetBinding(MaterialArticleCardView.SecondarySupportTwoProperty, "QuantityStr");
             view.SetBinding(MaterialArticleCardView.SecondarySupportOneProperty, "Status");
             view.SetDynamicResource(MaterialCardView.BackgroundColorProperty, "CardColor");
             view.Clicked += EditInventory;
