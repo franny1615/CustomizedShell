@@ -42,7 +42,7 @@ public class AdminStatusesPage : BasePage
             view.Clicked += StatusClicked;
 
             return view;
-        }), statusesVM, isEditable: true);
+        }), statusesVM, isEditable: AccessControl.IsLicenseValid);
 
         Content = _Search;
         _Search.AddItemClicked += AddStatus;

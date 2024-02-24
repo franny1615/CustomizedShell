@@ -42,7 +42,7 @@ public class AdminQuantityTypesPage : BasePage
             view.Clicked += AddQuantityType;
 
             return view;
-        }),quantityTypesVM, isEditable: true);
+        }),quantityTypesVM, isEditable: AccessControl.IsLicenseValid);
 
         Content = _Search;
         _Search.AddItemClicked += AddQuantityType;

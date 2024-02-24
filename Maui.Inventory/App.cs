@@ -94,23 +94,26 @@ public class App : Application
     {
         if (message.Value is AccessMessage access)
         {
-            AccessControl(access);
+            LoginControl(access);
         }
     }
 
-    private async void AccessControl(AccessMessage access)
+    private async void LoginControl(AccessMessage access)
     {
         switch (access)
         {
             case AccessMessage.AdminSignedIn:
                 UIUtils.ToggleDarkMode(await _AppVM.ShouldEnableDarkMode());
+                AccessControl.IsLicenseValid = await _AppVM.IsLicenseValid();
                 MainPage = new AdminShell(_LanguageService);
                 break;
             case AccessMessage.UserSignedIn:
                 UIUtils.ToggleDarkMode(await _AppVM.ShouldEnableDarkMode());
+                AccessControl.IsLicenseValid = await _AppVM.IsLicenseValid();
                 MainPage = new UserShell(_LanguageService);
                 break;
             case AccessMessage.AdminLogout:
+                AccessControl.IsLicenseValid = false;
                 _AdminLoginVM.Clear();
                 UIUtils.ToggleDarkMode(false);
                 
@@ -120,6 +123,7 @@ public class App : Application
                 MainPage = nav;
                 break;
             case AccessMessage.UserLogout:
+                AccessControl.IsLicenseValid = false;
                 _UserLoginVM.Clear();
                 UIUtils.ToggleDarkMode(false);
 
@@ -130,6 +134,7 @@ public class App : Application
                 break;
             case AccessMessage.LandingPage:
             case AccessMessage.AccessTokenExpired:
+                AccessControl.IsLicenseValid = false;
                 MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM, _UserLoginVM));
                 break;
         }

@@ -3,6 +3,7 @@ using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Components.Utilities;
+using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels.AdminVM;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
@@ -41,7 +42,7 @@ public class AdminLocationsPage : BasePage
             view.Clicked += LocationClicked;
 
             return view;
-        }), viewModel, isEditable: true);
+        }), viewModel, isEditable: AccessControl.IsLicenseValid);
 
         Content = _Search;
 

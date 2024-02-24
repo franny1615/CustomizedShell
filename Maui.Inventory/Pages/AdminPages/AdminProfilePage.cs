@@ -71,6 +71,12 @@ public class AdminProfilePage : BasePage
     {
         ThumbColor = Application.Current.Resources["Primary"] as Color
     };
+    private readonly Label _LicenseExpiredLabel = new()
+    {
+        FontSize = 16,
+        TextColor = Colors.Red,
+        HorizontalOptions = LayoutOptions.Center,
+    };
     #endregion
 
     #region Constructor
@@ -110,7 +116,8 @@ public class AdminProfilePage : BasePage
         Title = _LangService.StringForKey("Profile");
         _UpdateEmail.Text = _LangService.StringForKey("UpdateEmail");
         _ResetPassword.Text = _LangService.StringForKey("ResetPassword");
-        _Logout.Text = _LangService.StringForKey("Logout");
+        _Logout.Text = _LangService.StringForKey("Logout"); 
+        _LicenseExpiredLabel.Text = _LangService.StringForKey("License Expired");
 
         _DarkModeToggleLayout.Children.Add(_DarkModeIcon.Column(0));
         _DarkModeToggleLayout.Children.Add(_DarkModeLabel.Column(1));
@@ -122,6 +129,11 @@ public class AdminProfilePage : BasePage
         _ContentLayout.Add(_Email);
         _ContentLayout.Add(_CompanyId);
         _ContentLayout.Add(_LicenseId);
+
+        if (!AccessControl.IsLicenseValid)
+        {
+            _ContentLayout.Add(_LicenseExpiredLabel);
+        }
 
         _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LangService.StringForKey("Customize")));
 

@@ -472,6 +472,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to License Expired.
+        /// </summary>
+        internal static string License_Expired {
+            get {
+                return ResourceManager.GetString("License Expired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to License ID.
         /// </summary>
         internal static string LicenseId {

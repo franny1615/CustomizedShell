@@ -405,6 +405,9 @@ May delete account at any time.
   <data name="Edit Quantity Type" xml:space="preserve">
     <value>Edit Quantity Type</value>
   </data>
+  <data name="License Expired" xml:space="preserve">
+    <value>License Expired</value>
+  </data>
   <data name="No Quantity Types." xml:space="preserve">
     <value>No Quantity Types.</value>
   </data>

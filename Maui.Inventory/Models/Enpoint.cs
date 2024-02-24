@@ -66,3 +66,8 @@ public class ApiUrl
 }
 
 public class ApiUrlDAL : BaseDAL<ApiUrl>, IDAL<ApiUrl> { }
+
+public static class AccessControl
+{
+    public static bool IsLicenseValid { get; set; } = false;
+}

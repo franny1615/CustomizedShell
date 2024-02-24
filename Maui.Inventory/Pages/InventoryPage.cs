@@ -1,6 +1,7 @@
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
+using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels;
 
 namespace Maui.Inventory.Pages;
@@ -35,7 +36,7 @@ public class InventoryPage : BasePage
             view.Clicked += EditInventory;
 
 			return view;
-		}), viewModel, isEditable: true);
+		}), viewModel, isEditable: AccessControl.IsLicenseValid);
 
 		Content = _Search;
 

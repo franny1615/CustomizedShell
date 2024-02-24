@@ -43,7 +43,7 @@ public class AdminUsersPage : BasePage
             view.Clicked += UserClicked;
 
             return view;
-        }), adminUsersVM, isEditable: true);
+        }), adminUsersVM, isEditable: AccessControl.IsLicenseValid);
 
         Content = _Search;
         _Search.AddItemClicked += AddUser;

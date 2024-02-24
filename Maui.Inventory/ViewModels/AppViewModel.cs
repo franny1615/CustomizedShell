@@ -58,4 +58,39 @@ public partial class AppViewModel : ObservableObject
 
         return false;
     }
+
+    public async Task<bool> IsLicenseValid()
+    {
+        User user = null;
+        Admin admin = null;
+        try
+        {
+            user = (await _UserDAL.GetAll()).First();
+        }
+        catch (Exception ex)
+        {
+            Crashes.TrackError(ex);
+        }
+
+        try
+        {
+            admin = (await _AdminDAL.GetAll()).First();
+        }
+        catch (Exception ex)
+        {
+            Crashes.TrackError(ex);
+        }
+
+        if (user is not null)
+        {
+            return user.IsLicenseValid;
+        }
+
+        if (admin is not null)
+        {
+            return admin.IsLicenseValid;
+        }
+
+        return false;
+    }
 }
