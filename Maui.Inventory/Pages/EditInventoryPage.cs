@@ -62,6 +62,8 @@ public class EditInventoryPage : BasePage
         _Status.IsDisabled = true;
         _QtyType.IsDisabled = true;
         _Location.IsDisabled = true;
+        _Description.IsDisabled = true;
+        _Quantity.IsDisabled = true;
 
         switch (inventoryViewModel.EditMode)
         {
@@ -97,17 +99,33 @@ public class EditInventoryPage : BasePage
                 _ContentLayout.Add(_LastEdited);
                 _ContentLayout.Add(_CreatedOn);
 
-                _ContentContainer.Add(new Grid
+                if (AccessControl.CanDeleteInventory(AccessControl.EditInventoryPermissions))
                 {
-                    ColumnDefinitions = Columns.Define(Auto, Auto, Star),
-                    ColumnSpacing = 8,
-                    Children =
+                    _ContentContainer.Add(new Grid
                     {
-                        _Delete.Column(0),
-                        _Print.Column(1),
-                        _Save.Column(2)
-                    }
-                }.Row(1));
+                        ColumnDefinitions = Columns.Define(Auto, Auto, Star),
+                        ColumnSpacing = 8,
+                        Children =
+                        {
+                            _Delete.Column(0),
+                            _Print.Column(1),
+                            _Save.Column(2)
+                        }
+                    }.Row(1));
+                }
+                else
+                {
+                    _ContentContainer.Add(new Grid
+                    {
+                        ColumnDefinitions = Columns.Define(Auto, Star),
+                        ColumnSpacing = 8,
+                        Children =
+                        {
+                            _Print.Column(0),
+                            _Save.Column(1)
+                        }
+                    }.Row(1));
+                }
 
                 break;
             case EditMode.Add:
@@ -145,13 +163,29 @@ public class EditInventoryPage : BasePage
 
         Content = _ContentContainer;
 
-        _Status.TapGesture(SelectStatus);
-        _QtyType.TapGesture(SelectQtyType);
-        _Location.TapGesture(SelectLocation);
-
-        _Location.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
-        _QtyType.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
-        _Status.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
+        if (AccessControl.CanChangeStatus(AccessControl.EditInventoryPermissions))
+        {
+            _Status.TapGesture(SelectStatus);
+            _Status.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
+        }
+        if (AccessControl.CanChangeDescription(AccessControl.EditInventoryPermissions))
+        {
+            _Description.IsDisabled = false;
+        }
+        if (AccessControl.CanChangeQuantity(AccessControl.EditInventoryPermissions))
+        {
+            _Quantity.IsDisabled = false;
+        }
+        if (AccessControl.CanChangeQuantityType(AccessControl.EditInventoryPermissions))
+        {
+            _QtyType.TapGesture(SelectQtyType);
+            _QtyType.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
+        }
+        if (AccessControl.CanChangeLocation(AccessControl.EditInventoryPermissions))
+        {
+            _Location.TapGesture(SelectLocation);
+            _Location.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
+        }
 
         _Save.Clicked += Save;
         _Delete.Clicked += Delete;

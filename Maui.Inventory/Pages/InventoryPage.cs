@@ -73,6 +73,10 @@ public class InventoryPage : BasePage
         {
             _Search.ToggleEditable(AccessControl.IsLicenseValid);
         }
+        else
+        {
+            _Search.ToggleEditable(false);
+        }
     }
 
     private void AddInventory(object sender, ClickedEventArgs e)
