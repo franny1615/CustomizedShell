@@ -16,7 +16,8 @@ public class UserController(IUserRepository userRepository) : BaseController()
         return await _UserRepository.RegisterUser(
             potentialNewUser.AdminID,
             potentialNewUser.UserName,
-            potentialNewUser.Password);
+            potentialNewUser.Password,
+            potentialNewUser.EditInventoryPermissions);
     }
 
     [HttpPost]

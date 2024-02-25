@@ -16,7 +16,8 @@ public class UserRepository : IUserRepository
     public async Task<APIResponse<UserResponse>> RegisterUser(
         int adminId,
         string username,
-        string password)
+        string password,
+        int editInventoryPermissions)
     {
         #region BASIC SANITY CHECKS
         if (string.IsNullOrEmpty(username))
@@ -82,6 +83,7 @@ DECLARE
 @username NVARCHAR(50) = '{username}',
 @password NVARCHAR(50) = '{password}',
 @adminId  INT          = {adminId},
+@editInvPerms INT      = {editInventoryPermissions},
 @salt UNIQUEIDENTIFIER=NEWID(),
 @success BIT = 0
 
@@ -91,14 +93,16 @@ BEGIN TRY
         UserName, 
         PasswordHash, 
         Salt, 
-        AdminID
+        AdminID,
+        EditInventoryPermissions
     )
     VALUES
     (
         @username, 
         HASHBYTES('SHA2_512', @password+CAST(@salt AS NVARCHAR(36))), 
         @salt, 
-        @adminId
+        @adminId,
+        @editInvPerms
     )
     SET @success=1
 END TRY
@@ -131,7 +135,8 @@ select @success;";
         string username,
         string password,
         string email,
-        bool emailVerified)
+        bool emailVerified, 
+        int editInventoryPermissions)
     {
         #region BASIC SANITY CHECKS
         if (string.IsNullOrEmpty(username))
@@ -220,6 +225,7 @@ DECLARE
 @license       INT           = {licenseId},
 @email         NVARCHAR(300) = '{email}',
 @emailVerified BIT           = {emailBit},
+@editInvPerms  INT           = {editInventoryPermissions},
 @salt          UNIQUEIDENTIFIER=NEWID(),
 @success       BIT = 0
 
@@ -231,7 +237,8 @@ BEGIN TRY
         Salt, 
         LicenseID,
         Email,
-	    EmailVerified
+	    EmailVerified,
+        EditInventoryPermissions
     )
     VALUES
     (
@@ -240,7 +247,8 @@ BEGIN TRY
         @salt, 
         @license,
         @email,
-	    @emailVerified
+	    @emailVerified,
+        @editInvPerms
     )
     SET @success=1
 END TRY
@@ -305,7 +313,8 @@ SELECT
     '' as Password,
     Email,
     EmailVerified,
-    IsDarkModeOn
+    IsDarkModeOn,
+    EditInventoryPermissions
 FROM admin
 WHERE admin.Id = @userID;";
             #endregion
@@ -332,7 +341,7 @@ WHERE admin.Id = {authenticatedUser.Id}";
                 #endregion
 
                 authenticatedUser.IsLicenseValid = licenseValid;
-                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username, authenticatedUser.Id);
+                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username, authenticatedUser.Id, isAdminLogin: true);
 
                 response.Success = true;
                 response.Data = authenticatedUser;
@@ -391,7 +400,8 @@ SELECT
     AdminID,
     '' as Password,
     '' as AccessToken,
-    IsDarkModeOn
+    IsDarkModeOn,
+    EditInventoryPermissions
 FROM app_user
 WHERE app_user.Id = @userID;";
         #endregion
@@ -422,7 +432,7 @@ WHERE admin.Id = @adminId";
                 #endregion
 
                 authenticatedUser.IsLicenseValid = licenseValid;
-                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username, authenticatedUser.AdminID);
+                authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username, authenticatedUser.AdminID, isAdminLogin: false);
 
                 response.Success = true;
                 response.Data = authenticatedUser;
@@ -444,7 +454,7 @@ WHERE admin.Id = @adminId";
     #endregion
 
     #region HELPERS
-    private string GenerateJWT(int id, string username, int adminId)
+    private string GenerateJWT(int id, string username, int adminId, bool isAdminLogin)
     {
         string issuer = Env.String(EnvironmentConstant.JWT_ISS);
         var audience = Env.String(EnvironmentConstant.JWT_AUD);
@@ -457,7 +467,8 @@ WHERE admin.Id = @adminId";
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("UserID", $"{id}"),
                 new Claim("AdminID", $"{adminId}"),
-                new Claim("UserName", username)
+                new Claim("UserName", username),
+                new Claim("IsAdminLogin", isAdminLogin ? "1": "0")
             }),
             Expires = DateTime.UtcNow.AddDays(1),
             Issuer = issuer,
@@ -608,6 +619,7 @@ DECLARE
 @password NVARCHAR(50) = '{user.Password}',
 @adminId  INT          = {user.AdminID},
 @darkMode BIT          = '{darkModeOn}',
+@editInvPerms  INT     = {user.EditInventoryPermissions},
 @salt     UNIQUEIDENTIFIER = NEWID(),
 @success  BIT = 0
 
@@ -617,7 +629,8 @@ BEGIN TRY
         UserName = @username,
         {updatingPS}
         AdminID = @adminId,
-        IsDarkModeOn = @darkMode
+        IsDarkModeOn = @darkMode,
+        EditInventoryPermissions = @editInvPerms
     WHERE app_user.Id = @id
     AND   app_user.AdminID = @adminId
 
@@ -801,6 +814,7 @@ DECLARE
 @email         NVARCHAR(300) = '{admin.Email}',
 @emailVerified BIT           = '{emailBit}',
 @darkMode      BIT           = '{darkModeBit}',
+@editInvPerms  INT            = {admin.EditInventoryPermissions},
 @salt     UNIQUEIDENTIFIER = NEWID(),
 @success  BIT = 0
 
@@ -811,7 +825,8 @@ BEGIN TRY
         {updatingPS}
         Email = @email,
         EmailVerified = @emailVerified,
-        IsDarkModeOn = @darkMode
+        IsDarkModeOn = @darkMode,
+        EditInventoryPermissions = @editInvPerms
     WHERE admin.Id = @id
 
     SET @success=1

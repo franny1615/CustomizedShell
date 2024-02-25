@@ -187,4 +187,37 @@ AND   inventory.AdminId = {inventory.AdminId}";
         return response;
     }
     #endregion
+
+    #region Permissions
+    public async Task<APIResponse<int>> GetPermissions(int id, int adminId, bool isAdmin)
+    {
+        string query;
+        if (isAdmin)
+        {
+            query = $@"SELECT EditInventoryPermissions FROM admin WHERE Id = {adminId}";
+        }
+        else
+        {
+            query = $@"SELECT EditInventoryPermissions FROM app_user WHERE Id = {id} AND AdminId = {adminId}";
+        }
+
+        var response = new APIResponse<int>();
+        try
+        {
+            int permissions = (await SQLUtils.QueryAsync<int>(query)).First();
+
+            response.Success = true;
+            response.Data = permissions;
+            response.Message = "";
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Data = -1;
+            response.Message = $"ERROR >>> {ex.Message} <<<";
+        }
+
+        return response;
+    }
+    #endregion
 }

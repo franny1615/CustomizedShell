@@ -59,4 +59,17 @@ public class InventoryController(
     {
         return await inventoryRepository.Delete(inventory);
     }
+
+    [HttpGet]
+    [Route("editPermissions")]
+    [Authorize]
+    public async Task<APIResponse<int>> GetPermissions()
+    {
+        var user = httpContextAccessor.HttpContext?.User!;
+        int adminId = Env.GetAdminIDFromIdentity(user);
+        int userId = Env.GetUserIdFromIdentity(user);
+        bool isAdmin = Env.IsAdmin(user);
+
+        return await inventoryRepository.GetPermissions(userId, adminId, isAdmin);
+    }
 }

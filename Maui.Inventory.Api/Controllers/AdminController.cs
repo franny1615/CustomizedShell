@@ -21,7 +21,8 @@ public class AdminController(
             potentialNewUser.UserName,
             potentialNewUser.Password,
             potentialNewUser.Email,
-            potentialNewUser.EmailVerified);
+            potentialNewUser.EmailVerified,
+            potentialNewUser.EditInventoryPermissions);
     }
 
     [HttpPost]

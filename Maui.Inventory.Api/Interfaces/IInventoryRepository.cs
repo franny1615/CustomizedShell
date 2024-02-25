@@ -10,4 +10,5 @@ public interface IInventoryRepository
     public Task<APIResponse<PaginatedQueryResponse<Models.Inventory>>> GetAll(
         PaginatedRequest request,
         int adminId);
+    public Task<APIResponse<int>> GetPermissions(int id, int adminId, bool isAdmin);
 }

@@ -13,6 +13,7 @@ public class Admin
     public string AccessToken { get; set; } = string.Empty;
     public bool IsDarkModeOn { get; set; } = false;
     public bool IsLicenseValid { get; set; } = false;
+    public int EditInventoryPermissions { get; set; } = 0;
 
     [JsonIgnore]
     public BinaryData? PasswordHash { get; set; } = null;

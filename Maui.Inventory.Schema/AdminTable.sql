@@ -7,5 +7,6 @@ CREATE TABLE admin
     PasswordHash  BINARY(64)    NOT NULL,
     Salt          NVARCHAR(250) NOT NULL,
     LicenseID     INT           FOREIGN KEY REFERENCES license(Id),
-    IsDarkModeOn  BIT			NOT NULL DEFAULT 0 
+    IsDarkModeOn  BIT			NOT NULL DEFAULT 0,
+    EditInventoryPermissions INT    NOT NULL DEFAULT 0
 );

@@ -7,13 +7,15 @@ public interface IUserRepository
     public Task<APIResponse<UserResponse>> RegisterUser(
         int adminId,
         string username,
-        string password);
+        string password,
+        int editInventoryPermissions);
 
     public Task<APIResponse<UserResponse>> RegisterAdmin(
         string username,
         string password,
         string email,
-        bool emailVerified);
+        bool emailVerified,
+        int editInventoryPermissions);
 
     public Task<APIResponse<User>> AuthenticateUser(
         int adminId,

@@ -39,6 +39,10 @@ public class Admin
     [Column("is_license_valid")]
     [JsonPropertyName("isLicenseValid")]
     public bool IsLicenseValid { get; set; } = false;
+
+    [Column("edit_inv_permissions")]
+    [JsonPropertyName("editInventoryPermissions")]
+    public int EditInventoryPermissions { get; set; } = 0;
 }
 
 public class AdminDAL : BaseDAL<Admin>, IDAL<Admin> { }
