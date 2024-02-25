@@ -105,11 +105,13 @@ public class App : Application
             case AccessMessage.AdminSignedIn:
                 UIUtils.ToggleDarkMode(await _AppVM.ShouldEnableDarkMode());
                 AccessControl.IsLicenseValid = await _AppVM.IsLicenseValid();
+                AccessControl.EditInventoryPermissions = (int)EditInventoryPerms.AdminAccess;
                 MainPage = new AdminShell(_LanguageService);
                 break;
             case AccessMessage.UserSignedIn:
                 UIUtils.ToggleDarkMode(await _AppVM.ShouldEnableDarkMode());
                 AccessControl.IsLicenseValid = await _AppVM.IsLicenseValid();
+                AccessControl.EditInventoryPermissions = await _AppVM.EditInventoryPermisssions();
                 MainPage = new UserShell(_LanguageService);
                 break;
             case AccessMessage.AdminLogout:

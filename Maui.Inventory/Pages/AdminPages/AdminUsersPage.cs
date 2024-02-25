@@ -126,6 +126,15 @@ public class AdminEditUserPopupPage : PopupPage
         ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Delete, Colors.White),
         FABStyle = FloatingActionButtonStyle.Regular,
     };
+    private readonly Label _EditInventoryPermissions = new() { FontSize = 18, FontAttributes = FontAttributes.Bold, HorizontalOptions = LayoutOptions.Center };
+    private readonly MaterialToggle _CanChangeStatus = new() { Icon = MaterialIcon.Check_circle };
+    private readonly MaterialToggle _CanChangeDesc = new() { Icon = MaterialIcon.Description };
+    private readonly MaterialToggle _CanChangeQty = new() { Icon = MaterialIcon.Looks_one };
+    private readonly MaterialToggle _CanChangeQtyType = new() { Icon = MaterialIcon.Video_label };
+    private readonly MaterialToggle _CanChangeLocation = new() { Icon = MaterialIcon.Shelves };
+    private readonly MaterialToggle _CanDelete = new() { Icon = MaterialIcon.Delete };
+    private readonly MaterialToggle _CanAdd = new() { Icon = MaterialIcon.Add };
+
     private bool _IsDeleting = false;
     #endregion
 
@@ -139,6 +148,15 @@ public class AdminEditUserPopupPage : PopupPage
 
         _Username = new(_ViewModel.Username);
         _Password = new(_ViewModel.Password);
+
+        _EditInventoryPermissions.Text = _LanguageService.StringForKey("Inventory Permissions");
+        _CanChangeStatus.Text = _LanguageService.StringForKey("Change Status");
+        _CanChangeDesc.Text = _LanguageService.StringForKey("Change Description");
+        _CanChangeQty.Text = _LanguageService.StringForKey("Change Quantity");
+        _CanChangeQtyType.Text = _LanguageService.StringForKey("Change Qty Type");
+        _CanChangeLocation.Text = _LanguageService.StringForKey("Change Location");
+        _CanDelete.Text = _LanguageService.StringForKey("Delete");
+        _CanAdd.Text = _LanguageService.StringForKey("Add");
 
         _Close.TapGesture(() => Navigation.PopModalAsync());
 
@@ -156,6 +174,14 @@ public class AdminEditUserPopupPage : PopupPage
                 _Title.Text = _LanguageService.StringForKey("EditEmployee");
                 _Save.Text = _LanguageService.StringForKey("SaveChanges");
 
+                _CanChangeStatus.IsToggled = AccessControl.CanChangeStatus(_ViewModel.EditInvPerms);
+                _CanChangeDesc.IsToggled = AccessControl.CanChangeDescription(_ViewModel.EditInvPerms);
+                _CanChangeQty.IsToggled = AccessControl.CanChangeQuantity(_ViewModel.EditInvPerms);
+                _CanChangeQtyType.IsToggled = AccessControl.CanChangeQuantityType(_ViewModel.EditInvPerms);
+                _CanChangeLocation.IsToggled = AccessControl.CanChangeLocation(_ViewModel.EditInvPerms);
+                _CanDelete.IsToggled = AccessControl.CanDeleteInventory(_ViewModel.EditInvPerms);
+                _CanAdd.IsToggled = AccessControl.CanAddInventory(_ViewModel.EditInvPerms);
+
                 _ContentLayout.Children.Add(new Grid
                 {
                     ColumnDefinitions = Columns.Define(Auto, Star),
@@ -171,15 +197,26 @@ public class AdminEditUserPopupPage : PopupPage
 
         _ContentLayout.Children.Add(_Title.Row(0).Column(1).Center());
         _ContentLayout.Children.Add(_Close.Row(0).Column(2).Center());
-        _ContentLayout.Children.Add(new VerticalStackLayout
+        _ContentLayout.Children.Add(new ScrollView
         {
-            Padding = 0,
-            Margin = 0,
-            Spacing = 8,
-            Children =
+            Content = new VerticalStackLayout
             {
-                _Username,
-                _Password,
+                Padding = 0,
+                Margin = 0,
+                Spacing = 8,
+                Children =
+                {
+                    _Username,
+                    _Password,
+                    _EditInventoryPermissions,
+                    _CanChangeStatus,
+                    _CanChangeDesc,
+                    _CanChangeQty,
+                    _CanChangeQtyType,
+                    _CanChangeLocation,
+                    _CanDelete,
+                    _CanAdd
+                }
             }
         }.Row(1).Column(0).ColumnSpan(3));
 
@@ -234,11 +271,41 @@ public class AdminEditUserPopupPage : PopupPage
             return;
         }
 
+        int permissionsResult = 0;
+        if (_CanChangeStatus.IsToggled)
+        {
+            permissionsResult = permissionsResult | (int)EditInventoryPerms.CanChangeStatus;
+        }
+        if (_CanChangeDesc.IsToggled)
+        {
+            permissionsResult = permissionsResult | (int)EditInventoryPerms.CanChangeDescription;
+        }
+        if (_CanChangeQty.IsToggled)
+        {
+            permissionsResult = permissionsResult | (int)EditInventoryPerms.CanChangeQuantity;
+        }
+        if (_CanChangeQtyType.IsToggled)
+        {
+            permissionsResult = permissionsResult | (int)EditInventoryPerms.CanChangeQuantityType;
+        }
+        if (_CanChangeLocation.IsToggled)
+        {
+            permissionsResult = permissionsResult | (int)EditInventoryPerms.CanChangeLocation;
+        }
+        if (_CanAdd.IsToggled)
+        {
+            permissionsResult = permissionsResult | (int)EditInventoryPerms.CanAddInventory;
+        }
+        if (_CanDelete.IsToggled)
+        {
+            permissionsResult = permissionsResult | (int)EditInventoryPerms.CanDelete;
+        }
+
         switch (_ViewModel.EditMode)
         {
             case EditMode.Edit:
                 _Save.Text = _LanguageService.StringForKey("Saving");
-                bool saved = await _ViewModel.EditUser();
+                bool saved = await _ViewModel.EditUser(permissionsResult);
                 if (saved)
                 {
                     await Navigation.PopModalAsync();
@@ -254,7 +321,7 @@ public class AdminEditUserPopupPage : PopupPage
                 break;
             case EditMode.Add:
                 _Save.Text = _LanguageService.StringForKey("Adding");
-                RegistrationResponse response = await _ViewModel.RegisterUser();
+                RegistrationResponse response = await _ViewModel.RegisterUser(permissionsResult);
                 switch (response)
                 {
                     case RegistrationResponse.AlreadyExists:

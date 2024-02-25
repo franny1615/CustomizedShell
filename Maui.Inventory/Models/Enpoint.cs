@@ -31,6 +31,7 @@ public class Endpoint
     public const string InsertInventory = "api/inventory/insert";
     public const string UpdateInventory = "api/inventory/update";
     public const string DeleteInventory = "api/inventory/delete";
+    public const string GetEditInvPerms = "api/inventory/editPermissions";
     #endregion
 
     #region Locations
@@ -67,8 +68,3 @@ public class ApiUrl
 }
 
 public class ApiUrlDAL : BaseDAL<ApiUrl>, IDAL<ApiUrl> { }
-
-public static class AccessControl
-{
-    public static bool IsLicenseValid { get; set; } = false;
-}

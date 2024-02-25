@@ -38,7 +38,7 @@ public class InventoryPage : BasePage
             view.Clicked += EditInventory;
 
 			return view;
-		}), viewModel, isEditable: AccessControl.IsLicenseValid);
+		}), viewModel, isEditable: false);
 
 		Content = _Search;
 
@@ -55,6 +55,7 @@ public class InventoryPage : BasePage
     {
         base.OnAppearing();
         _Search.FetchPublic();
+        GetPermissions();
     }
 
     protected override void OnDisappearing()
@@ -64,6 +65,16 @@ public class InventoryPage : BasePage
     #endregion
 
     #region Helpers
+    private async void GetPermissions()
+    {
+        AccessControl.EditInventoryPermissions = await _viewModel.GetPermissions();
+        int canAddPermission = AccessControl.EditInventoryPermissions & (int)EditInventoryPerms.CanAddInventory;
+        if (canAddPermission == (int)EditInventoryPerms.CanAddInventory)
+        {
+            _Search.ToggleEditable(AccessControl.IsLicenseValid);
+        }
+    }
+
     private void AddInventory(object sender, ClickedEventArgs e)
     {
         _viewModel.SelectedInventory = null;

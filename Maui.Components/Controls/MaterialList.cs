@@ -120,6 +120,15 @@ public class MaterialList<T> : ContentView
     #region Helpers
     public void FetchPublic() => _Refresh.IsRefreshing = true;
 
+    public void ToggleEditable(bool isEditable)
+    {
+        _ContentLayout.Remove(_Add);
+        if (isEditable)
+        {
+            _ContentLayout.Children.Add(_Add.Row(0).RowSpan(3).End().Bottom().ZIndex(1));
+        }
+    }
+
     private async void Fetch()
     {
         await _ViewModel.GetItems();

@@ -44,13 +44,15 @@ public class UserService : IUserService
     public async Task<RegistrationResponse> Register(
         string username, 
         string password,
-        int adminID)
+        int adminID,
+        int permissions)
     {
         return await _apiService.Post<RegistrationResponse>(Endpoint.UserRegister, new
         {
             UserName = username,
             Password = password,
-            AdminID = adminID
+            AdminID = adminID,
+            EditInventoryPermissions = permissions
         });
     }
 }

@@ -12,7 +12,7 @@ namespace Maui.Inventory.ViewModels;
 public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Models.Inventory>
 {
     private readonly ILocationsService _locationService;
-    private readonly ICRUDService<Models.Inventory> _inventoryService;
+    private readonly IInventoryService _inventoryService;
     private readonly IDAL<Admin> _adminDAL;
     private readonly IDAL<User> _userDAL;
 
@@ -39,7 +39,7 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
     public MaterialEntryModel LocationModel { get; set; } = new();
 
     public InventoryViewModel(
-        ICRUDService<Models.Inventory> inventoryService,
+        IInventoryService inventoryService,
         ILanguageService languageService,
         ILocationsService locationService,
         IDAL<Admin> adminDAL,
@@ -214,5 +214,15 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         StatusVM.SelectedItems.Clear();
         LocationsVM.SelectedItems.Clear();
         QuantityTypesViewModel.SelectedItems.Clear();
+    }
+
+    public async Task<int> GetPermissions()
+    {
+        Admin admin = (await _adminDAL.GetAll()).FirstOrDefault();
+        if (admin != null)
+        {
+            return (int)EditInventoryPerms.AdminAccess;
+        }
+        return await _inventoryService.GetEditInventoryPermissions();
     }
 }

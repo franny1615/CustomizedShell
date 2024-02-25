@@ -2,7 +2,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using Maui.Inventory.Utilities;
-using Microsoft.AppCenter.Crashes;
 
 namespace Maui.Inventory.ViewModels;
 
@@ -27,25 +26,8 @@ public partial class AppViewModel : ObservableObject
 
     public async Task<bool> ShouldEnableDarkMode()
     {
-        User user = null;
-        Admin admin = null;
-        try
-        {
-            user = (await _UserDAL.GetAll()).First();
-        }
-        catch (Exception ex)
-        {
-            Crashes.TrackError(ex);
-        }
-
-        try
-        {
-            admin = (await _AdminDAL.GetAll()).First();
-        }
-        catch (Exception ex)
-        {
-            Crashes.TrackError(ex);
-        }
+        User user = (await _UserDAL.GetAll()).FirstOrDefault();
+        Admin admin = (await _AdminDAL.GetAll()).FirstOrDefault();
 
         if (user is not null)
         {
@@ -61,25 +43,8 @@ public partial class AppViewModel : ObservableObject
 
     public async Task<bool> IsLicenseValid()
     {
-        User user = null;
-        Admin admin = null;
-        try
-        {
-            user = (await _UserDAL.GetAll()).First();
-        }
-        catch (Exception ex)
-        {
-            Crashes.TrackError(ex);
-        }
-
-        try
-        {
-            admin = (await _AdminDAL.GetAll()).First();
-        }
-        catch (Exception ex)
-        {
-            Crashes.TrackError(ex);
-        }
+        User user = (await _UserDAL.GetAll()).FirstOrDefault();
+        Admin admin = (await _AdminDAL.GetAll()).FirstOrDefault();
 
         if (user is not null)
         {
@@ -92,5 +57,23 @@ public partial class AppViewModel : ObservableObject
         }
 
         return false;
+    }
+
+    public async Task<int> EditInventoryPermisssions()
+    {
+        User user = (await _UserDAL.GetAll()).FirstOrDefault();
+        Admin admin = (await _AdminDAL.GetAll()).FirstOrDefault();
+
+        if (user is not null)
+        {
+            return user.EditInventoryPermissions;
+        }
+
+        if (admin is not null)
+        {
+            return admin.EditInventoryPermissions;
+        }
+
+        return -1;
     }
 }

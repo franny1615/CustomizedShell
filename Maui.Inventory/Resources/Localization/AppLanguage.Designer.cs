@@ -175,6 +175,51 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Description.
+        /// </summary>
+        internal static string Change_Description {
+            get {
+                return ResourceManager.GetString("Change Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Location.
+        /// </summary>
+        internal static string Change_Location {
+            get {
+                return ResourceManager.GetString("Change Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Qty Type.
+        /// </summary>
+        internal static string Change_Qty_Type {
+            get {
+                return ResourceManager.GetString("Change Qty Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Quantity.
+        /// </summary>
+        internal static string Change_Quantity {
+            get {
+                return ResourceManager.GetString("Change Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Status.
+        /// </summary>
+        internal static string Change_Status {
+            get {
+                return ResourceManager.GetString("Change Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company ID.
         /// </summary>
         internal static string CompanyId {
@@ -234,6 +279,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Data {
             get {
                 return ResourceManager.GetString("Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -504,6 +558,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Inventory {
             get {
                 return ResourceManager.GetString("Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory Permissions.
+        /// </summary>
+        internal static string Inventory_Permissions {
+            get {
+                return ResourceManager.GetString("Inventory Permissions", resourceCulture);
             }
         }
         

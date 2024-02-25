@@ -447,4 +447,25 @@ May delete account at any time.
   <data name="Select Status" xml:space="preserve">
     <value>Select Status</value>
   </data>
+  <data name="Change Description" xml:space="preserve">
+    <value>Change Description</value>
+  </data>
+  <data name="Change Location" xml:space="preserve">
+    <value>Change Location</value>
+  </data>
+  <data name="Change Qty Type" xml:space="preserve">
+    <value>Change Qty Type</value>
+  </data>
+  <data name="Change Quantity" xml:space="preserve">
+    <value>Change Quantity</value>
+  </data>
+  <data name="Change Status" xml:space="preserve">
+    <value>Change Status</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Inventory Permissions" xml:space="preserve">
+    <value>Inventory Permissions</value>
+  </data>
 </root>

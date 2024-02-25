@@ -3,7 +3,7 @@ using Maui.Inventory.Services.Interfaces;
 
 namespace Maui.Inventory.Services;
 
-public class InventoryService(IAPIService apiService) : ICRUDService<Models.Inventory>
+public class InventoryService(IAPIService apiService) : IInventoryService
 {
     public async Task<ListNetworkResponse<Models.Inventory>> GetAll(ListRequest request, int adminId)
     {
@@ -34,5 +34,10 @@ public class InventoryService(IAPIService apiService) : ICRUDService<Models.Inve
     public async Task<bool> Delete(Models.Inventory itemToDelete)
     {
         return await apiService.Post<bool>(Endpoint.DeleteInventory, itemToDelete);
+    }
+
+    public async Task<int> GetEditInventoryPermissions()
+    {
+        return await apiService.Get<int>(Endpoint.GetEditInvPerms, new());
     }
 }

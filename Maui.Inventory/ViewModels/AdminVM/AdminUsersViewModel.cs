@@ -79,6 +79,7 @@ public partial class AdminEditUsersViewModel : ObservableObject
     public EditMode EditMode = EditMode.NotSet;
 
     private User _SelectedUser = null;
+    public int EditInvPerms => _SelectedUser?.EditInventoryPermissions ?? -1;
 
     public AdminEditUsersViewModel(
         ILanguageService languageService,
@@ -114,7 +115,7 @@ public partial class AdminEditUsersViewModel : ObservableObject
         }
     }
 
-    public async Task<RegistrationResponse> RegisterUser()
+    public async Task<RegistrationResponse> RegisterUser(int permissions)
     {
         Admin admin;
         try
@@ -131,10 +132,11 @@ public partial class AdminEditUsersViewModel : ObservableObject
         return await _UserService.Register(
             Username.Text,
             Password.Text,
-            admin.Id);
+            admin.Id,
+            permissions);
     }
 
-    public async Task<bool> EditUser()
+    public async Task<bool> EditUser(int permissions)
     {
         if (_SelectedUser == null)
         {
@@ -148,6 +150,7 @@ public partial class AdminEditUsersViewModel : ObservableObject
 
         _SelectedUser.UserName = Username.Text;
         _SelectedUser.Password = Password.Text;
+        _SelectedUser.EditInventoryPermissions = permissions;
 
         return await _AdminService.UpdateUser(_SelectedUser);
     }
