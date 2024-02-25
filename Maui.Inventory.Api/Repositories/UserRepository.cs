@@ -507,6 +507,7 @@ SELECT
     Id,
     UserName,
     AdminID,
+    EditInventoryPermissions,
     '' as Password,
     '' as AccessToken
 FROM app_user
