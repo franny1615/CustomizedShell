@@ -56,6 +56,12 @@ public class UserLoginPage : BasePage
         _ContentContainer.Add(_Username);
         _ContentContainer.Add(_Password);
 
+        string storedAdminId = Preferences.Default.Get(Constants.AdminId, "");
+        if (!string.IsNullOrEmpty(storedAdminId))
+        {
+            _ViewModel.AdminID.Text = storedAdminId;
+        }
+
         _ContentScroll.Content = _ContentContainer;
 
         _ContentLayout.Children.Add(_ContentScroll.Row(0));
@@ -100,6 +106,7 @@ public class UserLoginPage : BasePage
         bool loggedIn = await _ViewModel.Login();
         if (loggedIn)
         {
+            Preferences.Default.Set(Constants.AdminId, _ViewModel.AdminID.Text);
             WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.UserSignedIn));
         }
         else
