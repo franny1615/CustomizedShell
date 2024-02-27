@@ -12,6 +12,18 @@ public class MaterialArticleCardView : Border
     #endregion
 
     #region Public Properties
+    public static readonly BindableProperty TitleProperty = BindableProperty.Create(
+        nameof(Title),
+        typeof(string),
+        typeof(MaterialArticleCardView),
+        null);
+
+    public string Title
+    {
+        get => (string)GetValue(TitleProperty);
+        set => SetValue(TitleProperty, value);
+    }
+
     public static readonly BindableProperty ArticleProperty = BindableProperty.Create(
         nameof(Article),
         typeof(string),
@@ -48,30 +60,6 @@ public class MaterialArticleCardView : Border
         set => SetValue(MainSupportTwoProperty, value);
     }
 
-    public static readonly BindableProperty SecondarySupportOneProperty = BindableProperty.Create(
-        nameof(SecondarySupportOne),
-        typeof(string),
-        typeof(MaterialArticleCardView),
-        null);
-
-    public string SecondarySupportOne
-    {
-        get => (string)(GetValue(SecondarySupportOneProperty));
-        set => SetValue(SecondarySupportOneProperty, value);
-    }
-
-    public static readonly BindableProperty SecondarySupportTwoProperty = BindableProperty.Create(
-        nameof(SecondarySupportTwo),
-        typeof(string),
-        typeof(MaterialArticleCardView),
-        null);
-
-    public string SecondarySupportTwo
-    {
-        get => (string)(GetValue(SecondarySupportTwoProperty));
-        set => SetValue(SecondarySupportTwoProperty, value);
-    }
-
     public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
         nameof(TextColor),
         typeof(Color),
@@ -88,7 +76,7 @@ public class MaterialArticleCardView : Border
     #region Private Properties
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(Star, Auto, Auto),
+        RowDefinitions = Rows.Define(24, Star, 24),
         ColumnDefinitions = Columns.Define(Star, Star),
         Padding = 8,
         ColumnSpacing = 4,
@@ -112,17 +100,11 @@ public class MaterialArticleCardView : Border
         FontAttributes = FontAttributes.Bold,
         HorizontalTextAlignment = TextAlignment.End,
     };
-    private readonly Label _SecondOne = new()
+    private readonly Label _Title = new()
     {
-        FontSize = 12,
-        FontAttributes = FontAttributes.None,
+        FontSize = 16,
+        FontAttributes = FontAttributes.Bold,
         HorizontalTextAlignment = TextAlignment.Start,
-    };
-    private readonly Label _SecondTwo = new()
-    {
-        FontSize = 12,
-        FontAttributes = FontAttributes.None,
-        HorizontalTextAlignment = TextAlignment.End,
     };
     #endregion
 
@@ -141,11 +123,10 @@ public class MaterialArticleCardView : Border
             Clicked?.Invoke(this, null);
         });
 
-        _ContentLayout.Add(_Article.Row(0).Column(0).ColumnSpan(2));
-        _ContentLayout.Add(_MainOne.Row(1).Column(0));
-        _ContentLayout.Add(_MainTwo.Row(1).Column(1));
-        _ContentLayout.Add(_SecondOne.Row(2).Column(0));
-        _ContentLayout.Add(_SecondTwo.Row(2).Column(1));
+        _ContentLayout.Add(_Title.Row(0).Column(0));
+        _ContentLayout.Add(_Article.Row(1).Column(0).ColumnSpan(2));
+        _ContentLayout.Add(_MainOne.Row(2).Column(0));
+        _ContentLayout.Add(_MainTwo.Row(2).Column(1));
 
         Content = _ContentLayout;
     }
@@ -167,21 +148,16 @@ public class MaterialArticleCardView : Border
         {
             _MainTwo.Text = MainSupportTwo;
         }
-        else if (propertyName == SecondarySupportOneProperty.PropertyName)
+        else if (propertyName == TitleProperty.PropertyName)
         {
-            _SecondOne.Text = SecondarySupportOne;
-        }
-        else if (propertyName == SecondarySupportTwoProperty.PropertyName)
-        {
-            _SecondTwo.Text = SecondarySupportTwo;
+            _Title.Text = Title;
         }
         else if (propertyName == TextColorProperty.PropertyName)
         {
+            _Title.TextColor = TextColor;
             _Article.TextColor = TextColor;
             _MainOne.TextColor = TextColor;
             _MainTwo.TextColor = TextColor;
-            _SecondOne.TextColor = TextColor;
-            _SecondTwo.TextColor = TextColor;
         }
     }
     #endregion

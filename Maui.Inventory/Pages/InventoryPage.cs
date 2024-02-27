@@ -30,8 +30,8 @@ public class InventoryPage : BasePage
 			view.SetBinding(MaterialArticleCardView.BindingContextProperty, ".");
 			view.SetBinding(MaterialArticleCardView.ArticleProperty, "Description");
             view.SetBinding(MaterialArticleCardView.MainSupportOneProperty, "Location");
-            view.SetBinding(MaterialArticleCardView.SecondarySupportTwoProperty, "QuantityStr");
-            view.SetBinding(MaterialArticleCardView.SecondarySupportOneProperty, "Status");
+            view.SetBinding(MaterialArticleCardView.MainSupportTwoProperty, "QuantityStr");
+            view.SetBinding(MaterialArticleCardView.TitleProperty, "Status");
             view.SetDynamicResource(MaterialCardView.BackgroundColorProperty, "CardColor");
             view.TextColor = Colors.White;
 
