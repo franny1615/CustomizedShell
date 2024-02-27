@@ -1,9 +1,11 @@
 ﻿using GenCode128;
 using Maui.Inventory.Api.Interfaces;
 using Maui.Inventory.Api.Models;
+using Maui.Inventory.Api.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Maui.Inventory.Api.Controllers;
 
@@ -70,16 +72,17 @@ public class LocationsController(
         APIResponse<string> response = new();
         try
         {
-            Image barcodeImg = Code128Rendering.MakeBarcodeImage(location.Barcode, 2, true);
-            using (MemoryStream ms = new MemoryStream()) 
-            {
-                ImageConverter conventer = new();
-                object? imageBytes = conventer.ConvertTo(barcodeImg, typeof(byte[]));
+            Image barcodeImg = BarcodeGenerator.Code128(location.Description, location.Barcode, 2, true);
 
-                response.Success = true;
-                response.Message = "success";
-                response.Data = Convert.ToBase64String((imageBytes as byte[]) ?? []);
-            }
+            MemoryStream ms = new MemoryStream();
+            ((Bitmap)barcodeImg).Save(ms, ImageFormat.Png);
+
+            byte[] byteImage = ms.ToArray();
+            string strImage = Convert.ToBase64String(byteImage);
+
+            response.Success = true;
+            response.Message = "success";
+            response.Data = strImage;
         }
         catch (Exception ex)
         {
