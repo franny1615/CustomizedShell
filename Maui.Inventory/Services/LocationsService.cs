@@ -36,12 +36,19 @@ public class LocationsService(IAPIService apiService) : ILocationsService
         return await apiService.Post<bool>(Endpoint.DeleteLocations, itemToDelete);
     }
 
-    public async Task<string> GenerateBarcode(string code)
+    public async Task<string> GenerateBarcode(string description, string code)
     {
-        var result = await apiService.Get<object>(Endpoint.GenerateBarcode, new Dictionary<string, string>
+        var dict = new Dictionary<string, string>
         {
             { "Barcode", code }
-        });
+        };
+
+        if (!string.IsNullOrEmpty(description))
+        {
+            dict.Add("Description", description);
+        }
+
+        var result = await apiService.Get<object>(Endpoint.GenerateBarcode, dict);
         return result.ToString();
     }
 }

@@ -193,9 +193,9 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         return adminID;
     }
 
-    public async Task GenerateBarcode(string code)
+    public async Task GenerateBarcode(string code, string description)
     {
-        string base64 = await _locationService.GenerateBarcode(code);
+        string base64 = await _locationService.GenerateBarcode(description, code);
         if (!string.IsNullOrEmpty(base64))
         {
             CurrentBarcodeBase64 = base64;

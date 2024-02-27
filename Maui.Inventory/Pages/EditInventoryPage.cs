@@ -25,7 +25,7 @@ public class EditInventoryPage : BasePage
     {
         Spacing = 8
     };
-    private readonly Image _BarcodePreview = new() { HeightRequest = 70 };
+    private readonly Image _BarcodePreview = new() { BackgroundColor = Colors.White };
     private readonly MaterialEntry _Description;
     private readonly MaterialEntry _Barcode;
     private readonly MaterialEntry _Quantity;
@@ -79,7 +79,7 @@ public class EditInventoryPage : BasePage
                 _ViewModel.QuantityTypeModel.Text = _ViewModel.SelectedInventory.QuantityType;
                 _ViewModel.StatusModel.Text = _ViewModel.SelectedInventory.Status;
                 _ViewModel.LocationModel.Text = _ViewModel.SelectedInventory.Location;
-                PopulateBarcode(_ViewModel.SelectedInventory.Barcode);
+                PopulateBarcode(_ViewModel.SelectedInventory.Barcode, _ViewModel.SelectedInventory.Description);
 
                 _ContentLayout.Add(_Status);
                 _ContentLayout.Add(_Description);
@@ -133,7 +133,7 @@ public class EditInventoryPage : BasePage
                 _Save.Text = _LangService.StringForKey("Add");
 
                 string ticks = $"{DateTime.Now.Ticks}";
-                PopulateBarcode(ticks);
+                PopulateBarcode(ticks, "");
                 _ViewModel.BarcodeModel.Text = ticks;
 
                 _ContentLayout.Add(_Status);
@@ -239,9 +239,9 @@ public class EditInventoryPage : BasePage
     #endregion
 
     #region Helpers
-    private async void PopulateBarcode(string code)
+    private async void PopulateBarcode(string code, string description)
     {
-        await _ViewModel.GenerateBarcode(code);
+        await _ViewModel.GenerateBarcode(code, description);
         if (!string.IsNullOrEmpty(_ViewModel.CurrentBarcodeBase64))
         {
             _BarcodePreview.Source = ImageSource.FromStream(() =>

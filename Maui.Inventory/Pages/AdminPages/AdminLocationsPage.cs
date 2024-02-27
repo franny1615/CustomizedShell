@@ -117,7 +117,7 @@ public class AdminEditLocationPage : PopupPage
     };
     private readonly MaterialEntry _Description;
     private readonly MaterialEntry _Barcode;
-    private readonly Image _BarcodeView = new();
+    private readonly Image _BarcodeView = new() { BackgroundColor = Colors.White };
     private readonly FloatingActionButton _Save = new()
     {
         FABBackgroundColor = Application.Current.Resources["Primary"] as Color,
@@ -173,7 +173,7 @@ public class AdminEditLocationPage : PopupPage
                 _Description.ShowStatus("", "", Application.Current.Resources["Primary"] as Color);
 
                 string ticks = $"{DateTime.Now.Ticks}";
-                PopulateBarcode(ticks);
+                PopulateBarcode(ticks, "");
                 viewModel.BarcodeModel.Text = ticks;
 
                 _ContentLayout.Add(_Save.Row(2).Column(0).ColumnSpan(3));
@@ -184,7 +184,7 @@ public class AdminEditLocationPage : PopupPage
 
                 viewModel.DescriptionModel.Text = viewModel.SelectedLocation.Description;
                 viewModel.BarcodeModel.Text = viewModel.SelectedLocation.Barcode;
-                PopulateBarcode(viewModel.SelectedLocation.Barcode);
+                PopulateBarcode(viewModel.SelectedLocation.Barcode, viewModel.SelectedLocation.Description);
 
                 _ContentLayout.Add(new Grid
                 {
@@ -228,9 +228,9 @@ public class AdminEditLocationPage : PopupPage
     #endregion
 
     #region Helpers
-    private async void PopulateBarcode(string code)
+    private async void PopulateBarcode(string code, string description)
     {
-        await _ViewModel.GenerateBarcode(code);
+        await _ViewModel.GenerateBarcode(code, description);
         if (!string.IsNullOrEmpty(_ViewModel.CurrentBarcodeBase64))
         {
             _BarcodeView.Source = ImageSource.FromStream(() =>

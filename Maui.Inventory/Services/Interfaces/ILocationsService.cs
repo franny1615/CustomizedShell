@@ -2,5 +2,5 @@
 
 public interface ILocationsService : ICRUDService<Models.Location>
 {
-    public Task<string> GenerateBarcode(string code);
+    public Task<string> GenerateBarcode(string description, string code);
 }
