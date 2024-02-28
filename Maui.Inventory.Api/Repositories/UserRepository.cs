@@ -340,6 +340,7 @@ WHERE admin.Id = {authenticatedUser.Id}";
                 }
                 #endregion
 
+                authenticatedUser.LicenseExpirationDate = expirationDate;
                 authenticatedUser.IsLicenseValid = licenseValid;
                 authenticatedUser.AccessToken = GenerateJWT(authenticatedUser.Id, username, authenticatedUser.Id, isAdminLogin: true);
 
