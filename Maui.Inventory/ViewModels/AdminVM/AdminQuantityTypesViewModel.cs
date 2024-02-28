@@ -20,7 +20,7 @@ public partial class AdminQuantityTypesViewModel : ObservableObject, ISelectView
     public string ItemsIcon { get; set; } = MaterialIcon.Video_label;
     public SelectType SelectType { get; set; } = SelectType.SingleSelect;
 
-    public int ItemsPerPage { get; set; } = 20;
+    public int ItemsPerPage { get; set; } = 5;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
     public ObservableCollection<ISelectItem> Items { get; set; } = new();

@@ -20,7 +20,7 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
     public readonly AdminStatusesViewModel StatusVM;
     public readonly AdminQuantityTypesViewModel QuantityTypesViewModel;
 
-    public int ItemsPerPage { get; set; } = 20;
+    public int ItemsPerPage { get; set; } = 5;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
     public ObservableCollection<Models.Inventory> Items { get; set; } = new();
