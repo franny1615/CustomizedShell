@@ -873,6 +873,7 @@ SELECT LicenseId FROM admin WHERE Id = {adminId}";
 
             string query = $@"
 DELETE FROM app_user WHERE AdminID = {adminId}; 
+DELETE FROM inventory_history WHERE AdminId = {adminId};
 DELETE FROM inventory WHERE AdminId = {adminId};
 DELETE FROM locations WHERE AdminId = {adminId};
 DELETE FROM status WHERE AdminId = {adminId};

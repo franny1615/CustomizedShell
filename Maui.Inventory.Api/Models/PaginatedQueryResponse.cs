@@ -12,3 +12,8 @@ public class PaginatedRequest
     public int ItemsPerPage { get; set; } = 10;
     public string Search { get; set; } = string.Empty;
 }
+
+public class InventoryHistoryRequest : PaginatedRequest
+{
+    public int InventoryId { get; set; } = 0;
+}

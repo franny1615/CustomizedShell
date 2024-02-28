@@ -36,6 +36,31 @@ public class InventoryController(
         return response;
     }
 
+    [HttpGet]
+    [Route("history")]
+    [Authorize]
+    public async Task<APIResponse<PaginatedQueryResponse<Models.Inventory>>> GetInventoryHistory([FromQuery] InventoryHistoryRequest request)
+    {
+        APIResponse<PaginatedQueryResponse<Models.Inventory>> response;
+
+        try
+        {
+            var user = httpContextAccessor.HttpContext?.User!;
+            int adminId = Env.GetAdminIDFromIdentity(user);
+
+            response = await inventoryRepository.GetHistory(request, adminId, request.InventoryId);
+        }
+        catch (Exception ex)
+        {
+            response = new();
+            response.Success = false;
+            response.Message = ex.Message;
+            response.Data = new();
+        }
+
+        return response;
+    }
+
     [HttpPost]
     [Route("insert")]
     [Authorize]
@@ -47,9 +72,9 @@ public class InventoryController(
     [HttpPost]
     [Route("update")]
     [Authorize]
-    public async Task<APIResponse<bool>> Update([FromBody] Models.Inventory inventory)
+    public async Task<APIResponse<bool>> Update([FromBody] InventoryUpdate update)
     {
-        return await inventoryRepository.Update(inventory);
+        return await inventoryRepository.Update(update.Inventory ?? new(), update.PreviousInventory);
     }
 
     [HttpPost]

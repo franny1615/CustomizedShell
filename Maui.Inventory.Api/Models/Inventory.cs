@@ -13,3 +13,9 @@ public class Inventory
     public DateTime LastEditedOn { get; set; }
     public DateTime CreatedOn { get; set; }
 }
+
+public class InventoryUpdate
+{
+    public Inventory? Inventory { get; set; }
+    public Inventory? PreviousInventory { get; set; }
+}
