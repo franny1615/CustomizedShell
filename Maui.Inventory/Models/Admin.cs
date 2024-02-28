@@ -43,6 +43,10 @@ public class Admin
     [Column("edit_inv_permissions")]
     [JsonPropertyName("editInventoryPermissions")]
     public int EditInventoryPermissions { get; set; } = 0;
+
+    [Column("license_expiration_date")]
+    [JsonPropertyName("licenseExpirationDate")]
+    public DateTime LicenseExpirationDate {  get; set; }
 }
 
 public class AdminDAL : BaseDAL<Admin>, IDAL<Admin> { }

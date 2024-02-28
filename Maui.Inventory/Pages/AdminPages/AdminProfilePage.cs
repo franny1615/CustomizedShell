@@ -29,6 +29,7 @@ public class AdminProfilePage : BasePage
     private readonly MaterialEntry _Email;
     private readonly MaterialEntry _CompanyId;
     private readonly MaterialEntry _LicenseId;
+    private readonly MaterialEntry _LicenseExpirationDate; 
     private readonly FloatingActionButton _UpdateEmail = new()
     {
         FABBackgroundColor = Application.Current.Resources["Primary"] as Color,
@@ -78,12 +79,6 @@ public class AdminProfilePage : BasePage
     {
         ThumbColor = Application.Current.Resources["Primary"] as Color
     };
-    private readonly Label _LicenseExpiredLabel = new()
-    {
-        FontSize = 16,
-        TextColor = Colors.Red,
-        HorizontalOptions = LayoutOptions.Center,
-    };
     #endregion
 
     #region Constructor
@@ -102,6 +97,7 @@ public class AdminProfilePage : BasePage
         _Email = new(_AdminProfileVM.Email);
         _CompanyId = new(_AdminProfileVM.CompanyId);
         _LicenseId = new(_AdminProfileVM.LicenseId);
+        _LicenseExpirationDate = new(_AdminProfileVM.LicenseExpirationDate);
 
         _CompanyId.ShowStatus(
             _LangService.StringForKey("CompanyIdSupportText"),
@@ -119,12 +115,12 @@ public class AdminProfilePage : BasePage
         _Email.IsDisabled = true;
         _CompanyId.IsDisabled = true;
         _LicenseId.IsDisabled = true;
+        _LicenseExpirationDate.IsDisabled = true;
 
         Title = _LangService.StringForKey("Profile");
         _UpdateEmail.Text = _LangService.StringForKey("UpdateEmail");
         _ResetPassword.Text = _LangService.StringForKey("ResetPassword");
         _Logout.Text = _LangService.StringForKey("Logout"); 
-        _LicenseExpiredLabel.Text = _LangService.StringForKey("License Expired");
         _DeleteAccount.Text = _LangService.StringForKey("Delete Account");
 
         _DarkModeToggleLayout.Children.Add(_DarkModeIcon.Column(0));
@@ -137,10 +133,11 @@ public class AdminProfilePage : BasePage
         _ContentLayout.Add(_Email);
         _ContentLayout.Add(_CompanyId);
         _ContentLayout.Add(_LicenseId);
+        _ContentLayout.Add(_LicenseExpirationDate);
 
         if (!AccessControl.IsLicenseValid)
         {
-            _ContentLayout.Add(_LicenseExpiredLabel);
+            _LicenseExpirationDate.ShowStatus(_LangService.StringForKey("License Expired"), MaterialIcon.Info, Colors.Red);
         }
 
         _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LangService.StringForKey("Customize")));

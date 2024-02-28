@@ -468,4 +468,7 @@ May delete account at any time.
   <data name="Inventory Permissions" xml:space="preserve">
     <value>Inventory Permissions</value>
   </data>
+  <data name="License Expiration Date" xml:space="preserve">
+    <value>License Expiration Date</value>
+  </data>
 </root>

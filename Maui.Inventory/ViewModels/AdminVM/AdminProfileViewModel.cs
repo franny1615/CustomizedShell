@@ -4,6 +4,7 @@ using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
 using Maui.Inventory.Services.Interfaces;
 using Microsoft.AppCenter.Crashes;
+using System.Globalization;
 
 namespace Maui.Inventory.ViewModels;
 
@@ -17,6 +18,7 @@ public partial class AdminProfileViewModel : ObservableObject
     public MaterialEntryModel Email = new();
     public MaterialEntryModel CompanyId = new();
     public MaterialEntryModel LicenseId = new();
+    public MaterialEntryModel LicenseExpirationDate = new();
     
     [ObservableProperty]
     public bool isDarkModeOn = false;
@@ -36,11 +38,13 @@ public partial class AdminProfileViewModel : ObservableObject
         Email.Placeholder = _LangService.StringForKey("Email");
         CompanyId.Placeholder = _LangService.StringForKey("CompanyId");
         LicenseId.Placeholder = _LangService.StringForKey("LicenseId");
+        LicenseExpirationDate.Placeholder = _LangService.StringForKey("License Expiration Date");
 
         Username.PlaceholderIcon = MaterialIcon.Person;
         Email.PlaceholderIcon = MaterialIcon.Email;
         CompanyId.PlaceholderIcon = MaterialIcon.Storefront;
         LicenseId.PlaceholderIcon = MaterialIcon.Folder;
+        LicenseExpirationDate.PlaceholderIcon = MaterialIcon.Calendar_today;
     }
 
     public async Task GetProfile()
@@ -53,6 +57,7 @@ public partial class AdminProfileViewModel : ObservableObject
             Email.Text = admin.Email;
             CompanyId.Text = admin.Id.ToString();
             LicenseId.Text = admin.LicenseID.ToString();
+            LicenseExpirationDate.Text = admin.LicenseExpirationDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
 
             IsDarkModeOn = admin.IsDarkModeOn;
         }
