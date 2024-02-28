@@ -58,20 +58,12 @@ public partial class AdminStatusesViewModel: ObservableObject, ISelectViewModel
     {
         Items.Clear();
 
-        Admin admin = (await _adminDAL.GetAll()).FirstOrDefault();
-
-        int adminId = -1;
-        if (admin != null)
-        {
-            adminId = admin.Id;
-        }
-
         var statuses = await _statusService.GetAll(new ListRequest
         {
             Page = PaginationModel.CurrentPage - 1,
             ItemsPerPage = ItemsPerPage,
             Search = SearchModel.Text
-        }, adminId);
+        });
 
         for (int i = 0; i < statuses.Items.Count; i++)
         {

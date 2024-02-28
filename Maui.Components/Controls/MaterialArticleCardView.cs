@@ -86,25 +86,21 @@ public class MaterialArticleCardView : Border
     {
         FontSize = 12,
         FontAttributes = FontAttributes.None,
-        HorizontalTextAlignment = TextAlignment.Start
     };
     private readonly Label _MainOne = new()
     {
         FontSize = 16,
         FontAttributes = FontAttributes.Bold,
-        HorizontalTextAlignment = TextAlignment.Start,
     };
     private readonly Label _MainTwo = new()
     {
         FontSize = 16,
         FontAttributes = FontAttributes.Bold,
-        HorizontalTextAlignment = TextAlignment.End,
     };
     private readonly Label _Title = new()
     {
         FontSize = 16,
         FontAttributes = FontAttributes.Bold,
-        HorizontalTextAlignment = TextAlignment.Start,
     };
     #endregion
 
@@ -125,8 +121,8 @@ public class MaterialArticleCardView : Border
 
         _ContentLayout.Add(_Title.Row(0).Column(0));
         _ContentLayout.Add(_Article.Row(1).Column(0).ColumnSpan(2));
-        _ContentLayout.Add(_MainOne.Row(2).Column(0));
-        _ContentLayout.Add(_MainTwo.Row(2).Column(1));
+        _ContentLayout.Add(_MainOne.Row(2).Column(0).Start());
+        _ContentLayout.Add(_MainTwo.Row(2).Column(1).End());
 
         Content = _ContentLayout;
     }

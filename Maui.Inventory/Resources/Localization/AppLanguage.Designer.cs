@@ -544,6 +544,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to History.
+        /// </summary>
+        internal static string History {
+            get {
+                return ResourceManager.GetString("History", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email format..
         /// </summary>
         internal static string InvalidEmail {
@@ -693,6 +702,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string No_Inventory_ {
             get {
                 return ResourceManager.GetString("No Inventory.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Inventory History..
+        /// </summary>
+        internal static string No_Inventory_History_ {
+            get {
+                return ResourceManager.GetString("No Inventory History.", resourceCulture);
             }
         }
         

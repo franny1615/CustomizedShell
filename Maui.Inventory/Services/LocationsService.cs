@@ -5,7 +5,7 @@ namespace Maui.Inventory.Services;
 
 public class LocationsService(IAPIService apiService) : ILocationsService
 {
-    public async Task<ListNetworkResponse<Models.Location>> GetAll(ListRequest request, int adminId)
+    public async Task<ListNetworkResponse<Models.Location>> GetAll(ListRequest request)
     {
         Dictionary<string, string> parameters = new()
         {

@@ -5,7 +5,7 @@ namespace Maui.Inventory.Services;
 
 public class StatusService(IAPIService apiService) : ICRUDService<Status>
 {
-    public async Task<ListNetworkResponse<Status>> GetAll(ListRequest request, int adminId)
+    public async Task<ListNetworkResponse<Status>> GetAll(ListRequest request)
     {
         Dictionary<string, string> parameters = new()
         {

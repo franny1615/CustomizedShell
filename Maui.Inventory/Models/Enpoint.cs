@@ -28,6 +28,7 @@ public class Endpoint
 
     #region Inventory
     public const string GetInventory = "api/inventory/list";
+    public const string GetInventoryHistory = "api/inventory/history";
     public const string InsertInventory = "api/inventory/insert";
     public const string UpdateInventory = "api/inventory/update";
     public const string DeleteInventory = "api/inventory/delete";

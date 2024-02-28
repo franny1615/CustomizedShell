@@ -12,7 +12,7 @@ namespace Maui.Inventory.ViewModels;
 public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Models.Inventory>
 {
     private readonly ILocationsService _locationService;
-    private readonly IInventoryService _inventoryService;
+    public readonly IInventoryService InventoryService;
     private readonly IDAL<Admin> _adminDAL;
     private readonly IDAL<User> _userDAL;
 
@@ -25,6 +25,7 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
     public MaterialEntryModel SearchModel { get; set; } = new();
     public ObservableCollection<Models.Inventory> Items { get; set; } = new();
 
+    public Models.Inventory SelectedCached = null;
     public Models.Inventory SelectedInventory = null;
     public EditMode EditMode => SelectedInventory == null ? EditMode.Add : EditMode.Edit;
     public string CurrentBarcodeBase64 { get; set; } = string.Empty;
@@ -48,7 +49,7 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         AdminStatusesViewModel statusVM,
         AdminQuantityTypesViewModel quantityTypesViewModel)
     {
-        _inventoryService = inventoryService;
+        InventoryService = inventoryService;
         _locationService = locationService;
         _adminDAL = adminDAL;
         _userDAL = userDAL;
@@ -107,25 +108,12 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
     {
         Items.Clear();
 
-        Admin admin = (await _adminDAL.GetAll()).FirstOrDefault();
-        User user = (await _userDAL.GetAll()).FirstOrDefault();
-
-        int adminId = -1;
-        if (admin != null)
-        {
-            adminId = admin.Id;
-        }
-        if (user != null)
-        {
-            adminId = user.AdminID;
-        }
-
-        var locations = await _inventoryService.GetAll(new ListRequest
+        var locations = await InventoryService.GetAll(new ListRequest
         {
             Page = PaginationModel.CurrentPage - 1,
             ItemsPerPage = ItemsPerPage,
             Search = SearchModel.Text
-        }, adminId);
+        });
 
         for (int i = 0; i < locations.Items.Count; i++)
         {
@@ -144,7 +132,7 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         if (SelectedInventory == null)
             return true;
 
-        return await _inventoryService.Delete(SelectedInventory);
+        return await InventoryService.Delete(SelectedInventory);
     }
 
     public async Task<bool> Update()
@@ -155,17 +143,17 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         _ = int.TryParse(QuantityModel.Text, out int result);
         SelectedInventory.Description = DescriptionModel.Text;
         SelectedInventory.Quantity = result;
-        SelectedInventory.Status = StatusVM.SelectedItems.FirstOrDefault()?.HeadLine ?? "";
-        SelectedInventory.QuantityType = QuantityTypesViewModel.SelectedItems.FirstOrDefault()?.HeadLine ?? "";
-        SelectedInventory.Location = LocationsVM.SelectedItems.FirstOrDefault()?.HeadLine ?? "";
+        SelectedInventory.Status = StatusVM.SelectedItems.FirstOrDefault()?.HeadLine ?? SelectedInventory.Status;
+        SelectedInventory.QuantityType = QuantityTypesViewModel.SelectedItems.FirstOrDefault()?.HeadLine ?? SelectedInventory.QuantityType;
+        SelectedInventory.Location = LocationsVM.SelectedItems.FirstOrDefault()?.HeadLine ?? SelectedInventory.Location;
 
-        return await _inventoryService.Update(SelectedInventory);
+        return await InventoryService.Update(SelectedInventory, SelectedCached);
     }
 
     public async Task<bool> Insert()
     {
         _ = int.TryParse(QuantityModel.Text, out int result);
-        return await _inventoryService.Insert(new Models.Inventory
+        return await InventoryService.Insert(new Models.Inventory
         {
             AdminId = await GetAdminID(),
             Description = DescriptionModel.Text,
@@ -223,6 +211,6 @@ public partial class InventoryViewModel : ObservableObject, IMaterialListVM<Mode
         {
             return (int)EditInventoryPerms.AdminAccess;
         }
-        return await _inventoryService.GetEditInventoryPermissions();
+        return await InventoryService.GetEditInventoryPermissions();
     }
 }

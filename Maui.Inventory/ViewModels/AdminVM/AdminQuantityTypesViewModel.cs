@@ -57,20 +57,12 @@ public partial class AdminQuantityTypesViewModel : ObservableObject, ISelectView
     {
         Items.Clear();
 
-        Admin admin = (await _admin.GetAll()).FirstOrDefault();
-
-        int adminId = -1;
-        if (admin != null)
-        {
-            adminId = admin.Id;
-        }
-
         var qtyTypes = await _quantityTypeService.GetAll(new ListRequest
         {
             Page = PaginationModel.CurrentPage - 1,
             ItemsPerPage = ItemsPerPage,
             Search = SearchModel.Text
-        }, adminId);
+        });
 
         for (int i = 0; i < qtyTypes.Items.Count; i++)
         {

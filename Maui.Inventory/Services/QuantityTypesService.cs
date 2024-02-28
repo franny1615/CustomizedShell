@@ -5,7 +5,7 @@ namespace Maui.Inventory.Services;
 
 public class QuantityTypesService(IAPIService apiService) : ICRUDService<QuantityType>
 {
-    public async Task<ListNetworkResponse<QuantityType>> GetAll(ListRequest request, int adminId)
+    public async Task<ListNetworkResponse<QuantityType>> GetAll(ListRequest request)
     {
         Dictionary<string, string> parameters = new()
         {

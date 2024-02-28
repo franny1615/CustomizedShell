@@ -127,6 +127,14 @@ public class EditInventoryPage : BasePage
                     }.Row(1));
                 }
 
+                ToolbarItems.Add(new ToolbarItem
+                {
+                    Text = _LangService.StringForKey("History"),
+                    Command = new Command(() => { Navigation.PushModalAsync(new InventoryHistoryPage(
+                        _LangService, 
+                        new(_LangService, _ViewModel.InventoryService, _ViewModel.SelectedInventory.Id))); })
+                });
+
                 break;
             case EditMode.Add:
                 Title = _LangService.StringForKey("Add Inventory");

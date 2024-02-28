@@ -82,6 +82,7 @@ public class InventoryPage : BasePage
     private void AddInventory(object sender, ClickedEventArgs e)
     {
         _viewModel.SelectedInventory = null;
+        _viewModel.SelectedCached = null;
         _viewModel.Clean();
         Navigation.PushAsync(new EditInventoryPage(_languageService, _viewModel));
     }
@@ -91,6 +92,19 @@ public class InventoryPage : BasePage
         if (sender is MaterialArticleCardView card && card.BindingContext is Models.Inventory inventory)
         {
             _viewModel.SelectedInventory = inventory;
+            _viewModel.SelectedCached = new()
+            {
+                Id = inventory.Id,
+                AdminId = inventory.AdminId,
+                Description = inventory.Description,
+                Status = inventory.Status,
+                Quantity = inventory.Quantity,
+                QuantityType = inventory.QuantityType,
+                Barcode = inventory.Barcode,
+                Location = inventory.Location,
+                LastEditedOn = inventory.LastEditedOn,
+                CreatedOn = inventory.CreatedOn,
+            };
             _viewModel.Clean();
             Navigation.PushAsync(new EditInventoryPage(_languageService, _viewModel));
         }

@@ -471,4 +471,10 @@ May delete account at any time.
   <data name="License Expiration Date" xml:space="preserve">
     <value>License Expiration Date</value>
   </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="No Inventory History." xml:space="preserve">
+    <value>No Inventory History.</value>
+  </data>
 </root>

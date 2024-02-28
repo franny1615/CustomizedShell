@@ -56,7 +56,7 @@ public class PopupPage : BasePage
     {
         Stroke = Colors.Transparent,
         StrokeShape = new RoundRectangle { CornerRadius = 16 },
-        Padding = 16
+        Padding = new Thickness(16, 16, 16, 32)
     };
     #endregion
 

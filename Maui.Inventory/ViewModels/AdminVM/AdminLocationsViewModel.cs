@@ -65,20 +65,12 @@ public partial class AdminLocationsViewModel : ObservableObject, ISelectViewMode
     {
         Items.Clear();
 
-        Admin admin = (await _adminDAL.GetAll()).FirstOrDefault();
-
-        int adminId = -1;
-        if (admin != null)
-        {
-            adminId = admin.Id;
-        }
-
         var locations = await _locationService.GetAll(new ListRequest
         {
             Page = PaginationModel.CurrentPage - 1,
             ItemsPerPage = ItemsPerPage,
             Search = SearchModel.Text
-        }, adminId);
+        });
 
         for (int i = 0; i < locations.Items.Count; i++)
         {
