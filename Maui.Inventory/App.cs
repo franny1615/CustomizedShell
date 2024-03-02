@@ -11,6 +11,7 @@ using Maui.Inventory.ViewModels.AdminVM;
 using Maui.Inventory.ViewModels.UserVM;
 using Maui.Inventory.Pages.UserPages;
 using Maui.Components.Utilities;
+using Maui.Inventory.Services;
 
 namespace Maui.Inventory;
 
@@ -106,12 +107,14 @@ public class App : Application
                 UIUtils.ToggleDarkMode(await _AppVM.ShouldEnableDarkMode());
                 AccessControl.IsLicenseValid = await _AppVM.IsLicenseValid();
                 AccessControl.EditInventoryPermissions = (int)EditInventoryPerms.AdminAccess;
+                LanguageService.CheckLanguage();
                 MainPage = new AdminShell(_LanguageService);
                 break;
             case AccessMessage.UserSignedIn:
                 UIUtils.ToggleDarkMode(await _AppVM.ShouldEnableDarkMode());
                 AccessControl.IsLicenseValid = await _AppVM.IsLicenseValid();
                 AccessControl.EditInventoryPermissions = await _AppVM.EditInventoryPermisssions();
+                LanguageService.CheckLanguage();
                 MainPage = new UserShell(_LanguageService);
                 break;
             case AccessMessage.AdminLogout:
@@ -136,6 +139,7 @@ public class App : Application
                 break;
             case AccessMessage.LandingPage:
             case AccessMessage.AccessTokenExpired:
+                LanguageService.ResetLanguage();
                 AccessControl.IsLicenseValid = false;
                 MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM, _UserLoginVM));
                 break;

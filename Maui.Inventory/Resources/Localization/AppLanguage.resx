@@ -477,4 +477,7 @@ May delete account at any time.
   <data name="No Inventory History." xml:space="preserve">
     <value>No Inventory History.</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
 </root>

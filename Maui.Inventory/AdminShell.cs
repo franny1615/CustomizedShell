@@ -1,4 +1,6 @@
-﻿using Maui.Components;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Maui.Components;
+using Maui.Inventory.Models;
 using Maui.Inventory.Pages;
 using Maui.Inventory.Pages.AdminPages;
 
@@ -50,6 +52,22 @@ public class AdminShell : Shell
         Routing.RegisterRoute(nameof(AdminLocationsPage), typeof(AdminLocationsPage));
         Routing.RegisterRoute(nameof(AdminStatusesPage), typeof(AdminStatusesPage));
         Routing.RegisterRoute(nameof(AdminQuantityTypesPage), typeof(AdminQuantityTypesPage));
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
+    }
+
+    private void ProcessInternalMsg(string message)
+    {
+        if (message == "language-changed")
+        {
+            _dashboard.Title = _LangService.StringForKey("Data");
+            _inventory.Title = _LangService.StringForKey("Inventory");
+            _users.Title = _LangService.StringForKey("Employees");
+            _profile.Title = _LangService.StringForKey("Profile");
+        }
     }
     #endregion
 }

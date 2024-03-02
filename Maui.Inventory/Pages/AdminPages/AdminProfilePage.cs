@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-using CommunityToolkit.Maui.Markup;
 using CommunityToolkit.Mvvm.Messaging;
 using Maui.Components;
 using Maui.Components.Controls;
@@ -8,7 +6,6 @@ using Maui.Components.Utilities;
 using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels;
 using Maui.Inventory.ViewModels.AdminVM;
-using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Inventory.Pages.AdminPages;
 
@@ -58,26 +55,18 @@ public class AdminProfilePage : BasePage
         ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Logout, Colors.White),
 		FABStyle = FloatingActionButtonStyle.Extended
     };
-    private readonly Grid _DarkModeToggleLayout = new()
-    {
-        ColumnDefinitions = Columns.Define(30, Star, Auto),
-        ColumnSpacing = 8
-    };
-    private readonly MaterialImage _DarkModeIcon = new()
+    private readonly MaterialToggle _DarkModeSwitch = new()
     {
         Icon = MaterialIcon.Dark_mode,
-        IconSize = 25,
-        IconColor = Colors.DarkGray
     };
-    private readonly Label _DarkModeLabel = new()
+    private readonly MaterialPicker _LanguagePicker = new()
     {
-        FontSize = 18,
-        VerticalOptions = LayoutOptions.Center,
-        FontAttributes = FontAttributes.Bold,
-    };
-    private readonly Switch _DarkModeSwitch = new()
-    {
-        ThumbColor = Application.Current.Resources["Primary"] as Color
+        Icon = MaterialIcon.Language,
+        ItemsSource = new List<string>
+        {
+            "English",
+            "Español"
+        }
     };
     #endregion
 
@@ -123,11 +112,8 @@ public class AdminProfilePage : BasePage
         _Logout.Text = _LangService.StringForKey("Logout"); 
         _DeleteAccount.Text = _LangService.StringForKey("Delete Account");
 
-        _DarkModeToggleLayout.Children.Add(_DarkModeIcon.Column(0));
-        _DarkModeToggleLayout.Children.Add(_DarkModeLabel.Column(1));
-        _DarkModeToggleLayout.Children.Add(_DarkModeSwitch.Column(2));
-
-        _DarkModeLabel.Text = _LangService.StringForKey("DarkMode");
+        _DarkModeSwitch.Text = _LangService.StringForKey("DarkMode");
+        _LanguagePicker.Text = _LangService.StringForKey("Language");
 
         _ContentLayout.Add(_Username);
         _ContentLayout.Add(_Email);
@@ -142,7 +128,8 @@ public class AdminProfilePage : BasePage
 
         _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LangService.StringForKey("Customize")));
 
-        _ContentLayout.Add(_DarkModeToggleLayout);
+        _ContentLayout.Add(_DarkModeSwitch);
+        _ContentLayout.Add(_LanguagePicker);
 
         _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LangService.StringForKey("Options")));
 
@@ -159,14 +146,22 @@ public class AdminProfilePage : BasePage
         _UpdateEmail.Clicked += UpdateEmail;
         _ResetPassword.Clicked += ResetPassword;
         _DeleteAccount.Clicked += DeleteAccountClicked;
+        _LanguagePicker.PickedItem += LangChanged;
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => InternalMessageReceived(msg));
+        });
     }
     ~AdminProfilePage()
     {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
         _Logout.Clicked -= Logout;
         _DarkModeSwitch.Toggled -= DarkModeToggled;
         _UpdateEmail.Clicked -= UpdateEmail;
         _ResetPassword.Clicked -= ResetPassword;
         _DeleteAccount.Clicked -= DeleteAccountClicked;
+        _LanguagePicker.PickedItem -= LangChanged;
     }
     #endregion
 
@@ -176,6 +171,9 @@ public class AdminProfilePage : BasePage
         base.OnAppearing();
         await _AdminProfileVM.GetProfile();
         _DarkModeSwitch.IsToggled = _AdminProfileVM.IsDarkModeOn;
+
+        string lang = Preferences.Get(Constants.Language, "English");
+        _LanguagePicker.SelectedItem = lang;
     }
 
     protected override void OnDisappearing()
@@ -228,6 +226,39 @@ public class AdminProfilePage : BasePage
         {
             await _AdminProfileVM.DeleteAccount();
             WeakReferenceMessenger.Default.Send(new InternalMessage(AccessMessage.LandingPage));
+        }
+    }
+
+    private void LangChanged(object sender, PickedEventArgs e)
+    {
+        Preferences.Set(Constants.Language, e.PickedItem);
+        Services.LanguageService.CheckLanguage();
+    }
+
+    private void InternalMessageReceived(InternalMessage msg)
+    {
+        if (msg.Value is string message && message == "language-changed")
+        {
+            _AdminProfileVM.Username.Placeholder = _LangService.StringForKey("Username");
+            _AdminProfileVM.Email.Placeholder = _LangService.StringForKey("Email");
+            _AdminProfileVM.CompanyId.Placeholder = _LangService.StringForKey("CompanyId");
+            _AdminProfileVM.LicenseId.Placeholder = _LangService.StringForKey("LicenseId");
+            _AdminProfileVM.LicenseExpirationDate.Placeholder = _LangService.StringForKey("License Expiration Date");
+
+            Title = _LangService.StringForKey("Profile");
+            _UpdateEmail.Text = _LangService.StringForKey("UpdateEmail");
+            _ResetPassword.Text = _LangService.StringForKey("ResetPassword");
+            _Logout.Text = _LangService.StringForKey("Logout");
+            _DeleteAccount.Text = _LangService.StringForKey("Delete Account");
+
+            _DarkModeSwitch.Text = _LangService.StringForKey("DarkMode");
+            _LanguagePicker.Text = _LangService.StringForKey("Language");
+
+            _AdminUpdateEmail.VerificationCode.Placeholder = _LangService.StringForKey("VerificationCode");
+            _AdminUpdateEmail.Email.Placeholder = _LangService.StringForKey("Email");
+
+            _AdminResetVM.VerificationCode.Placeholder = _LangService.StringForKey("VerificationCode");
+            _AdminResetVM.NewPassword.Placeholder = _LangService.StringForKey("NewPassword");
         }
     }
     #endregion
