@@ -44,4 +44,8 @@ public interface IUserRepository
     public Task<APIResponse<bool>> EditAdmin(Admin admin);
 
     public Task<APIResponse<bool>> DeleteEntireAccount(int adminId);
+
+    public Task<APIResponse<bool>> InsertUserFeedback(Feedback feedback, int userId, int adminId, bool isAdmin);
+
+    public Task<APIResponse<PaginatedQueryResponse<Feedback>>> GetFeedback(PaginatedRequest request);
 }

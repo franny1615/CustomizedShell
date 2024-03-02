@@ -897,4 +897,94 @@ DELETE FROM license WHERE Id = {licenseId};";
         return response;
     }
     #endregion
+
+    #region FEEDBACK
+    public async Task<APIResponse<bool>> InsertUserFeedback(
+        Feedback feedback, 
+        int userId, 
+        int adminId, 
+        bool isAdmin)
+    {
+        var response = new APIResponse<bool>();
+        try
+        {
+            #region QUERY
+            int isAdminBit = isAdmin ? 1 : 0;
+            string query = $@"
+INSERT INTO feedback
+(
+    AdminId,
+    UserId,
+    WasAdmin,
+    Subject,
+    Body
+)
+VALUES
+(
+    {adminId},
+    {userId},
+    {isAdminBit},
+    '{feedback.Subject}',
+    '{feedback.Body}'
+)";
+            #endregion
+
+            await SQLUtils.QueryAsync<object>(query);
+            response.Success = true;
+            response.Data = true;
+            response.Message = "";
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.Data = false;
+            response.Message = $"ERROR >>> {ex.Message} <<<";
+        }
+
+        return response;
+    }
+    #endregion
+
+    #region GET FEEDBACK
+    public async Task<APIResponse<PaginatedQueryResponse<Feedback>>> GetFeedback(PaginatedRequest request)
+    {
+        var response = new APIResponse<PaginatedQueryResponse<Feedback>>();
+        try
+        {
+            #region QUERY
+            string query = $@"
+SELECT
+    Id,
+    AdminId,
+    UserId,
+    WasAdmin,
+    Subject,
+    Body,
+    CreatedOn
+FROM feedback";
+            string totalQuery = $@"SELECT COUNT(*) FROM ({query}) feedback";
+            string fullQuery = $@"
+{query}
+ORDER BY CreatedOn DESC
+OFFSET {request.Page * request.ItemsPerPage} ROWS
+FETCH NEXT {request.ItemsPerPage} ROWS ONLY";
+            #endregion
+
+            response.Data = new()
+            {
+                Total = (await SQLUtils.QueryAsync<int>(totalQuery)).First(),
+                Items = (await SQLUtils.QueryAsync<Feedback>(fullQuery)).ToList(),
+            };
+            response.Success = true;
+            response.Message = "";
+        }
+        catch (Exception e)
+        {
+            response.Success = false;
+            response.Data = new();
+            response.Message = $"ERROR >>> {e.Message} <<<";
+        }
+        return response;
+    }
+    #endregion
 }
