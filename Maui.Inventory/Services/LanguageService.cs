@@ -34,6 +34,7 @@ public class LanguageService : ILanguageService
         string language = Preferences.Get(Constants.Language, "");
         if (string.IsNullOrEmpty(language))
         {
+            Preferences.Set(Constants.Language, "English");
             SetCulture(new CultureInfo("en-US", false));
         }
         else

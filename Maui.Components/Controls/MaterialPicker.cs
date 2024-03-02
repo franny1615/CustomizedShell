@@ -63,24 +63,46 @@ public class MaterialPicker : ContentView
         get => (string)(GetValue(SelectedItemProperty));
         set => SetValue(SelectedItemProperty, value);
     }
+
+    public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
+        nameof(TextColor),
+        typeof(Color),
+        typeof(MaterialPicker),
+        null);
+
+    public Color TextColor
+    {
+        get => (Color)GetValue(TextColorProperty);
+        set => SetValue(TextColorProperty, value);
+    }
+
+    public static readonly BindableProperty IconColorProperty = BindableProperty.Create(
+        nameof(IconColor),
+        typeof(Color),
+        typeof(MaterialPicker),
+        null);
+
+    public Color IconColor
+    {
+        get => (Color)GetValue(IconColorProperty);
+        set => SetValue(IconColorProperty, value);
+    }
     #endregion
 
     #region Private Properties
-    private readonly Grid _ContentLayout = new() { ColumnDefinitions = Columns.Define(30, Star, Auto), ColumnSpacing = 8 };
+    private readonly Grid _ContentLayout = new() { ColumnDefinitions = Columns.Define(30, Star, 110), ColumnSpacing = 8 };
     private readonly MaterialImage _Icon = new() { IconSize = 25, };
     private readonly Label _Text = new() { FontSize = 16, FontAttributes = FontAttributes.None, HorizontalOptions = LayoutOptions.Start };
-    private readonly Picker _Picker = new() { FontSize = 16 };
+    private readonly Picker _Picker = new() { FontSize = 16, WidthRequest = 110 };
     #endregion
 
     #region Constructor
     public MaterialPicker()
     {
-        _Text.SetDynamicResource(Label.TextColorProperty, "TextColor");
-        _Icon.SetDynamicResource(MaterialImage.IconColorProperty, "TextColor");
 
         _ContentLayout.Add(_Icon.Column(0).Center());
         _ContentLayout.Add(_Text.Column(1).Start().CenterVertical());
-        _ContentLayout.Add(_Picker.Column(2).Center());
+        _ContentLayout.Add(_Picker.Column(2).End());
 
         Content = _ContentLayout;
 
@@ -111,6 +133,14 @@ public class MaterialPicker : ContentView
         else if (propertyName == SelectedItemProperty.PropertyName)
         {
             _Picker.SelectedItem = SelectedItem;
+        }
+        else if (propertyName == IconColorProperty.PropertyName)
+        {
+            _Icon.IconColor = IconColor;
+        }
+        else if (propertyName == TextColorProperty.PropertyName)
+        {
+            _Text.TextColor = TextColor;
         }
     }
 

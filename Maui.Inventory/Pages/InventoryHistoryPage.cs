@@ -58,6 +58,8 @@ public class InventoryHistoryPage : PopupPage
             view.SetBinding(MaterialArticleCardView.MainSupportTwoProperty, "QuantityStr");
             view.SetBinding(MaterialArticleCardView.TitleProperty, "Status");
             view.SetDynamicResource(MaterialCardView.BackgroundColorProperty, "CardColor");
+            view.SetBinding(MaterialArticleCardView.MainSupportThreeProperty, "Barcode");
+            view.SetBinding(MaterialArticleCardView.MainSupportFourProperty, "LastEditedOnStr");
             view.TextColor = Colors.White;
 
             return view;

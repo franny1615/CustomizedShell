@@ -46,6 +46,30 @@ public class MaterialToggle : ContentView
         get => (bool)GetValue(IsToggledProperty);
         set => SetValue(IsToggledProperty, value);
     }
+
+    public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
+        nameof(TextColor),
+        typeof(Color),
+        typeof(MaterialToggle),
+        null);
+
+    public Color TextColor
+    {
+        get => (Color)GetValue(TextColorProperty);
+        set => SetValue(TextColorProperty, value);
+    }
+
+    public static readonly BindableProperty IconColorProperty = BindableProperty.Create(
+        nameof(IconColor),
+        typeof(Color),
+        typeof(MaterialToggle),
+        null);
+
+    public Color IconColor
+    {
+        get => (Color)GetValue(IconColorProperty);
+        set => SetValue(IconColorProperty, value);
+    }
     #endregion
 
     #region Private Properties
@@ -58,9 +82,6 @@ public class MaterialToggle : ContentView
     #region Constructor
     public MaterialToggle()
     {
-        _Text.SetDynamicResource(Label.TextColorProperty, "TextColor");
-        _Icon.SetDynamicResource(MaterialImage.IconColorProperty, "TextColor");
-
         _ContentLayout.Add(_Icon.Column(0).Center());
         _ContentLayout.Add(_Text.Column(1).Start().CenterVertical());
         _ContentLayout.Add(_Switch.Column(2).Center());
@@ -96,6 +117,14 @@ public class MaterialToggle : ContentView
         else if (propertyName == IsToggledProperty.PropertyName)
         {
             _Switch.IsToggled = IsToggled;
+        }
+        else if (propertyName == IconColorProperty.PropertyName)
+        {
+            _Icon.IconColor = IconColor;
+        }
+        else if (propertyName == TextColorProperty.PropertyName)
+        {
+            _Text.TextColor = TextColor;
         }
     }
     #endregion

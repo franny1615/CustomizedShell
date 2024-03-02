@@ -143,13 +143,20 @@ public class AdminEditUserPopupPage : PopupPage
         FABStyle = FloatingActionButtonStyle.Regular,
     };
     private readonly Label _EditInventoryPermissions = new() { FontSize = 18, FontAttributes = FontAttributes.Bold, HorizontalOptions = LayoutOptions.Center };
-    private readonly MaterialToggle _CanChangeStatus = new() { Icon = MaterialIcon.Check_circle };
-    private readonly MaterialToggle _CanChangeDesc = new() { Icon = MaterialIcon.Description };
-    private readonly MaterialToggle _CanChangeQty = new() { Icon = MaterialIcon.Looks_one };
-    private readonly MaterialToggle _CanChangeQtyType = new() { Icon = MaterialIcon.Video_label };
-    private readonly MaterialToggle _CanChangeLocation = new() { Icon = MaterialIcon.Shelves };
-    private readonly MaterialToggle _CanDelete = new() { Icon = MaterialIcon.Delete };
-    private readonly MaterialToggle _CanAdd = new() { Icon = MaterialIcon.Add };
+    private readonly MaterialToggle _CanChangeStatus = new() { 
+        Icon = MaterialIcon.Check_circle, IconColor = Application.Current.Resources["Primary"] as Color, TextColor = Application.Current.Resources["TextColor"] as Color };
+    private readonly MaterialToggle _CanChangeDesc = new() { 
+        Icon = MaterialIcon.Description, IconColor = Application.Current.Resources["Primary"] as Color, TextColor = Application.Current.Resources["TextColor"] as Color };
+    private readonly MaterialToggle _CanChangeQty = new() { 
+        Icon = MaterialIcon.Looks_one, IconColor = Application.Current.Resources["Primary"] as Color, TextColor = Application.Current.Resources["TextColor"] as Color };
+    private readonly MaterialToggle _CanChangeQtyType = new() { 
+        Icon = MaterialIcon.Video_label, IconColor = Application.Current.Resources["Primary"] as Color, TextColor = Application.Current.Resources["TextColor"] as Color };
+    private readonly MaterialToggle _CanChangeLocation = new() { 
+        Icon = MaterialIcon.Shelves, IconColor = Application.Current.Resources["Primary"] as Color, TextColor = Application.Current.Resources["TextColor"] as Color };
+    private readonly MaterialToggle _CanDelete = new() { 
+        Icon = MaterialIcon.Delete, IconColor = Application.Current.Resources["Primary"] as Color, TextColor = Application.Current.Resources["TextColor"] as Color };
+    private readonly MaterialToggle _CanAdd = new() { 
+        Icon = MaterialIcon.Add, IconColor = Application.Current.Resources["Primary"] as Color, TextColor = Application.Current.Resources["TextColor"] as Color };
 
     private bool _IsDeleting = false;
     #endregion

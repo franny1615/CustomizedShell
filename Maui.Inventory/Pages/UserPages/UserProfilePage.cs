@@ -33,10 +33,14 @@ public class UserProfilePage : BasePage
     private readonly MaterialToggle _DarkModeSwitch = new()
     {
         Icon = MaterialIcon.Dark_mode,
+        IconColor = Application.Current.Resources["Primary"] as Color,
+        TextColor = Application.Current.Resources["TextColor"] as Color
     };
     private readonly MaterialPicker _LanguagePicker = new()
     {
         Icon = MaterialIcon.Language,
+        IconColor = Application.Current.Resources["Primary"] as Color,
+        TextColor = Application.Current.Resources["TextColor"] as Color,
         ItemsSource = new List<string>
         {
             "English",
@@ -130,6 +134,8 @@ public class UserProfilePage : BasePage
         MainThread.BeginInvokeOnMainThread(() =>
         {
             UIUtils.ToggleDarkMode(_ViewModel.IsDarkModeOn);
+            _DarkModeSwitch.TextColor = Application.Current.Resources["TextColor"] as Color;
+            _LanguagePicker.TextColor = Application.Current.Resources["TextColor"] as Color;
         });
     }
 

@@ -60,6 +60,30 @@ public class MaterialArticleCardView : Border
         set => SetValue(MainSupportTwoProperty, value);
     }
 
+    public static readonly BindableProperty MainSupportThreeProperty = BindableProperty.Create(
+        nameof(MainSupportThree),
+        typeof(string),
+        typeof(MaterialArticleCardView),
+        null);
+
+    public string MainSupportThree
+    {
+        get => (string)GetValue(MainSupportThreeProperty);
+        set => SetValue(MainSupportThreeProperty, value);
+    }
+
+    public static readonly BindableProperty MainSupportFourProperty = BindableProperty.Create(
+        nameof(MainSupportFour),
+        typeof(string),
+        typeof(MaterialArticleCardView),
+        null);
+
+    public string MainSupportFour
+    {
+        get => (string)GetValue(MainSupportFourProperty);
+        set => SetValue(MainSupportFourProperty, value);
+    }
+
     public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
         nameof(TextColor),
         typeof(Color),
@@ -76,7 +100,7 @@ public class MaterialArticleCardView : Border
     #region Private Properties
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(24, Star, 24),
+        RowDefinitions = Rows.Define(24, Star, 24, 16),
         ColumnDefinitions = Columns.Define(Star, Star),
         Padding = 8,
         ColumnSpacing = 4,
@@ -102,6 +126,8 @@ public class MaterialArticleCardView : Border
         FontSize = 16,
         FontAttributes = FontAttributes.Bold,
     };
+    private readonly Label _MainThree = new() { FontSize = 12 };
+    private readonly Label _MainFour = new() { FontSize = 12 };
     #endregion
 
     #region Constructor
@@ -119,10 +145,12 @@ public class MaterialArticleCardView : Border
             Clicked?.Invoke(this, null);
         });
 
-        _ContentLayout.Add(_Title.Row(0).Column(0));
+        _ContentLayout.Add(_Title.Row(0).Column(0).ColumnSpan(2));
         _ContentLayout.Add(_Article.Row(1).Column(0).ColumnSpan(2));
         _ContentLayout.Add(_MainOne.Row(2).Column(0).Start());
         _ContentLayout.Add(_MainTwo.Row(2).Column(1).End());
+        _ContentLayout.Add(_MainThree.Row(3).Column(0).Start());
+        _ContentLayout.Add(_MainFour.Row(3).Column(1).End());
 
         Content = _ContentLayout;
     }
@@ -154,6 +182,16 @@ public class MaterialArticleCardView : Border
             _Article.TextColor = TextColor;
             _MainOne.TextColor = TextColor;
             _MainTwo.TextColor = TextColor;
+            _MainThree.TextColor = TextColor;
+            _MainFour.TextColor = TextColor;
+        }
+        else if (propertyName == MainSupportThreeProperty.PropertyName)
+        {
+            _MainThree.Text = MainSupportThree;
+        }
+        else if (propertyName == MainSupportFourProperty.PropertyName)
+        {
+            _MainFour.Text = MainSupportFour;
         }
     }
     #endregion
