@@ -1,4 +1,6 @@
-﻿using Maui.Components;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Maui.Components;
+using Maui.Inventory.Models;
 using Maui.Inventory.Pages;
 using Maui.Inventory.Pages.UserPages;
 
@@ -32,6 +34,20 @@ public class UserShell : Shell
         _tabBar.Items.Add(_inventory);
         _tabBar.Items.Add(_profile);
         Items.Add(_tabBar);
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
+    }
+
+    private void ProcessInternalMsg(string message)
+    {
+        if (message == "language-changed")
+        {
+            _inventory.Title = _LangService.StringForKey("Inventory");
+            _profile.Title = _LangService.StringForKey("Profile");
+        }
     }
     #endregion
 }

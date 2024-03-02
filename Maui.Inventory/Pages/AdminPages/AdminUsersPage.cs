@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Messaging;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
@@ -47,9 +48,15 @@ public class AdminUsersPage : BasePage
 
         Content = _Search;
         _Search.AddItemClicked += AddUser;
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
     }
     ~AdminUsersPage()
     {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
         _Search.AddItemClicked -= AddUser;
     }
     #endregion
@@ -82,6 +89,15 @@ public class AdminUsersPage : BasePage
     {
         _ViewModel.SelectedUser = null;
         Navigation.PushModalAsync(new AdminEditUserPopupPage(_LangService, _ViewModel.EditUsersViewModel));
+    }
+
+    private void ProcessInternalMsg(string message)
+    {
+        if (message == "language-changed")
+        {
+            Title = _LangService.StringForKey("Employees");
+            _ViewModel.SearchModel.Placeholder = _LangService.StringForKey("Search");
+        }
     }
     #endregion
 }

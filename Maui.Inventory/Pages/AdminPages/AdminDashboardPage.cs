@@ -1,7 +1,9 @@
 using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Messaging;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
+using Maui.Inventory.Models;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Maui.Inventory.Pages.AdminPages;
@@ -72,12 +74,18 @@ public class AdminDashboardPage : BasePage
         _scroll.Content = _contentLayout;
         Content = _scroll;
 
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
+
         _locations.Clicked += LocationsClicked;
         _statuses.Clicked += StatusesClicked;
         _quantityTypes.Clicked += QuantityTypesClicked;
     }
     ~AdminDashboardPage()
     {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
         _locations.Clicked -= LocationsClicked;
         _statuses.Clicked -= StatusesClicked;
         _quantityTypes.Clicked -= QuantityTypesClicked;
@@ -98,6 +106,18 @@ public class AdminDashboardPage : BasePage
     private void QuantityTypesClicked(object sender, EventArgs e)
     {
         Shell.Current.GoToAsync(nameof(AdminQuantityTypesPage));
+    }
+
+    private void ProcessInternalMsg(string msg)
+    {
+        if (msg == "language-changed")
+        {
+            Title = _LangService.StringForKey("Data");
+
+            _locations.Title = _LangService.StringForKey("Locations");
+            _statuses.Title = _LangService.StringForKey("Statuses");
+            _quantityTypes.Title = _LangService.StringForKey("Quantity Types");
+        }
     }
     #endregion
 }

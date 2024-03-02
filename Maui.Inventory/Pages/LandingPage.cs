@@ -80,6 +80,7 @@ public class LandingPage : BasePage
 		TextColor = Colors.White,
 		FABStyle = FloatingActionButtonStyle.Extended
 	};
+	private readonly HorizontalRule _OR = new();
 	#endregion
 
 	#region Constructor
@@ -105,13 +106,12 @@ public class LandingPage : BasePage
 		_EmployeeLogin.Text = LanguageService.StringForKey("EmployeeLogin");
 		_EmployerLogin.Text = LanguageService.StringForKey("AdminLogin");
 		_Register.Text = LanguageService.StringForKey("Register");
+		_OR.Text = LanguageService.StringForKey("OR");
 
 		_ActionsContainer.Add(_AlreadyRegistered);
 		_ActionsContainer.Add(_EmployeeLogin);
 		_ActionsContainer.Add(_EmployerLogin);
-		_ActionsContainer.Add(UIUtils.HorizontalRuleWithText(
-			LanguageService.StringForKey("OR")
-		).Margin(new Thickness(8, 12, 8, 12)));
+		_ActionsContainer.Add(_OR.Margin(new Thickness(8, 12, 8, 12)));
 		_ActionsContainer.Add(_Register);
 
 		_ContentLayout.Add(_ProductContainer.Row(0));

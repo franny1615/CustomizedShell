@@ -1,39 +1,7 @@
-﻿using CommunityToolkit.Maui.Markup;
-using static CommunityToolkit.Maui.Markup.GridRowsColumns;
-
-namespace Maui.Components.Utilities;
+﻿namespace Maui.Components.Utilities;
 
 public static class UIUtils
 {
-    public static Grid HorizontalRuleWithText(string text)
-    {
-        return new Grid
-        {
-            ColumnDefinitions = Columns.Define(Star, Auto, Star),
-            ColumnSpacing = 8,
-            Children =
-            {
-                new BoxView
-                {
-                    HeightRequest = 1,
-                    Color = Application.Current.Resources["Primary"] as Color
-                }.Column(0),
-                new Label
-                {
-                    HorizontalOptions = LayoutOptions.Center,
-                    FontSize = 16,
-                    FontAttributes = FontAttributes.Bold,
-                    Text = text
-                }.Column(1),
-                new BoxView
-                {
-                    HeightRequest = 1,
-                    Color = Application.Current.Resources["Primary"] as Color
-                }.Column(2)
-            }
-        };
-    }
-
     public static FontImageSource MaterialIconFIS(
         string icon,
         Color color,

@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Messaging;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
@@ -43,10 +44,15 @@ public class InventoryPage : BasePage
 		Content = _Search;
 
         _Search.AddItemClicked += AddInventory;
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
 	}
 	~InventoryPage()
 	{
 		_Search.AddItemClicked -= AddInventory;	
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
 	}
     #endregion
 
@@ -107,6 +113,23 @@ public class InventoryPage : BasePage
             };
             _viewModel.Clean();
             Navigation.PushAsync(new EditInventoryPage(_languageService, _viewModel));
+        }
+    }
+
+    private void ProcessInternalMsg(string message)
+    {
+        if (message == "language-changed")
+        {
+            Title = _languageService.StringForKey("Inventory");
+            _viewModel.SearchModel.Placeholder = _languageService.StringForKey("Search");
+            _viewModel.DescriptionModel.Placeholder = _languageService.StringForKey("Description");
+            _viewModel.BarcodeModel.Placeholder = _languageService.StringForKey("Barcode");
+            _viewModel.QuantityModel.Placeholder = _languageService.StringForKey("Quantity");
+            _viewModel.LastEditenOn.Placeholder = _languageService.StringForKey("Last Edited");
+            _viewModel.CreatedOn.Placeholder = _languageService.StringForKey("Created");
+            _viewModel.StatusModel.Placeholder = _languageService.StringForKey("Status");
+            _viewModel.QuantityTypeModel.Placeholder = _languageService.StringForKey("Qty Type");
+            _viewModel.LocationModel.Placeholder = _languageService.StringForKey("Location");
         }
     }
     #endregion

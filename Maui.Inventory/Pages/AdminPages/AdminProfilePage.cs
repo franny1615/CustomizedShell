@@ -68,6 +68,8 @@ public class AdminProfilePage : BasePage
             "Español"
         }
     };
+    private readonly HorizontalRule _Customize = new();
+    private readonly HorizontalRule _Options = new();
     #endregion
 
     #region Constructor
@@ -111,6 +113,8 @@ public class AdminProfilePage : BasePage
         _ResetPassword.Text = _LangService.StringForKey("ResetPassword");
         _Logout.Text = _LangService.StringForKey("Logout"); 
         _DeleteAccount.Text = _LangService.StringForKey("Delete Account");
+        _Customize.Text = _LangService.StringForKey("Customize");
+        _Options.Text = _LangService.StringForKey("Options");
 
         _DarkModeSwitch.Text = _LangService.StringForKey("DarkMode");
         _LanguagePicker.Text = _LangService.StringForKey("Language");
@@ -126,12 +130,12 @@ public class AdminProfilePage : BasePage
             _LicenseExpirationDate.ShowStatus(_LangService.StringForKey("License Expired"), MaterialIcon.Info, Colors.Red);
         }
 
-        _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LangService.StringForKey("Customize")));
+        _ContentLayout.Add(_Customize);
 
         _ContentLayout.Add(_DarkModeSwitch);
         _ContentLayout.Add(_LanguagePicker);
 
-        _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LangService.StringForKey("Options")));
+        _ContentLayout.Add(_Options);
 
         _ContentLayout.Add(_UpdateEmail);
         _ContentLayout.Add(_ResetPassword);
@@ -244,6 +248,8 @@ public class AdminProfilePage : BasePage
             _AdminProfileVM.CompanyId.Placeholder = _LangService.StringForKey("CompanyId");
             _AdminProfileVM.LicenseId.Placeholder = _LangService.StringForKey("LicenseId");
             _AdminProfileVM.LicenseExpirationDate.Placeholder = _LangService.StringForKey("License Expiration Date");
+            _Customize.Text = _LangService.StringForKey("Customize");
+            _Options.Text = _LangService.StringForKey("Options");
 
             Title = _LangService.StringForKey("Profile");
             _UpdateEmail.Text = _LangService.StringForKey("UpdateEmail");

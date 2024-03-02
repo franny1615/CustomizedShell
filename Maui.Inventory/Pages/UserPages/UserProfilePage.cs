@@ -30,27 +30,21 @@ public class UserProfilePage : BasePage
         ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Logout, Colors.White),
         FABStyle = FloatingActionButtonStyle.Extended
     };
-    private readonly Grid _DarkModeToggleLayout = new()
-    {
-        ColumnDefinitions = Columns.Define(30, Star, Auto),
-        ColumnSpacing = 8
-    };
-    private readonly MaterialImage _DarkModeIcon = new()
+    private readonly MaterialToggle _DarkModeSwitch = new()
     {
         Icon = MaterialIcon.Dark_mode,
-        IconSize = 25,
-        IconColor = Colors.DarkGray
     };
-    private readonly Label _DarkModeLabel = new()
+    private readonly MaterialPicker _LanguagePicker = new()
     {
-        FontSize = 18,
-        VerticalOptions = LayoutOptions.Center,
-        FontAttributes = FontAttributes.Bold,
+        Icon = MaterialIcon.Language,
+        ItemsSource = new List<string>
+        {
+            "English",
+            "Español"
+        }
     };
-    private readonly Switch _DarkModeSwitch = new()
-    {
-        ThumbColor = Application.Current.Resources["Primary"] as Color
-    };
+    private readonly HorizontalRule _Customize = new();
+    private readonly HorizontalRule _Options = new();
     #endregion
 
     #region Constructor
@@ -69,18 +63,18 @@ public class UserProfilePage : BasePage
 
         Title = _LanguageService.StringForKey("Profile");
         _Logout.Text = _LanguageService.StringForKey("Logout");
-        _DarkModeLabel.Text = _LanguageService.StringForKey("DarkMode");
-
-        _DarkModeToggleLayout.Children.Add(_DarkModeIcon.Column(0));
-        _DarkModeToggleLayout.Children.Add(_DarkModeLabel.Column(1));
-        _DarkModeToggleLayout.Children.Add(_DarkModeSwitch.Column(2));
+        _DarkModeSwitch.Text = _LanguageService.StringForKey("DarkMode");
+        _LanguagePicker.Text = _LanguageService.StringForKey("Language");
+        _Customize.Text = _LanguageService.StringForKey("Customize");
+        _Options.Text = _LanguageService.StringForKey("Options");
 
         _ContentLayout.Add(_Username);
         _ContentLayout.Add(_CompanyId);
 
-        _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LanguageService.StringForKey("Customize")));
-        _ContentLayout.Add(_DarkModeToggleLayout);
-        _ContentLayout.Add(UIUtils.HorizontalRuleWithText(_LanguageService.StringForKey("Options")));
+        _ContentLayout.Add(_Customize);
+        _ContentLayout.Add(_DarkModeSwitch);
+        _ContentLayout.Add(_LanguagePicker);
+        _ContentLayout.Add(_Options);
 
         _ContentLayout.Add(_Logout);
 
@@ -89,11 +83,19 @@ public class UserProfilePage : BasePage
 
         _DarkModeSwitch.Toggled += DarkModeToggled;
         _Logout.Clicked += Logout;
+        _LanguagePicker.PickedItem += LangChanged;
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => InternalMessageReceived(msg));
+        });
     }
     ~UserProfilePage()
     {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
         _Logout.Clicked -= Logout;
         _DarkModeSwitch.Toggled -= DarkModeToggled;
+        _LanguagePicker.PickedItem -= LangChanged;
     }
     #endregion
 
@@ -103,6 +105,9 @@ public class UserProfilePage : BasePage
         base.OnAppearing();
         await _ViewModel.GetProfile();
         _DarkModeSwitch.IsToggled = _ViewModel.IsDarkModeOn;
+
+        string lang = Preferences.Get(Constants.Language, "English");
+        _LanguagePicker.SelectedItem = lang;
     }
 
     protected override void OnDisappearing()
@@ -126,6 +131,28 @@ public class UserProfilePage : BasePage
         {
             UIUtils.ToggleDarkMode(_ViewModel.IsDarkModeOn);
         });
+    }
+
+    private void LangChanged(object sender, PickedEventArgs e)
+    {
+        Preferences.Set(Constants.Language, e.PickedItem);
+        Services.LanguageService.CheckLanguage();
+    }
+
+    private void InternalMessageReceived(InternalMessage msg)
+    {
+        if (msg.Value is string message && message == "language-changed")
+        {
+            Title = _LanguageService.StringForKey("Profile");
+            _Logout.Text = _LanguageService.StringForKey("Logout");
+            _DarkModeSwitch.Text = _LanguageService.StringForKey("DarkMode");
+            _LanguagePicker.Text = _LanguageService.StringForKey("Language");
+            _Customize.Text = _LanguageService.StringForKey("Customize");
+            _Options.Text = _LanguageService.StringForKey("Options");
+
+            _ViewModel.Username.Placeholder = _LanguageService.StringForKey("Username");
+            _ViewModel.AdminID.Placeholder = _LanguageService.StringForKey("CompanyId");
+        }
     }
     #endregion
 }
