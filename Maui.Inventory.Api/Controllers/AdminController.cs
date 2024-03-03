@@ -93,4 +93,26 @@ public class AdminController(
 
         return await _UserRepository.DeleteEntireAccount(adminId);
     }
+
+    [HttpPost]
+    [Route("updateLicense")]
+    [Authorize]
+    public async Task<APIResponse<bool>> UpdateLicense([FromBody] int addingMonths)
+    {
+        APIResponse<bool> response;
+        try
+        {
+            var user = _HttpContextAccessor.HttpContext?.User!;
+            int adminId = Env.GetAdminIDFromIdentity(user);
+            response = await _UserRepository.UpdateAdminLicense(adminId, addingMonths);
+        }
+        catch (Exception ex)
+        {
+            response = new();
+            response.Success = false;
+            response.Message = ex.Message;
+            response.Data = new();
+        }
+        return response;
+    }
 }

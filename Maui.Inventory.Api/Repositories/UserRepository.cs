@@ -860,6 +860,61 @@ select @success;";
     }
     #endregion
 
+    #region UPDATE LICENSE
+    public async Task<APIResponse<bool>> UpdateAdminLicense(int adminId, int addingMonths)
+    {
+        APIResponse<bool> response;
+        try
+        {
+            #region QUERY 
+            string licenseIdQuery = $@"
+SELECT license.Id
+FROM license
+INNER JOIN admin
+ON admin.LicenseId = license.Id
+WHERE admin.Id = {adminId}";
+
+            string getExpirationDateQuery = $@"
+SELECT ExpirationDate
+FROM license
+INNER JOIN admin
+ON admin.LicenseId = license.Id
+WHERE admin.Id = {adminId}";
+
+            int licenseId = (await SQLUtils.QueryAsync<int>(licenseIdQuery)).First();
+            DateTime currentExpirationDate = (await SQLUtils.QueryAsync<DateTime>(getExpirationDateQuery)).First();
+            DateTime newExpirationDate = currentExpirationDate.AddMonths(addingMonths);
+
+            string query = $@"
+UPDATE license SET 
+    ExpirationDate = CONVERT(DATETIME, '{newExpirationDate}'), 
+    Description = 'Extended by {addingMonths} months'
+WHERE Id = {licenseId}";
+            #endregion
+
+            await SQLUtils.QueryAsync<object>(query);
+
+            response = new()
+            {
+                Success = true,
+                Message = "",
+                Data = true
+            };
+        }
+        catch (Exception ex)
+        {
+            response = new()
+            { 
+                Data = false,
+                Success = false,
+                Message = $"ERROR >>> {ex.Message} <<<"
+            };
+        }
+
+        return response;
+    }
+    #endregion
+
     #region DELETE ENTIRE ACCOUNT
     public async Task<APIResponse<bool>> DeleteEntireAccount(int adminId)
     {
