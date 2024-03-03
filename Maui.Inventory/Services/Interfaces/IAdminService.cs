@@ -11,4 +11,5 @@ public interface IAdminService
     Task<bool> UpdateUser(User user);
     Task<bool> UpdateAdmin(Admin admin);
     Task<bool> DeleteAccount();
+    Task<bool> UpdateLicense(int addMonths);
 }

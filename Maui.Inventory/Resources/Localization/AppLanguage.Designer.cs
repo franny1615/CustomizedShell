@@ -64,7 +64,7 @@ namespace Maui.Inventory.Resources.Localization {
         ///   Looks up a localized string similar to 
         ///Account creation is free. 
         ///
-        ///All features are enabled at no cost for the first three months.
+        ///All features are enabled at no cost for the first month.
         ///
         ///May delete account at any time. 
         ///    .
@@ -634,6 +634,24 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to License extended by {0} months..
+        /// </summary>
+        internal static string LicenseExtension {
+            get {
+                return ResourceManager.GetString("LicenseExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred on our end. If you were charged, contact us at ftim.mailing@gmail.com to update your account. We apologize for the inconvenience..
+        /// </summary>
+        internal static string LicenseExtensionFailure {
+            get {
+                return ResourceManager.GetString("LicenseExtensionFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to License ID.
         /// </summary>
         internal static string LicenseId {
@@ -684,6 +702,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Logout {
             get {
                 return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Subscription.
+        /// </summary>
+        internal static string Manage_Subscription {
+            get {
+                return ResourceManager.GetString("Manage Subscription", resourceCulture);
             }
         }
         
@@ -787,6 +814,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One Month.
+        /// </summary>
+        internal static string One_Month {
+            get {
+                return ResourceManager.GetString("One Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Options.
         /// </summary>
         internal static string Options {
@@ -846,6 +882,24 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Puchase Extension.
+        /// </summary>
+        internal static string Purchase_Extension {
+            get {
+                return ResourceManager.GetString("Purchase Extension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchasing.
+        /// </summary>
+        internal static string Purchasing {
+            get {
+                return ResourceManager.GetString("Purchasing", resourceCulture);
             }
         }
         
@@ -1012,6 +1066,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Six Month.
+        /// </summary>
+        internal static string Six_Month {
+            get {
+                return ResourceManager.GetString("Six Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         internal static string Status {
@@ -1071,6 +1134,24 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string Submit {
             get {
                 return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscription.
+        /// </summary>
+        internal static string Subscription {
+            get {
+                return ResourceManager.GetString("Subscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Twelve Month.
+        /// </summary>
+        internal static string Twelve_Month {
+            get {
+                return ResourceManager.GetString("Twelve Month", resourceCulture);
             }
         }
         

@@ -166,7 +166,7 @@
     <value>
 Account creation is free. 
 
-All features are enabled at no cost for the first three months.
+All features are enabled at no cost for the first month.
 
 May delete account at any time. 
     </value>
@@ -494,5 +494,32 @@ May delete account at any time.
   </data>
   <data name="Subject" xml:space="preserve">
     <value>Subject</value>
+  </data>
+  <data name="Manage Subscription" xml:space="preserve">
+    <value>Manage Subscription</value>
+  </data>
+  <data name="LicenseExtension" xml:space="preserve">
+    <value>License extended by {0} months.</value>
+  </data>
+  <data name="LicenseExtensionFailure" xml:space="preserve">
+    <value>An error occurred on our end. If you were charged, contact us at ftim.mailing@gmail.com to update your account. We apologize for the inconvenience.</value>
+  </data>
+  <data name="One Month" xml:space="preserve">
+    <value>One Month</value>
+  </data>
+  <data name="Purchase Extension" xml:space="preserve">
+    <value>Puchase Extension</value>
+  </data>
+  <data name="Purchasing" xml:space="preserve">
+    <value>Purchasing</value>
+  </data>
+  <data name="Six Month" xml:space="preserve">
+    <value>Six Month</value>
+  </data>
+  <data name="Subscription" xml:space="preserve">
+    <value>Subscription</value>
+  </data>
+  <data name="Twelve Month" xml:space="preserve">
+    <value>Twelve Month</value>
   </data>
 </root>

@@ -55,6 +55,13 @@ public class AdminProfilePage : BasePage
         ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Logout, Colors.White),
 		FABStyle = FloatingActionButtonStyle.Extended
     };
+    private readonly FloatingActionButton _ManageSubscription = new()
+    {
+        FABBackgroundColor = Application.Current.Resources["PrimaryShade"] as Color,
+        TextColor = Colors.White,
+        ImageSource = UIUtils.MaterialIconFIS(MaterialIcon.Folder, Colors.White),
+        FABStyle = FloatingActionButtonStyle.Extended
+    };
     private readonly MaterialToggle _DarkModeSwitch = new()
     {
         Icon = MaterialIcon.Dark_mode,
@@ -120,6 +127,7 @@ public class AdminProfilePage : BasePage
         _DeleteAccount.Text = _LangService.StringForKey("Delete Account");
         _Customize.Text = _LangService.StringForKey("Customize");
         _Options.Text = _LangService.StringForKey("Options");
+        _ManageSubscription.Text = _LangService.StringForKey("Manage Subscription");
 
         _DarkModeSwitch.Text = _LangService.StringForKey("DarkMode");
         _LanguagePicker.Text = _LangService.StringForKey("Language");
@@ -143,6 +151,7 @@ public class AdminProfilePage : BasePage
         _ContentLayout.Add(_Options);
 
         _ContentLayout.Add(_UpdateEmail);
+        _ContentLayout.Add(_ManageSubscription);
         _ContentLayout.Add(_ResetPassword);
         _ContentLayout.Add(_DeleteAccount);
         _ContentLayout.Add(_Logout);
@@ -156,6 +165,7 @@ public class AdminProfilePage : BasePage
         _ResetPassword.Clicked += ResetPassword;
         _DeleteAccount.Clicked += DeleteAccountClicked;
         _LanguagePicker.PickedItem += LangChanged;
+        _ManageSubscription.Clicked += ManageSubscriptionClicked;
 
         _Feedback.Text = _LangService.StringForKey("Feedback");
         _Feedback.Command = new Command(() => { Shell.Current.GoToAsync(nameof(SendFeedbackPage)); });
@@ -169,12 +179,13 @@ public class AdminProfilePage : BasePage
     ~AdminProfilePage()
     {
         WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
-        _Logout.Clicked -= Logout;
         _DarkModeSwitch.Toggled -= DarkModeToggled;
+        _Logout.Clicked -= Logout;
         _UpdateEmail.Clicked -= UpdateEmail;
         _ResetPassword.Clicked -= ResetPassword;
         _DeleteAccount.Clicked -= DeleteAccountClicked;
         _LanguagePicker.PickedItem -= LangChanged;
+        _ManageSubscription.Clicked -= ManageSubscriptionClicked;
     }
     #endregion
 
@@ -250,6 +261,11 @@ public class AdminProfilePage : BasePage
         Services.LanguageService.CheckLanguage();
     }
 
+    private void ManageSubscriptionClicked(object sender, ClickedEventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(AdminManageSubscriptionPage));
+    }
+
     private void InternalMessageReceived(InternalMessage msg)
     {
         if (msg.Value is string message && message == "language-changed")
@@ -278,6 +294,7 @@ public class AdminProfilePage : BasePage
             _AdminResetVM.NewPassword.Placeholder = _LangService.StringForKey("NewPassword");
 
             _Feedback.Text = _LangService.StringForKey("Feedback");
+            _ManageSubscription.Text = _LangService.StringForKey("Manage Subscription");
         }
     }
     #endregion

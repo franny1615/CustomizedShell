@@ -14,6 +14,7 @@ public class Endpoint
     public const string AdminUpdateUser = "api/admin/updateUser";
     public const string AdminUpdateSelf = "api/admin/updateAdmin";
     public const string AdminDeleteAccount = "api/admin/deleteAccount";
+    public const string AdminUpdateLicense = "api/admin/updateLicense";
     #endregion
 
     #region User

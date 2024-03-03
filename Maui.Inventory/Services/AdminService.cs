@@ -91,4 +91,9 @@ public class AdminService : IAdminService
     {
         return await _apiService.Post<bool>(Endpoint.AdminDeleteAccount, new { });
     }
+
+    public async Task<bool> UpdateLicense(int addMonths)
+    {
+        return await _apiService.Post<bool>(Endpoint.AdminUpdateLicense, addMonths);
+    }
 }

@@ -118,8 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountCreation" xml:space="preserve">
-    <value>La creación de cuentas es gratuita.
-Todas las características están habilitadas sin costo durante los primeros tres meses.
+    <value>La creación de cuentas es gratuita. Todas las características están habilitadas sin costo durante los primer mes.
 Puede eliminar la cuenta en cualquier momento.</value>
   </data>
   <data name="Add" xml:space="preserve">
@@ -308,6 +307,12 @@ Puede eliminar la cuenta en cualquier momento.</value>
   <data name="License Expired" xml:space="preserve">
     <value>Licencia expirada</value>
   </data>
+  <data name="LicenseExtension" xml:space="preserve">
+    <value>Licencia extendida por {0} mes(es).</value>
+  </data>
+  <data name="LicenseExtensionFailure" xml:space="preserve">
+    <value>Se produjo un error por nuestra parte. Si se le cobró, contáctenos en ftim.mailing@gmail.com para actualizar su cuenta. Pedimos disculpas por las molestias.</value>
+  </data>
   <data name="LicenseId" xml:space="preserve">
     <value>ID de licencia</value>
   </data>
@@ -325,6 +330,9 @@ Puede eliminar la cuenta en cualquier momento.</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Cerrar sesión</value>
+  </data>
+  <data name="Manage Subscription" xml:space="preserve">
+    <value>Administrar Suscripción</value>
   </data>
   <data name="NewEmployee" xml:space="preserve">
     <value>Nuevo empleado</value>
@@ -359,6 +367,9 @@ Puede eliminar la cuenta en cualquier momento.</value>
   <data name="OK" xml:space="preserve">
     <value>De acuerdo</value>
   </data>
+  <data name="One Month" xml:space="preserve">
+    <value>Un mes</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>Opción</value>
   </data>
@@ -379,6 +390,12 @@ Puede eliminar la cuenta en cualquier momento.</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Perfil</value>
+  </data>
+  <data name="Purchase Extension" xml:space="preserve">
+    <value>Comprar Extensión</value>
+  </data>
+  <data name="Purchasing" xml:space="preserve">
+    <value>Procesando Compra</value>
   </data>
   <data name="Qty Type" xml:space="preserve">
     <value>Tipo de Cantidad</value>
@@ -434,6 +451,9 @@ Puede eliminar la cuenta en cualquier momento.</value>
   <data name="Sending" xml:space="preserve">
     <value>Enviando</value>
   </data>
+  <data name="Six Month" xml:space="preserve">
+    <value>Seis meses</value>
+  </data>
   <data name="Status" xml:space="preserve">
     <value>Estado</value>
   </data>
@@ -454,6 +474,12 @@ Puede eliminar la cuenta en cualquier momento.</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Entregar</value>
+  </data>
+  <data name="Subscription" xml:space="preserve">
+    <value>Suscripción</value>
+  </data>
+  <data name="Twelve Month" xml:space="preserve">
+    <value>Doce meses</value>
   </data>
   <data name="UpdateEmail" xml:space="preserve">
     <value>Actualizar correo electrónico</value>
