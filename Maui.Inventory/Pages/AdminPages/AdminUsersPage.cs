@@ -34,7 +34,7 @@ public class AdminUsersPage : BasePage
             var view = new MaterialCardView();
             view.SetBinding(MaterialCardView.BindingContextProperty, ".");
             view.SetBinding(MaterialCardView.HeadlineProperty, "UserName");
-            view.SetBinding(MaterialCardView.SupportingTextProperty, "Id");
+            view.SupportingText = "";
             view.Icon = MaterialIcon.Person;
             view.TrailingIcon = MaterialIcon.Chevron_right;
             view.IconColor = Colors.White;
