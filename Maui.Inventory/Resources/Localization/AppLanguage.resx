@@ -480,4 +480,19 @@ May delete account at any time.
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="Body" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="Send Feedback" xml:space="preserve">
+    <value>Send Feedback</value>
+  </data>
+  <data name="Sending" xml:space="preserve">
+    <value>Sending</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
 </root>

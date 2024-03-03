@@ -49,6 +49,7 @@ public class UserProfilePage : BasePage
     };
     private readonly HorizontalRule _Customize = new();
     private readonly HorizontalRule _Options = new();
+    private readonly ToolbarItem _Feedback = new();
     #endregion
 
     #region Constructor
@@ -93,6 +94,10 @@ public class UserProfilePage : BasePage
         {
             MainThread.BeginInvokeOnMainThread(() => InternalMessageReceived(msg));
         });
+
+        _Feedback.Text = _LanguageService.StringForKey("Feedback");
+        _Feedback.Command = new Command(() => { Shell.Current.GoToAsync(nameof(SendFeedbackPage)); });
+        ToolbarItems.Add(_Feedback);
     }
     ~UserProfilePage()
     {
@@ -158,6 +163,8 @@ public class UserProfilePage : BasePage
 
             _ViewModel.Username.Placeholder = _LanguageService.StringForKey("Username");
             _ViewModel.AdminID.Placeholder = _LanguageService.StringForKey("CompanyId");
+
+            _Feedback.Text = _LanguageService.StringForKey("Feedback");
         }
     }
     #endregion

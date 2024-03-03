@@ -74,6 +74,7 @@ public class AdminProfilePage : BasePage
     };
     private readonly HorizontalRule _Customize = new();
     private readonly HorizontalRule _Options = new();
+    private readonly ToolbarItem _Feedback = new();
     #endregion
 
     #region Constructor
@@ -155,6 +156,10 @@ public class AdminProfilePage : BasePage
         _ResetPassword.Clicked += ResetPassword;
         _DeleteAccount.Clicked += DeleteAccountClicked;
         _LanguagePicker.PickedItem += LangChanged;
+
+        _Feedback.Text = _LangService.StringForKey("Feedback");
+        _Feedback.Command = new Command(() => { Shell.Current.GoToAsync(nameof(SendFeedbackPage)); });
+        ToolbarItems.Add(_Feedback);
 
         WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
         {
@@ -271,6 +276,8 @@ public class AdminProfilePage : BasePage
 
             _AdminResetVM.VerificationCode.Placeholder = _LangService.StringForKey("VerificationCode");
             _AdminResetVM.NewPassword.Placeholder = _LangService.StringForKey("NewPassword");
+
+            _Feedback.Text = _LangService.StringForKey("Feedback");
         }
     }
     #endregion

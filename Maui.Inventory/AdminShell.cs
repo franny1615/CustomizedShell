@@ -52,6 +52,7 @@ public class AdminShell : Shell
         Routing.RegisterRoute(nameof(AdminLocationsPage), typeof(AdminLocationsPage));
         Routing.RegisterRoute(nameof(AdminStatusesPage), typeof(AdminStatusesPage));
         Routing.RegisterRoute(nameof(AdminQuantityTypesPage), typeof(AdminQuantityTypesPage));
+        Routing.RegisterRoute(nameof(SendFeedbackPage), typeof(SendFeedbackPage));
 
         WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
         {

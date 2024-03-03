@@ -56,6 +56,8 @@ public class EditInventoryPage : BasePage
         _QtyType = new(inventoryViewModel.QuantityTypeModel);
         _Location = new(inventoryViewModel.LocationModel);
 
+        _Description.IsMultiLine = true;
+
         _Barcode.IsDisabled = true;
         _LastEdited.IsDisabled = true;
         _CreatedOn.IsDisabled = true;

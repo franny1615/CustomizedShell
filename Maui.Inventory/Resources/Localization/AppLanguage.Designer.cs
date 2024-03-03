@@ -175,6 +175,15 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Body.
+        /// </summary>
+        internal static string Body {
+            get {
+                return ResourceManager.GetString("Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change Description.
         /// </summary>
         internal static string Change_Description {
@@ -522,6 +531,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string ErrorOccurred {
             get {
                 return ResourceManager.GetString("ErrorOccurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback.
+        /// </summary>
+        internal static string Feedback {
+            get {
+                return ResourceManager.GetString("Feedback", resourceCulture);
             }
         }
         
@@ -967,11 +985,29 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send Feedback.
+        /// </summary>
+        internal static string Send_Feedback {
+            get {
+                return ResourceManager.GetString("Send Feedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Code.
         /// </summary>
         internal static string SendCode {
             get {
                 return ResourceManager.GetString("SendCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sending.
+        /// </summary>
+        internal static string Sending {
+            get {
+                return ResourceManager.GetString("Sending", resourceCulture);
             }
         }
         
@@ -1017,6 +1053,15 @@ namespace Maui.Inventory.Resources.Localization {
         internal static string StepTwo {
             get {
                 return ResourceManager.GetString("StepTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject.
+        /// </summary>
+        internal static string Subject {
+            get {
+                return ResourceManager.GetString("Subject", resourceCulture);
             }
         }
         

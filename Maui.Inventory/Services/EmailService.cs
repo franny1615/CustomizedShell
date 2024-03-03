@@ -29,4 +29,13 @@ public class EmailService : IEmailService
             code = enteredCode
         });
     }
+
+    public async Task<bool> SendFeedback(string subject, string body)
+    {
+        return await _APIService.Post<bool>(Endpoint.SendFeedback, new
+        {
+            subject,
+            body
+        });
+    }
 }

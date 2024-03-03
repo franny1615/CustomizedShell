@@ -155,6 +155,9 @@ Puede eliminar la cuenta en cualquier momento.</value>
   <data name="Barcode" xml:space="preserve">
     <value>Código de barras</value>
   </data>
+  <data name="Body" xml:space="preserve">
+    <value>Cuerpo</value>
+  </data>
   <data name="Change Description" xml:space="preserve">
     <value>Cambiar Descripción</value>
   </data>
@@ -271,6 +274,9 @@ Puede eliminar la cuenta en cualquier momento.</value>
   </data>
   <data name="ErrorOccurred" xml:space="preserve">
     <value>Se produjo un error. Inténtalo de nuevo.</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>Comentario</value>
   </data>
   <data name="FinishRegistration" xml:space="preserve">
     <value>Finalizar el registro</value>
@@ -419,8 +425,14 @@ Puede eliminar la cuenta en cualquier momento.</value>
   <data name="Select Status" xml:space="preserve">
     <value>Seleccionar estado</value>
   </data>
+  <data name="Send Feedback" xml:space="preserve">
+    <value>Enviar comentarios</value>
+  </data>
   <data name="SendCode" xml:space="preserve">
     <value>Enviar código</value>
+  </data>
+  <data name="Sending" xml:space="preserve">
+    <value>Enviando</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Estado</value>
@@ -436,6 +448,9 @@ Puede eliminar la cuenta en cualquier momento.</value>
   </data>
   <data name="StepTwo" xml:space="preserve">
     <value>Segundo paso</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Sujeto</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Entregar</value>

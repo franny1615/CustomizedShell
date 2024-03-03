@@ -57,6 +57,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminLocationsPage>();
 		builder.Services.AddTransient<AdminEditLocationPage>();
 		builder.Services.AddTransient<AdminQuantityTypesPage>();
+		builder.Services.AddTransient<SendFeedbackPage>();
 
 		return builder;
 	}
@@ -79,6 +80,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<AdminStatusesViewModel>();
 		builder.Services.AddTransient<AdminLocationsViewModel>();
 		builder.Services.AddTransient<AdminQuantityTypesViewModel>();
+		builder.Services.AddTransient<SendFeedbackViewModel>();
 
         return builder;
 	}

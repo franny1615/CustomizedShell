@@ -35,6 +35,8 @@ public class UserShell : Shell
         _tabBar.Items.Add(_profile);
         Items.Add(_tabBar);
 
+        Routing.RegisterRoute(nameof(SendFeedbackPage), typeof(SendFeedbackPage));
+
         WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
         {
             MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));

@@ -20,6 +20,15 @@ public static class AppBuilderHostExtensions
 #endif
         });
 
+        Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping(nameof(Editor), (handler, view) =>
+        {
+#if ANDROID
+            handler.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToAndroid());
+#elif IOS
+            handler.PlatformView.BackgroundColor = UIKit.UIColor.Clear;                 
+#endif
+        });
+
         return builder;
     }
 }

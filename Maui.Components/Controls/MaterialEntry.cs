@@ -58,6 +58,18 @@ public class MaterialEntry : ContentView
         get => (bool)GetValue(IsDisabledProperty);
         set => SetValue(IsDisabledProperty, value);
     }
+
+    public static readonly BindableProperty IsMultiLineProperty = BindableProperty.Create(
+        nameof(IsMultiLine),
+        typeof(bool),
+        typeof(MaterialEntry),
+        false);
+
+    public bool IsMultiLine
+    {
+        get => (bool)(GetValue(IsMultiLineProperty));
+        set => SetValue(IsMultiLineProperty, value);
+    }
     #endregion
 
     #region Private Properties
@@ -81,6 +93,11 @@ public class MaterialEntry : ContentView
     {
         VerticalOptions = LayoutOptions.Center,
         FontSize = 18
+    };
+    private readonly Editor _Editor = new()
+    {
+        FontSize = 18,
+        AutoSize = EditorAutoSizeOption.TextChanges
     };
     private readonly Label _DisabledLabel = new()
     {
@@ -110,12 +127,16 @@ public class MaterialEntry : ContentView
 
         _DisabledLabel.SetBinding(Label.TextProperty, "Text");
 
+        _Editor.SetBinding(Editor.TextProperty, "Text");
+        _Editor.SetBinding(Editor.KeyboardProperty, "Keyboard");
+
         _Entry.SetBinding(Entry.TextProperty, "Text");
         _Entry.SetBinding(Entry.IsPasswordProperty, "IsPassword");
         _Entry.SetBinding(Entry.IsSpellCheckEnabledProperty, "IsSpellCheckEnabled");
         _Entry.SetBinding(Entry.KeyboardProperty, "Keyboard");
         
         _Entry.SetDynamicResource(Entry.TextColorProperty, "TextColor");
+        _Editor.SetDynamicResource(Editor.TextColorProperty, "TextColor");
 
         _PlaceholderLabel.SetBinding(Label.TextProperty, "Placeholder");
         _PlaceholderIcon.SetBinding(MaterialImage.IconProperty, "PlaceholderIcon");
@@ -240,12 +261,31 @@ public class MaterialEntry : ContentView
         {
             if (!IsDisabled)
             {
-                _EntryBorder.Content = _Entry;
+                PlaceInput();
             }
             else
             {
                 _EntryBorder.Content = _DisabledLabel;
             }
+        }
+        else if (propertyName == IsMultiLineProperty.PropertyName)
+        {
+            PlaceInput();
+        }
+    }
+
+    private void PlaceInput()
+    {
+        if (IsMultiLine)
+        {
+            _EntryBorder.Content = _Editor;
+            _EntryBorder.HeightRequest = -1;
+            _EntryBorder.MinimumHeightRequest = DeviceInfo.Current.Platform == DevicePlatform.iOS ? 40 : 50;
+        }
+        else
+        {
+            _EntryBorder.Content = _Entry;
+            _EntryBorder.HeightRequest = DeviceInfo.Current.Platform == DevicePlatform.iOS ? 40 : 50;
         }
     }
     #endregion

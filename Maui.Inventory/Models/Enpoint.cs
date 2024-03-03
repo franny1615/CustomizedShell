@@ -24,6 +24,7 @@ public class Endpoint
     #region Email
     public const string EmailStartVerifying = "api/email/beginValidation";
     public const string EmailVerify = "api/email/validate";
+    public const string SendFeedback = "api/email/feedback";
     #endregion
 
     #region Inventory
