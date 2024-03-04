@@ -522,4 +522,10 @@ May delete account at any time.
   <data name="Twelve Month" xml:space="preserve">
     <value>Twelve Month</value>
   </data>
+  <data name="Service Unavailable" xml:space="preserve">
+    <value>Service Unavailable</value>
+  </data>
+  <data name="ServiceMsg" xml:space="preserve">
+    <value>Service is currently unavailable, please try again later. </value>
+  </data>
 </root>

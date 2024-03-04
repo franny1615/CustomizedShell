@@ -1066,6 +1066,24 @@ namespace Maui.Inventory.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service Unavailable.
+        /// </summary>
+        internal static string Service_Unavailable {
+            get {
+                return ResourceManager.GetString("Service Unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service is currently unavailable, please try again later. .
+        /// </summary>
+        internal static string ServiceMsg {
+            get {
+                return ResourceManager.GetString("ServiceMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Six Month.
         /// </summary>
         internal static string Six_Month {

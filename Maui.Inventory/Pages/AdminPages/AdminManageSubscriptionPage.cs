@@ -9,8 +9,16 @@ using System.Globalization;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 using Maui.Components.Interfaces;
 using Maui.Inventory.Models;
+using Plugin.InAppBilling;
 
 namespace Maui.Inventory.Pages.AdminPages;
+
+public enum SubscriptionType
+{
+    OneMonth,
+    SixMonth,
+    TwelveMonth
+}
 
 public class AdminManageSubscriptionPage : BasePage
 {
@@ -93,24 +101,48 @@ public class AdminManageSubscriptionPage : BasePage
     #region Helpers
     private void TwelveMonth(object sender, ClickedEventArgs e)
     {
-        Purchase(_oneMonthLicense.Text, 12);
+        Purchase(_oneMonthLicense.Text, SubscriptionType.TwelveMonth);
     }
 
     private void SixMonth(object sender, ClickedEventArgs e)
     {
-        Purchase(_sixMonthLicense.Text, 6);
+        Purchase(_sixMonthLicense.Text, SubscriptionType.SixMonth);
     }
 
     private void OneMonth(object sender, ClickedEventArgs e)
     {
-        Purchase(_twelveMonthLicense.Text, 1);
+        Purchase(_twelveMonthLicense.Text, SubscriptionType.OneMonth);
     }
 
-    private async void Purchase(string currentButtonText, int amount)
+    private async void Purchase(string currentButtonText, SubscriptionType type)
     {
         if (currentButtonText == _langService.StringForKey("Purchasing"))
         {
             return;
+        }
+
+        int amount = 0;
+        string productId = "";
+        switch (type)
+        {
+            case SubscriptionType.OneMonth:
+                amount = 1;
+                productId = OperatingSystem.IsAndroid() ? Constants.ONE_MONTH_ID_ANDROID : Constants.ONE_MONTH_ID_IOS;
+                break;
+            case SubscriptionType.SixMonth:
+                amount = 6;
+                productId = OperatingSystem.IsAndroid() ? Constants.SIX_MONTH_ID_ANDROID : Constants.SIX_MONTH_ID_IOS;
+                break;
+            case SubscriptionType.TwelveMonth:
+                amount = 12;
+                productId = OperatingSystem.IsAndroid() ? Constants.TWELVE_MONTH_ID_ANDROID : Constants.TWELVE_MONTH_ID_IOS;
+                break;
+        }
+
+        bool storePurchase = await StorePurchase(productId);
+        if (!storePurchase)
+        {
+            return; // the function will handle the purchase alerts, if false it means they canceled.
         }
 
         bool success = await _ViewModel.UpdateLicense(amount);
@@ -131,7 +163,61 @@ public class AdminManageSubscriptionPage : BasePage
 
         await Shell.Current.GoToAsync("..");
     }
-    #endregion
+
+    private async Task<bool> StorePurchase(string productId)
+    {
+        var billing = CrossInAppBilling.Current;
+        bool finallyResult = false;
+
+        try
+        {
+            var connected = await billing.ConnectAsync();
+            if (!connected)
+            {
+                await DisplayAlert(
+                    _langService.StringForKey("Service Unavailable"), 
+                    _langService.StringForKey("ServiceMsg"),
+                    _langService.StringForKey("OK"));
+
+                return false;
+            }
+
+            var purchase = await billing.PurchaseAsync(productId, ItemType.InAppPurchase);
+            if (purchase == null)
+            {
+                // they did not want to purchase, so leave execution
+                return false;
+            }
+            else if (purchase.State == PurchaseState.Purchased)
+            {
+                finallyResult = true;
+                return true;
+            }
+        }
+        catch (InAppBillingPurchaseException purchaseEx)
+        {
+            Crashes.TrackError(purchaseEx);
+            await DisplayAlert(
+                _langService.StringForKey("Error"),
+                _langService.StringForKey("LicenseExtensionFailure"),
+                _langService.StringForKey("OK"));
+        }
+        catch (Exception ex)
+        {
+            Crashes.TrackError(ex);
+            await DisplayAlert(
+                _langService.StringForKey("Error"),
+                _langService.StringForKey("LicenseExtensionFailure"),
+                _langService.StringForKey("OK"));
+        }
+        finally
+        {
+            await billing.DisconnectAsync();    
+        }
+
+        return finallyResult;
+    }
+#endregion
 }
 
 public class AdminManageSubscriptionViewModel : ObservableObject

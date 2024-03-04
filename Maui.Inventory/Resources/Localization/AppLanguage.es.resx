@@ -451,6 +451,12 @@ Puede eliminar la cuenta en cualquier momento.</value>
   <data name="Sending" xml:space="preserve">
     <value>Enviando</value>
   </data>
+  <data name="Service Unavailable" xml:space="preserve">
+    <value>Servicio No Disponible</value>
+  </data>
+  <data name="ServiceMsg" xml:space="preserve">
+    <value>El servicio no está disponible actualmente, intente nuevamente más tarde.</value>
+  </data>
   <data name="Six Month" xml:space="preserve">
     <value>Seis meses</value>
   </data>
