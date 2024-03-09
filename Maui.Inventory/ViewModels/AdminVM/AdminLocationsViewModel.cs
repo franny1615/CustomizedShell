@@ -20,7 +20,7 @@ public partial class AdminLocationsViewModel : ObservableObject, ISelectViewMode
     public string ItemsIcon { get; set; } = MaterialIcon.Shelves;
     public SelectType SelectType { get; set; } = SelectType.SingleSelect;
 
-    public int ItemsPerPage { get; set; } = 5;
+    public int ItemsPerPage { get; set; } = 10;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
     public ObservableCollection<ISelectItem> Items { get; set; } = new();

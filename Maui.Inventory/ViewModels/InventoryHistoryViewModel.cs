@@ -11,7 +11,7 @@ public partial class InventoryHistoryViewModel : ObservableObject, IMaterialList
 {
     private readonly IInventoryService _inventoryService;
 
-    public int ItemsPerPage { get; set; } = 5;
+    public int ItemsPerPage { get; set; } = 10;
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
     public ObservableCollection<Models.Inventory> Items { get; set; } = new();

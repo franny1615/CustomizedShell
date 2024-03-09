@@ -16,7 +16,7 @@ public partial class AdminUsersViewModel : ObservableObject, IMaterialListVM<Use
     private readonly IUserService _UserService;
     private readonly IDAL<Admin> _AdminDAL;
 
-    public int ItemsPerPage { get; set; } = 5;
+    public int ItemsPerPage { get; set; } = 10;
     public ObservableCollection<User> Items { get; set; } = new();
     public MaterialPaginationModel PaginationModel { get; set; } = new();
     public MaterialEntryModel SearchModel { get; set; } = new();
