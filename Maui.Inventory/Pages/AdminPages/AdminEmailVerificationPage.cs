@@ -109,9 +109,15 @@ public class AdminEmailVerificationPage : BasePage
 
         Content = _OuterLayout;
         _Register.Clicked += RegisterClicked;
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
     }
     ~AdminEmailVerificationPage()
     {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
         _Register.Clicked -= RegisterClicked;
     }
     #endregion
@@ -195,6 +201,26 @@ public class AdminEmailVerificationPage : BasePage
             {
                 _Register.Text = _LangService.StringForKey("Login");
             }
+        }
+    }
+
+    private void ProcessInternalMsg(string msg)
+    {
+        if (msg == "language-changed")
+        {
+            _AdminVM.Username.Placeholder = _LangService.StringForKey("Username");
+            _AdminVM.Password.Placeholder = _LangService.StringForKey("Password");
+            _AdminVM.Email.Placeholder = _LangService.StringForKey("Email");
+            _AdminVM.VerificationCode.Placeholder = _LangService.StringForKey("VerificationCode");
+
+            _VerifiedEmail.Text = _LangService.StringForKey("EmailVerified");
+            _ReviewLabel.Text = _LangService.StringForKey("Review");
+
+            Title = _LangService.StringForKey("Verify");
+            _Register.Text = _LangService.StringForKey("VerifyEmail");
+
+            _Instructions.Text = _LangService.StringForKey("VerificationCodeSent");
+            _InstructionsFinal.Text = _LangService.StringForKey("VerificationCodeEnter");
         }
     }
     #endregion

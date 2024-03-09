@@ -49,10 +49,4 @@ public class LanguageService : ILanguageService
             }
         }
     }
-
-    public static void ResetLanguage()
-    {
-        Preferences.Set(Constants.Language, "");
-        CheckLanguage();
-    }
 }

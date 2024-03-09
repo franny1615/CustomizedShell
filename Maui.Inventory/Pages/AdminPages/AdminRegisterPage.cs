@@ -1,8 +1,10 @@
 using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Messaging;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Components.Utilities;
+using Maui.Inventory.Models;
 using Maui.Inventory.ViewModels.AdminVM;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
@@ -76,9 +78,15 @@ public class AdminRegisterPage : BasePage
 
         Content = _OuterLayout;
         _Register.Clicked += RegisterClicked;
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
     }
     ~AdminRegisterPage()
     {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
         _Register.Clicked -= RegisterClicked;
     }
     #endregion
@@ -145,6 +153,27 @@ public class AdminRegisterPage : BasePage
             await Navigation.PushAsync(new AdminEmailVerificationPage(_LanguageService, _AdminVM));
         }
         _Register.Text = _LanguageService.StringForKey("Submit");
+    }
+
+    private void ProcessInternalMsg(string msg)
+    {
+        if (msg == "language-changed")
+        {
+            Title = _LanguageService.StringForKey("Register");
+            _Register.Text = _LanguageService.StringForKey("Submit");
+            _RegisterSample.Text = LanguageService.StringForKey("AccountCreation");
+
+            _Email.ShowStatus(
+                _LanguageService.StringForKey("SampleEmail"),
+                MaterialIcon.Info,
+                Application.Current.Resources["Primary"] as Color,
+                updateBorder: false);
+
+            _AdminVM.Username.Placeholder = _LanguageService.StringForKey("Username");
+            _AdminVM.Password.Placeholder = _LanguageService.StringForKey("Password");
+            _AdminVM.Email.Placeholder = _LanguageService.StringForKey("Email");
+            _AdminVM.VerificationCode.Placeholder = _LanguageService.StringForKey("VerificationCode");
+        }
     }
     #endregion
 }

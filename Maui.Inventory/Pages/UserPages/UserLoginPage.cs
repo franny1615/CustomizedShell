@@ -69,9 +69,15 @@ public class UserLoginPage : BasePage
 
         Content = _ContentLayout;
         _Login.Clicked += Login;
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
     }
     ~UserLoginPage()
     {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
         _Login.Clicked -= Login;
     }
     #endregion
@@ -115,6 +121,20 @@ public class UserLoginPage : BasePage
             _Password.ShowStatus(_LanguageService.StringForKey("PasswordPossiblyWrong"), MaterialIcon.Info, Colors.Red);
         }
         _Login.Text = _LanguageService.StringForKey("Login");
+    }
+
+    private void ProcessInternalMsg(string msg)
+    {
+        if (msg == "language-changed")
+        {
+            Title = _LanguageService.StringForKey("UserLogin");
+
+            _ViewModel.Username.Placeholder = _LanguageService.StringForKey("Username");
+            _ViewModel.Password.Placeholder = _LanguageService.StringForKey("Password");
+            _ViewModel.AdminID.Placeholder = _LanguageService.StringForKey("CompanyId");
+
+            _Login.Text = _LanguageService.StringForKey("Login");
+        }
     }
     #endregion
 }

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountCreation" xml:space="preserve">
-    <value>La creación de cuentas es gratuita. Todas las características están habilitadas sin costo durante los primer mes.
+    <value>La creación de cuentas es gratuita. Todas las características están habilitadas sin costo durante el primer mes.
 Puede eliminar la cuenta en cualquier momento.</value>
   </data>
   <data name="Add" xml:space="preserve">
@@ -143,10 +143,10 @@ Puede eliminar la cuenta en cualquier momento.</value>
     <value>Agregando ...</value>
   </data>
   <data name="AdminLogin" xml:space="preserve">
-    <value>Dueño</value>
+    <value>Dueño(a)</value>
   </data>
   <data name="AlreadyRegistered" xml:space="preserve">
-    <value>¿Ya registrado?</value>
+    <value>¿Ya registrado(a)?</value>
   </data>
   <data name="Are you sure you want to delete?" xml:space="preserve">
     <value>¿Estas seguro que quieres borrarlo?</value>
@@ -176,7 +176,7 @@ Puede eliminar la cuenta en cualquier momento.</value>
     <value>ID de la compañía</value>
   </data>
   <data name="CompanyIdSupportText" xml:space="preserve">
-    <value>Los empleados necesitan este valor para iniciar sesión en la aplicación.</value>
+    <value>Dar a empleados para iniciar sesión en la aplicación.</value>
   </data>
   <data name="Created" xml:space="preserve">
     <value>Creado</value>
@@ -248,13 +248,13 @@ Puede eliminar la cuenta en cualquier momento.</value>
     <value>Correo electrónico</value>
   </data>
   <data name="EmailSupportText" xml:space="preserve">
-    <value>Se utiliza para comunicaciones y restos de contraseña.</value>
+    <value>Para comunicaciones y restablecer contraseña.</value>
   </data>
   <data name="EmailVerified" xml:space="preserve">
     <value>Correo Electrónico Verificado</value>
   </data>
   <data name="EmployeeLogin" xml:space="preserve">
-    <value>Empleado</value>
+    <value>Empleado(a)</value>
   </data>
   <data name="Employees" xml:space="preserve">
     <value>Empleados</value>
@@ -386,7 +386,7 @@ Puede eliminar la cuenta en cualquier momento.</value>
     <value>Contraseña posiblemente incorrecta.</value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>La gestión del inventario</value>
+    <value>Administrar Inventario</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Perfil</value>
@@ -407,7 +407,7 @@ Puede eliminar la cuenta en cualquier momento.</value>
     <value>Tipos de cantidad</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>Registro</value>
+    <value>Registrar</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>Requerido</value>
@@ -419,7 +419,7 @@ Puede eliminar la cuenta en cualquier momento.</value>
     <value>Revisar</value>
   </data>
   <data name="SampleEmail" xml:space="preserve">
-    <value>Se necesita correo electrónico para restablecer la contraseña.</value>
+    <value>Se necesita para restablecer la contraseña.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Ahorrar</value>

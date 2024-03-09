@@ -1,8 +1,10 @@
 using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Messaging;
 using Maui.Components;
 using Maui.Components.Controls;
 using Maui.Components.Pages;
 using Maui.Components.Utilities;
+using Maui.Inventory.Models;
 using Maui.Inventory.Pages.AdminPages;
 using Maui.Inventory.Pages.UserPages;
 using Maui.Inventory.ViewModels.AdminVM;
@@ -81,10 +83,21 @@ public class LandingPage : BasePage
 		FABStyle = FloatingActionButtonStyle.Extended
 	};
 	private readonly HorizontalRule _OR = new();
-	#endregion
+    private readonly MaterialPicker _LanguagePicker = new()
+    {
+        Icon = MaterialIcon.Language,
+        IconColor = Application.Current.Resources["Primary"] as Color,
+        TextColor = Application.Current.Resources["TextColor"] as Color,
+        ItemsSource = new List<string>
+        {
+            "English",
+            "Español"
+        }
+    };
+    #endregion
 
-	#region Constructor
-	public LandingPage(
+    #region Constructor
+    public LandingPage(
 		ILanguageService languageService,
 		AdminRegisterViewModel adminVM,
 		AdminLoginViewModel adminLoginVM,
@@ -115,6 +128,7 @@ public class LandingPage : BasePage
 		_ActionsContainer.Add(_Register);
 
 		_ContentLayout.Add(_ProductContainer.Row(0));
+		_ContentLayout.Add(_LanguagePicker.Row(0).End().Top());
 		_ContentLayout.Add(_ActionsContainer.Row(1).Bottom());
 
 		Content = _ContentLayout;
@@ -122,19 +136,30 @@ public class LandingPage : BasePage
 		_EmployeeLogin.Clicked += EmployeeLogin;
         _EmployerLogin.Clicked += EmployerLogin;
         _Register.Clicked += EmployerRegister;
+        _LanguagePicker.PickedItem += LanguageChanged;
+
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => ProcessInternalMsg(msg.Value.ToString()));
+        });
     }
-	~LandingPage()
+    ~LandingPage()
 	{
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
         _EmployeeLogin.Clicked -= EmployeeLogin;
         _EmployerLogin.Clicked -= EmployerLogin;
         _Register.Clicked -= EmployerRegister;
+		_LanguagePicker.PickedItem -= LanguageChanged;
     }
     #endregion
 
     #region Overrides
     protected override void OnAppearing()
     {
-        base.OnAppearing();	
+        base.OnAppearing();
+
+        string lang = Preferences.Get(Constants.Language, "English");
+        _LanguagePicker.SelectedItem = lang;
     }
 
     protected override void OnDisappearing()
@@ -161,5 +186,37 @@ public class LandingPage : BasePage
 		_AdminVM.Clear();
 		Navigation.PushAsync(new AdminRegisterPage(_LangService, _AdminVM));
 	}
-	#endregion
+
+    private void LanguageChanged(object sender, PickedEventArgs e)
+    {
+        Preferences.Set(Constants.Language, e.PickedItem);
+        Services.LanguageService.CheckLanguage();
+    }
+
+    private void ProcessInternalMsg(string msg)
+    {
+        if (msg == "language-changed")
+        {
+            _ProductName.Text = LanguageService.StringForKey("Product");
+
+            _AlreadyRegistered.Text = LanguageService.StringForKey("AlreadyRegistered");
+            _EmployeeLogin.Text = LanguageService.StringForKey("EmployeeLogin");
+            _EmployerLogin.Text = LanguageService.StringForKey("AdminLogin");
+            _Register.Text = LanguageService.StringForKey("Register");
+            _OR.Text = LanguageService.StringForKey("OR");
+
+            _UserLoginVM.Username.Placeholder = LanguageService.StringForKey("Username");
+            _UserLoginVM.Password.Placeholder = LanguageService.StringForKey("Password");
+            _UserLoginVM.AdminID.Placeholder = LanguageService.StringForKey("CompanyId");
+
+            _AdminLoginVM.Username.Placeholder = LanguageService.StringForKey("Username");
+            _AdminLoginVM.Password.Placeholder = LanguageService.StringForKey("Password");
+
+            _AdminVM.Username.Placeholder = LanguageService.StringForKey("Username");
+            _AdminVM.Password.Placeholder = LanguageService.StringForKey("Password");
+            _AdminVM.Email.Placeholder = LanguageService.StringForKey("Email");
+            _AdminVM.VerificationCode.Placeholder = LanguageService.StringForKey("VerificationCode");
+        }
+    }
+    #endregion
 }

@@ -139,7 +139,6 @@ public class App : Application
                 break;
             case AccessMessage.LandingPage:
             case AccessMessage.AccessTokenExpired:
-                LanguageService.ResetLanguage();
                 AccessControl.IsLicenseValid = false;
                 MainPage = new NavigationPage(new LandingPage(_LanguageService, _AdminVM, _AdminLoginVM, _UserLoginVM));
                 break;
