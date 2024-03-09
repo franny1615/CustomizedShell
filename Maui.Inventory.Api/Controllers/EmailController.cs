@@ -75,4 +75,20 @@ public class EmailController(
 
         return response;
     }
+
+    [HttpPost]
+    [Authorize]
+    [Route("feedback/update")]
+    public async Task<APIResponse<bool>> UpdateFeedback([FromBody] Feedback feedback)
+    {
+        return await _userRepo.UpdateFeedback(feedback);
+    }
+
+    [HttpPost]
+    [Authorize]
+    [Route("feedback/delete")]
+    public async Task<APIResponse<bool>> DeleteFeedback([FromBody] Feedback feedback)
+    {
+        return await _userRepo.DeleteFeedback(feedback);
+    }
 }

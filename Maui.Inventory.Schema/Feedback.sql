@@ -4,7 +4,9 @@ CREATE TABLE feedback
     AdminId      INT NOT NULL,
     UserId       INT NOT NULL, 
     WasAdmin     BIT NOT NULL DEFAULT 0,
+    IsComplete   BIT NOT NULL DEFAULT 0,
     Subject      NVARCHAR(1024) NOT NULL DEFAULT '',
     Body         NVARCHAR(1024) NOT NULL DEFAULT '',
-    CreatedOn    DATETIME NOT NULL DEFAULT GETDATE()
+    CreatedOn    DATETIME NOT NULL DEFAULT GETDATE(),
+    UpdatedOn    DATETIME NOT NULL DEFAULT GETDATE()
 );

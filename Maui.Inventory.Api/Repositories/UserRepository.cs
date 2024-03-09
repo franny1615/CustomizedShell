@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
+using Azure.Core;
 using Maui.Inventory.Api.Interfaces;
 using Maui.Inventory.Api.Models;
 using Maui.Inventory.Api.Utilities;
@@ -1015,7 +1016,9 @@ SELECT
     WasAdmin,
     Subject,
     Body,
-    CreatedOn
+    CreatedOn,
+    UpdatedOn,
+    IsCompleted
 FROM feedback";
             string totalQuery = $@"SELECT COUNT(*) FROM ({query}) feedback";
             string fullQuery = $@"
@@ -1030,6 +1033,73 @@ FETCH NEXT {request.ItemsPerPage} ROWS ONLY";
                 Total = (await SQLUtils.QueryAsync<int>(totalQuery)).First(),
                 Items = (await SQLUtils.QueryAsync<Feedback>(fullQuery)).ToList(),
             };
+            response.Success = true;
+            response.Message = "";
+        }
+        catch (Exception e)
+        {
+            response.Success = false;
+            response.Data = new();
+            response.Message = $"ERROR >>> {e.Message} <<<";
+        }
+        return response;
+    }
+    #endregion
+
+    #region UPDATE FEEDBACK
+    public async Task<APIResponse<bool>> UpdateFeedback(Feedback feedback)
+    {
+        var response = new APIResponse<bool>();
+        try
+        {
+            #region QUERY
+            int isCompletedBit = feedback.IsCompleted ? 1 : 0;
+
+            string query = $@"
+UPDATE feedback
+SET
+    Subject = '{feedback.Subject}',
+    Body = '{feedback.Body}',
+    IsCompleted = {isCompletedBit},
+    UpdatedOn = GETDATE()
+WHERE feedback.Id = {feedback.Id} 
+AND feedback.AdminId = {feedback.AdminId}
+AND feedback.UserId = {feedback.UserId}";
+            #endregion
+
+            await SQLUtils.QueryAsync<object>(query);
+
+            response.Data = true;
+            response.Success = true;
+            response.Message = "";
+        }
+        catch (Exception e)
+        {
+            response.Success = false;
+            response.Data = new();
+            response.Message = $"ERROR >>> {e.Message} <<<";
+        }
+        return response;
+    }
+    #endregion
+
+    #region DELETE FEEDBACK
+    public async Task<APIResponse<bool>> DeleteFeedback(Feedback feedback)
+    {
+        var response = new APIResponse<bool>();
+        try
+        {
+            #region QUERY
+            string query = $@"
+DELETE FROM feedback
+WHERE feedback.Id = {feedback.Id} 
+AND feedback.AdminId = {feedback.AdminId}
+AND feedback.UserId = {feedback.UserId}";
+            #endregion
+
+            await SQLUtils.QueryAsync<object>(query);
+
+            response.Data = true;
             response.Success = true;
             response.Message = "";
         }

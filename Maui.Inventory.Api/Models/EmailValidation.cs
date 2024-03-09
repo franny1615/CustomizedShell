@@ -16,4 +16,6 @@ public class Feedback
     public string Subject { get; set; } = string.Empty;
     public string Body { get; set; } = string.Empty;
     public DateTime CreatedOn { get; set; }
+    public DateTime UpdatedOn { get; set; }
+    public bool IsCompleted { get; set; } = false;
 }

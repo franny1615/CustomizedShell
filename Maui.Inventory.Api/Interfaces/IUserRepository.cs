@@ -50,4 +50,8 @@ public interface IUserRepository
     public Task<APIResponse<PaginatedQueryResponse<Feedback>>> GetFeedback(PaginatedRequest request);
 
     public Task<APIResponse<bool>> UpdateAdminLicense(int adminId, int addingMonths);
+
+    public Task<APIResponse<bool>> UpdateFeedback(Feedback feedback);
+
+    public Task<APIResponse<bool>> DeleteFeedback(Feedback feedback);
 }
