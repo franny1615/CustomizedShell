@@ -182,7 +182,6 @@ public class AdminManageSubscriptionPage : BasePage
                 return false;
             }
 
-            // TODO: they can repurchase the same thing and get extension on license for free
             var purchase = await billing.PurchaseAsync(productId, ItemType.InAppPurchase);
             if (purchase == null)
             {
