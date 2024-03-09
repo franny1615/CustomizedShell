@@ -22,11 +22,11 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">31.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
-	  <CodesignKey>Apple Development: Francisco Funes (2GD34ECUM7)</CodesignKey>
-	  <CodesignProvision>devProfile</CodesignProvision>
+	  <CodesignKey>Apple Distribution: Francisco Funes (JN9HYMVTYY)</CodesignKey>
+	  <CodesignProvision>prdProfile</CodesignProvision>
 	  <ProvisioningType>manual</ProvisioningType>
 	</PropertyGroup>
-
+	
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
 		<UseInterpreter>true</UseInterpreter>
 	</PropertyGroup>
