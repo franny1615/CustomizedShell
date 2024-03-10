@@ -12,7 +12,7 @@ var onReady = setInterval(() => {
                     if (response.success == true && response.message == 'validated') {
                         var isDev = localStorage.getItem('isDev');
                         if (isDev == 'yes') {
-                            mainContent.innerHTML = dashboard();
+                            devDashboard();
                         } else {
                             logout();
                         }
@@ -31,13 +31,10 @@ var onReady = setInterval(() => {
  */
 async function networkRequest(endpoint = "", method = "", data = {}) {
     try {
-        var token = localStorage.getItem("authToken");
-
         const response = await fetch(`https://${window.location.host}/${endpoint}`, {
             method: method,
             body: JSON.stringify(data),
             headers: {
-                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             }
         });
@@ -159,9 +156,9 @@ function login() {
             if (response != null || response != undefined) {
                 if (response.success == true && response.data.accessToken.length > 0) {
                     if (response.data.isDeveloper == true) {
-                        localStorage.setItem('authToken', response.data.accessToken);
+                        document.cookie = `auth=${response.data.accessToken};`;
                         localStorage.setItem('isDev', 'yes');
-                        mainContent.innerHTML = dashboard();
+                        devDashboard();
                     } else {
                         alertOn('status-placeholder', 'This tool is for developers of FTIM only.', 'warning');
                         unInput.value = '';
@@ -179,9 +176,15 @@ function login() {
 }
 
 function logout() {
-    localStorage.setItem('authToken', '');
+    document.cookie = 'auth=;';
     localStorage.setItem('isDev', '');
     mainContent.innerHTML = loginHTML();
+}
+
+function devDashboard() {
+    mainContent.innerHTML = dashboard();
+    htmx.process(htmx.find('#main-content'));
+    // here in case there is more to do.
 }
 
 function dashboard() {
@@ -198,10 +201,16 @@ function dashboard() {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <button class="nav-link active">Feedback</button>
+              <button class="nav-link active"
+                      hx-get="/api/admin/testHtmx"
+                      hx-trigger="load delay:250ms"
+                      hx-target="#dashboard-content">
+                      Feedback
+              </button>
             </li>
           </ul>
         </div>
       </div>
-    </nav>`;
+    </nav>
+    <div id="dashboard-content"></div>`;
 }

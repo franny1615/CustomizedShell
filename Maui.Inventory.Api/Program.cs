@@ -32,6 +32,14 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
+    o.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.HttpContext.Request.Cookies["auth"];
+            return Task.CompletedTask;
+        }
+    };
 });
 builder.Services.AddAuthorization();
 

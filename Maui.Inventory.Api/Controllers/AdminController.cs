@@ -128,9 +128,10 @@ public class AdminController(
     }
 
     [HttpGet]
+    [Authorize]
     [Route("testHtmx")]
     public string TestHTMX()
     {
-        return "<h1>Hello World</h1>";
+        return $@"<h1 style=""color:white;"">Hello World</h1>";
     }
 }
