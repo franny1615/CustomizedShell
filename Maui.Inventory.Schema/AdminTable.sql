@@ -8,5 +8,6 @@ CREATE TABLE admin
     Salt          NVARCHAR(250) NOT NULL,
     LicenseID     INT           FOREIGN KEY REFERENCES license(Id),
     IsDarkModeOn  BIT			NOT NULL DEFAULT 0,
-    EditInventoryPermissions INT    NOT NULL DEFAULT 0
+    EditInventoryPermissions INT    NOT NULL DEFAULT 0,
+    IsDeveloper   BIT           NOT NULL DEFAULT 0
 );

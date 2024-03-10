@@ -2,6 +2,7 @@
 using Maui.Inventory.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Maui.Inventory.Api.Controllers;
 
@@ -114,5 +115,22 @@ public class AdminController(
             response.Data = new();
         }
         return response;
+    }
+
+    [HttpPost]
+    [Route("checkAuth")]
+    [Authorize]
+    public APIResponse<string> CheckAuthStatus()
+    {
+        // Request will simply return 401 Unauthorized when token bad
+        // If we're here
+        return new APIResponse<string> { Success = true, Message = "validated", Data = "validated" };
+    }
+
+    [HttpGet]
+    [Route("testHtmx")]
+    public string TestHTMX()
+    {
+        return "<h1>Hello World</h1>";
     }
 }

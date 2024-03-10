@@ -15,6 +15,7 @@ public class Admin
     public bool IsLicenseValid { get; set; } = false;
     public DateTime? LicenseExpirationDate { get; set; } = null;
     public int EditInventoryPermissions { get; set; } = 0;
+    public bool IsDeveloper { get; set; } = false;
 
     [JsonIgnore]
     public BinaryData? PasswordHash { get; set; } = null;

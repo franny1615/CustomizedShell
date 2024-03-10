@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
-using Azure.Core;
 using Maui.Inventory.Api.Interfaces;
 using Maui.Inventory.Api.Models;
 using Maui.Inventory.Api.Utilities;
@@ -315,7 +314,8 @@ SELECT
     Email,
     EmailVerified,
     IsDarkModeOn,
-    EditInventoryPermissions
+    EditInventoryPermissions,
+    IsDeveloper
 FROM admin
 WHERE admin.Id = @userID;";
             #endregion
