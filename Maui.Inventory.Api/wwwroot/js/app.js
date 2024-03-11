@@ -202,7 +202,7 @@ function dashboard() {
           <ul class="navbar-nav">
             <li class="nav-item">
               <button class="nav-link active"
-                      hx-get="/api/admin/testHtmx"
+                      hx-get="/api/email/feedback/list/component"
                       hx-trigger="load delay:250ms"
                       hx-target="#dashboard-content">
                       Feedback

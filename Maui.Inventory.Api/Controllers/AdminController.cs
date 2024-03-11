@@ -126,12 +126,4 @@ public class AdminController(
         // If we're here
         return new APIResponse<string> { Success = true, Message = "validated", Data = "validated" };
     }
-
-    [HttpGet]
-    [Authorize]
-    [Route("testHtmx")]
-    public string TestHTMX()
-    {
-        return $@"<h1 style=""color:white;"">Hello World</h1>";
-    }
 }

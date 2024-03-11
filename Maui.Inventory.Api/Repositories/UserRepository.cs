@@ -1007,6 +1007,18 @@ VALUES
         var response = new APIResponse<PaginatedQueryResponse<Feedback>>();
         try
         {
+            #region SEARCH
+            string searchQuery = "";
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                string[] words = request.Search.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                foreach (var item in words)
+                {
+                    searchQuery += $"AND (Subject LIKE '{item}%' OR Body LIKE '{item}%') ";
+                }
+            }
+            #endregion
+
             #region QUERY
             string query = $@"
 SELECT
@@ -1019,7 +1031,8 @@ SELECT
     CreatedOn,
     UpdatedOn,
     IsCompleted
-FROM feedback";
+FROM feedback
+{searchQuery}";
             string totalQuery = $@"SELECT COUNT(*) FROM ({query}) feedback";
             string fullQuery = $@"
 {query}

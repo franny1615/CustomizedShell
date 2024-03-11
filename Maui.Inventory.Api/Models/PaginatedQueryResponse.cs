@@ -10,7 +10,7 @@ public class PaginatedRequest
 {
     public int Page { get; set; } = 0;
     public int ItemsPerPage { get; set; } = 10;
-    public string Search { get; set; } = string.Empty;
+    public string? Search { get; set; }
 }
 
 public class InventoryHistoryRequest : PaginatedRequest
