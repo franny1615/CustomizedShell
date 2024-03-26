@@ -52,4 +52,16 @@ export abstract class Localization {
             }
         });
     }
+
+    static InstantTranslation(key: string): string {
+        var locale = this.Current();
+        switch (locale.abbreviation) {
+            case 'es':
+                return Spanish.Find(key);
+            case 'en':
+                return English.Find(key);
+            default:
+                return key;
+        }
+    }
 }
