@@ -5,6 +5,7 @@ import { AppComponent } from "./app.component";
 import { BrowserModule } from "@angular/platform-browser";
 import { ThemeToggler } from "./theme-toggler/theme-toggler.component";
 import { LocalizationToggler } from "./localization-toggler/localization-toggler.component";
+import { LocalizationModal } from "./localization-toggler/localization-modal/localization-modal.component";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { LocalizationToggler } from "./localization-toggler/localization-toggler
         AppComponent,
         LoginComponent,
         ThemeToggler,
-        LocalizationToggler
+        LocalizationToggler,
+        LocalizationModal
     ],
     bootstrap: [AppComponent]
 })

@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
+import { LocalizationModal } from "./localization-modal/localization-modal.component";
 
 @Component({
     selector: 'localization-toggler',
@@ -6,7 +7,9 @@ import { Component } from "@angular/core";
     styleUrls: ['./localization-toggler.component.sass']
 })
 export class LocalizationToggler {
+    @ViewChild('localeModal') localizationModal!: LocalizationModal
+
     ToggleLanguage() : void {
-        // TODO: should just open the modal
+        this.localizationModal.show();
     }
 }

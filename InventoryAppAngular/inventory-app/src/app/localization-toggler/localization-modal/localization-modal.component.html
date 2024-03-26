@@ -1,0 +1,24 @@
+<button type="button" data-bs-toggle="modal" data-bs-target="#localizationModal" id="showLocalizationBtn"
+    hidden></button>
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" id="localizationModal">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel" translate="Language"></h1>
+                <button id="hideLocalizationBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    <button 
+                    *ngFor="let locale of localizationInstance.SUPPORTED_LOCALES; index as i"
+                    [innerHtml]="locale.description"
+                    type="button" 
+                    [class]="'list-group-item list-group-item-action'+(checkActiveAgainst(locale) ? ' active': '')" 
+                    [attr.aria-current]="checkActiveAgainst(locale) ? 'true': null"
+                    (click)="changeLocaleTo(locale)"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
