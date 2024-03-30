@@ -1,0 +1,17 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+@Body
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        bool signedIn = Preferences.Get("LoggedIn", "") == "1";
+        if (!signedIn)
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+}

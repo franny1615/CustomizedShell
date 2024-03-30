@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="124" height="124" viewBox="0 0 124 124" fill="none">
+<rect width="124" height="124" fill="#1F5673" rx="8" ry="8"/>
+<rect 
+  opacity="1" 
+  x="24" y="24" 
+  width="20" height="76" 
+  rx="4" 
+  fill="#FFFFFF"/>
+<rect 
+  opacity="1" 
+  x="44" y="52" 
+  width="40" height="20" 
+  fill="#FFFFFF"/>
+<rect 
+  opacity="1" 
+  x="50" y="24" 
+  width="20" height="76" 
+  rx="4" 
+  fill="#FFA500"/>
+<rect 
+  opacity="1" 
+  x="76" y="24" 
+  width="20" height="76" 
+  rx="4" 
+  fill="#FFFFFF"/>
+</svg>
