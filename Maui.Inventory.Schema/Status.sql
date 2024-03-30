@@ -1,6 +1,0 @@
-CREATE TABLE status 
-(
-    Id          INT NOT NULL IDENTITY PRIMARY KEY,
-    AdminId     INT NOT NULL FOREIGN KEY REFERENCES admin(Id),
-    Description NVARCHAR(300) NOT NULL DEFAULT ''
-);

@@ -1,6 +1,0 @@
-CREATE TABLE email_validation
-(
-    Id    INT NOT NULL IDENTITY PRIMARY KEY,
-    Email NVARCHAR(300) NOT NULL,
-    Code  INT NOT NULL 
-);
