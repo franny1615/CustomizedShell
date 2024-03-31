@@ -26,8 +26,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
-	  <CodesignKey>Apple Development: Created via API (58CVUJPPM5)</CodesignKey>
-	  <CodesignProvision>VS: com.funestechnologies.ftim Development</CodesignProvision>
+	  <CodesignKey></CodesignKey>
+	  <CodesignProvision>devProfile</CodesignProvision>
 	</PropertyGroup>
 
 	<ItemGroup>
