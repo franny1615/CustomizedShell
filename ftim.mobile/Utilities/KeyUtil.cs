@@ -1,4 +1,7 @@
-﻿namespace ftim.mobile.Utilities;
+﻿using System.Globalization;
+using ftim.mobile.Models;
+
+namespace ftim.mobile.Utilities;
 
 public static class KeyUtil
 {
@@ -11,5 +14,21 @@ public static class KeyUtil
     {
         get => Preferences.Get(Constants.AuthKey, "");
         set => Preferences.Set(Constants.AuthKey, value);
+    }
+    public static string CurrentLanguage
+    {
+        get => Preferences.Get(Constants.LanguageKey, "en");
+        set
+        {
+            try 
+            {
+                Preferences.Set(Constants.LanguageKey, value);
+                Language.Instance.SetCulture(new CultureInfo(value));
+            } 
+            catch (Exception ex) 
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }   
+        }
     }
 }

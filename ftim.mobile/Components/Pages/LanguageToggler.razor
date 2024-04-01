@@ -1,0 +1,78 @@
+﻿@implements IDisposable
+
+<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#localizationModal" id="showLocalizationBtn">
+    <img src="images/language.svg" width="40px" height="40px"/>
+</button>
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" id="localizationModal">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">@Title</h1>
+                <button id="hideLocalizationBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    @foreach (var supportedLang in Language.Supported) 
+                    {
+                        @if (IsCurrent(@supportedLang.Abbreviation)) 
+                        {
+                            <button 
+                                type="button" 
+                                class="list-group-item list-group-item-action active" 
+                                aria-current="true"
+                                data-bs-dismiss="modal"
+                                @onclick=@(() => SetLanguage(supportedLang.Abbreviation))>@supportedLang.Description</button>
+                        }
+                        else 
+                        {
+                            <button 
+                                type="button" 
+                                class="list-group-item list-group-item-action" 
+                                aria-current="true"
+                                data-bs-dismiss="modal"
+                                @onclick=@(() => SetLanguage(supportedLang.Abbreviation))>@supportedLang.Description</button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string Title = string.Empty;
+    private bool IsCurrent(string code) => KeyUtil.CurrentLanguage == code;
+    private void SetLanguage(string code) => KeyUtil.CurrentLanguage = code;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RefreshLanguageKeys();
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) => 
+        {
+            if (msg.Value is string message) 
+            {
+                HandleInternalMessage(message);
+            }
+        }); 
+    }
+
+    void IDisposable.Dispose()
+    {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
+    }
+
+    private void HandleInternalMessage(string message) 
+    {
+        if (message == "language-changed")
+        {
+            RefreshLanguageKeys();
+        }
+    }
+
+    private void RefreshLanguageKeys() 
+    {
+        Title = Language.Instance["Language"];
+    }
+}
