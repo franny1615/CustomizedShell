@@ -1,0 +1,74 @@
+﻿@implements IDisposable
+@inject NavigationManager Navigation
+
+@page "/register"
+
+<div class="centered-div-vertical">
+    <div class="centered-div bg-body-secondary rounded-3" style="width: 95%;">
+        <div style="display: flex; flex-direction: row;justify-content:start; align-items: center; gap: 8px;margin-bottom: 8px;">
+            <img src="images/app_ic.svg" width="40" height="40" />
+            <label style="font-size: 21px; font-weight: bold;">@CompanyDetails</label>
+        </div>
+    </div>
+    <div class="centered-div bg-body-secondary rounded-3" style="width: 95%;">
+        <div style="display: flex; flex-direction: row;justify-content:start; align-items: center; gap: 8px;margin-bottom: 8px;">
+            <label style="font-size: 21px; font-weight: bold;">@UserDetails</label>
+        </div>
+    </div>
+    <div style="display: flex;flex-direction: row;align-items: center;justify-content: center;gap: 8px;width: 95%;">
+        <button type="button" class="btn btn-secondary" @onclick="NavBack" style="height: 48px;">@GoBack</button>
+        <button type="button" class="btn btn-primary" @onclick="RegisterActual" style="flex-grow: 1;height: 48px;">@RegisterTxt</button>
+    </div>
+</div>
+
+@code {
+    private string CompanyDetails = string.Empty;
+    private string UserDetails = string.Empty;
+    private string GoBack = string.Empty;
+    private string RegisterTxt = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RefreshLanguageKeys();
+        WeakReferenceMessenger.Default.Register<InternalMessage>(this, (_, msg) => 
+        {
+            if (msg.Value is string message) 
+            {
+                HandleInternalMessage(message);
+            }
+        }); 
+    }
+
+    void IDisposable.Dispose()
+    {
+        WeakReferenceMessenger.Default.Unregister<InternalMessage>(this);
+    }
+
+    private void HandleInternalMessage(string message) 
+    {
+        if (message == "language-changed")
+        {
+            RefreshLanguageKeys();
+        }
+    }
+
+    private void RefreshLanguageKeys() 
+    {
+        CompanyDetails = Language.Instance["Company"];
+        UserDetails = Language.Instance["Login"];
+        GoBack = Language.Instance["Go Back"];
+        RegisterTxt = Language.Instance["Register"];
+        StateHasChanged();
+    }
+
+    private void NavBack() 
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    private void RegisterActual() 
+    {
+
+    }
+}

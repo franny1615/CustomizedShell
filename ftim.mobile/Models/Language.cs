@@ -23,7 +23,8 @@ public class Language
             try 
             {
                 var culture = new CultureInfo(KeyUtil.CurrentLanguage);
-                return AppLanguage.ResourceManager.GetString(resourceKey, culture) ?? "";
+                string result = AppLanguage.ResourceManager.GetString(resourceKey, culture) ?? "";
+                return string.IsNullOrEmpty(result) ? resourceKey : result;
             }
             catch 
             {

@@ -1,4 +1,5 @@
 ﻿@implements IDisposable
+@inject NavigationManager Navigation
 
 @page "/login"
 
@@ -20,7 +21,7 @@
                 <div id="password-help" class="form-text"></div>
             </div>
             <div style="display: flex;flex-direction: row;align-items: end;justify-content: end;gap: 8px;margin-top: 8px;">
-                <button type="button" class="btn btn-secondary">@Register</button>
+                <button type="button" class="btn btn-secondary" @onclick="GoRegister">@Register</button>
                 <button type="button" class="btn btn-primary">@LoginTxt</button>
             </div>
         </div>
@@ -71,5 +72,10 @@
         Register = Language.Instance["Register"];
         LoginTxt = Language.Instance["Login"];
         StateHasChanged();
+    }
+
+    private void GoRegister() 
+    {
+        Navigation.NavigateTo("/register");
     }
 }
