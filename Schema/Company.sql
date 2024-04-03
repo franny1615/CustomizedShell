@@ -8,5 +8,6 @@ CREATE TABLE company
     City          NVARCHAR(250) NOT NULL DEFAULT '',
     Country       NVARCHAR(250) NOT NULL DEFAULT '',    
     State         NVARCHAR(250) NOT NULL DEFAULT '',
+    Zip           NVARCHAR(250) NOT NULL DEFAULT '',
     LicenseExpiresOn DATETIME NOT NULL 
 );
