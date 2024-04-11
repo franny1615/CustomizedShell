@@ -1,13 +1,15 @@
 ﻿using Inventory.Api.Models;
 using Inventory.Api.Repositories.CompanyRegistration;
+using Inventory.API.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Api.Controllers;
 
-[ApiController]
 [Route("api/company")]
-public class CompanyController(ICompanyRepository companyRepository)
+public class CompanyController(
+    ICompanyRepository companyRepository, 
+    IHttpContextAccessor httpContextAccessor) : BaseController(httpContextAccessor)
 {
     [HttpPost]
     [Route("register")]
@@ -19,9 +21,9 @@ public class CompanyController(ICompanyRepository companyRepository)
     [HttpGet]
     [Route("details")]
     [Authorize]
-    public async Task<Company> GetCompanyById([FromQuery] int companyId)
+    public async Task<Company> GetCompanyById()
     {
-        return await companyRepository.GetCompanyById(companyId);
+        return await companyRepository.GetCompanyById(UserId);
     }
 
     [HttpPost]

@@ -1,13 +1,15 @@
 ﻿using Inventory.Api.Models;
 using Inventory.Api.Repositories.UserRegistration;
+using Inventory.API.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.Api.Controllers;
 
-[ApiController]
 [Route("api/user")]
-public class UserController(IUserRepository userRepo)
+public class UserController(
+    IUserRepository userRepo,
+    IHttpContextAccessor httpContextAccessor): BaseController(httpContextAccessor)
 {
     [HttpGet]
     [Route("check")]
@@ -33,9 +35,9 @@ public class UserController(IUserRepository userRepo)
     [HttpGet]
     [Authorize]
     [Route("details")]
-    public async Task<User> GetDetails([FromQuery] int userId)
+    public async Task<User> GetDetails()
     {
-        return await userRepo.GetUserById(userId);
+        return await userRepo.GetUserById(UserId);
     }
 
     [HttpPost]
