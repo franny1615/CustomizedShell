@@ -9,6 +9,6 @@ public partial class App : Application
 		Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
-		MainPage = new NavigationPage(new MainPage());
+		MainPage = new NavigationPage(new LandingPage());
 	}
 }
