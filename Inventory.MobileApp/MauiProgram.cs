@@ -18,6 +18,7 @@ public static class MauiProgram
 			.UseMauiCompatibility()
 			.ConfigureFonts(fonts =>
 			{
+				fonts.AddFont("MaterialIcons-Regular.ttf", nameof(MaterialIcon));
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});

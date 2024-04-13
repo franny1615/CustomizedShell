@@ -13,4 +13,10 @@ public static class SessionService
         get => Preferences.Get("kAPIURL", "");
         set => Preferences.Set("kAPIURL", value);
     }
+
+    public static string CurrentLanguageCulture
+    {
+        get => Preferences.Get("kCulture", "en-US");
+        set => Preferences.Set("kCulture", value);
+    }
 }

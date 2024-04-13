@@ -1,9 +1,11 @@
+using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Markup;
+using Inventory.MobileApp.Services;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
-namespace Inventory.MobileApp;
+namespace Inventory.MobileApp.Pages;
 
-public class LandingPage : ContentPage
+public class LandingPage : BasePage
 {
 	private readonly Grid _ContentLayout = new()
 	{
@@ -11,29 +13,60 @@ public class LandingPage : ContentPage
 		RowSpacing = 24,
 		Padding = new Thickness(12, 8, 12, 8)
 	};
-	private readonly Image _Logo = new()
+	private readonly VerticalStackLayout _LogoContainer = new();
+	private readonly Image _Logo = new();
+	private readonly Label _LogoCaption = new();
+	private readonly Image _LanguageSwitcher = new();
+	private readonly Button _Login = new();
+	private readonly Button _Register = new();
+	private readonly TouchBehavior _SwitchLanguage = new() 
 	{
-		Source = "app_ic.png",
-		WidthRequest = 72,
-		HeightRequest = 72
-	};
-	private readonly Button _Login = new()
-	{
-		Text = "Login"
-	};
-	private readonly Button _Register = new()
-	{
-		Text = "Register"
-	};
+        DefaultAnimationDuration = 250,
+        DefaultAnimationEasing = Easing.CubicInOut,
+        PressedOpacity = 0.75,
+        PressedScale = 0.98
+    };
 
 	public LandingPage()
 	{
 		NavigationPage.SetHasNavigationBar(this, false);
 
-		_ContentLayout.Add(_Logo.Top().Start(), 0, 0);
-		_ContentLayout.Add(_Login, 0, 1);
-		_ContentLayout.Add(_Register, 0, 2);
+		_SwitchLanguage.Command = new Command(() => this.DisplayLanguageSwitcher());
+		_LogoContainer.Spacing = 8;
+		_LogoContainer.Add(_Logo
+			.Source("app_ic.png")
+            .Width(72)
+            .Height(72)
+            .Start());
+		_LogoContainer.Add(_LogoCaption
+			.Text(LanguageService.Instance["Inventory Management"])
+			.Start()
+			.FontSize(24)
+			.Bold());
+		_ContentLayout.Add(_LogoContainer.Top().Start().Row(0).Column(0));
+		_ContentLayout.Add(_LanguageSwitcher.Behaviors([_SwitchLanguage]).Top().End().ApplyMaterialIcon(MaterialIcon.Language, 32, Application.Current?.Resources["Primary"] as Color ?? Colors.White));
+		_ContentLayout.Add(_Login.Text(LanguageService.Instance["Login"]).Row(1).Column(0));
+		_ContentLayout.Add(_Register.Text(LanguageService.Instance["Register"]).Row(2).Column(0));
 
 		Content = _ContentLayout;
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        LanguageChanged += UpdateLanguageStrings;
+    }
+
+	protected override void OnDisappearing()
+	{
+		LanguageChanged -= UpdateLanguageStrings;
+		base.OnDisappearing();
+	}
+
+    private void UpdateLanguageStrings(object? sender, EventArgs e)
+    {
+		_LogoCaption.Text(LanguageService.Instance["Inventory Management"]);
+		_Login.Text(LanguageService.Instance["Login"]);
+		_Register.Text(LanguageService.Instance["Register"]);
+    }
 }

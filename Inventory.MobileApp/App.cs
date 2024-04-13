@@ -10,5 +10,7 @@ public partial class App : Application
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
 		MainPage = new NavigationPage(new LandingPage());
+
+		// TODO: on resume/on app start bring back user current language choice
 	}
 }
