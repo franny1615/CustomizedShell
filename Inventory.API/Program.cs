@@ -8,7 +8,13 @@ using Microsoft.IdentityModel.Tokens;
 [assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(LogLevel.Trace);
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddSystemdConsole();
 
+builder.Services.AddLogging();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICompanyRepository, CompanyRepository>();
 

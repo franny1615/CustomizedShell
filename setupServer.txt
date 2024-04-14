@@ -58,7 +58,7 @@ SyslogIdentifier=dotnet-inventoryapp
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_NOLOGO=true
-Environment=DB_CS=<insert database connection>
+Environment=DB_CS=<insert database connection, remember to escape spaces with \x20>
 Environment=JWT_AUD=<insert audience>
 Environment=JWT_ISS=<insert issuer>
 Environment=JWT_KEY=<insert private key>
