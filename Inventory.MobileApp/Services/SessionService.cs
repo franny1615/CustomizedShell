@@ -19,4 +19,10 @@ public static class SessionService
         get => Preferences.Get("kCulture", "en-US");
         set => Preferences.Set("kCulture", value);
     }
+
+    public static string CurrentTheme
+    {
+        get => Preferences.Get("kTheme", "light");
+        set => Preferences.Set("kTheme", value);
+    }
 }

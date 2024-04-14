@@ -120,8 +120,17 @@
   <data name="Choose Language" xml:space="preserve">
     <value>Choose Language</value>
   </data>
+  <data name="Choose Theme" xml:space="preserve">
+    <value>Choose Theme</value>
+  </data>
+  <data name="Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
   <data name="Inventory Management" xml:space="preserve">
     <value>Inventory Management</value>
+  </data>
+  <data name="Light" xml:space="preserve">
+    <value>Light</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>

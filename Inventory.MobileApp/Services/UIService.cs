@@ -40,4 +40,58 @@ public static class UIService
         });
         return page;
     }
+
+    public static ContentPage DisplayThemeSwitcher(this ContentPage page)
+    {
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            string dark = LanguageService.Instance["Dark"];
+            string light = LanguageService.Instance["Light"];
+
+            string themeChoice = await page.DisplayActionSheet(
+                LanguageService.Instance["Choose Theme"],
+                null,
+                null,
+                [dark, light]);
+
+            if (themeChoice == dark)
+            {
+                SessionService.CurrentTheme = "dark";
+                ApplyTheme();
+            }
+            else if (themeChoice == light)
+            {
+                SessionService.CurrentTheme = "light";
+                ApplyTheme();
+            }
+        });
+        return page;
+    }
+
+    public static void ApplyTheme()
+    {
+        if (Application.Current == null)
+        {
+            return;
+        }
+
+        var app = Application.Current;
+        var currentTheme = SessionService.CurrentTheme;
+        if (currentTheme == "dark")
+        {
+            app.Resources["IndicatorColor"] = app.Resources["IndicatorColorDark"];
+            app.Resources["TextColor"] = app.Resources["TextColorDark"];
+            app.Resources["TextPlaceholderColor"] = app.Resources["TextPlaceholderColorDark"];
+            app.Resources["DisabledTextColor"] = app.Resources["DisabledTextColorDark"];
+            app.Resources["PageColor"] = app.Resources["PageColorDark"];
+        }
+        else if (currentTheme == "light")
+        {
+            app.Resources["IndicatorColor"] = app.Resources["IndicatorColorLight"];
+            app.Resources["TextColor"] = app.Resources["TextColorLight"];
+            app.Resources["TextPlaceholderColor"] = app.Resources["TextPlaceholderColorLight"];
+            app.Resources["DisabledTextColor"] = app.Resources["DisabledTextColorLight"];
+            app.Resources["PageColor"] = app.Resources["PageColorLight"];
+        }
+    }
 }

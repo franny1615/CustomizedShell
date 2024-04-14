@@ -7,6 +7,26 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
+    <Color x:Key="IndicatorColor">Black</Color>
+    <Color x:Key="IndicatorColorLight">Black</Color>
+    <Color x:Key="IndicatorColorDark">White</Color>
+
+    <Color x:Key="TextColor">Black</Color>
+    <Color x:Key="TextColorLight">Black</Color>
+    <Color x:Key="TextColorDark">White</Color>
+
+    <Color x:Key="TextPlaceholderColor">DarkGray</Color>
+    <Color x:Key="TextPlaceholderColorLight">DarkGray</Color>
+    <Color x:Key="TextPlaceholderColorDark">LightGray</Color>
+
+    <Color x:Key="DisabledTextColor">#ACACAC</Color>
+    <Color x:Key="DisabledTextColorLight">#ACACAC</Color>
+    <Color x:Key="DisabledTextColorDark">#404040</Color>
+
+    <Color x:Key="PageColor">White</Color>
+    <Color x:Key="PageColorLight">White</Color>
+    <Color x:Key="PageColorDark">Black</Color>
+    
     <Color x:Key="Primary">#1F5673</Color>
     <Color x:Key="PrimaryDark">#1F5673</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>

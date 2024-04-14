@@ -16,10 +16,19 @@ public class LandingPage : BasePage
 	private readonly VerticalStackLayout _LogoContainer = new();
 	private readonly Image _Logo = new();
 	private readonly Label _LogoCaption = new();
+	private readonly HorizontalStackLayout _SwitcherContainer = new() { Spacing = 8 };
 	private readonly Image _LanguageSwitcher = new();
+	private readonly Image _ThemeSwitcher = new();
 	private readonly Button _Login = new();
 	private readonly Button _Register = new();
 	private readonly TouchBehavior _SwitchLanguage = new() 
+	{
+        DefaultAnimationDuration = 250,
+        DefaultAnimationEasing = Easing.CubicInOut,
+        PressedOpacity = 0.75,
+        PressedScale = 0.98
+    };
+	private readonly TouchBehavior _SwitchTheme = new()
 	{
         DefaultAnimationDuration = 250,
         DefaultAnimationEasing = Easing.CubicInOut,
@@ -31,7 +40,19 @@ public class LandingPage : BasePage
 	{
 		NavigationPage.SetHasNavigationBar(this, false);
 
+		_LanguageSwitcher
+			.Behaviors([_SwitchLanguage])
+			.ApplyMaterialIcon(MaterialIcon.Language, 32, Application.Current?.Resources["Primary"] as Color ?? Colors.White);
+        _ThemeSwitcher
+            .Behaviors([_SwitchTheme])
+            .ApplyMaterialIcon(MaterialIcon.Dark_mode, 32, Application.Current?.Resources["Primary"] as Color ?? Colors.White);
+
+        _SwitcherContainer.Add(_ThemeSwitcher);
+		_SwitcherContainer.Add(_LanguageSwitcher);
+
 		_SwitchLanguage.Command = new Command(() => this.DisplayLanguageSwitcher());
+		_SwitchTheme.Command = new Command(() => this.DisplayThemeSwitcher());
+
 		_LogoContainer.Spacing = 8;
 		_LogoContainer.Add(_Logo
 			.Source("app_ic.png")
@@ -44,7 +65,7 @@ public class LandingPage : BasePage
 			.FontSize(24)
 			.Bold());
 		_ContentLayout.Add(_LogoContainer.Top().Start().Row(0).Column(0));
-		_ContentLayout.Add(_LanguageSwitcher.Behaviors([_SwitchLanguage]).Top().End().ApplyMaterialIcon(MaterialIcon.Language, 32, Application.Current?.Resources["Primary"] as Color ?? Colors.White));
+		_ContentLayout.Add(_SwitcherContainer.Top().End());
 		_ContentLayout.Add(_Login.Text(LanguageService.Instance["Login"]).Row(1).Column(0));
 		_ContentLayout.Add(_Register.Text(LanguageService.Instance["Register"]).Row(2).Column(0));
 
