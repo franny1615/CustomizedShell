@@ -9,6 +9,7 @@ public class BasePage: ContentPage
 
     public BasePage()
     {
+        HideSoftInputOnTapped = true;
         WeakReferenceMessenger.Default.Register<InternalMsg>(this, (_, msg) =>
         {
             MainThread.BeginInvokeOnMainThread(() => { DealWithInternalMsg(msg.Value); });

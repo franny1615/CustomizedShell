@@ -138,4 +138,49 @@
   <data name="Register" xml:space="preserve">
     <value>Registrar</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Bienvenido</value>
+  </data>
+  <data name="Company Details" xml:space="preserve">
+    <value>Detalles de Compania</value>
+  </data>
+  <data name="Company Name" xml:space="preserve">
+    <value>Nombre de Compania</value>
+  </data>
+  <data name="Address 1" xml:space="preserve">
+    <value>Dirección 1</value>
+  </data>
+  <data name="Address 2" xml:space="preserve">
+    <value>Dirección 2</value>
+  </data>
+  <data name="Address 3" xml:space="preserve">
+    <value>Dirección 3</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>País</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Zip" xml:space="preserve">
+    <value>Codigo Postal</value>
+  </data>
+  <data name="Account Details" xml:space="preserve">
+    <value>Detalles de Perfil</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Nombre de Perfil</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Correo Electronico</value>
+  </data>
+  <data name="Phone Number" xml:space="preserve">
+    <value>Numero de Telefono</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Entregar</value>
+  </data>
 </root>

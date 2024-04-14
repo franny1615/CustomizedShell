@@ -1,3 +1,4 @@
+using System.Numerics;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Markup;
 using Inventory.MobileApp.Services;
@@ -38,7 +39,7 @@ public class LandingPage : BasePage
 
 	public LandingPage()
 	{
-		NavigationPage.SetHasNavigationBar(this, false);
+		Title = LanguageService.Instance["Welcome"];
 
 		_LanguageSwitcher
 			.Behaviors([_SwitchLanguage])
@@ -76,18 +77,26 @@ public class LandingPage : BasePage
     {
         base.OnAppearing();
         LanguageChanged += UpdateLanguageStrings;
+		_Register.Clicked += GoRegister;
     }
 
 	protected override void OnDisappearing()
 	{
 		LanguageChanged -= UpdateLanguageStrings;
+		_Register.Clicked -= GoRegister;
 		base.OnDisappearing();
 	}
 
     private void UpdateLanguageStrings(object? sender, EventArgs e)
     {
+		Title = LanguageService.Instance["Welcome"];
 		_LogoCaption.Text(LanguageService.Instance["Inventory Management"]);
 		_Login.Text(LanguageService.Instance["Login"]);
 		_Register.Text(LanguageService.Instance["Register"]);
     }
+
+	private void GoRegister(object? sender, EventArgs e)
+	{
+		Navigation.PushAsync(PageService.Register());
+	}
 }
