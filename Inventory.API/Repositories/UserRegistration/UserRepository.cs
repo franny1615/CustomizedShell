@@ -1,13 +1,14 @@
 ﻿using Inventory.Api.Models;
 using Inventory.Api.Utilities;
+using Inventory.API.Models;
 
 namespace Inventory.Api.Repositories.UserRegistration;
 
 public class UserRepository(ILogger<UserRepository> logger) : BaseRepository, IUserRepository
 {
-    public async Task<string> AuthenticateUser(User user)
+    public async Task<RepoResult<string>> AuthenticateUser(User user)
     {
-        string jwt = "";
+        RepoResult<string> result = new();  
         try
         {
             string authQuery = $@"
@@ -38,28 +39,34 @@ SELECT
     IsCompanyOwner
 FROM app_user
 WHERE app_user.Id = @userID;";
-            var authedUser = (await QueryAsync<User>(authQuery)).First();
-            jwt = Auth.MinJWTForUser(authedUser);
+            var authedUser = (await QueryAsync<User>(authQuery)).FirstOrDefault();
+            result.Data = authedUser != null ? Auth.MinJWTForUser(authedUser) : "";
         }
         catch (Exception ex) 
         {
             logger.LogError(ex, "Error occurred during auth");
+            result.ErrorMessage = ex.ToString();
         }
-        return jwt;
+        return result;
     }
 
-    public async Task<int> CreateUser(User user)
+    public async Task<RepoResult<int>> CreateUser(User user)
     {
-        var insertedId = -1;
+        RepoResult<int> result = new();
         try
         {
-            bool doesUserNameExist = await DoesUserNameExist(user.UserName);
-            if (doesUserNameExist)
+            var existsCheck = await DoesUserNameExist(user.UserName);
+            if (!string.IsNullOrEmpty(existsCheck.ErrorMessage))
             {
-                return insertedId;
+                result.ErrorMessage = existsCheck.ErrorMessage;
             }
-
-            string insertQuery = $@"
+            else if (existsCheck.Data)
+            {
+                result.Data = -1;
+            }
+            else
+            {
+                string insertQuery = $@"
 SET NOCOUNT ON
 
 DECLARE 
@@ -98,59 +105,76 @@ BEGIN CATCH
 END CATCH
 
 select @success;";
-            insertedId = (await QueryAsync<int>(insertQuery)).First();
+                result.Data = (await QueryAsync<int>(insertQuery)).First();
+            }
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred during user creation");
+            result.ErrorMessage = ex.ToString();
         }
-
-        return insertedId;
+        return result;
     }
 
-    public async Task<bool> DeleteUser(User user)
+    public async Task<RepoResult<bool>> DeleteUser(User user)
     {
-        bool result = false;
+        RepoResult<bool> result = new();
         string deleteQuery = "";
         try
         {
             deleteQuery = $@"DELETE FROM app_user WHERE app_user.Id = {user.Id}";
             await QueryAsync<object>(deleteQuery);
-            result = true;
+            result.Data = true;
         }
         catch (Exception ex)
         {
             logger.LogError(ex, deleteQuery);
+            result.ErrorMessage = ex.ToString();
         }
         return result;
     }
 
-    public async Task<bool> DoesUserNameExist(string userName)
+    public async Task<RepoResult<bool>> DoesUserNameExist(string userName)
     {
-        bool result = false;
+        RepoResult<bool> result = new();    
         string checkQuery = "";
         try
         {
             checkQuery = $@"SELECT 999 FROM app_user WHERE app_user.UserName = '{userName}';";
-            int exists = (await QueryAsync<int>(checkQuery)).First();
-            result = exists == 999;
+            int exists = (await QueryAsync<int>(checkQuery)).FirstOrDefault();
+            result.Data = exists == 999;
         }
         catch (Exception ex)
         {
+            result.ErrorMessage = ex.ToString();
             logger.LogError(ex, checkQuery);
         }
         return result;
     }
 
-    public async Task<bool> UpdateUser(User user)
+    public async Task<RepoResult<bool>> UpdateUser(User user)
     {
-        bool result = false;
+        RepoResult<bool> result = new();    
         try
         {
             var currentDetails = await GetUserById(user.Id);
-            if (currentDetails.UserName != user.UserName && (await DoesUserNameExist(user.UserName))) // has to be unique new username
+            if (!string.IsNullOrEmpty(currentDetails.ErrorMessage))
             {
-                return false;
+                result.ErrorMessage = currentDetails.ErrorMessage;
+            }
+
+            bool usernameUpdated = true;
+            if (currentDetails.Data?.UserName != user.UserName) 
+            {
+                var userAlreadyExists = await DoesUserNameExist(user.UserName);
+                if (!string.IsNullOrEmpty(userAlreadyExists.ErrorMessage))
+                {
+                    result.ErrorMessage += $"\n\n{userAlreadyExists.ErrorMessage}";   
+                }
+                else if (userAlreadyExists.Data)
+                {
+                    usernameUpdated = false;
+                }
             }
 
             bool updatedPassword = user.Password.Length == 0;
@@ -188,18 +212,22 @@ UPDATE app_user SET
     PhoneNumber = '{user.PhoneNumber}'
 WHERE app_user.Id = {user.Id}";
             await QueryAsync<object>(updateQuery);
-            result = updatedPassword;
+            result.Data = usernameUpdated && updatedPassword;
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred on user update");
+
+            result.ErrorMessage = !string.IsNullOrEmpty(result.ErrorMessage) ?
+                $"{result.ErrorMessage}\n\n{ex}" :
+                ex.ToString();
         }
         return result;
     }
 
-    public async Task<User> GetUserById(int id)
+    public async Task<RepoResult<User>> GetUserById(int id)
     {
-        User user;
+        RepoResult<User> result = new();
         try
         {
             string query = $@"
@@ -215,13 +243,13 @@ SELECT
     IsCompanyOwner
 FROM app_user
 WHERE app_user.Id = {id}";
-            user = (await QueryAsync<User>(query)).First();
+            result.Data = (await QueryAsync<User>(query)).First();
         }
         catch (Exception ex)
         {
-            user = new();
             logger.LogError(ex, "Error occurred on user by id");
+            result.ErrorMessage = ex.ToString();
         }
-        return user;
+        return result;
     }
 }

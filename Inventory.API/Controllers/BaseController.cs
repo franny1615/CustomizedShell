@@ -1,5 +1,4 @@
-﻿using System.Drawing.Text;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.API.Controllers;
@@ -8,7 +7,7 @@ namespace Inventory.API.Controllers;
 public class BaseController(IHttpContextAccessor httpContextAccessor)
 {
     public int UserId => Int("Id");
-    public int CompanyId => Int("CompanyId");
+    public int CompanyId => Int("CompanyID");
     public bool IsCompanyOwner => Bool("IsCompanyOwner");
     public string UserName => String("UserName");
     public string Email => String("Email");

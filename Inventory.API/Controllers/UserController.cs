@@ -1,6 +1,7 @@
 ﻿using Inventory.Api.Models;
 using Inventory.Api.Repositories.UserRegistration;
 using Inventory.API.Controllers;
+using Inventory.API.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,46 +14,88 @@ public class UserController(
 {
     [HttpGet]
     [Route("check")]
-    public async Task<bool> CheckUserName([FromQuery] string userName)
+    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> CheckUserName([FromQuery] string userName)
     {
-        return await userRepo.DoesUserNameExist(userName);
+        var repoResult = await userRepo.DoesUserNameExist(userName);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 
     [HttpPost]
     [Route("register")]
-    public async Task<int> Register([FromBody] User user)
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Register([FromBody] User user)
     {
-        return await userRepo.CreateUser(user);
+        var repoResult = await userRepo.CreateUser(user);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 
     [HttpPost]
     [Route("login")]
-    public async Task<string> Login([FromBody] User user)
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Login([FromBody] User user)
     {
-        return await userRepo.AuthenticateUser(user);
+        var repoResult = await userRepo.AuthenticateUser(user);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 
     [HttpGet]
     [Authorize]
     [Route("details")]
-    public async Task<User> GetDetails()
+    [ProducesResponseType<User>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetDetails()
     {
-        return await userRepo.GetUserById(UserId);
+        var repoResult = await userRepo.GetUserById(UserId);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 
     [HttpPost]
     [Authorize]
     [Route("update")]
-    public async Task<bool> Update([FromBody] User user)
+    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Update([FromBody] User user)
     {
-        return await userRepo.UpdateUser(user);
+        var repoResult = await userRepo.UpdateUser(user);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 
     [HttpPost]
     [Authorize]
     [Route("delete")]
-    public async Task<bool> Delete([FromBody] User user)
+    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Delete([FromBody] User user)
     {
-        return await userRepo.DeleteUser(user);
+        var repoResult = await userRepo.DeleteUser(user);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 }

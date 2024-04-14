@@ -1,13 +1,14 @@
 ﻿using Inventory.Api.Models;
+using Inventory.API.Models;
 
 namespace Inventory.Api.Repositories.UserRegistration;
 
 public interface IUserRepository
 {
-    Task<User> GetUserById(int id);
-    Task<int> CreateUser(User user);
-    Task<bool> DoesUserNameExist(string userName);
-    Task<bool> UpdateUser(User user);
-    Task<bool> DeleteUser(User user);
-    Task<string> AuthenticateUser(User user);
+    Task<RepoResult<User>> GetUserById(int id);
+    Task<RepoResult<int>> CreateUser(User user);
+    Task<RepoResult<bool>> DoesUserNameExist(string userName);
+    Task<RepoResult<bool>> UpdateUser(User user);
+    Task<RepoResult<bool>> DeleteUser(User user);
+    Task<RepoResult<string>> AuthenticateUser(User user);
 }

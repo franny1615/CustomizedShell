@@ -1,6 +1,7 @@
 ﻿using Inventory.Api.Models;
 using Inventory.Api.Repositories.CompanyRegistration;
 using Inventory.API.Controllers;
+using Inventory.API.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,32 +14,60 @@ public class CompanyController(
 {
     [HttpPost]
     [Route("register")]
-    public async Task<int> Register([FromBody] Company company)
+    [ProducesResponseType<int>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Register([FromBody] Company company)
     {
-        return await companyRepository.CreateCompany(company);
+        var repoResult = await companyRepository.CreateCompany(company);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 
     [HttpGet]
     [Route("details")]
     [Authorize]
-    public async Task<Company> GetCompanyById()
+    [ProducesResponseType<Company>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetCompanyById()
     {
-        return await companyRepository.GetCompanyById(UserId);
+        var repoResult = await companyRepository.GetCompanyById(CompanyId);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 
     [HttpPost]
     [Route("update")]
     [Authorize]
-    public async Task<bool> Update([FromBody] Company company)
+    [ProducesResponseType<Company>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Update([FromBody] Company company)
     {
-        return await companyRepository.UpdateCompany(company);
+        var repoResult = await companyRepository.UpdateCompany(company);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 
     [HttpPost]
     [Route("delete")]
     [Authorize]
-    public async Task<bool> Delete([FromBody] Company company)
+    [ProducesResponseType<Company>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Delete([FromBody] Company company)
     {
-        return await companyRepository.DeleteCompany(company);
+        var repoResult = await companyRepository.DeleteCompany(company);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Inventory.Api.Models;
+using Inventory.API.Models;
 
 namespace Inventory.Api.Repositories.CompanyRegistration;
 
 public class CompanyRepository(ILogger<CompanyRepository> logger) : BaseRepository, ICompanyRepository
 {
-    public async Task<int> CreateCompany(Company company)
+    public async Task<RepoResult<int>> CreateCompany(Company company)
     {
-        int newId = -1;
+        RepoResult<int> result = new();
         string query = "";
         try
         {
@@ -37,35 +38,37 @@ VALUES
 );
 
 SELECT SCOPE_IDENTITY()";
-            newId = (await QueryAsync<int>(query)).First();
+            result.Data = (await QueryAsync<int>(query)).First();
         }
         catch (Exception ex)
         {
             logger.LogError(ex, query);
+            result.ErrorMessage = ex.ToString();
         }
-        return newId;
+        return result;
     }
 
-    public async Task<bool> DeleteCompany(Company company)
+    public async Task<RepoResult<bool>> DeleteCompany(Company company)
     {
-        bool result = false;
+        RepoResult<bool> result = new();
         string query = "";
         try
         {
             query = $@"DELETE FROM company WHERE company.Id = {company.Id}";
             await QueryAsync<object>(query);
-            result = true;
+            result.Data = true;
         }
         catch (Exception ex)
         {
             logger.LogError(ex, query);
+            result.ErrorMessage = ex.ToString();
         }
         return result;
     }
 
-    public async Task<Company> GetCompanyById(int id)
+    public async Task<RepoResult<Company>> GetCompanyById(int id)
     {
-        Company company;
+        RepoResult<Company> result = new();
         string query = "";
         try
         {
@@ -82,19 +85,19 @@ SELECT
     LicenseExpiresOn
 FROM company
 WHERE company.Id = {id}";
-            company = (await QueryAsync<Company>(query)).First();
+            result.Data = (await QueryAsync<Company>(query)).First();
         }
         catch (Exception ex)
         {
-            company = new();
             logger.LogError(ex, query);
+            result.ErrorMessage = ex.ToString();
         }
-        return company;
+        return result;
     }
 
-    public async Task<bool> UpdateCompany(Company company)
+    public async Task<RepoResult<bool>> UpdateCompany(Company company)
     {
-        var result = false;
+        RepoResult<bool> result = new();
         string query = "";
         try
         {
@@ -116,11 +119,12 @@ UPDATE company SET
     State = '{company.State}'
 WHERE company.Id = {company.Id}";
             await QueryAsync<object>(query);
-            result = true;
+            result.Data = true;
         }
         catch (Exception ex)
         {
             logger.LogError(ex, query);
+            result.ErrorMessage = ex.ToString();
         }
         return result;
     }
