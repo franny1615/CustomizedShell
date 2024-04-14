@@ -58,7 +58,7 @@ SyslogIdentifier=dotnet-inventoryapp
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_NOLOGO=true
-Environment=DB_CS=Server=<insert database connection>
+Environment=DB_CS=<insert database connection>
 Environment=JWT_AUD=<insert audience>
 Environment=JWT_ISS=<insert issuer>
 Environment=JWT_KEY=<insert private key>
@@ -77,3 +77,20 @@ sudo systemctl status kestrel-inventoryapp.service
 sudo journalctl -fu kestrel-inventoryapp.service 
 
 # SQL SETUP
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+curl https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
+curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-2022.list | sudo tee /etc/apt/sources.list.d/mssql-server-2022.list
+
+sudo apt-get update
+sudo apt-get install -y mssql-server
+
+sudo /opt/mssql/bin/mssql-conf setup
+systemctl status mssql-server --no-pager # verify that its running
+
+# tools
+curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+
+sudo apt-get update
+sudo apt-get install mssql-tools18 unixodbc-dev
+
+echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bash_profile
