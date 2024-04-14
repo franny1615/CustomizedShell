@@ -40,4 +40,40 @@ sudo ufw allow 80
 sudo nginx -t
 sudo nginx -s reload
 
-# SQL
+# create linux service to monitor server 
+sudo vim /etc/systemd/system/kestrel-inventoryapp.service 
+
+# paste the following 
+[Unit]
+Description=Example .NET Web API App running on Linux
+
+[Service]
+WorkingDirectory=/var/www/inventoryApp/publish
+ExecStart=/var/www/inventoryApp/publish/Inventory.API 
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-inventoryapp
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_NOLOGO=true
+Environment=DB_CS=Server=<insert database connection>
+Environment=JWT_AUD=<insert audience>
+Environment=JWT_ISS=<insert issuer>
+Environment=JWT_KEY=<insert private key>
+
+[Install]
+WantedBy=multi-user.target
+
+# start the service 
+sudo systemctl enable kestrel-inventoryapp.service
+
+# check start/status checks 
+sudo systemctl start kestrel-inventoryapp.service 
+sudo systemctl status kestrel-inventoryapp.service 
+
+# view logs 
+sudo journalctl -fu kestrel-inventoryapp.service 
+
+# SQL SETUP
