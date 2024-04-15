@@ -3,6 +3,9 @@ using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Markup;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
+#if ANDROID
+using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+#endif
 
 namespace Inventory.MobileApp;
 public static class MauiProgram

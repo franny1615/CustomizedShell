@@ -1,6 +1,7 @@
 using System.Text;
 using Inventory.Api.Repositories.CompanyRegistration;
 using Inventory.Api.Repositories.UserRegistration;
+using Inventory.API.Repositories.EmailRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ builder.Logging.AddDebug();
 builder.Logging.AddSystemdConsole();
 
 builder.Services.AddLogging();
+builder.Services.AddTransient<IEmailRepository, EmailRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICompanyRepository, CompanyRepository>();
 
