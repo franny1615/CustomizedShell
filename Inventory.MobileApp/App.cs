@@ -9,6 +9,8 @@ public partial class App : Application
 		Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
+		SessionService.APIUrl = "https://192.168.1.141/";
+
 		MainPage = new NavigationPage(PageService.Landing());
 
 		// TODO: on resume/on app start bring back user current language choice

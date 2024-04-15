@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Inventory.MobileApp.Models;
+using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 
@@ -6,13 +8,23 @@ namespace Inventory.MobileApp.Services;
 
 public static class NetworkService
 {
-    public static async Task<T?> Get<T>(string endpoint, Dictionary<string, string> parameters) 
+    private static HttpClient NetworkClient()
+    {
+        HttpClientHandler handler = new HttpClientHandler();
+        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+        {
+            return true;
+        };
+        return new(handler);
+    }
+
+    public static async Task<NetworkResponse<T>> Get<T>(string endpoint, Dictionary<string, string> parameters) 
     {
         try 
         {
             string url = $"{SessionService.APIUrl}/{endpoint}{QueryFrom(parameters)}";
 
-            var client = new HttpClient();
+            var client = NetworkClient();
             var message = new HttpRequestMessage(HttpMethod.Get, url);
 
             string authToken = SessionService.AuthToken;
@@ -26,19 +38,17 @@ public static class NetworkService
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine(ex.Message);
-
-            return default(T);
+            return new() { ErrorMessage = ex.ToString() };
         }
     }
 
-    public static async Task<T?> Post<T>(string endpoint, object jsonBody) 
+    public static async Task<NetworkResponse<T>> Post<T>(string endpoint, object jsonBody) 
     {
         try 
         {
             string url = $"{SessionService.APIUrl}/{endpoint}";
 
-            var client = new HttpClient();
+            var client = NetworkClient();
             var message = new HttpRequestMessage(HttpMethod.Post, url);
 
             string authToken = SessionService.AuthToken;
@@ -55,9 +65,7 @@ public static class NetworkService
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine(ex.Message);
-
-            return default(T);
+            return new() { ErrorMessage = ex.ToString() };
         }
     }
 
@@ -82,24 +90,17 @@ public static class NetworkService
         return result;
     }
 
-    private static async Task<T?> HandleResponse<T>(HttpResponseMessage message)
+    private static async Task<NetworkResponse<T>> HandleResponse<T>(HttpResponseMessage message)
     {
+        string content = await message.Content.ReadAsStringAsync();
         switch (message.StatusCode)
         {
             case HttpStatusCode.OK:
-                try 
-                {
-                    string content = await message.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<T>(content);
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine(ex.Message);
-                    return default(T);
-                }
+                return new() { Data = JsonSerializer.Deserialize<T>(content) };
+            case HttpStatusCode.InternalServerError:
+                return new() { ErrorMessage = content };
             default:
-                System.Diagnostics.Debug.WriteLine($"HTTP STATUS CODE {message.StatusCode} --- {message.RequestMessage?.RequestUri}");
-                return default(T);
+                return new() { ErrorMessage = $"HTTP STATUS CODE {message.StatusCode} --- {message.RequestMessage?.RequestUri}" };
         }
     }
 }

@@ -94,4 +94,21 @@ public static class UIService
             app.Resources["PageColor"] = app.Resources["PageColorLight"];
         }
     }
+
+    public static ContentPage DisplayCommonError(this ContentPage page, string errorMessage)
+    {
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            bool share = await page.DisplayAlert(
+                LanguageService.Instance["Error"],
+                LanguageService.Instance["ErrorMsg"],
+                LanguageService.Instance["Share"],
+                LanguageService.Instance["Cancel"]);
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(errorMessage);
+#endif
+            // TODO: api call to send error message over via API
+        });
+        return page;
+    }
 }

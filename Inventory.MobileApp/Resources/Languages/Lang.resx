@@ -183,4 +183,52 @@
   <data name="Submit" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="Email has been verified." xml:space="preserve">
+    <value>Email has been verified.</value>
+  </data>
+  <data name="Email Verification" xml:space="preserve">
+    <value>Email Verification</value>
+  </data>
+  <data name="Email verification failed." xml:space="preserve">
+    <value>Email verification failed.</value>
+  </data>
+  <data name="EmailVerificationMessage" xml:space="preserve">
+    <value>A verification code will be sent to {0}.
+
+Verified email is used to recover a lost account.</value>
+  </data>
+  <data name="EnterVerifCode" xml:space="preserve">
+    <value>Enter code sent to {0}.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorMsg" xml:space="preserve">
+    <value>Oops!  We encountered an error with your request.
+Would you like to share the error with us?</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Optional</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="Sending Code" xml:space="preserve">
+    <value>Sending Code</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="Validating" xml:space="preserve">
+    <value>Validating</value>
+  </data>
 </root>

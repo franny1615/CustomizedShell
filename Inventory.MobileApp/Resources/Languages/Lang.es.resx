@@ -183,4 +183,51 @@
   <data name="Submit" xml:space="preserve">
     <value>Entregar</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continuar</value>
+  </data>
+  <data name="Email has been verified." xml:space="preserve">
+    <value>Correo electronico fue verificado.</value>
+  </data>
+  <data name="Email Verification" xml:space="preserve">
+    <value>Verificacion de Correo</value>
+  </data>
+  <data name="Email verification failed." xml:space="preserve">
+    <value>Verificaccion de correo electronico fallo.</value>
+  </data>
+  <data name="EmailVerificationMessage" xml:space="preserve">
+    <value>Se enviará un código de verificación a {0}.
+
+El correo electrónico verificado se utiliza para recuperar una cuenta perdida.</value>
+  </data>
+  <data name="EnterVerifCode" xml:space="preserve">
+    <value>Entre el código enviado a {0}.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorMsg" xml:space="preserve">
+    <value>Perdon! Encontramos un error con su correspondencia. Quiere compartir el error con nosotros?</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Opcional</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Requerido</value>
+  </data>
+  <data name="Sending Code" xml:space="preserve">
+    <value>Mandando Codigo</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>Compartir</value>
+  </data>
+  <data name="Validating" xml:space="preserve">
+    <value>Verificando</value>
+  </data>
 </root>
