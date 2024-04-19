@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Inventory.MobileApp.Controls;
 
 namespace Inventory.MobileApp.Services;
 
@@ -110,5 +111,41 @@ public static class UIService
             // TODO: api call to send error message over via API
         });
         return page;
+    }
+
+    public static Editor AutoSize(this Editor editor)
+    {
+        editor.AutoSize = EditorAutoSizeOption.TextChanges;
+        return editor;
+    }
+
+    public static HorizontalStackLayout Spacing(this HorizontalStackLayout layout, int spacing)
+    {
+        layout.Spacing = spacing;
+        return layout;
+    }
+
+    public static Border BorderColor(this Border border, Color color)
+    {
+        border.Stroke = color;
+        return border;
+    }
+
+    public static Border BorderShape(this Border border, IShape? shape)
+    {
+        border.StrokeShape = shape;
+        return border;
+    }
+
+    public static MaterialEntry Placeholder(this MaterialEntry entry, string placeholder)
+    {
+        entry.Placeholder = placeholder;
+        return entry;
+    }
+
+    public static MaterialEntry PlaceholderIcon(this MaterialEntry entry, string icon)
+    {
+        entry.PlaceholderIcon = icon;
+        return entry;
     }
 }

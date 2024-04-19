@@ -230,4 +230,10 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Validating" xml:space="preserve">
     <value>Verificando</value>
   </data>
+  <data name="Registering" xml:space="preserve">
+    <value>Registrándose</value>
+  </data>
+  <data name="Please enter a unique username." xml:space="preserve">
+    <value>Por favor entrar un nombre de usario diferente.</value>
+  </data>
 </root>
