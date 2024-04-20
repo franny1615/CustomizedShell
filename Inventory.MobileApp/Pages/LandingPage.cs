@@ -78,12 +78,14 @@ public class LandingPage : BasePage
         base.OnAppearing();
         LanguageChanged += UpdateLanguageStrings;
 		_Register.Clicked += GoRegister;
+		_Login.Clicked += Login;
     }
 
 	protected override void OnDisappearing()
 	{
 		LanguageChanged -= UpdateLanguageStrings;
 		_Register.Clicked -= GoRegister;
+		_Login.Clicked -= Login;
 		base.OnDisappearing();
 	}
 
@@ -98,5 +100,10 @@ public class LandingPage : BasePage
 	private void GoRegister(object? sender, EventArgs e)
 	{
 		Navigation.PushAsync(PageService.Register());
+	}
+
+	private void Login(object? sender, EventArgs e)
+	{
+		Navigation.PushAsync(PageService.Login());
 	}
 }

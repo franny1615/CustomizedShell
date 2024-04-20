@@ -14,4 +14,14 @@ public static class PageService
     {
         return new RegisterPage(new RegisterViewModel());
     }
+
+    public static LoginPage Login()
+    {
+        return new LoginPage(new LoginViewModel());
+    }
+
+    public static DashboardPage Dashboard()
+    {
+        return new DashboardPage();
+    }
 }

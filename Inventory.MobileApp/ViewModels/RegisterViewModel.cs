@@ -18,7 +18,7 @@ public class RegisterViewModel
         return await NetworkService.Post<bool>(Endpoints.validateEmail, new { email, code = codeInt });
     }
 
-    public async Task<NetworkResponse<bool>> IsUsernameUnique(string username)
+    public async Task<NetworkResponse<bool>> DoesUsernameExist(string username)
     {
         return await NetworkService.Get<bool>(Endpoints.checkUsername, new() 
         { 
@@ -74,5 +74,16 @@ public class RegisterViewModel
         }
 
         return response;
+    }
+
+    public async Task<bool> Login(string userName, string password)
+    {
+        var response = await NetworkService.Post<string>(Endpoints.login, new 
+        {
+            userName,
+            password
+        });
+        SessionService.AuthToken = response.Data ?? "";
+        return !string.IsNullOrEmpty(response.Data);
     }
 }

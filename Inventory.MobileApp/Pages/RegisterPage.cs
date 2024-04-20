@@ -5,7 +5,7 @@ using Inventory.MobileApp.ViewModels;
 
 namespace Inventory.MobileApp.Pages;
 
-public class RegisterPage : ContentPage
+public class RegisterPage : BasePage
 {
 	private readonly RegisterViewModel _RegisterViewModel;
 	private readonly Grid _ContentContainer = new();
@@ -13,17 +13,10 @@ public class RegisterPage : ContentPage
 	private readonly VerticalStackLayout _ContentLayout = new() { Spacing = 8, Padding = 8 };
 	private readonly Label _CompanyDetailsHeader = new();
 	private readonly MaterialEntry _CompanyName = new() { Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
-	private readonly MaterialEntry _Address1 = new() { Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
-	private readonly MaterialEntry _Address2 = new() { Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
-	private readonly MaterialEntry _Address3 = new() { Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
-	private readonly MaterialEntry _Country = new() { Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
-	private readonly MaterialEntry _State = new() { Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
-	private readonly MaterialEntry _Zip = new() { Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
 	private readonly Label _UserDetailsHeader = new();
 	private readonly MaterialEntry _Username = new() {  Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
 	private readonly MaterialEntry _Password = new() {  Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false, IsPassword = true };
 	private readonly MaterialEntry _Email = new() {  Keyboard = Keyboard.Email, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
-	private readonly MaterialEntry _PhoneNumber = new() {  Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
 	private readonly Button _SubmitButton = new();
 
 	public RegisterPage(RegisterViewModel registerViewModel)
@@ -39,18 +32,6 @@ public class RegisterPage : ContentPage
 		_ContentLayout.Add(_CompanyName
 			.Placeholder($"{LanguageService.Instance["Company Name"]}*")
 			.PlaceholderIcon(MaterialIcon.Domain));
-		_ContentLayout.Add(_Address1
-			.Placeholder($"{LanguageService.Instance["Address 1"]}"));
-		_ContentLayout.Add(_Address2
-			.Placeholder($"{LanguageService.Instance["Address 2"]}"));
-		_ContentLayout.Add(_Address3
-			.Placeholder($"{LanguageService.Instance["Address 3"]}"));
-		_ContentLayout.Add(_Country
-			.Placeholder($"{LanguageService.Instance["Country"]}"));
-		_ContentLayout.Add(_State
-			.Placeholder($"{LanguageService.Instance["State"]}"));
-		_ContentLayout.Add(_Zip
-			.Placeholder($"{LanguageService.Instance["Zip"]}"));
 
 		_ContentLayout.Add(_UserDetailsHeader
 			.Text(LanguageService.Instance["Account Details"])
@@ -65,9 +46,6 @@ public class RegisterPage : ContentPage
 		_ContentLayout.Add(_Email
 			.Placeholder($"{LanguageService.Instance["Email"]}*")
 			.PlaceholderIcon(MaterialIcon.Email));
-		_ContentLayout.Add(_PhoneNumber
-			.Placeholder($"{LanguageService.Instance["Phone Number"]}")
-			.PlaceholderIcon(MaterialIcon.Phone));
 		
 		_ContentLayout.Add(_SubmitButton
 			.Text(LanguageService.Instance["Submit"]));
@@ -98,7 +76,9 @@ public class RegisterPage : ContentPage
 	private async void Submit(object? sender, EventArgs e)
 	{
 		if (_SubmitButton.Text == LanguageService.Instance["Sending Code"] ||
-			_SubmitButton.Text == LanguageService.Instance["Validating"])
+			_SubmitButton.Text == LanguageService.Instance["Validating"] || 
+			_SubmitButton.Text == LanguageService.Instance["Registering"] || 
+			_SubmitButton.Text == LanguageService.Instance["Logging In"])
 		{
 			return;
 		}
@@ -119,7 +99,7 @@ public class RegisterPage : ContentPage
 			return;
 
 		_SubmitButton.Text = LanguageService.Instance["Registering"];
-		var response = await _RegisterViewModel.IsUsernameUnique(_Username.Text);
+		var response = await _RegisterViewModel.DoesUsernameExist(_Username.Text);
 		_SubmitButton.Text = LanguageService.Instance["Submit"];
 
 		if (!string.IsNullOrEmpty(response.ErrorMessage))
@@ -128,8 +108,8 @@ public class RegisterPage : ContentPage
 			return;
 		}
 
-		bool usernameUnique = response.Data;
-		if (!usernameUnique)
+		bool usernameExists = response.Data;
+		if (usernameExists)
 		{
 			await DisplayAlert(
 				LanguageService.Instance["Username"],
@@ -189,5 +169,49 @@ public class RegisterPage : ContentPage
 			LanguageService.Instance["Email Verification"],
 			LanguageService.Instance["Email has been verified."],
 			LanguageService.Instance["OK"]);
+
+		_SubmitButton.Text = LanguageService.Instance["Registering"];
+		var companyResponse = await _RegisterViewModel.RegisterCompany(
+			name: _CompanyName.Text,
+			address1: "",
+			address2: "",
+			address3: "",
+			country: "",
+			city: "",
+			state: "",
+			zip: "");
+		_SubmitButton.Text = LanguageService.Instance["Submit"];
+
+		if (!string.IsNullOrEmpty(companyResponse.ErrorMessage))
+        {
+            this.DisplayCommonError(companyResponse.ErrorMessage);
+            return;
+        }
+
+		_SubmitButton.Text = LanguageService.Instance["Registering"];
+		var userResponse = await _RegisterViewModel.RegisterUser(
+			userName: _Username.Text,
+			password: _Password.Text,
+			email: _Email.Text,
+			phoneNumber: ""
+		);
+		_SubmitButton.Text = LanguageService.Instance["Submit"];
+
+		if (!string.IsNullOrEmpty(userResponse.ErrorMessage))
+        {
+            this.DisplayCommonError(userResponse.ErrorMessage);
+            return;
+        }
+
+		_SubmitButton.Text = LanguageService.Instance["Logging In"];
+		bool loggedIn = await _RegisterViewModel.Login(
+			userName: _Username.Text,
+			password: _Password.Text
+		);
+		_SubmitButton.Text = LanguageService.Instance["Submit"];
+		if (loggedIn)
+		{
+			await Navigation.PushAsync(PageService.Dashboard());
+		}
     }
 }
