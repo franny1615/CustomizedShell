@@ -51,7 +51,7 @@ public class UserController(
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
         }
-        return Resp.OkResponse(repoResult.Data);
+        return Resp.OkResponse($"\"{repoResult.Data}\"");
     }
 
     [HttpGet]
