@@ -1,13 +1,18 @@
 # NGINX
+```
 sudo apt update
 sudo apt install nginx
 sudo systemctl start nginx
+```
 
 # HTTPS SELF SIGNED CERT 
+```
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048 
+```
 
 # setup some variables inside new file 
+```
 sudo vim /etc/nginx/snippets/self-signed.conf
 # content 
 ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
@@ -116,11 +121,15 @@ sudo systemctl enable kestrel-inventoryapp.service
 # check start/status checks 
 sudo systemctl start kestrel-inventoryapp.service 
 sudo systemctl status kestrel-inventoryapp.service 
+```
 
 # view logs 
+```
 sudo journalctl -fu kestrel-inventoryapp.service 
+```
 
 # SQL SETUP
+```
 curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
 curl https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
 curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-2022.list | sudo tee /etc/apt/sources.list.d/mssql-server-2022.list
@@ -130,11 +139,14 @@ sudo apt-get install -y mssql-server
 
 sudo /opt/mssql/bin/mssql-conf setup
 systemctl status mssql-server --no-pager # verify that its running
+```
 
 # tools
+```
 curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
 
 sudo apt-get update
 sudo apt-get install mssql-tools18 unixodbc-dev
 
 echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bash_profile
+```
