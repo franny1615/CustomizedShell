@@ -4,7 +4,10 @@ namespace Inventory.MobileApp.Models;
 
 public enum InternalMessage
 {
-    LanguageChanged
+    LanguageChanged,
+    LoggedIn,
+    LoggedOut,
+    CheckAuth
 }
 
 public class InternalMsg : ValueChangedMessage<InternalMessage>

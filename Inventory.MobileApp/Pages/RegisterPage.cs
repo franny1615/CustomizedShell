@@ -1,5 +1,7 @@
 using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Messaging;
 using Inventory.MobileApp.Controls;
+using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 using Inventory.MobileApp.ViewModels;
 
@@ -211,7 +213,7 @@ public class RegisterPage : BasePage
 		_SubmitButton.Text = LanguageService.Instance["Submit"];
 		if (loggedIn)
 		{
-			await Navigation.PushAsync(PageService.Dashboard());
+			WeakReferenceMessenger.Default.Send(new InternalMsg(InternalMessage.LoggedIn));
 		}
     }
 }

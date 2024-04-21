@@ -1,3 +1,6 @@
+using CommunityToolkit.Mvvm.Messaging;
+using Inventory.MobileApp.Models;
+
 namespace Inventory.MobileApp.Pages;
 
 public class DashboardPage : BasePage
@@ -13,6 +16,11 @@ public class DashboardPage : BasePage
 					HorizontalOptions = LayoutOptions.Center, 
 					VerticalOptions = LayoutOptions.Center, 
 					Text = "Welcome to .NET MAUI!"
+				},
+				new Button 
+				{
+					Text = "Log out",
+					Command = new Command(() => { WeakReferenceMessenger.Default.Send(new InternalMsg(InternalMessage.LoggedOut)); })
 				}
 			}
 		};

@@ -1,4 +1,8 @@
-﻿namespace Inventory.MobileApp.Services;
+﻿using System.IdentityModel.Tokens.Jwt;
+using CommunityToolkit.Mvvm.Messaging;
+using Inventory.MobileApp.Models;
+
+namespace Inventory.MobileApp.Services;
 
 public static class SessionService
 {
@@ -24,5 +28,38 @@ public static class SessionService
     {
         get => Preferences.Get("kTheme", "light");
         set => Preferences.Set("kTheme", value);
+    }
+
+    public static void LogOut()
+    {
+        AuthToken = "";
+        WeakReferenceMessenger.Default.Send(new InternalMsg(InternalMessage.LoggedOut));
+    }
+
+    public static bool IsAuthValid()
+    {
+        if (string.IsNullOrEmpty(AuthToken))
+        {
+            return false;
+        }
+        return CheckTokenIsValid(AuthToken);
+    }
+
+    public static bool CheckTokenIsValid(string token)
+    {
+        var tokenTicks = GetTokenExpirationTime(token);
+        var tokenDate = DateTimeOffset.FromUnixTimeSeconds(tokenTicks).UtcDateTime;
+        var now = DateTime.Now.ToUniversalTime();
+        var valid = tokenDate >= now;
+        return valid;
+    }
+
+    public static long GetTokenExpirationTime(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtSecurityToken = handler.ReadJwtToken(token);
+        var tokenExp = jwtSecurityToken.Claims.First(claim => claim.Type.Equals("exp")).Value;
+        var ticks= long.Parse(tokenExp);
+        return ticks;
     }
 }

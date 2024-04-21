@@ -1,4 +1,6 @@
-﻿using Inventory.MobileApp.Services;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Inventory.MobileApp.Models;
+using Inventory.MobileApp.Services;
 
 namespace Inventory.MobileApp;
 
@@ -11,8 +13,50 @@ public partial class App : Application
 
 		SessionService.APIUrl = "https://192.168.1.141/";
 
-		MainPage = new NavigationPage(PageService.Landing());
+		WeakReferenceMessenger.Default.Register<InternalMsg>(this, (_, msg) =>  { CheckAppStateOn(msg.Value); });
 
-		// TODO: on resume/on app start bring back user current language choice
+		CheckAppStateOn(InternalMessage.CheckAuth);
+	}
+	~App()
+	{
+		WeakReferenceMessenger.Default.UnregisterAll(this);
+	}
+
+	private void CheckAppStateOn(InternalMessage message)
+	{
+		if (message == InternalMessage.LoggedIn)
+		{
+			MainPage = new NavigationPage(PageService.Dashboard());
+		}
+		else if (message == InternalMessage.LoggedOut)
+		{
+			var nav = new NavigationPage();
+			nav.PushAsync(PageService.Landing());
+			nav.PushAsync(PageService.Login());
+			MainPage = nav;
+		}
+		else if (message == InternalMessage.CheckAuth)
+		{
+			if (SessionService.IsAuthValid()) 
+				CheckAppStateOn(InternalMessage.LoggedIn);
+			else 
+				CheckAppStateOn(InternalMessage.LoggedOut);
+		}
+	}
+
+	protected override Window CreateWindow(IActivationState? activationState)
+	{
+		Window window = base.CreateWindow(activationState);
+		window.Created += WindowCreated;
+		window.Stopped += WindowStopped;
+		window.Resumed += WindowResumed;
+		return window;
+	}
+
+	private void WindowCreated(object? sender, EventArgs e) { }
+	private void WindowStopped(object? sender, EventArgs e) { }
+	private void WindowResumed(object? sender, EventArgs e)
+	{
+		CheckAppStateOn(InternalMessage.CheckAuth);
 	}
 }
