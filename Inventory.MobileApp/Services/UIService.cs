@@ -36,7 +36,7 @@ public static class UIService
                     LanguageService.SetCulture(new CultureInfo("en-US"));
                     break;
                 case "Español":
-                    SessionService.CurrentLanguageCulture = "en-US";
+                    SessionService.CurrentLanguageCulture = "es-ES";
                     LanguageService.SetCulture(new CultureInfo("es-ES"));
                     break;
             }
