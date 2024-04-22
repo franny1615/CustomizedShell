@@ -30,6 +30,12 @@ public static class SessionService
         set => Preferences.Set("kTheme", value);
     }
 
+    public static bool IsFirstInstall
+    {
+        get => Preferences.Get("kFirstInstall", "1") == "1";
+        set => Preferences.Set("kFirstInstall", value ? "1": "0");
+    }
+
     public static void LogOut()
     {
         AuthToken = "";

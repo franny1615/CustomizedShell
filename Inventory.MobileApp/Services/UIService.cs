@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
+using CommunityToolkit.Mvvm.Messaging;
 using Inventory.MobileApp.Controls;
+using Inventory.MobileApp.Models;
 
 namespace Inventory.MobileApp.Services;
 
@@ -85,6 +87,7 @@ public static class UIService
             app.Resources["TextPlaceholderColor"] = app.Resources["TextPlaceholderColorDark"];
             app.Resources["DisabledTextColor"] = app.Resources["DisabledTextColorDark"];
             app.Resources["PageColor"] = app.Resources["PageColorDark"];
+            app.Resources["EBGC"] = app.Resources["EBGCDark"];
         }
         else if (currentTheme == "light")
         {
@@ -93,7 +96,10 @@ public static class UIService
             app.Resources["TextPlaceholderColor"] = app.Resources["TextPlaceholderColorLight"];
             app.Resources["DisabledTextColor"] = app.Resources["DisabledTextColorLight"];
             app.Resources["PageColor"] = app.Resources["PageColorLight"];
+            app.Resources["EBGC"] = app.Resources["EBGCLight"];
         }
+        
+        WeakReferenceMessenger.Default.Send(new InternalMsg(InternalMessage.ThemeChanged));
     }
 
     public static ContentPage DisplayCommonError(this ContentPage page, string errorMessage)
@@ -147,5 +153,11 @@ public static class UIService
     {
         entry.PlaceholderIcon = icon;
         return entry;
+    }
+
+    public static Border BorderThickness(this Border border, int thickness)
+    {
+        border.StrokeThickness = thickness;
+        return border;
     }
 }

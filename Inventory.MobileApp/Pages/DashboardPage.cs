@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Inventory.MobileApp.Models;
+using Inventory.MobileApp.Services;
 
 namespace Inventory.MobileApp.Pages;
 
@@ -20,7 +21,7 @@ public class DashboardPage : BasePage
 				new Button 
 				{
 					Text = "Log out",
-					Command = new Command(() => { WeakReferenceMessenger.Default.Send(new InternalMsg(InternalMessage.LoggedOut)); })
+					Command = new Command(() => { SessionService.LogOut(); })
 				}
 			}
 		};

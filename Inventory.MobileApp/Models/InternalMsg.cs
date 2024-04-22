@@ -7,7 +7,9 @@ public enum InternalMessage
     LanguageChanged,
     LoggedIn,
     LoggedOut,
-    CheckAuth
+    CheckAuth,
+    FirstInstall,
+    ThemeChanged
 }
 
 public class InternalMsg : ValueChangedMessage<InternalMessage>

@@ -178,6 +178,7 @@ public class MaterialEntry : ContentView
     private readonly Border _EntryBorder = new Border()
         .Height(DeviceInfo.Current.Platform == DevicePlatform.iOS ? 40 : 50)
         .BorderColor(Colors.DarkGray)
+        .BorderThickness(2)
         .BorderShape(new RoundRectangle { CornerRadius = 5 })
         .Padding(new Thickness(8, 0, 8, 0));
     #endregion
@@ -187,7 +188,8 @@ public class MaterialEntry : ContentView
     {   
         _Entry.SetDynamicResource(Entry.TextColorProperty, "TextColor");
         _Editor.SetDynamicResource(Editor.TextColorProperty, "TextColor");
-
+        _EntryBorder.SetDynamicResource(Border.BackgroundColorProperty, "EBGC");
+        
         PlaceContent();
 
         Loaded += HasLoaded;

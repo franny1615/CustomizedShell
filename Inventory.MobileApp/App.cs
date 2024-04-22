@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using System.Globalization;
+using CommunityToolkit.Mvvm.Messaging;
 using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 
@@ -15,6 +16,9 @@ public partial class App : Application
 
 		WeakReferenceMessenger.Default.Register<InternalMsg>(this, (_, msg) =>  { CheckAppStateOn(msg.Value); });
 
+		LanguageService.SetCulture(new CultureInfo(SessionService.CurrentLanguageCulture));
+		UIService.ApplyTheme();
+
 		CheckAppStateOn(InternalMessage.CheckAuth);
 	}
 	~App()
@@ -26,6 +30,7 @@ public partial class App : Application
 	{
 		if (message == InternalMessage.LoggedIn)
 		{
+			SessionService.IsFirstInstall = false;
 			MainPage = new NavigationPage(PageService.Dashboard());
 		}
 		else if (message == InternalMessage.LoggedOut)
@@ -37,7 +42,9 @@ public partial class App : Application
 		}
 		else if (message == InternalMessage.CheckAuth)
 		{
-			if (SessionService.IsAuthValid()) 
+			if (SessionService.IsFirstInstall)
+				MainPage = new NavigationPage(PageService.Landing());
+			else if (SessionService.IsAuthValid()) 
 				CheckAppStateOn(InternalMessage.LoggedIn);
 			else 
 				CheckAppStateOn(InternalMessage.LoggedOut);

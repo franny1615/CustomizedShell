@@ -19,6 +19,10 @@
     <Color x:Key="TextPlaceholderColorLight">DarkGray</Color>
     <Color x:Key="TextPlaceholderColorDark">LightGray</Color>
 
+    <Color x:Key="EBGC">#d1d1d6</Color>
+    <Color x:Key="EBGCLight">#d1d1d6</Color>
+    <Color x:Key="EBGCDark">#2c2c2e</Color>
+
     <Color x:Key="DisabledTextColor">#ACACAC</Color>
     <Color x:Key="DisabledTextColorLight">#ACACAC</Color>
     <Color x:Key="DisabledTextColorDark">#404040</Color>
