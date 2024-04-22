@@ -7,6 +7,17 @@ namespace Inventory.MobileApp.Services;
 
 public static class UIService
 {
+    public static FontImageSource MaterialIcon(string icon, float size, Color color)
+    {
+        return new FontImageSource
+        {
+            FontFamily = nameof(MaterialIcon),
+            Glyph = icon,
+            Size = size,
+            Color = color
+        };
+    }
+
     public static Image ApplyMaterialIcon(this Image image, string icon, float size, Color color)
     {
         image.Source = new FontImageSource

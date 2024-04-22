@@ -190,6 +190,9 @@ public class MaterialEntry : ContentView
         _Editor.SetDynamicResource(Editor.TextColorProperty, "TextColor");
         _EntryBorder.SetDynamicResource(Border.BackgroundColorProperty, "EBGC");
         
+        _Entry.Keyboard = Keyboard.Plain; // gets rid of the auto-cap
+        _Editor.Keyboard = Keyboard.Plain;
+
         PlaceContent();
 
         Loaded += HasLoaded;

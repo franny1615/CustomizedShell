@@ -246,4 +246,7 @@ Would you like to share the error with us?</value>
   <data name="Incorrect username/password. Please try again." xml:space="preserve">
     <value>Incorrect username/password. Please try again.</value>
   </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
 </root>

@@ -14,10 +14,10 @@ public class RegisterPage : BasePage
 	private readonly ScrollView _Scroll = new() { Orientation = ScrollOrientation.Vertical };
 	private readonly VerticalStackLayout _ContentLayout = new() { Spacing = 8, Padding = 8 };
 	private readonly Label _CompanyDetailsHeader = new();
-	private readonly MaterialEntry _CompanyName = new() { Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
+	private readonly MaterialEntry _CompanyName = new() { IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
 	private readonly Label _UserDetailsHeader = new();
-	private readonly MaterialEntry _Username = new() {  Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
-	private readonly MaterialEntry _Password = new() {  Keyboard = Keyboard.Plain, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false, IsPassword = true };
+	private readonly MaterialEntry _Username = new() {  IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
+	private readonly MaterialEntry _Password = new() {  IsSpellCheckEnabled = false, IsTextPredictionEnabled = false, IsPassword = true };
 	private readonly MaterialEntry _Email = new() {  Keyboard = Keyboard.Email, IsSpellCheckEnabled = false, IsTextPredictionEnabled = false };
 	private readonly Button _SubmitButton = new();
 

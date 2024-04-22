@@ -245,4 +245,7 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Incorrect username/password. Please try again." xml:space="preserve">
     <value>Nombre de usuario/contraseña incorrectos. Inténtalo de nuevo por favor.</value>
   </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Tablero</value>
+  </data>
 </root>
