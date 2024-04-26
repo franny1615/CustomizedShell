@@ -1,9 +1,25 @@
+using Inventory.MobileApp.Controls;
 using Inventory.MobileApp.Services;
+using Microsoft.Maui.Layouts;
 
 namespace Inventory.MobileApp.Pages;
 
 public class DashboardPage : BasePage
 {
+	private readonly ScrollView _Scroll = new();
+	private readonly FlexLayout _ContentLayout = new()
+	{
+		Direction = FlexDirection.Row,
+		JustifyContent = FlexJustify.Center,
+		Wrap = FlexWrap.Wrap,
+	};
+	private readonly DashboardTile _InventoryTile = new();
+	private readonly DashboardTile _EmployeeTile = new();
+	private readonly DashboardTile _StatusTile = new();
+	private readonly DashboardTile _LocationsTile = new();
+	private readonly DashboardTile _BarcodesTile = new();
+	private readonly DashboardTile _QuantityTypesTile = new();	
+
 	public DashboardPage()
 	{
 		Title = LanguageService.Instance["Dashboard"];
@@ -24,7 +40,22 @@ public class DashboardPage : BasePage
 			Command = new Command(SessionService.LogOut)
 		});
 
-		Content = new VerticalStackLayout();
+		_InventoryTile.Title = LanguageService.Instance["Inventory"];
+		_EmployeeTile.Title = LanguageService.Instance["Employees"];
+		_StatusTile.Title = LanguageService.Instance["Statuses"];
+		_BarcodesTile.Title = LanguageService.Instance["Barcodes"];
+		_LocationsTile.Title = LanguageService.Instance["Locations"];
+		_QuantityTypesTile.Title = LanguageService.Instance["Qty Types"];
+
+		_ContentLayout.Add(_InventoryTile);
+		_ContentLayout.Add(_EmployeeTile);
+		_ContentLayout.Add(_StatusTile);
+		_ContentLayout.Add(_BarcodesTile);
+		_ContentLayout.Add(_LocationsTile);
+		_ContentLayout.Add(_QuantityTypesTile);
+
+		_Scroll.Content = _ContentLayout;
+		Content = _Scroll;
 	}
 
     protected override void OnAppearing()
