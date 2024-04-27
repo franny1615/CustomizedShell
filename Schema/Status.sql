@@ -1,0 +1,6 @@
+CREATE TABLE status 
+(
+    Id          INT NOT NULL IDENTITY PRIMARY KEY,
+    CompanyId   INT NOT NULL FOREIGN KEY REFERENCES company(Id),
+    Description NVARCHAR(300) NOT NULL DEFAULT ''
+);
