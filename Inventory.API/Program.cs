@@ -1,11 +1,13 @@
 using System.Text;
-using Inventory.Api.Repositories.CompanyRegistration;
-using Inventory.Api.Repositories.UserRegistration;
+using Inventory.API.Repositories.CompanyRegistration;
+using Inventory.API.Repositories.UserRegistration;
 using Inventory.API.Repositories.EmailRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Inventory.API.Repositories;
+using Inventory.API.Models;
 [assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,7 @@ builder.Services.AddLogging();
 builder.Services.AddTransient<IEmailRepository, EmailRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICompanyRepository, CompanyRepository>();
+builder.Services.AddTransient<ICrudRepository<Status>, StatusRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

@@ -1,10 +1,10 @@
-﻿using Inventory.Api.Models;
+﻿using Inventory.API.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Inventory.Api.Utilities;
+namespace Inventory.API.Utilities;
 
 public static class Auth
 {

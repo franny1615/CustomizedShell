@@ -1,5 +1,4 @@
-﻿using Inventory.Api.Repositories;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using System.Net;
 using System.Text;
 using Inventory.API.Models;

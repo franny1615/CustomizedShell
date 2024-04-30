@@ -1,4 +1,4 @@
-﻿namespace Inventory.Api.Models;
+﻿namespace Inventory.API.Models;
 
 public class Company
 {

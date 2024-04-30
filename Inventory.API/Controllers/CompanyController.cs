@@ -1,11 +1,10 @@
-﻿using Inventory.Api.Models;
-using Inventory.Api.Repositories.CompanyRegistration;
-using Inventory.API.Controllers;
+﻿using Inventory.API.Models;
+using Inventory.API.Repositories.CompanyRegistration;
 using Inventory.API.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Inventory.Api.Controllers;
+namespace Inventory.API.Controllers;
 
 [Route("api/company")]
 public class CompanyController(

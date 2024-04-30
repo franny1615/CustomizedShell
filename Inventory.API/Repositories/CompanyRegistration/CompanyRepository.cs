@@ -1,7 +1,6 @@
-﻿using Inventory.Api.Models;
-using Inventory.API.Models;
+﻿using Inventory.API.Models;
 
-namespace Inventory.Api.Repositories.CompanyRegistration;
+namespace Inventory.API.Repositories.CompanyRegistration;
 
 public class CompanyRepository(ILogger<CompanyRepository> logger) : BaseRepository, ICompanyRepository
 {

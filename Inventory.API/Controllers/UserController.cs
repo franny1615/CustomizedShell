@@ -1,11 +1,11 @@
-﻿using Inventory.Api.Models;
-using Inventory.Api.Repositories.UserRegistration;
+﻿using Inventory.API.Models;
+using Inventory.API.Repositories.UserRegistration;
 using Inventory.API.Controllers;
 using Inventory.API.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Inventory.Api.Controllers;
+namespace Inventory.API.Controllers;
 
 [Route("api/user")]
 public class UserController(

@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using System.Data.SqlClient;
 
-namespace Inventory.Api.Repositories;
+namespace Inventory.API.Repositories;
 
 public class BaseRepository
 {

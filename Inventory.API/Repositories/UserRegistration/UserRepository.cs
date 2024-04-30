@@ -1,8 +1,7 @@
-﻿using Inventory.Api.Models;
-using Inventory.Api.Utilities;
-using Inventory.API.Models;
+﻿using Inventory.API.Models;
+using Inventory.API.Utilities;
 
-namespace Inventory.Api.Repositories.UserRegistration;
+namespace Inventory.API.Repositories.UserRegistration;
 
 public class UserRepository(ILogger<UserRepository> logger) : BaseRepository, IUserRepository
 {

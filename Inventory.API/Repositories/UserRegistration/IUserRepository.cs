@@ -1,7 +1,6 @@
-﻿using Inventory.Api.Models;
-using Inventory.API.Models;
+﻿using Inventory.API.Models;
 
-namespace Inventory.Api.Repositories.UserRegistration;
+namespace Inventory.API.Repositories.UserRegistration;
 
 public interface IUserRepository
 {
