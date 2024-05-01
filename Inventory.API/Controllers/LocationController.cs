@@ -6,19 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory.API.Controllers;
 
-[Route("api/quantityType")]
-public class QuantityTypesController(
+[Route("api/location")]
+public class LocationController(
     IHttpContextAccessor httpContextAccessor,
-    ICrudRepository<QuantityType> qtyTypeRepo) : BaseController(httpContextAccessor)
+    ICrudRepository<Location> locationRepo
+) : BaseController(httpContextAccessor)
 {
     [HttpGet]
     [Authorize]
     [Route("details")]
-    [ProducesResponseType<QuantityType>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Location>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetDetails([FromQuery] int statusId)
     {
-        var repoResult = await qtyTypeRepo.Get(statusId, CompanyId);
+        var repoResult = await locationRepo.Get(statusId, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
@@ -29,11 +30,11 @@ public class QuantityTypesController(
     [HttpGet]
     [Authorize]
     [Route("search")]
-    [ProducesResponseType<SearchResult<QuantityType>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<SearchResult<Location>>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> SearchStatuses([FromQuery] SearchRequest request)
     {
-        var repoResult = await qtyTypeRepo.Get(request, CompanyId);
+        var repoResult = await locationRepo.Get(request, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
@@ -48,7 +49,7 @@ public class QuantityTypesController(
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete([FromQuery] int statusId)
     {
-        var repoResult = await qtyTypeRepo.Delete(statusId, CompanyId);
+        var repoResult = await locationRepo.Delete(statusId, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
@@ -61,9 +62,9 @@ public class QuantityTypesController(
     [Route("insert")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Insert([FromBody] QuantityType qtyType)
+    public async Task<IActionResult> Insert([FromBody] Location location)
     {
-        var repoResult = await qtyTypeRepo.Insert(qtyType, CompanyId);
+        var repoResult = await locationRepo.Insert(location, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
@@ -76,9 +77,9 @@ public class QuantityTypesController(
     [Route("update")]
     [ProducesResponseType<bool>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Update([FromBody] QuantityType qtyType)
+    public async Task<IActionResult> Update([FromBody] Location location)
     {
-        var repoResult = await qtyTypeRepo.Update(qtyType, CompanyId);
+        var repoResult = await locationRepo.Update(location, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
