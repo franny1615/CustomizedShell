@@ -22,6 +22,7 @@ builder.Services.AddTransient<IEmailRepository, EmailRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICompanyRepository, CompanyRepository>();
 builder.Services.AddTransient<ICrudRepository<Status>, StatusRepository>();
+builder.Services.AddTransient<ICrudRepository<QuantityType>, QuantityTypesRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

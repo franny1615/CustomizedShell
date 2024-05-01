@@ -2,7 +2,7 @@ using Inventory.API.Models;
 
 namespace Inventory.API.Repositories;
 
-public class StatusRepository : BaseRepository, ICrudRepository<Status>
+public class QuantityTypesRepository : BaseRepository, ICrudRepository<QuantityType>
 {
     public async Task<RepoResult<bool>> Delete(int itemId, int companyId)
     {
@@ -11,12 +11,12 @@ public class StatusRepository : BaseRepository, ICrudRepository<Status>
         {
             string query = $@"
 declare 
-@statusId int = {itemId},
+@qtyTypeId int = {itemId},
 @companyId int = {companyId};
 
-delete from status 
-where Id = @statusId
-and CompanyId = @companyId;";
+delete from quantity_type
+where CompanyId = @companyId
+and Id = @qtyTypeId;";
             await QueryAsync<object>(query);
             result.Data = true;
         }
@@ -27,21 +27,24 @@ and CompanyId = @companyId;";
         return result;
     }
 
-    public async Task<RepoResult<Status>> Get(int id, int companyId)
+    public async Task<RepoResult<QuantityType>> Get(int id, int companyId)
     {
-        var result = new RepoResult<Status>();
-        try
+        var result = new RepoResult<QuantityType>();
+        try 
         {
             string query = $@"
 declare 
-@statusId int = {id};
+@qtyTypeId int = {id},
+@companyId int = {companyId};
+
 select 
     Id,
     CompanyId,
-    Description
-from status
-where Id = @statusId;";
-            result.Data = (await QueryAsync<Status>(query)).First();
+    Description 
+from quantity_type
+where Id = @qtyTypeId
+and CompanyId = @companyId";
+            result.Data = (await QueryAsync<QuantityType>(query)).First();
         }
         catch (Exception ex)
         {
@@ -50,12 +53,14 @@ where Id = @statusId;";
         return result;
     }
 
-    public async Task<RepoResult<SearchResult<Status>>> Get(SearchRequest request, int companyId)
+    public async Task<RepoResult<SearchResult<QuantityType>>> Get(
+        SearchRequest request, 
+        int companyId)
     {
-        var result = new RepoResult<SearchResult<Status>>();
+        var result = new RepoResult<SearchResult<QuantityType>>();
         try 
         {
-            string itemsQuery = $@"
+            string query = $@"
 declare 
 @companyId int = {companyId},
 @search NVARCHAR(max) = '{request.Search}',
@@ -65,17 +70,21 @@ select
     Id,
     CompanyId,
     Description
-from status 
+from quantity_type 
 where CompanyId = @companyId
 and [Description] LIKE @search+'%'
 order by Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
-            var items = (await QueryAsync<Status>(itemsQuery)).ToList();
-            string totalQuery = $@"select COUNT(*) from status;";
+            var items = (await QueryAsync<QuantityType>(query)).ToList();
+            string totalQuery = $@"select COUNT(*) from quantity_type;";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
-            result.Data = new() { Items = items, Total = total };
+            result.Data = new()
+            {
+                Items = items,
+                Total = total
+            };
         }
         catch (Exception ex)
         {
@@ -84,20 +93,20 @@ fetch next @pageSize rows only";
         return result;
     }
 
-    public async Task<RepoResult<int>> Insert(Status item, int companyId)
+    public async Task<RepoResult<int>> Insert(QuantityType item, int companyId)
     {
         var result = new RepoResult<int>();
         try 
         {
             string query = $@"
 declare 
-@companyId int={companyId},
-@description nvarchar(max)='{item.Description}';
+@companyId int = {companyId},
+@description nvarchar(max) = '{item.Description}';
 
-insert into status 
+insert into quantity_type
 (
     CompanyId,
-    Description 
+    [Description]
 )
 values 
 (
@@ -115,21 +124,21 @@ select SCOPE_IDENTITY();";
         return result;
     }
 
-    public async Task<RepoResult<bool>> Update(Status item, int companyId)
+    public async Task<RepoResult<bool>> Update(QuantityType item, int companyId)
     {
         var result = new RepoResult<bool>();
         try 
         {
             string query = $@"
 declare 
-@statusId int = {item.Id},
+@qtyTypeId int = {item.Id},
 @companyId int = {companyId},
 @description nvarchar(max) = '{item.Description}';
 
-update status set 
-status.[Description] = @description
-where Id = @statusId
-and CompanyId = @companyId;";
+update quantity_type set 
+    [Description] = @description
+where CompanyId = @companyId
+and Id = @qtyTypeId;";
             await QueryAsync<object>(query);
             result.Data = true;
         }
