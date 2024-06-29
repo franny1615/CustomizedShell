@@ -18,15 +18,20 @@ public static class UIService
         };
     }
 
-    public static Image ApplyMaterialIcon(this Image image, string icon, float size, Color color)
+    public static Image ApplyMaterialIcon(this Image image, string icon, float size, Color? color = null)
     {
-        image.Source = new FontImageSource
+        var source = new FontImageSource
         {
             FontFamily = nameof(MaterialIcon),
             Glyph = icon,
             Size = size,
             Color = color
         };
+        if (color == null)
+        {
+            source.Color = Application.Current?.Resources["TextColor"] as Color;
+        }
+        image.Source = source;
         return image;
     }
 
@@ -170,5 +175,10 @@ public static class UIService
     {
         border.StrokeThickness = thickness;
         return border;
+    }
+
+    public static Color Color(string resourceKey)
+    {
+        return Application.Current?.Resources[resourceKey] as Color ?? Colors.Black;
     }
 }

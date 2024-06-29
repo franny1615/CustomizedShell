@@ -160,11 +160,29 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create account.
+        /// </summary>
+        internal static string Create_account {
+            get {
+                return ResourceManager.GetString("Create account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dark.
         /// </summary>
         internal static string Dark {
             get {
                 return ResourceManager.GetString("Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dashboard.
+        /// </summary>
+        internal static string Dashboard {
+            get {
+                return ResourceManager.GetString("Dashboard", resourceCulture);
             }
         }
         
@@ -216,6 +234,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter Credentials.
+        /// </summary>
+        internal static string Enter_Credentials {
+            get {
+                return ResourceManager.GetString("Enter Credentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter code sent to {0}..
         /// </summary>
         internal static string EnterVerifCode {
@@ -244,6 +271,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect username/password. Please try again..
+        /// </summary>
+        internal static string Incorrect_username_password__Please_try_again_ {
+            get {
+                return ResourceManager.GetString("Incorrect username/password. Please try again.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventory Management.
         /// </summary>
         internal static string Inventory_Management {
@@ -258,6 +294,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Light {
             get {
                 return ResourceManager.GetString("Light", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logging In.
+        /// </summary>
+        internal static string Logging_In {
+            get {
+                return ResourceManager.GetString("Logging In", resourceCulture);
             }
         }
         
@@ -307,11 +352,29 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter a unique username..
+        /// </summary>
+        internal static string Please_enter_a_unique_username_ {
+            get {
+                return ResourceManager.GetString("Please enter a unique username.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         internal static string Register {
             get {
                 return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registering.
+        /// </summary>
+        internal static string Registering {
+            get {
+                return ResourceManager.GetString("Registering", resourceCulture);
             }
         }
         

@@ -185,7 +185,8 @@ public class MaterialEntry : ContentView
 
     #region Constructor
     public MaterialEntry()
-    {   
+    {
+        _PlaceholderLabel.TextColor = Color.FromArgb("#646464");
         _Entry.SetDynamicResource(Entry.TextColorProperty, "TextColor");
         _Editor.SetDynamicResource(Editor.TextColorProperty, "TextColor");
         _EntryBorder.SetDynamicResource(Border.BackgroundColorProperty, "EBGC");
@@ -323,10 +324,7 @@ public class MaterialEntry : ContentView
             _PlaceholderContainer.Clear();
             if (PlaceholderIcon != null)
             {
-                _PlaceholderIcon.ApplyMaterialIcon(
-                    PlaceholderIcon, 
-                    16, 
-                    Application.Current!.Resources["TextColor"] as Color ?? Colors.DarkGray);
+                _PlaceholderIcon.ApplyMaterialIcon(PlaceholderIcon, 16, Color.FromArgb("#646464"));
                 _PlaceholderContainer.Add(_PlaceholderIcon);
             }
             _PlaceholderContainer.Add(_PlaceholderLabel);

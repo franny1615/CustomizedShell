@@ -248,4 +248,7 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Dashboard" xml:space="preserve">
     <value>Tablero</value>
   </data>
+  <data name="Create account" xml:space="preserve">
+    <value>Crear una cuenta</value>
+  </data>
 </root>

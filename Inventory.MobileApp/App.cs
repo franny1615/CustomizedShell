@@ -12,7 +12,7 @@ public partial class App : Application
 		Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
-		SessionService.APIUrl = "https://192.168.1.28/";
+		SessionService.APIUrl = "https://192.168.1.28";
 
 		WeakReferenceMessenger.Default.Register<InternalMsg>(this, (_, msg) =>  { CheckAppStateOn(msg.Value); });
 
@@ -36,14 +36,13 @@ public partial class App : Application
 		else if (message == InternalMessage.LoggedOut)
 		{
 			var nav = new NavigationPage();
-			nav.PushAsync(PageService.Landing());
 			nav.PushAsync(PageService.Login());
 			MainPage = nav;
 		}
 		else if (message == InternalMessage.CheckAuth)
 		{
 			if (SessionService.IsFirstInstall)
-				MainPage = new NavigationPage(PageService.Landing());
+				MainPage = new NavigationPage(PageService.Login());
 			else if (SessionService.IsAuthValid()) 
 				CheckAppStateOn(InternalMessage.LoggedIn);
 			else 

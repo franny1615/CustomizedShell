@@ -249,4 +249,7 @@ Would you like to share the error with us?</value>
   <data name="Dashboard" xml:space="preserve">
     <value>Dashboard</value>
   </data>
+  <data name="Create account" xml:space="preserve">
+    <value>Create account</value>
+  </data>
 </root>
