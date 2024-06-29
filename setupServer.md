@@ -13,41 +13,9 @@ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 
 # setup some variables inside new file 
 ```
-sudo vim /etc/nginx/snippets/self-signed.conf
-# content 
-ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
-ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
-
-# setup more varibles inside new file 
-sudo nano /etc/nginx/snippets/ssl-params.conf
-# content 
-ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-ssl_prefer_server_ciphers on;
-ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
-ssl_ecdh_curve secp384r1;
-ssl_session_cache shared:SSL:10m;
-ssl_session_tickets off;
-ssl_stapling on;
-ssl_stapling_verify on;
-resolver 8.8.8.8 8.8.4.4 valid=300s;
-resolver_timeout 5s;
-add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
-add_header X-Frame-Options DENY;
-add_header X-Content-Type-Options nosniff;
-ssl_dhparam /etc/ssl/certs/dhparam.pem;
-
-# modify nginx.conf
-sudo vim /etc/nginx/nginx.conf
-
-# should look like 
-user www-data;
-worker_processes auto;
-pid /run/nginx.pid;
-include /etc/nginx/sites-enabled/*.conf
-
 # update default
-cd /etc/nginx/sites-enabled
-sudo vim default
+cd /etc/nginx/sites-available
+sudo nano default
 
 # should look like 
 http {
@@ -65,8 +33,22 @@ http {
   server {
     listen        433 ssl http2 default_server;
     listen        [::]:443 ssl http2 default_server;
-    include       snippets/self-signed.conf;
-    include       snippets/ssl-params.conf;
+    ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+    ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+    ssl_ecdh_curve secp384r1;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_tickets off;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 5s;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
     location / {
         proxy_pass         http://127.0.0.1:5000/;
         proxy_set_header   Upgrade $http_upgrade;
