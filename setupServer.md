@@ -14,10 +14,19 @@ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 # setup some variables inside new file 
 ```
 # update default
-cd /etc/nginx/sites-available
-sudo nano default
+cd /etc/nginx
+sudo nano nginx.conf
 
 # should look like 
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+error_log /var/log/nginx/error.log;
+
+events {
+	worker_connections 768;
+}
+
 http {
   server {
     listen 80;
