@@ -23,7 +23,7 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICompanyRepository, CompanyRepository>();
 builder.Services.AddTransient<ICrudRepository<Status>, StatusRepository>();
 builder.Services.AddTransient<ICrudRepository<QuantityType>, QuantityTypesRepository>();
-builder.Services.AddTransient<ICrudRepository<Inventory.API.Models.Inventory>>();
+builder.Services.AddTransient<ICrudRepository<Inventory.API.Models.Inventory>, InventoryRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

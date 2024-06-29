@@ -54,7 +54,7 @@ http {
   server {
     listen 80;
     listen [::]:80 default_server;
-    return 301 https://$host$requested_uri;
+    return 301 https://$host$request_uri;
   }
 
   map $http_connection $connection_upgrade {
