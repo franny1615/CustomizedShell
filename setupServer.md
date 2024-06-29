@@ -28,10 +28,16 @@ events {
 }
 
 http {
+  limit_req_zone $binary_remote_addr zone=one:10m rate=5r/s;
+
   server {
     listen 80;
     listen [::]:80 default_server;
     return 301 https://$host$request_uri;
+  }
+
+  upstream inventoryApp {
+    server 127.0.0.1:5000;
   }
 
   map $http_connection $connection_upgrade {
@@ -40,18 +46,19 @@ http {
   }
 
   server {
-    listen        433 ssl http2 default_server;
+    listen        443 ssl http2 default_server;
     listen        [::]:443 ssl http2 default_server;
     ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
     ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_prefer_server_ciphers on;
-    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+    ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers off;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
     ssl_ecdh_curve secp384r1;
     ssl_session_cache shared:SSL:10m;
     ssl_session_tickets off;
-    ssl_stapling on;
-    ssl_stapling_verify on;
+    ssl_stapling_verify off;
+    ssl_session_cache shared:SSL:10m;
+    ssl_stapling              off;
     resolver 8.8.8.8 8.8.4.4 valid=300s;
     resolver_timeout 5s;
     add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
@@ -59,13 +66,14 @@ http {
     add_header X-Content-Type-Options nosniff;
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
     location / {
-        proxy_pass         http://127.0.0.1:5000/;
+        proxy_pass         http://inventoryApp;
         proxy_set_header   Upgrade $http_upgrade;
         proxy_set_header   Connection $connection_upgrade;
         proxy_set_header   Host $host;
         proxy_cache_bypass $http_upgrade;
         proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header   X-Forwarded-Proto $scheme;
+	limit_req  zone=one burst=10 nodelay;
     }
   }
 }
