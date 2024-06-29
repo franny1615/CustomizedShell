@@ -1,22 +1,22 @@
-using Inventory.API.Models;
+﻿using Inventory.API.Models;
 
 namespace Inventory.API.Repositories;
 
-public class LocationRepository : BaseRepository, ICrudRepository<Location>
+public class InventoryRepository : BaseRepository, ICrudRepository<Models.Inventory>
 {
     public async Task<RepoResult<bool>> Delete(int itemId, int companyId)
     {
         var result = new RepoResult<bool>();
-        try 
+        try
         {
             string query = $@"
 declare 
-@locId int = {itemId},
+@invId int = {itemId},
 @companyId int = {companyId};
 
-delete from location
+delete from inventory
 where CompanyId = @companyId
-and Id = @locId;";
+and Id = @invId;";
             await QueryAsync<object>(query);
             result.Data = true;
         }
@@ -27,25 +27,31 @@ and Id = @locId;";
         return result;
     }
 
-    public async Task<RepoResult<Location>> Get(int id, int companyId)
+    public async Task<RepoResult<Models.Inventory>> Get(int id, int companyId)
     {
-        var result = new RepoResult<Location>();
-        try 
+        var result = new RepoResult<Models.Inventory>();
+        try
         {
             string query = $@"
 declare 
-@locId int = {id},
+@invId int = {id},
 @companyId int = {companyId};
 
 select 
     Id,
     CompanyId,
     Description,
-    Barcode
-from location
-where Id = @locId
+    Status,
+    Quantity,
+    QuantityType,
+    Barcode,
+    Location,
+    LastEditedOn,
+    CreatedOn
+from inventory
+where Id = @invId
 and CompanyId = @companyId";
-            result.Data = (await QueryAsync<Location>(query)).First();
+            result.Data = (await QueryAsync<Models.Inventory>(query)).First();
         }
         catch (Exception ex)
         {
@@ -54,12 +60,10 @@ and CompanyId = @companyId";
         return result;
     }
 
-    public async Task<RepoResult<SearchResult<Location>>> Get(
-        SearchRequest request, 
-        int companyId)
+    public async Task<RepoResult<SearchResult<Models.Inventory>>> Get(SearchRequest request, int companyId)
     {
-        var result = new RepoResult<SearchResult<Location>>();
-        try 
+        var result = new RepoResult<SearchResult<Models.Inventory>>();
+        try
         {
             string query = $@"
 declare 
@@ -71,14 +75,20 @@ select
     Id,
     CompanyId,
     Description,
-    Barcode
-from location 
+    Status,
+    Quantity,
+    QuantityType,
+    Barcode,
+    Location,
+    LastEditedOn,
+    CreatedOn
+from inventory 
 where CompanyId = @companyId
 and [Description] LIKE @search+'%'
 order by Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
-            var items = (await QueryAsync<Location>(query)).ToList();
+            var items = (await QueryAsync<Models.Inventory>(query)).ToList();
             string totalQuery = $@"select COUNT(*) from location;";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
@@ -95,28 +105,44 @@ fetch next @pageSize rows only";
         return result;
     }
 
-    public async Task<RepoResult<int>> Insert(Location item, int companyId)
+    public async Task<RepoResult<int>> Insert(Models.Inventory item, int companyId)
     {
         var result = new RepoResult<int>();
-        try 
+        try
         {
             string query = $@"
 declare 
 @companyId int = {companyId},
 @description nvarchar(max) = '{item.Description}',
-@barcode nvarchar(max) = '{item.Barcode}';
+@status nvarchar(max) = '{item.Status}',
+@quantity int = {item.Quantity},
+@quantityType nvarchar(max) = '{item.QuantityType}',
+@barcode nvarchar(max) = '{item.Barcode}',
+@location nvarchar(max) = '{item.Location}';
 
-insert into location
+insert into inventory
 (
     CompanyId,
     [Description],
-    Barcode
+    Status,
+    Quantity,
+    QuantityType,
+    Barcode,
+    Location,
+    LastEditedOn,
+    CreatedOn
 )
 values 
 (
     @companyId,
     @description,
-    @barcode
+    @status,
+    @quantity,
+    @quantityType,
+    @barcode,
+    @location,
+    GETDATE(),
+    GETDATE()
 );
 
 select SCOPE_IDENTITY();";
@@ -129,23 +155,31 @@ select SCOPE_IDENTITY();";
         return result;
     }
 
-    public async Task<RepoResult<bool>> Update(Location item, int companyId)
+    public async Task<RepoResult<bool>> Update(Models.Inventory item, int companyId)
     {
         var result = new RepoResult<bool>();
-        try 
+        try
         {
             string query = $@"
 declare 
-@locId int = {item.Id},
-@companyId int = {companyId},
+@invId = {item.Id},
 @description nvarchar(max) = '{item.Description}',
-@barcode nvarchar(max) = '{item.Barcode}';
+@status nvarchar(max) = '{item.Status}',
+@quantity int = {item.Quantity},
+@quantityType nvarchar(max) = '{item.QuantityType}',
+@barcode nvarchar(max) = '{item.Barcode}',
+@location nvarchar(max) = '{item.Location}';
 
-update location set 
+update inventory set 
     [Description] = @description,
-    Barcode = @barcode
+    Status = @status,
+    Quantity = @quantity,
+    QuantityType = @quantityType,
+    Barcode = @barcode,
+    Location = @location,
+    LastEditedOn = GETDATE()
 where CompanyId = @companyId
-and Id = @locId;";
+and Id = @invId;";
             await QueryAsync<object>(query);
             result.Data = true;
         }
