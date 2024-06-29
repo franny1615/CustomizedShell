@@ -12,7 +12,7 @@ public partial class App : Application
 		Resources.MergedDictionaries.Add(new Resources.Styles.Colors());
         Resources.MergedDictionaries.Add(new Resources.Styles.Styles());
 
-		SessionService.APIUrl = "https://192.168.1.141/";
+		SessionService.APIUrl = "https://192.168.1.28/";
 
 		WeakReferenceMessenger.Default.Register<InternalMsg>(this, (_, msg) =>  { CheckAppStateOn(msg.Value); });
 
