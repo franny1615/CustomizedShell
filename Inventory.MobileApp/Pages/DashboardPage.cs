@@ -10,7 +10,6 @@ namespace Inventory.MobileApp.Pages;
 public class DashboardPage : BasePage
 {
 	private readonly DashboardViewModel _DashboardVM;
-	private readonly RefreshView _Refresh = new();
 	private readonly FlexLayout _ContentLayout = new()
 	{
 		Direction = FlexDirection.Row,
@@ -41,7 +40,6 @@ public class DashboardPage : BasePage
 			IconImageSource = UIService.MaterialIcon(MaterialIcon.Logout, 21, Colors.White),
 			Command = new Command(SessionService.LogOut)
 		});
-		_Refresh.Command = new Command(ReloadDashboard);
 		BindableLayout.SetItemTemplate(_ContentLayout, new DataTemplate(() =>
 		{
 			var view = new DashboardTile();
@@ -53,15 +51,14 @@ public class DashboardPage : BasePage
 			return view;
 		}));
 		
-		_Refresh.Content = _ContentLayout;
-		Content = _Refresh;
+		Content = _ContentLayout;
 	}
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
 		LanguageChanged += UpdateLanguageStrings;
-		_Refresh.IsRefreshing = true;
+		ReloadDashboard();
     }
 
     protected override void OnDisappearing()
@@ -81,7 +78,6 @@ public class DashboardPage : BasePage
 		BindableLayout.SetItemsSource(_ContentLayout, new List<DashboardItem>());
 		await _DashboardVM.LoadDashboard();
 		BindableLayout.SetItemsSource(_ContentLayout, _DashboardVM.DashboardItems);
-		_Refresh.IsRefreshing = false;
 	}
 
     private void DashTileClicked(object? sender, EventArgs e)

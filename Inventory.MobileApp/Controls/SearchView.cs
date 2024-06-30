@@ -37,7 +37,7 @@ public class SearchView<T> : ContentView
     private readonly CollectionView _SearchItems = new CollectionView();
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(Auto, Star, Auto)
+        RowDefinitions = Rows.Define(Auto, Star, 24)
     };
     private readonly Button _AddButton = new()
     {
@@ -50,13 +50,19 @@ public class SearchView<T> : ContentView
     {
         Padding = 0,
         Margin = 0,
-        HeightRequest = 24
+        HeightRequest = 24,
+        MaximumHeightRequest = 24,
+        MinimumHeightRequest = 24,
+        CornerRadius = 12,
     };
     private readonly Button _PreviousButton = new()
     {
         Padding = 0,
         Margin = 0,
-        HeightRequest = 24
+        HeightRequest = 24,
+        MaximumHeightRequest = 24,
+        MinimumHeightRequest = 24,
+        CornerRadius = 12,
     };
     private readonly Label _PageLabel = new()
     {
