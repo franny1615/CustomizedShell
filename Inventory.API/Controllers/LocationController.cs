@@ -17,9 +17,9 @@ public class LocationController(
     [Route("details")]
     [ProducesResponseType<Location>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetDetails([FromQuery] int statusId)
+    public async Task<IActionResult> GetDetails([FromQuery] int locationId)
     {
-        var repoResult = await locationRepo.Get(statusId, CompanyId);
+        var repoResult = await locationRepo.Get(locationId, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
@@ -47,9 +47,9 @@ public class LocationController(
     [Route("delete")]
     [ProducesResponseType<bool>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Delete([FromQuery] int statusId)
+    public async Task<IActionResult> Delete([FromQuery] int locationId)
     {
-        var repoResult = await locationRepo.Delete(statusId, CompanyId);
+        var repoResult = await locationRepo.Delete(locationId, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
