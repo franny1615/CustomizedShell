@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<RepoResult<bool>> UpdateUser(User user);
     Task<RepoResult<bool>> DeleteUser(User user);
     Task<RepoResult<string>> AuthenticateUser(User user);
+    Task<RepoResult<SearchResult<User>>> Get(SearchRequest request, int companyId);
 }

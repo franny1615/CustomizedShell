@@ -4,6 +4,7 @@ using Inventory.API.Controllers;
 using Inventory.API.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Inventory.API.Repositories;
 
 namespace Inventory.API.Controllers;
 
@@ -84,7 +85,7 @@ public class UserController(
         return Resp.OkResponse(repoResult.Data);
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Authorize]
     [Route("delete")]
     [ProducesResponseType<bool>(StatusCodes.Status200OK)]
@@ -92,6 +93,21 @@ public class UserController(
     public async Task<IActionResult> Delete([FromBody] User user)
     {
         var repoResult = await userRepo.DeleteUser(user);
+        if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
+        {
+            return Resp.ErrorRespose(repoResult.ErrorMessage);
+        }
+        return Resp.OkResponse(repoResult.Data);
+    }
+
+    [HttpGet]
+    [Authorize]
+    [Route("search")]
+    [ProducesResponseType<SearchResult<User>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> SearchStatuses([FromQuery] SearchRequest request)
+    {
+        var repoResult = await userRepo.Get(request, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);

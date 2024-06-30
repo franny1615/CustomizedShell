@@ -251,4 +251,48 @@ WHERE app_user.Id = {id}";
         }
         return result;
     }
+
+    public async Task<RepoResult<SearchResult<User>>> Get(SearchRequest request, int companyId)
+    {
+        var result = new RepoResult<SearchResult<User>>();
+        try
+        {
+            string query = $@"
+declare 
+@companyId int = {companyId},
+@search NVARCHAR(max) = '{request.Search}',
+@page int = {request.Page},
+@pageSize int = {request.PageSize};
+select 
+    Id,
+    CompanyId,
+    Username,
+    '' as Password,
+    IsDarkModeOn,
+    Localization,
+    Email,
+    PhoneNumber,
+    IsCompanyOwner
+from app_user 
+where CompanyId = @companyId
+and [Description] LIKE @search+'%'
+order by Id desc 
+offset (@page * @pageSize) rows 
+fetch next @pageSize rows only";
+            var items = (await QueryAsync<User>(query)).ToList();
+            string totalQuery = $@"select COUNT(*) from location;";
+            var total = (await QueryAsync<int>(totalQuery)).First();
+
+            result.Data = new()
+            {
+                Items = items,
+                Total = total
+            };
+        }
+        catch (Exception ex)
+        {
+            result.ErrorMessage = ex.ToString();
+        }
+        return result;
+    }
 }
