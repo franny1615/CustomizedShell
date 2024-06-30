@@ -51,7 +51,11 @@ public class DashboardPage : BasePage
 			return view;
 		}));
 		
-		Content = _ContentLayout;
+		Content = new ScrollView
+		{
+			Orientation = ScrollOrientation.Vertical,
+			Content = _ContentLayout
+		};
 	}
 
     protected override void OnAppearing()

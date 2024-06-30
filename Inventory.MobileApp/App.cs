@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Mvvm.Messaging;
 using Inventory.MobileApp.Models;
+using Inventory.MobileApp.Pages;
 using Inventory.MobileApp.Services;
 
 namespace Inventory.MobileApp;
@@ -41,6 +42,9 @@ public partial class App : Application
 		}
 		else if (message == InternalMessage.CheckAuth)
 		{
+			if (MainPage is NavigationPage nav && nav.CurrentPage is RegisterPage register) // they might have quit to go check email.
+				return;
+
 			if (SessionService.IsFirstInstall)
 				MainPage = new NavigationPage(PageService.Login());
 			else if (SessionService.IsAuthValid()) 

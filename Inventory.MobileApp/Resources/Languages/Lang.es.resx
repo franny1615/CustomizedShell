@@ -269,4 +269,16 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="No items found" xml:space="preserve">
     <value>No se encontraron artículos</value>
   </data>
+  <data name="Add Status" xml:space="preserve">
+    <value>Agregar estado</value>
+  </data>
+  <data name="An empty status was entered, nothing changed." xml:space="preserve">
+    <value>Se ingresó a un estado vacío, nada cambió.</value>
+  </data>
+  <data name="Empty Status" xml:space="preserve">
+    <value>Estado vacío</value>
+  </data>
+  <data name="Enter the status description below." xml:space="preserve">
+    <value>Ingrese la descripción del estado.</value>
+  </data>
 </root>

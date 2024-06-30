@@ -70,6 +70,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Status.
+        /// </summary>
+        internal static string Add_Status {
+            get {
+                return ResourceManager.GetString("Add Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address 1.
         /// </summary>
         internal static string Address_1 {
@@ -93,6 +102,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Address_3 {
             get {
                 return ResourceManager.GetString("Address 3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An empty status was entered, nothing changed..
+        /// </summary>
+        internal static string An_empty_status_was_entered__nothing_changed_ {
+            get {
+                return ResourceManager.GetString("An empty status was entered, nothing changed.", resourceCulture);
             }
         }
         
@@ -243,11 +261,29 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty Status.
+        /// </summary>
+        internal static string Empty_Status {
+            get {
+                return ResourceManager.GetString("Empty Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Credentials.
         /// </summary>
         internal static string Enter_Credentials {
             get {
                 return ResourceManager.GetString("Enter Credentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the status description below..
+        /// </summary>
+        internal static string Enter_the_status_description_below_ {
+            get {
+                return ResourceManager.GetString("Enter the status description below.", resourceCulture);
             }
         }
         

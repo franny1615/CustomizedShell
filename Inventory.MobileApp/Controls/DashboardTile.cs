@@ -58,7 +58,7 @@ public class DashboardTile : Border
             Radius = 40,
             Opacity = 0.25f
         };
-        StrokeShape = new RoundRectangle() { CornerRadius = 12 };
+        StrokeShape = new RoundRectangle() { CornerRadius = 5 };
 
         _ContentLayout.Children.Add(_Count);
         _ContentLayout.Children.Add(_Title);

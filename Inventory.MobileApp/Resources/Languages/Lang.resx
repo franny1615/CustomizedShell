@@ -270,4 +270,16 @@ Would you like to share the error with us?</value>
   <data name="No items found" xml:space="preserve">
     <value>No items found</value>
   </data>
+  <data name="Add Status" xml:space="preserve">
+    <value>Add Status</value>
+  </data>
+  <data name="An empty status was entered, nothing changed." xml:space="preserve">
+    <value>An empty status was entered, nothing changed.</value>
+  </data>
+  <data name="Empty Status" xml:space="preserve">
+    <value>Empty Status</value>
+  </data>
+  <data name="Enter the status description below." xml:space="preserve">
+    <value>Enter the status description below.</value>
+  </data>
 </root>

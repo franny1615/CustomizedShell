@@ -14,17 +14,49 @@ public class StatusSearchPage : BasePage
     {
         _ViewModel = statusSearchViewModel;
         _Search = new(_ViewModel);
-        _Search.SearchLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 8 };
+        _Search.SearchLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 12 };
         _Search.CardTemplate = new DataTemplate(() =>
         {
-            // TODO:
-            return new Grid();
-        });
+            var view = new StatusCardView();
+            view.SetBinding(BindingContextProperty, ".");
+            view.SetBinding(StatusCardView.DescriptionProperty, "Description");
+            view.Delete += DeleteStatus;
+            view.Margin = new Thickness(8, 0, 8, 0);
 
-        _Search.Padding = 12;
+            return view;
+        });
+        _Search.AddItem += AddStatus;
 
         Title = LanguageService.Instance["Statuses"];
         Content = _Search;
+    }
+
+    private async void AddStatus(object? sender, EventArgs e)
+    {
+        string status = await DisplayPromptAsync(
+            LanguageService.Instance["Add Status"],
+            LanguageService.Instance["Enter the status description below."],
+            LanguageService.Instance["OK"],
+            LanguageService.Instance["Cancel"]);
+
+        if (string.IsNullOrEmpty(status)) // canceled or entered empty text, don't do anything.
+            return;            
+
+        _Search.IsLoading = true;
+        await _ViewModel.InsertStatus(status);
+        _Search.TriggerRefresh();
+        _Search.IsLoading = false; // fail safe
+    }
+
+    private async void DeleteStatus(object? sender, EventArgs e)
+    {
+        if (sender is StatusCardView card && card.BindingContext is Status status) 
+        {
+            _Search.IsLoading = true;
+            await _ViewModel.DeleteStatus(status.Id);
+            _Search.TriggerRefresh();
+            _Search.IsLoading = false; // fail safe
+        }
     }
 
     protected override void OnAppearing()

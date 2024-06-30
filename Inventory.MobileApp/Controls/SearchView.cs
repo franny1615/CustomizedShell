@@ -27,6 +27,9 @@ public class SearchView<T> : ContentView
     public static readonly BindableProperty CanAddItemsProperty = BindableProperty.Create(nameof(CanAddItems), typeof(bool), typeof(SearchView<T>), true);
     public bool CanAddItems { get => (bool)GetValue(CanAddItemsProperty); set => SetValue(CanAddItemsProperty, value); }
 
+    public static readonly BindableProperty IsLoadingProperty = BindableProperty.Create(nameof(IsLoading), typeof(bool), typeof(SearchView<T>), false);
+    public bool IsLoading { get => (bool)GetValue(IsLoadingProperty); set => SetValue(IsLoadingProperty, value); }
+
     private readonly Debouncer _SearchDebounce = new();
     private readonly ISearchViewModel<T> _SearchVM;
     private readonly MaterialEntry _SearchEntry = new()
@@ -37,7 +40,8 @@ public class SearchView<T> : ContentView
     private readonly CollectionView _SearchItems = new CollectionView();
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(Auto, Star, 24)
+        RowDefinitions = Rows.Define(Auto, Star, 24),
+        RowSpacing = 8
     };
     private readonly Button _AddButton = new()
     {
@@ -76,9 +80,12 @@ public class SearchView<T> : ContentView
         FontAttributes = FontAttributes.Bold,
         Text = LanguageService.Instance["No items found"]
     };
+    private readonly ActivityIndicator _Loading = new() { WidthRequest = 25, IsVisible = false };
 
     public SearchView(ISearchViewModel<T> searchVM)
     {
+        Padding = new Thickness(8, 12, 8, 12);
+
         _PreviousButton.ApplyMaterialIcon(MaterialIcon.Chevron_left, 18, Colors.White);
         _NextButton.ApplyMaterialIcon(MaterialIcon.Chevron_right, 18, Colors.White);
         _PreviousButton.Clicked += Previous;
@@ -92,7 +99,16 @@ public class SearchView<T> : ContentView
         _Refresh.Content = _SearchItems;
 
         _ContentLayout.Children.Add(_AddButton.Row(0).RowSpan(3).Bottom().End());
-        _ContentLayout.Children.Add(_SearchEntry.Row(0));
+        _ContentLayout.Children.Add(new Grid
+        {
+            ColumnSpacing = 8,
+            ColumnDefinitions = Columns.Define(Star, 32),
+            Children =
+            {
+                _SearchEntry.Column(0).ColumnSpan(2),
+                _Loading.Column(1)
+            }
+        }.Row(0));
         _ContentLayout.Children.Add(_Refresh.Row(1));
         _ContentLayout.Children.Add(new HorizontalStackLayout
         {
@@ -113,6 +129,10 @@ public class SearchView<T> : ContentView
     public void TriggerRefresh() => _Refresh.IsRefreshing = true;
     private async void Search()
     {
+        _Refresh.IsRefreshing = false; // we have a secondary loading indicator, so we don't need pull to refresh one
+
+        IsLoading = true;
+
         _ContentLayout.Children.Remove(_NoItemsLabel);
         _ContentLayout.Children.Add(_NoItemsLabel.Row(1).Center().ZIndex(10));
 
@@ -124,7 +144,8 @@ public class SearchView<T> : ContentView
 
         _SearchItems.ItemsSource = _SearchVM.Items;
         _PageLabel.Text = $"{_SearchVM.Page + 1} / {_SearchVM.TotalPages}";
-        _Refresh.IsRefreshing = false;
+
+        IsLoading = false;
     }
 
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
@@ -144,6 +165,23 @@ public class SearchView<T> : ContentView
             if (CanAddItems)
             {
                 _ContentLayout.Children.Add(_AddButton.Row(0).RowSpan(3).Bottom().End());
+            }
+        }
+        else if (propertyName == IsLoadingProperty.PropertyName)
+        {
+            if (IsLoading)
+            {
+                _SearchEntry.ColumnSpan(1);
+                _Loading.IsVisible = true;
+                _Loading.IsRunning = true;
+                _Loading.IsEnabled = true;
+            }
+            else
+            {
+                _SearchEntry.ColumnSpan(2);
+                _Loading.IsVisible = false;
+                _Loading.IsRunning = false;
+                _Loading.IsEnabled = false;
             }
         }
     }

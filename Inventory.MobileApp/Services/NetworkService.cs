@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Inventory.MobileApp.Services;
 
@@ -58,6 +59,30 @@ public static class NetworkService
 
             string content = JsonSerializer.Serialize(jsonBody);
             message.Content = new StringContent(content, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.SendAsync(message);
+            return await HandleResponse<T>(response);
+        }
+        catch (Exception ex)
+        {
+            return new() { ErrorMessage = ex.ToString() };
+        }
+    }
+
+    public static async Task<NetworkResponse<T>> Delete<T>(string endpoint, Dictionary<string, string> parameters)
+    {
+        try
+        {
+            string url = $"{SessionService.APIUrl}/{endpoint}{QueryFrom(parameters)}";
+
+            var client = NetworkClient();
+            var message = new HttpRequestMessage(HttpMethod.Delete, url);
+
+            string authToken = SessionService.AuthToken;
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                message.Headers.Add("Authorization", $"Bearer {authToken}");
+            }
 
             HttpResponseMessage response = await client.SendAsync(message);
             return await HandleResponse<T>(response);
