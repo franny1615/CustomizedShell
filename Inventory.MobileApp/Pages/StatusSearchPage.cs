@@ -43,7 +43,15 @@ public class StatusSearchPage : BasePage
             return;            
 
         _Search.IsLoading = true;
-        await _ViewModel.InsertStatus(status);
+
+        var response = await _ViewModel.InsertStatus(status);
+        if (!string.IsNullOrEmpty(response.ErrorMessage))
+        {
+            _Search.IsLoading = false;
+            this.DisplayCommonError(response.ErrorMessage);
+            return;
+        }
+
         _Search.TriggerRefresh();
         _Search.IsLoading = false; // fail safe
     }
@@ -53,7 +61,15 @@ public class StatusSearchPage : BasePage
         if (sender is StatusCardView card && card.BindingContext is Status status) 
         {
             _Search.IsLoading = true;
-            await _ViewModel.DeleteStatus(status.Id);
+            
+            var response = await _ViewModel.DeleteStatus(status.Id);
+            if (!string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                _Search.IsLoading = false;
+                this.DisplayCommonError(response.ErrorMessage);
+                return;
+            }
+
             _Search.TriggerRefresh();
             _Search.IsLoading = false; // fail safe
         }
