@@ -275,7 +275,7 @@ select
     IsCompanyOwner
 from app_user 
 where CompanyId = @companyId
-and [Description] LIKE @search+'%'
+and Username LIKE @search+'%'
 order by Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
