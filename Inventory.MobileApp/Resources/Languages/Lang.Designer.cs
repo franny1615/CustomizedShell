@@ -234,6 +234,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employees.
+        /// </summary>
+        internal static string Employees {
+            get {
+                return ResourceManager.GetString("Employees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Credentials.
         /// </summary>
         internal static string Enter_Credentials {
@@ -280,6 +289,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inventory.
+        /// </summary>
+        internal static string Inventory {
+            get {
+                return ResourceManager.GetString("Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventory Management.
         /// </summary>
         internal static string Inventory_Management {
@@ -298,6 +316,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Locations.
+        /// </summary>
+        internal static string Locations {
+            get {
+                return ResourceManager.GetString("Locations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logging In.
         /// </summary>
         internal static string Logging_In {
@@ -312,6 +339,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No items found.
+        /// </summary>
+        internal static string No_items_found {
+            get {
+                return ResourceManager.GetString("No items found", resourceCulture);
             }
         }
         
@@ -357,6 +393,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Please_enter_a_unique_username_ {
             get {
                 return ResourceManager.GetString("Please enter a unique username.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qty Types.
+        /// </summary>
+        internal static string Qty_Types {
+            get {
+                return ResourceManager.GetString("Qty Types", resourceCulture);
             }
         }
         
@@ -411,6 +456,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string State {
             get {
                 return ResourceManager.GetString("State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statuses.
+        /// </summary>
+        internal static string Statuses {
+            get {
+                return ResourceManager.GetString("Statuses", resourceCulture);
             }
         }
         

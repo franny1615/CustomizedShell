@@ -27,9 +27,13 @@
     <Color x:Key="DisabledTextColorLight">#ACACAC</Color>
     <Color x:Key="DisabledTextColorDark">#404040</Color>
 
-    <Color x:Key="PageColor">White</Color>
-    <Color x:Key="PageColorLight">White</Color>
+    <Color x:Key="PageColor">#f2f2f7</Color>
+    <Color x:Key="PageColorLight">#f2f2f7</Color>
     <Color x:Key="PageColorDark">Black</Color>
+
+    <Color x:Key="DashTileColor">White</Color>
+    <Color x:Key="DashTileColorLight">White</Color>
+    <Color x:Key="DashTileColorDark">#383838</Color>
     
     <Color x:Key="Primary">#1F5673</Color>
     <Color x:Key="PrimaryDark">#1F5673</Color>

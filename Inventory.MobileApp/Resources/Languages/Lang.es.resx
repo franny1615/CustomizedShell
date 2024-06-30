@@ -251,4 +251,22 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Create account" xml:space="preserve">
     <value>Crear una cuenta</value>
   </data>
+  <data name="Employees" xml:space="preserve">
+    <value>Empleados</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Lugares</value>
+  </data>
+  <data name="Qty Types" xml:space="preserve">
+    <value>Tipos de Cantidad</value>
+  </data>
+  <data name="Statuses" xml:space="preserve">
+    <value>Estados</value>
+  </data>
+  <data name="No items found" xml:space="preserve">
+    <value>No se encontraron artículos</value>
+  </data>
 </root>

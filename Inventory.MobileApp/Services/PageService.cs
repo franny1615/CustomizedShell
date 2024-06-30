@@ -17,6 +17,11 @@ public static class PageService
 
     public static DashboardPage Dashboard()
     {
-        return new DashboardPage();
+        return new DashboardPage(new DashboardViewModel());
+    }
+
+    public static StatusSearchPage StatusSearch()
+    {
+        return new StatusSearchPage(new StatusSearchViewModel());
     }
 }

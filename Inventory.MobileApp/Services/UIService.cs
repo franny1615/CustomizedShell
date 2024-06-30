@@ -35,6 +35,23 @@ public static class UIService
         return image;
     }
 
+    public static Button ApplyMaterialIcon(this Button button, string icon, float size, Color? color = null)
+    {
+        var source = new FontImageSource
+        {
+            FontFamily = nameof(MaterialIcon),
+            Glyph = icon,
+            Size = size,
+            Color = color
+        };
+        if (color == null)
+        {
+            source.Color = Application.Current?.Resources["TextColor"] as Color;
+        }
+        button.ImageSource = source;
+        return button;
+    }
+
     public static ContentPage DisplayLanguageSwitcher(this ContentPage page)
     {
         MainThread.BeginInvokeOnMainThread(async () =>
@@ -104,6 +121,7 @@ public static class UIService
             app.Resources["DisabledTextColor"] = app.Resources["DisabledTextColorDark"];
             app.Resources["PageColor"] = app.Resources["PageColorDark"];
             app.Resources["EBGC"] = app.Resources["EBGCDark"];
+            app.Resources["DashTileColor"] = app.Resources["DashTileColorDark"];
         }
         else if (currentTheme == "light")
         {
@@ -113,6 +131,7 @@ public static class UIService
             app.Resources["DisabledTextColor"] = app.Resources["DisabledTextColorLight"];
             app.Resources["PageColor"] = app.Resources["PageColorLight"];
             app.Resources["EBGC"] = app.Resources["EBGCLight"];
+            app.Resources["DashTileColor"] = app.Resources["DashTileColorLight"];
         }
         
         WeakReferenceMessenger.Default.Send(new InternalMsg(InternalMessage.ThemeChanged));

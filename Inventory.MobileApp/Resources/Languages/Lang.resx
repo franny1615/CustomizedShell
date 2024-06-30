@@ -252,4 +252,22 @@ Would you like to share the error with us?</value>
   <data name="Create account" xml:space="preserve">
     <value>Create account</value>
   </data>
+  <data name="Employees" xml:space="preserve">
+    <value>Employees</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="Qty Types" xml:space="preserve">
+    <value>Qty Types</value>
+  </data>
+  <data name="Statuses" xml:space="preserve">
+    <value>Statuses</value>
+  </data>
+  <data name="No items found" xml:space="preserve">
+    <value>No items found</value>
+  </data>
 </root>

@@ -1,27 +1,29 @@
+using CommunityToolkit.Maui.Alerts;
 using Inventory.MobileApp.Controls;
+using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
+using Inventory.MobileApp.ViewModels;
 using Microsoft.Maui.Layouts;
 
 namespace Inventory.MobileApp.Pages;
 
 public class DashboardPage : BasePage
 {
-	private readonly ScrollView _Scroll = new();
+	private readonly DashboardViewModel _DashboardVM;
+	private readonly RefreshView _Refresh = new();
 	private readonly FlexLayout _ContentLayout = new()
 	{
 		Direction = FlexDirection.Row,
 		JustifyContent = FlexJustify.Center,
 		Wrap = FlexWrap.Wrap,
-	};
-	private readonly DashboardTile _InventoryTile = new();
-	private readonly DashboardTile _EmployeeTile = new();
-	private readonly DashboardTile _StatusTile = new();
-	private readonly DashboardTile _LocationsTile = new();
-	private readonly DashboardTile _BarcodesTile = new();
-	private readonly DashboardTile _QuantityTypesTile = new();	
+        Padding = new Thickness(0, 0, 0, 0),
+		Margin = new Thickness(0, 0, 0, 0),
+    };
 
-	public DashboardPage()
+	public DashboardPage(DashboardViewModel dashboardViewModel)
 	{
+		_DashboardVM = dashboardViewModel;
+
 		Title = LanguageService.Instance["Dashboard"];
 
 		ToolbarItems.Add(new ToolbarItem
@@ -39,29 +41,27 @@ public class DashboardPage : BasePage
 			IconImageSource = UIService.MaterialIcon(MaterialIcon.Logout, 21, Colors.White),
 			Command = new Command(SessionService.LogOut)
 		});
+		_Refresh.Command = new Command(ReloadDashboard);
+		BindableLayout.SetItemTemplate(_ContentLayout, new DataTemplate(() =>
+		{
+			var view = new DashboardTile();
+			view.SetBinding(BindingContextProperty, ".");
+			view.SetBinding(DashboardTile.CountProperty, "Count");
+			view.SetBinding(DashboardTile.TitleProperty, "Name");
+            view.Clicked += DashTileClicked;
 
-		_InventoryTile.Title = LanguageService.Instance["Inventory"];
-		_EmployeeTile.Title = LanguageService.Instance["Employees"];
-		_StatusTile.Title = LanguageService.Instance["Statuses"];
-		_BarcodesTile.Title = LanguageService.Instance["Barcodes"];
-		_LocationsTile.Title = LanguageService.Instance["Locations"];
-		_QuantityTypesTile.Title = LanguageService.Instance["Qty Types"];
-
-		_ContentLayout.Add(_InventoryTile);
-		_ContentLayout.Add(_EmployeeTile);
-		_ContentLayout.Add(_StatusTile);
-		_ContentLayout.Add(_BarcodesTile);
-		_ContentLayout.Add(_LocationsTile);
-		_ContentLayout.Add(_QuantityTypesTile);
-
-		_Scroll.Content = _ContentLayout;
-		Content = _Scroll;
+			return view;
+		}));
+		
+		_Refresh.Content = _ContentLayout;
+		Content = _Refresh;
 	}
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
 		LanguageChanged += UpdateLanguageStrings;
+		_Refresh.IsRefreshing = true;
     }
 
     protected override void OnDisappearing()
@@ -73,5 +73,37 @@ public class DashboardPage : BasePage
 	private void UpdateLanguageStrings(object? sender, EventArgs e)
 	{
 		Title = LanguageService.Instance["Dashboard"];
+		_DashboardVM.UpdateDashboardNames();
 	}
+
+	private async void ReloadDashboard()
+	{
+		BindableLayout.SetItemsSource(_ContentLayout, new List<DashboardItem>());
+		await _DashboardVM.LoadDashboard();
+		BindableLayout.SetItemsSource(_ContentLayout, _DashboardVM.DashboardItems);
+		_Refresh.IsRefreshing = false;
+	}
+
+    private void DashTileClicked(object? sender, EventArgs e)
+    {
+		if (sender is DashboardTile tile && tile.BindingContext is DashboardItem item)
+		{
+            switch (item.Type)
+            {
+                case DashboardItemType.Inventory:
+                    break;
+                case DashboardItemType.Employees:
+                    break;
+                case DashboardItemType.Statuses:
+					Navigation.PushAsync(PageService.StatusSearch());
+                    break;
+                case DashboardItemType.Locations:
+                    break;
+                case DashboardItemType.QuantityTypes:
+                    break;
+                case DashboardItemType.Unknown:
+                    break;
+            }
+        }
+    }
 }
