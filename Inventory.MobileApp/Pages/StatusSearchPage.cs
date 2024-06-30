@@ -1,4 +1,4 @@
-﻿using Inventory.API.Models;
+﻿using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Controls;
 using Inventory.MobileApp.Services;
 using Inventory.MobileApp.ViewModels;

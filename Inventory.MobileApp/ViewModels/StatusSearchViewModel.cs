@@ -1,6 +1,5 @@
-﻿using Inventory.API.Models;
+﻿using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Controls;
-using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 
 namespace Inventory.MobileApp.ViewModels;

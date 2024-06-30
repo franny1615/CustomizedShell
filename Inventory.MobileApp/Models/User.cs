@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Inventory.API.Models;
+namespace Inventory.MobileApp.Models;
 
 public class User
 {
