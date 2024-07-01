@@ -10,13 +10,13 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="GenCode128" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="3.0.1" />
-	<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.15.1" />
-	<PackageReference Include="Microsoft.ML.OnnxTransformer" Version="2.0.1" />
+	<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.18.1" />
+	<PackageReference Include="Microsoft.ML.OnnxTransformer" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>
