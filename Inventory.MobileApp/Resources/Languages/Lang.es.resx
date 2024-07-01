@@ -281,4 +281,19 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Enter the status description below." xml:space="preserve">
     <value>Ingrese la descripción del estado.</value>
   </data>
+  <data name="Add Location" xml:space="preserve">
+    <value>Agregar Lugar</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="Enter the location description below." xml:space="preserve">
+    <value>Ingrese la descripción de la ubicación.</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Opciones</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Imprimir</value>
+  </data>
 </root>

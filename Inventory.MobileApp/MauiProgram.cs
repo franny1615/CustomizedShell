@@ -13,6 +13,9 @@ using CoreAnimation;
 using CoreGraphics;
 #endif
 
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using SkiaSharp.Views.Maui.Controls;
+
 namespace Inventory.MobileApp;
 public static class MauiProgram
 {
@@ -25,6 +28,7 @@ public static class MauiProgram
 			.UseMauiCommunityToolkitCore()
 			.UseMauiCommunityToolkitMarkup()
 			.UseMauiCompatibility()
+            .UseSkiaSharp()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("MaterialIcons-Regular.ttf", nameof(MaterialIcon));

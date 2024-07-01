@@ -282,4 +282,19 @@ Would you like to share the error with us?</value>
   <data name="Enter the status description below." xml:space="preserve">
     <value>Enter the status description below.</value>
   </data>
+  <data name="Add Location" xml:space="preserve">
+    <value>Add Location</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Enter the location description below." xml:space="preserve">
+    <value>Enter the location description below.</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
 </root>

@@ -1,0 +1,107 @@
+﻿using Inventory.MobileApp.Controls;
+using Inventory.MobileApp.Services;
+using Inventory.MobileApp.ViewModels;
+using Location = Inventory.MobileApp.Models.Location;
+
+namespace Inventory.MobileApp.Pages;
+
+public class LocationSearchPage : BasePage
+{
+    private readonly LocationSearchViewModel _ViewModel;
+    private readonly SearchView<Location> _Search;
+
+    public LocationSearchPage(LocationSearchViewModel locationSearchViewModel)
+    {
+        Title = LanguageService.Instance["Locations"];
+
+        _ViewModel = locationSearchViewModel;
+        _Search = new(locationSearchViewModel);
+        _Search.SearchLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 12 };
+        _Search.CardTemplate = new DataTemplate(() =>
+        {
+            var view = new LocationCardView();
+            view.SetBinding(BindingContextProperty, ".");
+            view.SetBinding(LocationCardView.DescriptionProperty, "Description");
+            view.SetBinding(LocationCardView.BarcodeProperty, "Barcode");
+            view.Clicked += DisplayLocationOptions;
+
+            return view;
+        });
+        _Search.AddItem += AddLocation;
+
+        Content = _Search;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _Search.TriggerRefresh();
+    }
+
+    private async void DisplayLocationOptions(object? sender, EventArgs e)
+    {
+        if (sender is LocationCardView card && card.BindingContext is Location location)
+        {
+            string delete = LanguageService.Instance["Delete"];
+            string print = LanguageService.Instance["Print"];
+            string choice = await DisplayActionSheet(
+                LanguageService.Instance["Options"],
+                null,
+                LanguageService.Instance["Cancel"],
+                [
+                    delete,
+                    print
+                ]);
+
+            if (choice == delete)
+            {
+                Delete(location);
+            }
+            else if (choice == print)
+            {
+                // TODO: 
+            }
+        }
+    }
+
+    private async void Delete(Location location)
+    {
+        _Search.IsLoading = true;
+
+        var response = await _ViewModel.DeleteLocation(location.Id);
+        if (!string.IsNullOrEmpty(response.ErrorMessage))
+        {
+            _Search.IsLoading = false;
+            this.DisplayCommonError(response.ErrorMessage);
+            return;
+        }
+
+        _Search.TriggerRefresh();
+        _Search.IsLoading = false; // fail safe
+    }
+
+    private async void AddLocation(object? sender, EventArgs e)
+    {
+        string location = await DisplayPromptAsync(
+            LanguageService.Instance["Add Location"],
+            LanguageService.Instance["Enter the location description below."],
+            LanguageService.Instance["OK"],
+            LanguageService.Instance["Cancel"]);
+
+        if (string.IsNullOrEmpty(location)) // canceled or entered empty text, don't do anything.
+            return;
+
+        _Search.IsLoading = true;
+
+        var response = await _ViewModel.InsertLocation(location);
+        if (!string.IsNullOrEmpty(response.ErrorMessage))
+        {
+            _Search.IsLoading = false;
+            this.DisplayCommonError(response.ErrorMessage);
+            return;
+        }
+
+        _Search.TriggerRefresh();
+        _Search.IsLoading = false; // fail safe
+    }
+}

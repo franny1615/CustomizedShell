@@ -24,4 +24,9 @@ public static class PageService
     {
         return new StatusSearchPage(new StatusSearchViewModel());
     }
+
+    public static LocationSearchPage LocationSearch()
+    {
+        return new LocationSearchPage(new LocationSearchViewModel());
+    }
 }

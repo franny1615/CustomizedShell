@@ -98,6 +98,7 @@ public class DashboardPage : BasePage
 					Navigation.PushAsync(PageService.StatusSearch());
                     break;
                 case DashboardItemType.Locations:
+					Navigation.PushAsync(PageService.LocationSearch());
                     break;
                 case DashboardItemType.QuantityTypes:
                     break;

@@ -70,6 +70,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Location.
+        /// </summary>
+        internal static string Add_Location {
+            get {
+                return ResourceManager.GetString("Add Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Status.
         /// </summary>
         internal static string Add_Status {
@@ -205,6 +214,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         internal static string Email {
@@ -275,6 +293,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Enter_Credentials {
             get {
                 return ResourceManager.GetString("Enter Credentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the location description below..
+        /// </summary>
+        internal static string Enter_the_location_description_below_ {
+            get {
+                return ResourceManager.GetString("Enter the location description below.", resourceCulture);
             }
         }
         
@@ -406,6 +433,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        internal static string Options {
+            get {
+                return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string Password {
@@ -429,6 +465,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Please_enter_a_unique_username_ {
             get {
                 return ResourceManager.GetString("Please enter a unique username.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        internal static string Print {
+            get {
+                return ResourceManager.GetString("Print", resourceCulture);
             }
         }
         

@@ -48,7 +48,8 @@ public class SearchView<T> : ContentView
         CornerRadius = 30,
         Padding = 0,
         HeightRequest = 60,
-        WidthRequest = 60
+        WidthRequest = 60,
+        ZIndex = 999
     };
     private readonly Button _NextButton = new()
     {
