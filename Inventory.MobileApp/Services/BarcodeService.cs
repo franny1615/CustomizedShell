@@ -134,8 +134,21 @@ public static class BarcodeService
         // set to white so we don't have to fill the spaces with white
         canvas.Clear(SKColors.White);
 
-        // skip quiet zone
-        var cursor = 8;
+        // calculate total barcode width
+        int totalWidth = 0;
+        for (var codeIdx = 0; codeIdx < codes.Length; codeIdx++)
+        {
+            var code = codes[codeIdx];
+            for (var bar = 0; bar < 8; bar += 2)
+            {
+                var barWidth = CPatterns[code, bar] * barWeight;
+                var spcWidth = CPatterns[code, bar + 1] * barWeight;
+                totalWidth += barWidth + spcWidth;
+            }
+        }
+
+        // calculate starting position of the cursor to center barcode
+        var cursor = (width - totalWidth) / 2;
 
         for (var codeIdx = 0; codeIdx < codes.Length; codeIdx++)
         {
@@ -159,9 +172,6 @@ public static class BarcodeService
                     SKRect rect = new SKRect(cursor, 0, cursor + barWidth, height - 32);
                     canvas.DrawRect(rect, paint);
                 }
-
-                // note that we never need to draw the space, since we 
-                // initialized the graphics to all white
 
                 // advance cursor beyond this pair
                 cursor += barWidth + spcWidth;
