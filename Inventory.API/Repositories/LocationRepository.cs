@@ -59,8 +59,17 @@ and CompanyId = @companyId";
         int companyId)
     {
         var result = new RepoResult<SearchResult<Location>>();
-        try 
+        try
         {
+            string barcodeSearch = "";
+            if (int.TryParse(request.Search, out int barcode))
+            {
+                barcodeSearch = $"and Barcode = {barcode}";
+            }
+            else
+            {
+                barcodeSearch = "and [Description] LIKE @search+'%'";
+            }
             string query = $@"
 declare 
 @companyId int = {companyId},
@@ -74,7 +83,7 @@ select
     Barcode
 from location 
 where CompanyId = @companyId
-and [Description] LIKE @search+'%'
+{barcodeSearch}
 order by Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
