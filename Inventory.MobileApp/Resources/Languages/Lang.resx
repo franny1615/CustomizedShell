@@ -300,4 +300,13 @@ Would you like to share the error with us?</value>
   <data name="Share Barcode" xml:space="preserve">
     <value>Share Barcode</value>
   </data>
+  <data name="Add Quantity Type" xml:space="preserve">
+    <value>Add Quantity Type</value>
+  </data>
+  <data name="Enter the quantity type below." xml:space="preserve">
+    <value>Enter the quantity type below.</value>
+  </data>
+  <data name="Quantity Types" xml:space="preserve">
+    <value>Quantity Types</value>
+  </data>
 </root>

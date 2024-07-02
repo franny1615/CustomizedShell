@@ -299,4 +299,13 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Share Barcode" xml:space="preserve">
     <value>Compartir código de barra</value>
   </data>
+  <data name="Add Quantity Type" xml:space="preserve">
+    <value>Agregar tipo de cantidad</value>
+  </data>
+  <data name="Enter the quantity type below." xml:space="preserve">
+    <value>Ingrese el tipo de cantidad.</value>
+  </data>
+  <data name="Quantity Types" xml:space="preserve">
+    <value>Tipos de cantidad</value>
+  </data>
 </root>

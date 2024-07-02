@@ -79,6 +79,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Quantity Type.
+        /// </summary>
+        internal static string Add_Quantity_Type {
+            get {
+                return ResourceManager.GetString("Add Quantity Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Status.
         /// </summary>
         internal static string Add_Status {
@@ -306,6 +315,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the quantity type below..
+        /// </summary>
+        internal static string Enter_the_quantity_type_below_ {
+            get {
+                return ResourceManager.GetString("Enter the quantity type below.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the status description below..
         /// </summary>
         internal static string Enter_the_status_description_below_ {
@@ -487,6 +505,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quantity Types.
+        /// </summary>
+        internal static string Quantity_Types {
+            get {
+                return ResourceManager.GetString("Quantity Types", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         internal static string Register {
@@ -528,6 +555,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Share {
             get {
                 return ResourceManager.GetString("Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share Barcode.
+        /// </summary>
+        internal static string Share_Barcode {
+            get {
+                return ResourceManager.GetString("Share Barcode", resourceCulture);
             }
         }
         
@@ -591,12 +627,6 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Zip {
             get {
                 return ResourceManager.GetString("Zip", resourceCulture);
-            }
-        }
-
-        internal static string Share_Barcode {
-            get {
-                return ResourceManager.GetString("Share Barcode", resourceCulture);
             }
         }
     }

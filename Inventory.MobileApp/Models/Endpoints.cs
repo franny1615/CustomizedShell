@@ -20,4 +20,7 @@ public static class Endpoints
     public const string searchLocation = "api/location/search";
     public const string insertLocation = "api/location/insert";
     public const string deleteLocation = "api/location/delete";
+    public const string searchQtyType = "api/quantityType/search";
+    public const string insertQtyType = "api/quantityType/insert";
+    public const string deleteQtyType = "api/quantityType/delete";
 }

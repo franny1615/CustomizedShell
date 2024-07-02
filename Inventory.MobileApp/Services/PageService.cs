@@ -29,4 +29,9 @@ public static class PageService
     {
         return new LocationSearchPage(new LocationSearchViewModel());
     }
+
+    public static QuantityTypesSearchPage QuantityTypesSearch()
+    {
+        return new QuantityTypesSearchPage(new QuantityTypesSearchViewModel());
+    }
 }

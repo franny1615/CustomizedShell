@@ -16,9 +16,9 @@ public class QuantityTypesController(
     [Route("details")]
     [ProducesResponseType<QuantityType>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetDetails([FromQuery] int statusId)
+    public async Task<IActionResult> GetDetails([FromQuery] int qtyId)
     {
-        var repoResult = await qtyTypeRepo.Get(statusId, CompanyId);
+        var repoResult = await qtyTypeRepo.Get(qtyId, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
@@ -46,9 +46,9 @@ public class QuantityTypesController(
     [Route("delete")]
     [ProducesResponseType<bool>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Delete([FromQuery] int statusId)
+    public async Task<IActionResult> Delete([FromQuery] int qtyId)
     {
-        var repoResult = await qtyTypeRepo.Delete(statusId, CompanyId);
+        var repoResult = await qtyTypeRepo.Delete(qtyId, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
