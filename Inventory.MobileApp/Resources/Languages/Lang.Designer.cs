@@ -593,5 +593,11 @@ namespace Inventory.MobileApp.Resources.Languages {
                 return ResourceManager.GetString("Zip", resourceCulture);
             }
         }
+
+        internal static string Share_Barcode {
+            get {
+                return ResourceManager.GetString("Share Barcode", resourceCulture);
+            }
+        }
     }
 }

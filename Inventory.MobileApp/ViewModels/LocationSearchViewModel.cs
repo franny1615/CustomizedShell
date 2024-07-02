@@ -49,7 +49,7 @@ public class LocationSearchViewModel : ISearchViewModel<Location>
         return await NetworkService.Post<int>(Endpoints.insertLocation, new
         {
             Description = description,
-            Barcode = $"{RAND.Next(100000, 999999)}"
+            Barcode = $"{RAND.Next(1000000, 9999999)}"
         });
     }
 

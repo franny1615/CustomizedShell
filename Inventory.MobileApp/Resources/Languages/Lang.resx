@@ -297,4 +297,7 @@ Would you like to share the error with us?</value>
   <data name="Print" xml:space="preserve">
     <value>Print</value>
   </data>
+  <data name="Share Barcode" xml:space="preserve">
+    <value>Share Barcode</value>
+  </data>
 </root>

@@ -46,8 +46,8 @@ public class LocationSearchPage : BasePage
             string print = LanguageService.Instance["Print"];
             string choice = await DisplayActionSheet(
                 LanguageService.Instance["Options"],
-                null,
                 LanguageService.Instance["Cancel"],
+                null,
                 [
                     delete,
                     print
@@ -59,16 +59,13 @@ public class LocationSearchPage : BasePage
             }
             else if (choice == print)
             {
-                card.GetBarcodeImage(async (image) =>
-                {
-                    string path = Path.Combine(FileSystem.CacheDirectory, "barcode.png");
-                    File.WriteAllBytes(path, image);
+                string path = Path.Combine(FileSystem.CacheDirectory, "barcode.png");
+                    File.WriteAllBytes(path, card.CurrentBarcode);
                     await Share.Default.RequestAsync(new ShareFileRequest
                     {
                         Title = LanguageService.Instance["Share Barcode"],
                         File = new ShareFile(path)
                     });
-                });
             }
         }
     }

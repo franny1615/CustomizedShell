@@ -21,6 +21,8 @@ public class LocationCardView : Border
     public static readonly BindableProperty BarcodeProperty = BindableProperty.Create(nameof(Barcode), typeof(string), typeof(StatusCardView), null);
     public string Barcode { get => (string)GetValue(BarcodeProperty); set => SetValue(BarcodeProperty, value); }
 
+    public byte[] CurrentBarcode = [];
+
     private readonly Grid _ContentLayout = new()
     {
         RowDefinitions = Rows.Define(24, 90),
@@ -115,22 +117,16 @@ public class LocationCardView : Border
 
     private void PaintBarcode(object? sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
     {
+        if (_Barcode == null || string.IsNullOrEmpty(Barcode))
+            return;
+        
         BarcodeService.DrawCode128Barcode(
             Barcode,
             e.Surface.Canvas,
             e.Info);
-        if (GetImageCompletion != null)
-        {
-            var snap = e.Surface.Snapshot();
-            var image = SKBitmap.Decode(snap.Encode());
-            var data = image.Encode(SKEncodedImageFormat.Png, 100);
-            GetImageCompletion?.Invoke(data.ToArray());
-        }
-    }
 
-    public void GetBarcodeImage(Action<byte[]> imageCompletion)
-    {
-        GetImageCompletion = imageCompletion;
-        _Barcode.InvalidateSurface();
+        var snap = e.Surface.Snapshot();
+        var image = SKBitmap.Decode(snap.Encode());
+        CurrentBarcode = image.Encode(SKEncodedImageFormat.Png, 100).ToArray();
     }
 }

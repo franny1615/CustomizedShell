@@ -296,4 +296,7 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Print" xml:space="preserve">
     <value>Imprimir</value>
   </data>
+  <data name="Share Barcode" xml:space="preserve">
+    <value>Compartir código de barra</value>
+  </data>
 </root>

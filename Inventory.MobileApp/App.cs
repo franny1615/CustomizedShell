@@ -27,12 +27,15 @@ public partial class App : Application
 		WeakReferenceMessenger.Default.UnregisterAll(this);
 	}
 
-	private void CheckAppStateOn(InternalMessage message)
+	private void CheckAppStateOn(InternalMessage message, bool fromOnResume = false)
 	{
 		if (message == InternalMessage.LoggedIn)
 		{
-			SessionService.IsFirstInstall = false;
-			MainPage = new NavigationPage(PageService.Dashboard());
+			if (!fromOnResume) 
+			{
+				SessionService.IsFirstInstall = false;
+				MainPage = new NavigationPage(PageService.Dashboard());
+			}
 		}
 		else if (message == InternalMessage.LoggedOut)
 		{
@@ -48,9 +51,9 @@ public partial class App : Application
 			if (SessionService.IsFirstInstall)
 				MainPage = new NavigationPage(PageService.Login());
 			else if (SessionService.IsAuthValid()) 
-				CheckAppStateOn(InternalMessage.LoggedIn);
+				CheckAppStateOn(InternalMessage.LoggedIn, fromOnResume);
 			else 
-				CheckAppStateOn(InternalMessage.LoggedOut);
+				CheckAppStateOn(InternalMessage.LoggedOut, fromOnResume);
 		}
 	}
 
@@ -67,6 +70,6 @@ public partial class App : Application
 	private void WindowStopped(object? sender, EventArgs e) { }
 	private void WindowResumed(object? sender, EventArgs e)
 	{
-		CheckAppStateOn(InternalMessage.CheckAuth);
+		CheckAppStateOn(InternalMessage.CheckAuth, true);
 	}
 }

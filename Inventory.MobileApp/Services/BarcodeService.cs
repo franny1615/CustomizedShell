@@ -121,8 +121,7 @@ public static class BarcodeService
     public static void DrawCode128Barcode(
         string inputData, 
         SKCanvas canvas, 
-        SKImageInfo info,
-        bool addQuietZone = false, 
+        SKImageInfo info, 
         int barWeight = 5)
     {
         // get the Code128 codes to represent the message
@@ -132,16 +131,11 @@ public static class BarcodeService
         var width = info.Width;
         var height = info.Height - 32;
 
-        if (addQuietZone)
-        {
-            width += 2 * CQuietWidth * barWeight; // on both sides
-        }
-
         // set to white so we don't have to fill the spaces with white
         canvas.Clear(SKColors.White);
 
         // skip quiet zone
-        var cursor = addQuietZone ? CQuietWidth * barWeight : 0;
+        var cursor = 8;
 
         for (var codeIdx = 0; codeIdx < codes.Length; codeIdx++)
         {
@@ -177,7 +171,15 @@ public static class BarcodeService
         canvas.DrawText(
             inputData, 
             new SKPoint(width * 0.5f, height), 
-            new SKPaint { Style = SKPaintStyle.Fill, Color = SKColors.Black, TextSize = 32, FakeBoldText = true, TextEncoding = SKTextEncoding.Utf8 });
+            new SKPaint 
+            { 
+                Style = SKPaintStyle.Fill, 
+                Color = SKColors.Black, 
+                TextSize = 32, 
+                FakeBoldText = true, 
+                TextEncoding = SKTextEncoding.Utf8,
+                TextAlign = SKTextAlign.Center
+            });
     }
 }
 
