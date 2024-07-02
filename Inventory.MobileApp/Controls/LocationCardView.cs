@@ -23,13 +23,12 @@ public class LocationCardView : Border
 
     private readonly Grid _ContentLayout = new()
     {
-        RowDefinitions = Rows.Define(24, 90, 16),
+        RowDefinitions = Rows.Define(24, 90),
         ColumnDefinitions = Columns.Define(Star, 24),
         RowSpacing = 0,
         ColumnSpacing = 8
     };
     private readonly Label _Description = new Label().Font(size: 16).Bold();
-    private readonly Label _BarcodeStr = new Label().Font(size: 12).Bold().CenterHorizontal().Top();
     private readonly SKCanvasView _Barcode = new SKCanvasView();
     private readonly Image _Kebab = new Image().ApplyMaterialIcon(MaterialIcon.More_vert, 24, Color.FromArgb("#383838"));
     private readonly TouchBehavior _TouchBehavior = new TouchBehavior()
@@ -39,6 +38,7 @@ public class LocationCardView : Border
         PressedOpacity = 0.8,
         PressedScale = 0.95
     };
+    private Action<byte[]>? GetImageCompletion;
 
     public LocationCardView()
     {
@@ -52,8 +52,7 @@ public class LocationCardView : Border
         _Kebab.Behaviors([_TouchBehavior]);
         _ContentLayout.Add(_Description.Row(0).Column(0));
         _ContentLayout.Add(_Barcode.Row(1).Column(0));
-        _ContentLayout.Add(_Kebab.Row(0).RowSpan(3).Column(1).Center());
-        _ContentLayout.Add(_BarcodeStr.Row(2).Column(0));
+        _ContentLayout.Add(_Kebab.Row(0).RowSpan(2).Column(1).Center());
 
         Content = _ContentLayout;
 
@@ -110,7 +109,6 @@ public class LocationCardView : Border
         }
         else if (propertyName == BarcodeProperty.PropertyName)
         {
-            _BarcodeStr.Text = Barcode;
             _Barcode.InvalidateSurface();
         }
     }
@@ -118,8 +116,21 @@ public class LocationCardView : Border
     private void PaintBarcode(object? sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)
     {
         BarcodeService.DrawCode128Barcode(
-            Barcode, 
+            Barcode,
             e.Surface.Canvas,
             e.Info);
+        if (GetImageCompletion != null)
+        {
+            var snap = e.Surface.Snapshot();
+            var image = SKBitmap.Decode(snap.Encode());
+            var data = image.Encode(SKEncodedImageFormat.Png, 100);
+            GetImageCompletion?.Invoke(data.ToArray());
+        }
+    }
+
+    public void GetBarcodeImage(Action<byte[]> imageCompletion)
+    {
+        GetImageCompletion = imageCompletion;
+        _Barcode.InvalidateSurface();
     }
 }

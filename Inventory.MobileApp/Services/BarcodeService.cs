@@ -130,7 +130,7 @@ public static class BarcodeService
         var codes = content.Codes;
 
         var width = info.Width;
-        var height = info.Height;
+        var height = info.Height - 32;
 
         if (addQuietZone)
         {
@@ -162,7 +162,7 @@ public static class BarcodeService
                         Color = SKColors.Black
                     };
 
-                    SKRect rect = new SKRect(cursor, 0, cursor + barWidth, height);
+                    SKRect rect = new SKRect(cursor, 0, cursor + barWidth, height - 32);
                     canvas.DrawRect(rect, paint);
                 }
 
@@ -173,6 +173,11 @@ public static class BarcodeService
                 cursor += barWidth + spcWidth;
             }
         }
+
+        canvas.DrawText(
+            inputData, 
+            new SKPoint(width * 0.5f, height), 
+            new SKPaint { Style = SKPaintStyle.Fill, Color = SKColors.Black, TextSize = 32, FakeBoldText = true, TextEncoding = SKTextEncoding.Utf8 });
     }
 }
 

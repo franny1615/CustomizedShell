@@ -59,7 +59,16 @@ public class LocationSearchPage : BasePage
             }
             else if (choice == print)
             {
-                // TODO: 
+                card.GetBarcodeImage(async (image) =>
+                {
+                    string path = Path.Combine(FileSystem.CacheDirectory, "barcode.png");
+                    File.WriteAllBytes(path, image);
+                    await Share.Default.RequestAsync(new ShareFileRequest
+                    {
+                        Title = LanguageService.Instance["Share Barcode"],
+                        File = new ShareFile(path)
+                    });
+                });
             }
         }
     }
