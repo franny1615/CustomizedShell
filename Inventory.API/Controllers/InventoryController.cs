@@ -1,4 +1,5 @@
-﻿using Inventory.API.Repositories;
+﻿using Inventory.API.Models;
+using Inventory.API.Repositories;
 using Inventory.API.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +44,7 @@ public class InventoryController(
     [HttpDelete]
     [Authorize]
     [Route("delete")]
-    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<DeleteResult>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete([FromQuery] int inventoryId)
     {

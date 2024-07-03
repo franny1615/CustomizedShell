@@ -45,7 +45,7 @@ public class LocationController(
     [HttpDelete]
     [Authorize]
     [Route("delete")]
-    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<DeleteResult>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete([FromQuery] int locationId)
     {

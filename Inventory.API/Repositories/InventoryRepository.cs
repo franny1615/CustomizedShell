@@ -4,9 +4,9 @@ namespace Inventory.API.Repositories;
 
 public class InventoryRepository : BaseRepository, ICrudRepository<Models.Inventory>
 {
-    public async Task<RepoResult<bool>> Delete(int itemId, int companyId)
+    public async Task<RepoResult<DeleteResult>> Delete(int itemId, int companyId)
     {
-        var result = new RepoResult<bool>();
+        var result = new RepoResult<DeleteResult>();
         try
         {
             string query = $@"
@@ -18,7 +18,7 @@ delete from inventory
 where CompanyId = @companyId
 and Id = @invId;";
             await QueryAsync<object>(query);
-            result.Data = true;
+            result.Data = DeleteResult.SuccesfullyDeleted;
         }
         catch (Exception ex)
         {

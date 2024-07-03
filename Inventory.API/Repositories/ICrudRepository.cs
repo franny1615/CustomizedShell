@@ -6,7 +6,7 @@ public interface ICrudRepository<T>
 {
     public Task<RepoResult<int>> Insert(T item, int companyId);
     public Task<RepoResult<bool>> Update(T item, int companyId);
-    public Task<RepoResult<bool>> Delete(int itemId, int companyId);
+    public Task<RepoResult<DeleteResult>> Delete(int itemId, int companyId);
     public Task<RepoResult<T>> Get(int id, int companyId);
     public Task<RepoResult<SearchResult<T>>> Get(SearchRequest request, int companyId);
 }

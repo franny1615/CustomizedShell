@@ -4,12 +4,23 @@ namespace Inventory.API.Repositories;
 
 public class StatusRepository : BaseRepository, ICrudRepository<Status>
 {
-    public async Task<RepoResult<bool>> Delete(int itemId, int companyId)
+    public async Task<RepoResult<DeleteResult>> Delete(int itemId, int companyId)
     {
-        var result = new RepoResult<bool>();
+        var result = new RepoResult<DeleteResult>();
         try 
         {
-            string query = $@"
+            string checkIfLinkedQuery = $@"
+select inventory.Id
+from [status]
+inner join inventory on inventory.StatusId = [status].Id";
+            var response = await QueryAsync<object>(checkIfLinkedQuery);
+            if (response.Count() > 0)
+            {
+                result.Data = DeleteResult.LinkedToOtherItems;
+            }
+            else
+            {
+                string query = $@"
 declare 
 @statusId int = {itemId},
 @companyId int = {companyId};
@@ -17,8 +28,9 @@ declare
 delete from status 
 where Id = @statusId
 and CompanyId = @companyId;";
-            await QueryAsync<object>(query);
-            result.Data = true;
+                await QueryAsync<object>(query);
+                result.Data = DeleteResult.SuccesfullyDeleted;
+            }
         }
         catch (Exception ex)
         {
