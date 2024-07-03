@@ -1,4 +1,5 @@
 ﻿using Inventory.MobileApp.Controls;
+using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 using Inventory.MobileApp.ViewModels;
 using Location = Inventory.MobileApp.Models.Location;
@@ -82,7 +83,19 @@ public class LocationSearchPage : BasePage
             return;
         }
 
-        _Search.TriggerRefresh();
+        switch(response.Data)
+        {
+            case DeleteResult.SuccesfullyDeleted:
+                _Search.TriggerRefresh();
+                break;
+            case DeleteResult.LinkedToOtherItems:
+                await DisplayAlert(
+                    LanguageService.Instance["In Use"], 
+                    $"{location.Description} - {LanguageService.Instance["is in use in at least one inventory item"]}.", 
+                    LanguageService.Instance["OK"]);
+                break;
+        }
+        
         _Search.IsLoading = false; // fail safe
     }
 

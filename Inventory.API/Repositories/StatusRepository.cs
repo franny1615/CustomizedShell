@@ -12,7 +12,7 @@ public class StatusRepository : BaseRepository, ICrudRepository<Status>
             string checkIfLinkedQuery = $@"
 select inventory.Id
 from [status]
-inner join inventory on inventory.StatusId = [status].Id";
+inner join inventory on inventory.StatusId = {itemId}";
             var response = await QueryAsync<object>(checkIfLinkedQuery);
             if (response.Count() > 0)
             {

@@ -309,4 +309,10 @@ Would you like to share the error with us?</value>
   <data name="Quantity Types" xml:space="preserve">
     <value>Quantity Types</value>
   </data>
+  <data name="In Use" xml:space="preserve">
+    <value>In Use</value>
+  </data>
+  <data name="is in use in at least one inventory item" xml:space="preserve">
+    <value>is in use in at least one inventory item</value>
+  </data>
 </root>

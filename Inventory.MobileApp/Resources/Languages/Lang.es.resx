@@ -308,4 +308,10 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Quantity Types" xml:space="preserve">
     <value>Tipos de cantidad</value>
   </data>
+  <data name="In Use" xml:space="preserve">
+    <value>En Uso</value>
+  </data>
+  <data name="is in use in at least one inventory item" xml:space="preserve">
+    <value>esta en uso en por lo menos un articulo de inventario</value>
+  </data>
 </root>

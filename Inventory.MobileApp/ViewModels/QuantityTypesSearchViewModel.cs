@@ -51,11 +51,16 @@ public class QuantityTypesSearchViewModel : ISearchViewModel<QuantityType>
         });
     }
 
-    public async Task<NetworkResponse<bool>> DeleteQtyType(int id)
+    public async Task<NetworkResponse<DeleteResult>> DeleteQtyType(int id)
     {
-        return await NetworkService.Delete<bool>(Endpoints.deleteQtyType, new Dictionary<string, string>
+        return await NetworkService.Delete<DeleteResult>(Endpoints.deleteQtyType, new Dictionary<string, string>
         {
             { "qtyId", id.ToString() }
         });
+    }
+
+    public async Task<NetworkResponse<bool>> UpdateQtyType(QuantityType qtyType)
+    {
+        return await NetworkService.Post<bool>(Endpoints.updateQtyType, qtyType);
     }
 }

@@ -50,11 +50,16 @@ public class StatusSearchViewModel : ISearchViewModel<Status>
         });
     }
 
-    public async Task<NetworkResponse<bool>> DeleteStatus(int id)
+    public async Task<NetworkResponse<DeleteResult>> DeleteStatus(int id)
     {
-        return await NetworkService.Delete<bool>(Endpoints.deleteStatus, new Dictionary<string, string>
+        return await NetworkService.Delete<DeleteResult>(Endpoints.deleteStatus, new Dictionary<string, string>
         {
             { "statusId", id.ToString() }
         });
+    }
+
+    public async Task<NetworkResponse<bool>> UpdateStatus(Status status)
+    {
+        return await NetworkService.Post<bool>(Endpoints.updateStatus, status);
     }
 }

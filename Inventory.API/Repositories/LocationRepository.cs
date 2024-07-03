@@ -12,7 +12,7 @@ public class LocationRepository : BaseRepository, ICrudRepository<Location>
             string checkIfLinkedQuery = $@"
 select inventory.Id
 from [location]
-inner join inventory on inventory.LocationId = location.Id";
+inner join inventory on inventory.LocationId = {itemId}";
             var response = await QueryAsync<object>(checkIfLinkedQuery);
             if (response.Count() > 0)
             {

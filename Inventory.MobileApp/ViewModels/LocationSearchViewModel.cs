@@ -53,11 +53,16 @@ public class LocationSearchViewModel : ISearchViewModel<Location>
         });
     }
 
-    public async Task<NetworkResponse<bool>> DeleteLocation(int id)
+    public async Task<NetworkResponse<DeleteResult>> DeleteLocation(int id)
     {
-        return await NetworkService.Delete<bool>(Endpoints.deleteLocation, new Dictionary<string, string>
+        return await NetworkService.Delete<DeleteResult>(Endpoints.deleteLocation, new Dictionary<string, string>
         {
             { "locationId", id.ToString() } 
         });
+    }
+
+    public async Task<NetworkResponse<bool>> UpdateLocation(Location location)
+    {
+        return await NetworkService.Post<bool>(Endpoints.updateLocation, location);
     }
 }

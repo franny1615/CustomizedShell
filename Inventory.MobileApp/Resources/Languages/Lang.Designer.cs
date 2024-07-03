@@ -361,6 +361,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In Use.
+        /// </summary>
+        internal static string In_Use {
+            get {
+                return ResourceManager.GetString("In Use", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Incorrect username/password. Please try again..
         /// </summary>
         internal static string Incorrect_username_password__Please_try_again_ {
@@ -384,6 +393,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Inventory_Management {
             get {
                 return ResourceManager.GetString("Inventory Management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is in use in at least one inventory item.
+        /// </summary>
+        internal static string is_in_use_in_at_least_one_inventory_item {
+            get {
+                return ResourceManager.GetString("is in use in at least one inventory item", resourceCulture);
             }
         }
         

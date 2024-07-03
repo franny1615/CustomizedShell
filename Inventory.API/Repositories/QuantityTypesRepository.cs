@@ -12,7 +12,7 @@ public class QuantityTypesRepository : BaseRepository, ICrudRepository<QuantityT
             string checkIfLinkedQuery = $@"
 select inventory.Id
 from [quantity_type]
-inner join inventory on inventory.QtyTypeId = [quantity_type].Id";
+inner join inventory on inventory.QtyTypeId = {itemId}";
             var response = await QueryAsync<object>(checkIfLinkedQuery);
             if (response.Count() > 0)
             {
