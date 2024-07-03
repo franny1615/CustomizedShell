@@ -24,4 +24,10 @@ public class Inventory
     public DateTime? LastEditedOn { get; set; } = null;
     [JsonPropertyName("createdOn")]
     public DateTime? CreatedOn { get; set; } = null;
+    [JsonPropertyName("qtyTypeID")]
+    public int QtyTypeID { get; set; } = -1;
+    [JsonPropertyName("locationID")]
+    public int LocationID { get; set; } = -1;
+    [JsonPropertyName("statusID")]
+    public int StatusID { get; set; } = -1;
 }

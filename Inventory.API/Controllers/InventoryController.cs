@@ -60,9 +60,9 @@ public class InventoryController(
     [Route("insert")]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Insert([FromBody] Models.Inventory qtyType)
+    public async Task<IActionResult> Insert([FromBody] Models.Inventory inventory)
     {
-        var repoResult = await inventoryRepo.Insert(qtyType, CompanyId);
+        var repoResult = await inventoryRepo.Insert(inventory, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);
@@ -75,9 +75,9 @@ public class InventoryController(
     [Route("update")]
     [ProducesResponseType<bool>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Update([FromBody] Models.Inventory qtyType)
+    public async Task<IActionResult> Update([FromBody] Models.Inventory inventory)
     {
-        var repoResult = await inventoryRepo.Update(qtyType, CompanyId);
+        var repoResult = await inventoryRepo.Update(inventory, CompanyId);
         if (!string.IsNullOrEmpty(repoResult.ErrorMessage))
         {
             return Resp.ErrorRespose(repoResult.ErrorMessage);

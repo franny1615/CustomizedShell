@@ -2,12 +2,12 @@ CREATE TABLE inventory
 (
     Id           INT NOT NULL IDENTITY PRIMARY KEY,
     CompanyId    INT NOT NULL FOREIGN KEY REFERENCES company(Id),
+    StatusId     INT NOT NULL FOREIGN KEY REFERENCES status(Id),
+    LocationId   INT NOT NULL FOREIGN KEY REFERENCES location(Id),
+    QtyTypeId    INT NOT NULL FOREIGN KEY REFERENCES quantity_type(Id),
     Description  NVARCHAR(1024) NOT NULL DEFAULT '',
-    Status       NVARCHAR(300)  NOT NULL DEFAULT '',
     Quantity     INT NOT NULL DEFAULT 0,
-    QuantityType NVARCHAR(124)  NOT NULL DEFAULT '',
     Barcode      NVARCHAR(300)  NOT NULL DEFAULT '',
-    Location     NVARCHAR(300)  NOT NULL DEFAULT '',
     LastEditedOn DATETIME NOT NULL DEFAULT GETDATE(),
     CreatedOn    DATETIME NOT NULL DEFAULT GETDATE()
 );

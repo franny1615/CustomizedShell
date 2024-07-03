@@ -38,19 +38,25 @@ declare
 @companyId int = {companyId};
 
 select 
-    Id,
-    CompanyId,
-    Description,
-    Status,
+    inventory.Id,
+    inventory.CompanyId,
+    inventory.[Description],
+    status.[Description] as Status,
     Quantity,
-    QuantityType,
-    Barcode,
-    Location,
+    quantity_type.[Description] as QuantityType,
+    inventory.Barcode,
+    [location].[Description] as Location,
     LastEditedOn,
-    CreatedOn
-from inventory
-where Id = @invId
-and CompanyId = @companyId";
+    CreatedOn,
+    QtyTypeId,
+    LocationId,
+    StatusId
+from inventory 
+inner join [status] on status.Id = inventory.StatusId
+inner join [location] on [location].Id = inventory.LocationId
+inner join [quantity_type] on quantity_type.Id = inventory.QtyTypeId
+where inventory.CompanyId = @companyId
+and inventory.Id = @invId";
             result.Data = (await QueryAsync<Models.Inventory>(query)).First();
         }
         catch (Exception ex)
@@ -72,24 +78,30 @@ declare
 @page int = {request.Page},
 @pageSize int = {request.PageSize};
 select 
-    Id,
-    CompanyId,
-    Description,
-    Status,
+    inventory.Id,
+    inventory.CompanyId,
+    inventory.[Description],
+    status.[Description] as Status,
     Quantity,
-    QuantityType,
-    Barcode,
-    Location,
+    quantity_type.[Description] as QuantityType,
+    inventory.Barcode,
+    [location].[Description] as Location,
     LastEditedOn,
-    CreatedOn
+    CreatedOn,
+    QtyTypeId,
+    LocationId,
+    StatusId
 from inventory 
-where CompanyId = @companyId
-and [Description] LIKE @search+'%'
-order by Id desc 
+inner join [status] on status.Id = inventory.StatusId
+inner join [location] on [location].Id = inventory.LocationId
+inner join [quantity_type] on quantity_type.Id = inventory.QtyTypeId
+where inventory.CompanyId = @companyId
+and inventory.[Description] LIKE @search+'%'
+order by inventory.Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
             var items = (await QueryAsync<Models.Inventory>(query)).ToList();
-            string totalQuery = $@"select COUNT(*) from location;";
+            string totalQuery = $@"select COUNT(*) from inventory;";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new()
@@ -114,33 +126,33 @@ fetch next @pageSize rows only";
 declare 
 @companyId int = {companyId},
 @description nvarchar(max) = '{item.Description}',
-@status nvarchar(max) = '{item.Status}',
 @quantity int = {item.Quantity},
-@quantityType nvarchar(max) = '{item.QuantityType}',
-@barcode nvarchar(max) = '{item.Barcode}',
-@location nvarchar(max) = '{item.Location}';
+@barcode int = {item.Barcode},
+@quantityType int = {item.QtyTypeID},
+@status int = {item.StatusID},
+@location int = '{item.LocationID}';
 
 insert into inventory
 (
     CompanyId,
+    StatusId,
+    LocationId,
+    QtyTypeId,
     [Description],
-    Status,
     Quantity,
-    QuantityType,
     Barcode,
-    Location,
     LastEditedOn,
     CreatedOn
 )
 values 
 (
     @companyId,
-    @description,
     @status,
-    @quantity,
-    @quantityType,
-    @barcode,
     @location,
+    @quantityType,
+    @description,
+    @quantity,
+    @barcode,
     GETDATE(),
     GETDATE()
 );
@@ -162,21 +174,22 @@ select SCOPE_IDENTITY();";
         {
             string query = $@"
 declare 
-@invId = {item.Id},
+@invId int = {item.Id},
+@companyId int = {companyId},
 @description nvarchar(max) = '{item.Description}',
-@status nvarchar(max) = '{item.Status}',
 @quantity int = {item.Quantity},
-@quantityType nvarchar(max) = '{item.QuantityType}',
-@barcode nvarchar(max) = '{item.Barcode}',
-@location nvarchar(max) = '{item.Location}';
+@barcode int = {item.Barcode},
+@quantityType int = {item.QtyTypeID},
+@status int = {item.StatusID},
+@location int = '{item.LocationID}';
 
 update inventory set 
     [Description] = @description,
-    Status = @status,
+    StatusId = @status,
     Quantity = @quantity,
-    QuantityType = @quantityType,
+    QtyTypeId = @quantityType,
     Barcode = @barcode,
-    Location = @location,
+    LocationId = @location,
     LastEditedOn = GETDATE()
 where CompanyId = @companyId
 and Id = @invId;";
