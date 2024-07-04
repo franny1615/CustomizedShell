@@ -45,18 +45,24 @@ public class LocationSearchPage : BasePage
         {
             string delete = LanguageService.Instance["Delete"];
             string print = LanguageService.Instance["Print"];
+            string edit = LanguageService.Instance["Edit"];
             string choice = await DisplayActionSheet(
                 LanguageService.Instance["Options"],
                 LanguageService.Instance["Cancel"],
                 null,
                 [
                     delete,
-                    print
+                    print,
+                    edit
                 ]);
 
             if (choice == delete)
             {
                 Delete(location);
+            }
+            else if (choice == edit)
+            {
+                EditLocation(location);
             }
             else if (choice == print)
             {
@@ -113,6 +119,33 @@ public class LocationSearchPage : BasePage
         _Search.IsLoading = true;
 
         var response = await _ViewModel.InsertLocation(location);
+        if (!string.IsNullOrEmpty(response.ErrorMessage))
+        {
+            _Search.IsLoading = false;
+            this.DisplayCommonError(response.ErrorMessage);
+            return;
+        }
+
+        _Search.TriggerRefresh();
+        _Search.IsLoading = false; // fail safe
+    }
+
+    private async void EditLocation(Location location)
+    {
+        string loc = await DisplayPromptAsync(
+            LanguageService.Instance["Edit Location"],
+            LanguageService.Instance["Enter the location description below."],
+            LanguageService.Instance["OK"],
+            LanguageService.Instance["Cancel"]);
+
+        if (string.IsNullOrEmpty(loc)) // canceled or entered empty text, don't do anything.
+            return;
+
+        _Search.IsLoading = true;
+
+        location.Description = loc;
+
+        var response = await _ViewModel.UpdateLocation(location);
         if (!string.IsNullOrEmpty(response.ErrorMessage))
         {
             _Search.IsLoading = false;

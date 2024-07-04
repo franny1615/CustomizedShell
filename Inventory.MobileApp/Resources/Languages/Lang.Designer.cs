@@ -232,6 +232,42 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Location.
+        /// </summary>
+        internal static string Edit_Location {
+            get {
+                return ResourceManager.GetString("Edit Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Quantity Type.
+        /// </summary>
+        internal static string Edit_Quantity_Type {
+            get {
+                return ResourceManager.GetString("Edit Quantity Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Status.
+        /// </summary>
+        internal static string Edit_Status {
+            get {
+                return ResourceManager.GetString("Edit Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         internal static string Email {

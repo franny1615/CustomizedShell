@@ -21,6 +21,7 @@ public class StatusSearchPage : BasePage
             view.SetBinding(BindingContextProperty, ".");
             view.SetBinding(StatusCardView.DescriptionProperty, "Description");
             view.Delete += DeleteStatus;
+            view.Edit += UpdateStatus;
             view.Margin = new Thickness(8, 0, 8, 0);
 
             return view;
@@ -83,6 +84,35 @@ public class StatusSearchPage : BasePage
                     break;
             }
 
+            _Search.IsLoading = false; // fail safe
+        }
+    }
+
+    private async void UpdateStatus(object? sender, EventArgs e)
+    {
+        if (sender is StatusCardView card && card.BindingContext is Status status)
+        {
+            string statusStr = await DisplayPromptAsync(
+                LanguageService.Instance["Edit Status"],
+                LanguageService.Instance["Enter the status description below."],
+                LanguageService.Instance["OK"],
+                LanguageService.Instance["Cancel"]);
+
+            if (string.IsNullOrEmpty(statusStr)) // canceled or entered empty text, don't do anything.
+                return;
+
+            _Search.IsLoading = true;
+
+            status.Description = statusStr;
+            var response = await _ViewModel.UpdateStatus(status);
+            if (!string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                _Search.IsLoading = false;
+                this.DisplayCommonError(response.ErrorMessage);
+                return;
+            }
+
+            _Search.TriggerRefresh();
             _Search.IsLoading = false; // fail safe
         }
     }

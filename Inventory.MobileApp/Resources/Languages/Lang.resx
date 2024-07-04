@@ -315,4 +315,16 @@ Would you like to share the error with us?</value>
   <data name="is in use in at least one inventory item" xml:space="preserve">
     <value>is in use in at least one inventory item</value>
   </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Edit Location" xml:space="preserve">
+    <value>Edit Location</value>
+  </data>
+  <data name="Edit Quantity Type" xml:space="preserve">
+    <value>Edit Quantity Type</value>
+  </data>
+  <data name="Edit Status" xml:space="preserve">
+    <value>Edit Status</value>
+  </data>
 </root>

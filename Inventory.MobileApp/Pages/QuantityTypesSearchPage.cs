@@ -21,6 +21,7 @@ public class QuantityTypesSearchPage : BasePage
             view.SetBinding(BindingContextProperty, ".");
             view.SetBinding(QuantityTypeCardView.DescriptionProperty, "Description");
             view.Delete += DeleteQtyType;
+            view.Edit += UpdateQtyType;
             view.Margin = new Thickness(8, 0, 8, 0);
 
             return view;
@@ -83,6 +84,36 @@ public class QuantityTypesSearchPage : BasePage
                     break;
             }
 
+            _Search.IsLoading = false; // fail safe
+        }
+    }
+
+    private async void UpdateQtyType(object? sender, EventArgs e)
+    {
+        if (sender is QuantityTypeCardView card && card.BindingContext is QuantityType qtyType)
+        {
+            string qtyTypeStr = await DisplayPromptAsync(
+                LanguageService.Instance["Edit Quantity Type"],
+                LanguageService.Instance["Enter the quantity type below."],
+                LanguageService.Instance["OK"],
+                LanguageService.Instance["Cancel"]);
+
+            if (string.IsNullOrEmpty(qtyTypeStr)) // canceled or entered empty text, don't do anything.
+                return;
+
+            _Search.IsLoading = true;
+
+            qtyType.Description = qtyTypeStr;
+            var response = await _ViewModel.UpdateQtyType(qtyType);
+
+            if (!string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                _Search.IsLoading = false;
+                this.DisplayCommonError(response.ErrorMessage);
+                return;
+            }
+
+            _Search.TriggerRefresh();
             _Search.IsLoading = false; // fail safe
         }
     }
