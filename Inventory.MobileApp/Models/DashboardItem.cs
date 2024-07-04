@@ -10,6 +10,7 @@ public enum DashboardItemType
     Statuses,
     Locations,
     QuantityTypes,
+    Profile,
     Unknown
 }
 
@@ -25,17 +26,6 @@ public class DashboardItem : INotifyPropertyChanged
             UpdateName();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Type)));
         }
-    }
-
-    private int _Count = 0;
-    public int Count 
-    { 
-        get => _Count;
-        set 
-        {
-            _Count = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
-        } 
     }
 
     private string _Name = string.Empty;
@@ -68,7 +58,10 @@ public class DashboardItem : INotifyPropertyChanged
                 Name = LanguageService.Instance["Locations"];
                 break;
             case DashboardItemType.QuantityTypes:
-                Name = LanguageService.Instance["Qty Types"];
+                Name = LanguageService.Instance["Quantity Types"];
+                break;
+            case DashboardItemType.Profile:
+                Name = LanguageService.Instance["Profile"];
                 break;
         }
     }

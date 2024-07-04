@@ -44,8 +44,8 @@ public class DashboardPage : BasePage
 		{
 			var view = new DashboardTile();
 			view.SetBinding(BindingContextProperty, ".");
-			view.SetBinding(DashboardTile.CountProperty, "Count");
 			view.SetBinding(DashboardTile.TitleProperty, "Name");
+			view.SetBinding(DashboardTile.TypeProperty, "Type");
             view.Clicked += DashTileClicked;
 
 			return view;
@@ -77,10 +77,10 @@ public class DashboardPage : BasePage
 		_DashboardVM.UpdateDashboardNames();
 	}
 
-	private async void ReloadDashboard()
+	private void ReloadDashboard()
 	{
 		BindableLayout.SetItemsSource(_ContentLayout, new List<DashboardItem>());
-		await _DashboardVM.LoadDashboard();
+		_DashboardVM.LoadDashboard();
 		BindableLayout.SetItemsSource(_ContentLayout, _DashboardVM.DashboardItems);
 	}
 
@@ -91,8 +91,10 @@ public class DashboardPage : BasePage
             switch (item.Type)
             {
                 case DashboardItemType.Inventory:
+					Navigation.PushAsync(PageService.InventorySearch());
                     break;
                 case DashboardItemType.Employees:
+					// TODO: 
                     break;
                 case DashboardItemType.Statuses:
 					Navigation.PushAsync(PageService.StatusSearch());
@@ -103,6 +105,9 @@ public class DashboardPage : BasePage
                 case DashboardItemType.QuantityTypes:
 					Navigation.PushAsync(PageService.QuantityTypesSearch());
                     break;
+				case DashboardItemType.Profile:
+					// TODO: 
+					break;
                 case DashboardItemType.Unknown:
                     break;
             }

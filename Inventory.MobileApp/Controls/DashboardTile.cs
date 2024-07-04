@@ -1,6 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Markup;
+using Inventory.MobileApp.Models;
+using Inventory.MobileApp.Services;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace Inventory.MobileApp.Controls;
@@ -8,6 +10,18 @@ namespace Inventory.MobileApp.Controls;
 public class DashboardTile : Border
 {
     public event EventHandler? Clicked;
+
+    public static readonly BindableProperty TypeProperty = BindableProperty.Create(
+        nameof(Type),
+        typeof(DashboardItemType),
+        typeof(DashboardTile),
+        DashboardItemType.Unknown);
+
+    public DashboardItemType Type
+    {
+        get => (DashboardItemType)GetValue(TypeProperty);
+        set => SetValue(TypeProperty, value);
+    }
 
     public static readonly BindableProperty TitleProperty = BindableProperty.Create(
         nameof(Title),
@@ -21,22 +35,9 @@ public class DashboardTile : Border
         set => SetValue(TitleProperty, value);
     }
 
-    public static readonly BindableProperty CountProperty = BindableProperty.Create(
-        nameof(Count),
-        typeof(int),
-        typeof(DashboardTile),
-        -1
-    );
-
-    public int Count
-    {
-        get => (int)GetValue(CountProperty);
-        set => SetValue(CountProperty, value);
-    }
-
     private readonly VerticalStackLayout _ContentLayout = new() { Spacing = 8 };
+    private readonly Image _Icon = new Image();
     private readonly Label _Title = new Label { MaxLines = 2, HorizontalTextAlignment = TextAlignment.Center }.FontSize(16).Bold();
-    private readonly Label _Count = new Label().FontSize(32).Bold().Center();
     private readonly TouchBehavior _TouchBehavior = new TouchBehavior()
     {
         DefaultAnimationDuration = 250,
@@ -60,7 +61,7 @@ public class DashboardTile : Border
         };
         StrokeShape = new RoundRectangle() { CornerRadius = 5 };
 
-        _ContentLayout.Children.Add(_Count);
+        _ContentLayout.Children.Add(_Icon.CenterHorizontal());
         _ContentLayout.Children.Add(_Title);
 
         _TouchBehavior.Command = new Command(() => { Clicked?.Invoke(this, new EventArgs()); });
@@ -69,10 +70,8 @@ public class DashboardTile : Border
         Content = new Grid { Children = { _ContentLayout.CenterVertical() } };
 
         SetDynamicResource(Border.BackgroundProperty, "DashTileColor");
-        _Count.SetDynamicResource(Label.TextColorProperty, "TextColor");
         _Title.SetDynamicResource(Label.TextColorProperty, "TextColor");
         Title = "";
-        Count = 0;
     }
 
     protected override void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -82,9 +81,32 @@ public class DashboardTile : Border
         {
             _Title.Text = Title;
         }
-        else if (propertyName == CountProperty.PropertyName)
+        else if (propertyName == TypeProperty.PropertyName)
         {
-            _Count.Text = $"{Count}";
+            var iconSize = 40;
+            switch (Type)
+            {
+                case DashboardItemType.Inventory:
+                    _Icon.ApplyMaterialIcon(MaterialIcon.Inventory_2, iconSize, Color.FromArgb("#646464"));
+                    break;
+                case DashboardItemType.Employees:
+                    _Icon.ApplyMaterialIcon(MaterialIcon.Groups, iconSize, Color.FromArgb("#646464"));
+                    break;
+                case DashboardItemType.Statuses:
+                    _Icon.ApplyMaterialIcon(MaterialIcon.Beenhere, iconSize, Color.FromArgb("#646464"));
+                    break;
+                case DashboardItemType.Locations:
+                    _Icon.ApplyMaterialIcon(MaterialIcon.Location_on, iconSize, Color.FromArgb("#646464"));
+                    break;
+                case DashboardItemType.QuantityTypes:
+                    _Icon.ApplyMaterialIcon(MaterialIcon.Tag, iconSize, Color.FromArgb("#646464"));
+                    break;
+                case DashboardItemType.Profile:
+                    _Icon.ApplyMaterialIcon(MaterialIcon.Person, iconSize, Color.FromArgb("#646464"));
+                    break;
+                case DashboardItemType.Unknown:
+                    break;
+            }
         }
     }
 }

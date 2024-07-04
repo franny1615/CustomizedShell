@@ -6,35 +6,33 @@ public class DashboardViewModel()
 {
     public List<DashboardItem> DashboardItems { get; set; } = new List<DashboardItem>();
 
-    public async Task LoadDashboard()
+    public void LoadDashboard()
     {
-        // TODO: implement network request later...
         DashboardItems = new List<DashboardItem>
         {
             new DashboardItem
             {
                 Type = DashboardItemType.Inventory,
-                Count = 999999
             },
             new DashboardItem
             {
                 Type = DashboardItemType.Employees,
-                Count = 999999
             },
             new DashboardItem
             {
                 Type = DashboardItemType.Statuses,
-                Count = 999999
             },
             new DashboardItem
             {
                 Type = DashboardItemType.Locations,
-                Count = 999999
             },
             new DashboardItem
             {
                 Type = DashboardItemType.QuantityTypes,
-                Count = 999999
+            },
+            new DashboardItem
+            {
+                Type = DashboardItemType.Profile,
             }
         };
     }
