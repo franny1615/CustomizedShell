@@ -26,4 +26,8 @@ public static class Endpoints
     public const string insertQtyType = "api/quantityType/insert";
     public const string deleteQtyType = "api/quantityType/delete";
     public const string updateQtyType = "api/quantityType/update";
+    public const string searchInventory = "api/inventory/search";
+    public const string insertInventory = "api/inventory/insert";
+    public const string deleteInventory = "api/inventory/delete";
+    public const string updateInventory = "api/inventory/update";
 }

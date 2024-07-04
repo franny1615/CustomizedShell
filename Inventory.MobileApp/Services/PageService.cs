@@ -34,4 +34,9 @@ public static class PageService
     {
         return new QuantityTypesSearchPage(new QuantityTypesSearchViewModel());
     }
+
+    public static InventorySearchPage InventorySearch()
+    {
+        return new InventorySearchPage(new InventorySearchViewModel());
+    }
 }
