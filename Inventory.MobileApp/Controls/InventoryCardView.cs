@@ -246,7 +246,7 @@ public class IconLabel : Grid
     public string Icon { get => (string)GetValue(IconProperty); set => SetValue(IconProperty, value); }
 
     private readonly Label _Header = new Label().FontSize(10).TextColor(Color.FromArgb("#c7c7cc")).Bold().Start();
-    private readonly Label _Text = new Label { MaxLines = 10, LineBreakMode = LineBreakMode.WordWrap }.FontSize(16).Bold();
+    private readonly Label _Text = new Label { MaxLines = 3, LineBreakMode = LineBreakMode.WordWrap }.FontSize(16).Bold();
     private readonly Image _Icon = new();
 
     public IconLabel()

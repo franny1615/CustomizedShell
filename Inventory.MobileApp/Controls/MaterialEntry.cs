@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Messaging;
+using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 using Microsoft.Maui.Controls.Shapes;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
@@ -198,6 +200,39 @@ public class MaterialEntry : ContentView
 
         Loaded += HasLoaded;
         Unloaded += HasUnloaded;
+
+        UpdateThemeRelatedItems();
+        WeakReferenceMessenger.Default.Register<InternalMsg>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                switch (msg.Value)
+                {
+                    case InternalMessage.ThemeChanged:
+                        UpdateThemeRelatedItems();
+                        break;
+                }
+            });
+        });
+    }
+
+    private void UpdateThemeRelatedItems()
+    {
+        if (_PlaceholderLabel == null) // disposed
+            return;
+
+        Color color = SessionService.CurrentTheme == "dark" ? Color.FromArgb("#c7c7cc") : Color.FromArgb("#646464");
+        _PlaceholderLabel.TextColor = color;
+        switch (EntryStyle)
+        {
+            case EntryStyle.Default:
+                if (!string.IsNullOrEmpty(PlaceholderIcon))
+                    _PlaceholderIcon.ApplyMaterialIcon(PlaceholderIcon, 16, color);
+                break;
+            case EntryStyle.Search:
+                _PlaceholderIcon.ApplyMaterialIcon(MaterialIcon.Search, 18, color);
+                break;
+        }
     }
 
     private void HasLoaded(object? sender, EventArgs e)
@@ -205,6 +240,9 @@ public class MaterialEntry : ContentView
         _Entry.Focused += HasFocused;
         _Entry.Unfocused += HasUnfocused;
         _Entry.TextChanged += TextHasChanged;
+        _Editor.Focused += HasFocused;
+        _Editor.Unfocused += HasUnfocused;
+        _Editor.TextChanged += TextHasChanged;
     }
 
     private void HasUnloaded(object? sender, EventArgs e)
@@ -212,6 +250,9 @@ public class MaterialEntry : ContentView
         _Entry.Focused -= HasFocused;
         _Entry.Unfocused -= HasUnfocused;
         _Entry.TextChanged -= TextHasChanged;
+        _Editor.Focused -= HasFocused;
+        _Editor.Unfocused -= HasUnfocused;
+        _Editor.TextChanged -= TextHasChanged;
     }
     #endregion
 
@@ -324,7 +365,7 @@ public class MaterialEntry : ContentView
             _PlaceholderContainer.Clear();
             if (PlaceholderIcon != null)
             {
-                _PlaceholderIcon.ApplyMaterialIcon(PlaceholderIcon, 16, Color.FromArgb("#646464"));
+                UpdateThemeRelatedItems();
                 _PlaceholderContainer.Add(_PlaceholderIcon);
             }
             _PlaceholderContainer.Add(_PlaceholderLabel);
@@ -362,7 +403,7 @@ public class MaterialEntry : ContentView
                 _ContentLayout.RowSpacing = 0;
                 _ContentLayout.ColumnSpacing = 4;
 
-                _PlaceholderIcon.ApplyMaterialIcon(MaterialIcon.Search, 18, Application.Current!.Resources["TextColor"] as Color ?? Colors.DarkGray);
+                UpdateThemeRelatedItems();
 
                 _ContentLayout.Children.Add(_PlaceholderIcon.Row(0).Column(0).Center());
                 _ContentLayout.Children.Add(_Entry.Row(0).Column(1).CenterVertical());

@@ -259,11 +259,29 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Description.
+        /// </summary>
+        internal static string Edit_Description {
+            get {
+                return ResourceManager.GetString("Edit Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Location.
         /// </summary>
         internal static string Edit_Location {
             get {
                 return ResourceManager.GetString("Edit Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Quantity.
+        /// </summary>
+        internal static string Edit_Quantity {
+            get {
+                return ResourceManager.GetString("Edit Quantity", resourceCulture);
             }
         }
         

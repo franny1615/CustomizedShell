@@ -350,4 +350,10 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Status" xml:space="preserve">
     <value>Estado</value>
   </data>
+  <data name="Edit Description" xml:space="preserve">
+    <value>Editar Descripción</value>
+  </data>
+  <data name="Edit Quantity" xml:space="preserve">
+    <value>Editar Cantidad</value>
+  </data>
 </root>

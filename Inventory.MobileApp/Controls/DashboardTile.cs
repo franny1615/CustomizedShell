@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Mvvm.Messaging;
 using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 using Microsoft.Maui.Controls.Shapes;
@@ -72,6 +73,19 @@ public class DashboardTile : Border
         SetDynamicResource(Border.BackgroundProperty, "DashTileColor");
         _Title.SetDynamicResource(Label.TextColorProperty, "TextColor");
         Title = "";
+
+        WeakReferenceMessenger.Default.Register<InternalMsg>(this, (_, msg) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                switch (msg.Value)
+                {
+                    case InternalMessage.ThemeChanged:
+                        ApplyIcon();
+                        break;
+                }
+            });
+        });
     }
 
     protected override void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -83,30 +97,36 @@ public class DashboardTile : Border
         }
         else if (propertyName == TypeProperty.PropertyName)
         {
-            var iconSize = 40;
-            switch (Type)
-            {
-                case DashboardItemType.Inventory:
-                    _Icon.ApplyMaterialIcon(MaterialIcon.Inventory_2, iconSize, Color.FromArgb("#646464"));
-                    break;
-                case DashboardItemType.Employees:
-                    _Icon.ApplyMaterialIcon(MaterialIcon.Groups, iconSize, Color.FromArgb("#646464"));
-                    break;
-                case DashboardItemType.Statuses:
-                    _Icon.ApplyMaterialIcon(MaterialIcon.Beenhere, iconSize, Color.FromArgb("#646464"));
-                    break;
-                case DashboardItemType.Locations:
-                    _Icon.ApplyMaterialIcon(MaterialIcon.Location_on, iconSize, Color.FromArgb("#646464"));
-                    break;
-                case DashboardItemType.QuantityTypes:
-                    _Icon.ApplyMaterialIcon(MaterialIcon.Tag, iconSize, Color.FromArgb("#646464"));
-                    break;
-                case DashboardItemType.Profile:
-                    _Icon.ApplyMaterialIcon(MaterialIcon.Person, iconSize, Color.FromArgb("#646464"));
-                    break;
-                case DashboardItemType.Unknown:
-                    break;
-            }
+            ApplyIcon();
+        }
+    }
+
+    private void ApplyIcon()
+    {
+        Color color = SessionService.CurrentTheme == "dark" ? Color.FromArgb("#c7c7cc") : Color.FromArgb("#646464");
+        var iconSize = 40;
+        switch (Type)
+        {
+            case DashboardItemType.Inventory:
+                _Icon.ApplyMaterialIcon(MaterialIcon.Inventory_2, iconSize, color);
+                break;
+            case DashboardItemType.Employees:
+                _Icon.ApplyMaterialIcon(MaterialIcon.Groups, iconSize, color);
+                break;
+            case DashboardItemType.Statuses:
+                _Icon.ApplyMaterialIcon(MaterialIcon.Beenhere, iconSize, color);
+                break;
+            case DashboardItemType.Locations:
+                _Icon.ApplyMaterialIcon(MaterialIcon.Location_on, iconSize, color);
+                break;
+            case DashboardItemType.QuantityTypes:
+                _Icon.ApplyMaterialIcon(MaterialIcon.Tag, iconSize, color);
+                break;
+            case DashboardItemType.Profile:
+                _Icon.ApplyMaterialIcon(MaterialIcon.Person, iconSize, color);
+                break;
+            case DashboardItemType.Unknown:
+                break;
         }
     }
 }
