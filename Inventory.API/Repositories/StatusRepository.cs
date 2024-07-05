@@ -67,12 +67,14 @@ where Id = @statusId;";
         var result = new RepoResult<SearchResult<Status>>();
         try 
         {
-            string itemsQuery = $@"
+            string _param = $@"
 declare 
 @companyId int = {companyId},
 @search NVARCHAR(max) = '{request.Search}',
 @page int = {request.Page},
-@pageSize int = {request.PageSize};
+@pageSize int = {request.PageSize};";
+            string itemsQuery = $@"
+{_param}
 select 
     Id,
     CompanyId,
@@ -84,7 +86,12 @@ order by Id desc
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
             var items = (await QueryAsync<Status>(itemsQuery)).ToList();
-            string totalQuery = $@"select COUNT(*) from status;";
+            string totalQuery = $@"
+{_param}
+select COUNT(*) 
+from status
+where CompanyId = @companyId
+and [Description] LIKE @search+'%';";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new() { Items = items, Total = total };

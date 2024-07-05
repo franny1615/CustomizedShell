@@ -82,12 +82,14 @@ and CompanyId = @companyId";
             {
                 barcodeSearch = "and [Description] LIKE @search+'%'";
             }
-            string query = $@"
+            string _param = $@"
 declare 
 @companyId int = {companyId},
 @search NVARCHAR(max) = '{request.Search}',
 @page int = {request.Page},
-@pageSize int = {request.PageSize};
+@pageSize int = {request.PageSize};";
+            string query = $@"
+{_param}
 select 
     Id,
     CompanyId,
@@ -100,7 +102,12 @@ order by Id desc
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
             var items = (await QueryAsync<Location>(query)).ToList();
-            string totalQuery = $@"select COUNT(*) from location;";
+            string totalQuery = $@"
+{_param}
+select COUNT(*) 
+from location
+where CompanyId = @companyId
+{barcodeSearch};";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new()

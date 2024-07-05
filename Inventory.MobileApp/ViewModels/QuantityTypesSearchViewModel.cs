@@ -11,6 +11,7 @@ public class QuantityTypesSearchViewModel : ISearchViewModel<QuantityType>
 
     public List<QuantityType> Items { get; set; } = new List<QuantityType>();
     public int TotalPages { get; set; } = 1;
+    public int Total { get; set; } = 0;
     public int Page { get; set; } = 0;
 
     public async Task Search(string search)
@@ -38,6 +39,7 @@ public class QuantityTypesSearchViewModel : ISearchViewModel<QuantityType>
         int total = response.Data?.Total ?? 0;
         int addendum = total % PAGE_SIZE == 0 ? 0 : 1;
         TotalPages = (total / PAGE_SIZE) + addendum;
+        Total = total;
 
         if (TotalPages == 0)
             TotalPages = 1;

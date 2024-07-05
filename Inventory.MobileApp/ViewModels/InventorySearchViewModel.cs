@@ -11,6 +11,7 @@ public class InventorySearchViewModel : ISearchViewModel<Models.Inventory>
     public List<Models.Inventory> Items { get; set; } = new List<Models.Inventory>();
     public int TotalPages { get; set; } = 1;
     public int Page { get; set; } = 0;
+    public int Total { get; set; } = 0;
 
     public async Task Search(string search)
     {
@@ -37,6 +38,7 @@ public class InventorySearchViewModel : ISearchViewModel<Models.Inventory>
         int total = response.Data?.Total ?? 0;
         int addendum = total % PAGE_SIZE == 0 ? 0 : 1;
         TotalPages = (total / PAGE_SIZE) + addendum;
+        Total = total;
 
         if (TotalPages == 0)
             TotalPages = 1;

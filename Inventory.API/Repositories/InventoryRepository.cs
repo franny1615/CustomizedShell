@@ -71,12 +71,14 @@ and inventory.Id = @invId";
         var result = new RepoResult<SearchResult<Models.Inventory>>();
         try
         {
-            string query = $@"
+            string _param = $@"
 declare 
 @companyId int = {companyId},
 @search NVARCHAR(max) = '{request.Search}',
 @page int = {request.Page},
-@pageSize int = {request.PageSize};
+@pageSize int = {request.PageSize};";
+            string query = $@"
+{_param}
 select 
     inventory.Id,
     inventory.CompanyId,
@@ -101,7 +103,12 @@ order by inventory.Id desc
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
             var items = (await QueryAsync<Models.Inventory>(query)).ToList();
-            string totalQuery = $@"select COUNT(*) from inventory;";
+            string totalQuery = $@"
+{_param}
+select COUNT(*) 
+from inventory
+where inventory.CompanyId = @companyId
+and inventory.[Description] LIKE @search+'%';";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new()

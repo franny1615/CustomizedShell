@@ -72,12 +72,14 @@ and CompanyId = @companyId";
         var result = new RepoResult<SearchResult<QuantityType>>();
         try 
         {
-            string query = $@"
+            string _params = $@"
 declare 
 @companyId int = {companyId},
 @search NVARCHAR(max) = '{request.Search}',
 @page int = {request.Page},
-@pageSize int = {request.PageSize};
+@pageSize int = {request.PageSize};";
+            string query = $@"
+{_params}
 select 
     Id,
     CompanyId,
@@ -89,7 +91,12 @@ order by Id desc
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
             var items = (await QueryAsync<QuantityType>(query)).ToList();
-            string totalQuery = $@"select COUNT(*) from quantity_type;";
+            string totalQuery = $@"
+{_params}
+select COUNT(*) 
+from quantity_type
+where CompanyId = @companyId
+and [Description] LIKE @search+'%';";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new()

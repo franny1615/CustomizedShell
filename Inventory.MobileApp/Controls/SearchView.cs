@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Markup;
 using Inventory.MobileApp.Services;
 using Inventory.MobileApp.Utilities;
+using Microsoft.Maui.Controls.Shapes;
 using System.Runtime.CompilerServices;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
@@ -9,6 +10,7 @@ namespace Inventory.MobileApp.Controls;
 public interface ISearchViewModel<T>
 {
     public List<T> Items { get; set; }
+    public int Total { get; set; }
     public int TotalPages { get; set; }
     public int Page { get; set; }
     public Task Search(string search);
@@ -81,11 +83,15 @@ public class SearchView<T> : ContentView
         FontAttributes = FontAttributes.Bold,
         Text = LanguageService.Instance["No items found"]
     };
+    private readonly Border _CountBacking = new Border().BackgroundColor(UIService.Color("Primary")).Padding(0).BorderShape(new RoundRectangle { CornerRadius = 15 }).Height(30).MinWidth(30);
+    private readonly Label _CountLabel = new Label().FontSize(16).Center().TextColor(Colors.White);
     private readonly ActivityIndicator _Loading = new() { WidthRequest = 25, IsVisible = false };
 
     public SearchView(ISearchViewModel<T> searchVM)
     {
         Padding = new Thickness(8, 12, 8, 12);
+
+        _CountBacking.Content = new Grid { Children = { _CountLabel } };
 
         _PreviousButton.ApplyMaterialIcon(MaterialIcon.Chevron_left, 18, Colors.White);
         _NextButton.ApplyMaterialIcon(MaterialIcon.Chevron_right, 18, Colors.White);
@@ -103,11 +109,12 @@ public class SearchView<T> : ContentView
         _ContentLayout.Children.Add(new Grid
         {
             ColumnSpacing = 8,
-            ColumnDefinitions = Columns.Define(Star, 32),
+            ColumnDefinitions = Columns.Define(Auto, Star, 32),
             Children =
             {
-                _SearchEntry.Column(0).ColumnSpan(2),
-                _Loading.Column(1)
+                _CountBacking,
+                _SearchEntry.Column(1).ColumnSpan(2),
+                _Loading.Column(2)
             }
         }.Row(0));
         _ContentLayout.Children.Add(_Refresh.Row(1));
@@ -145,6 +152,7 @@ public class SearchView<T> : ContentView
 
         _SearchItems.ItemsSource = _SearchVM.Items;
         _PageLabel.Text = $"{_SearchVM.Page + 1} / {_SearchVM.TotalPages}";
+        _CountLabel.Text = $"{_SearchVM.Total}";
 
         IsLoading = false;
     }

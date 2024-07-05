@@ -153,6 +153,11 @@ public class InventorySearchPage : BasePage
             }
 
             _Search.IsLoading = false;
+
+            // TODO: keep track of this issue, once resolved we can end the force refresh
+            // https://github.com/dotnet/maui/issues/14363
+            // basically on iOS, the card view height doesn't update even through the inner content has been resized.
+            _Search.TriggerRefresh();
         }
     }
 
