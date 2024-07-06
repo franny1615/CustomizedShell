@@ -140,8 +140,13 @@ public class PopupPage : BasePage
         {
             case PopupStyle.Center:
                 _ContentContainer.WidthRequest = info.Width / info.Density * 0.85;
+                #if ANDROID
                 _ContentContainer.MinimumHeightRequest = info.Height / info.Density * 0.35;
                 _ContentContainer.MaximumHeightRequest = info.Height / info.Density * 0.85;
+                #endif
+                #if IOS
+                _ContentContainer.HeightRequest = info.Height / info.Density * 0.85;
+                #endif
                 break;
             case PopupStyle.BottomSheet:
             case PopupStyle.Unknown:
