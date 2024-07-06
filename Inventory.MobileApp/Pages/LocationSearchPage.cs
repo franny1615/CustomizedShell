@@ -10,6 +10,7 @@ public class LocationSearchPage : BasePage
 {
     private readonly LocationSearchViewModel _ViewModel;
     private readonly SearchView<Location> _Search;
+    private bool _IsEditing = false;
 
     public LocationSearchPage(LocationSearchViewModel locationSearchViewModel)
     {
@@ -36,7 +37,10 @@ public class LocationSearchPage : BasePage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Search.TriggerRefresh();
+        if (!_IsEditing)
+        {
+            _Search.TriggerRefresh();
+        }
     }
 
     private async void DisplayLocationOptions(object? sender, EventArgs e)
@@ -105,55 +109,71 @@ public class LocationSearchPage : BasePage
         _Search.IsLoading = false; // fail safe
     }
 
-    private async void AddLocation(object? sender, EventArgs e)
+    private void AddLocation(object? sender, EventArgs e)
     {
-        string location = await DisplayPromptAsync(
-            LanguageService.Instance["Add Location"],
+        _IsEditing = true;
+        Navigation.PushModalAsync(PageService.TakeUserInput(
             LanguageService.Instance["Enter the location description below."],
-            LanguageService.Instance["OK"],
-            LanguageService.Instance["Cancel"]);
+            "",
+            Keyboard.Plain,
+            submitted: async (location) =>
+            {
+                if (string.IsNullOrEmpty(location)) // canceled or entered empty text, don't do anything.
+                    return;
 
-        if (string.IsNullOrEmpty(location)) // canceled or entered empty text, don't do anything.
-            return;
+                _Search.IsLoading = true;
 
-        _Search.IsLoading = true;
+                var response = await _ViewModel.InsertLocation(location);
+                if (!string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    _Search.IsLoading = false;
+                    this.DisplayCommonError(response.ErrorMessage);
+                    return;
+                }
 
-        var response = await _ViewModel.InsertLocation(location);
-        if (!string.IsNullOrEmpty(response.ErrorMessage))
-        {
-            _Search.IsLoading = false;
-            this.DisplayCommonError(response.ErrorMessage);
-            return;
-        }
+                _Search.TriggerRefresh();
+                _Search.IsLoading = false; // fail safe
 
-        _Search.TriggerRefresh();
-        _Search.IsLoading = false; // fail safe
+                _IsEditing = false;
+            },
+            canceled: () =>
+            {
+                _IsEditing = false;
+            }));
     }
 
-    private async void EditLocation(Location location)
+    private void EditLocation(Location location)
     {
-        string loc = await DisplayPromptAsync(
-            LanguageService.Instance["Edit Location"],
+        _IsEditing = true;
+        Navigation.PushModalAsync(PageService.TakeUserInput(
             LanguageService.Instance["Enter the location description below."],
-            LanguageService.Instance["OK"],
-            LanguageService.Instance["Cancel"]);
+            location.Description,
+            Keyboard.Plain,
+            submitted: async (loc) =>
+            {
+                if (string.IsNullOrEmpty(loc)) // canceled or entered empty text, don't do anything.
+                    return;
 
-        if (string.IsNullOrEmpty(loc)) // canceled or entered empty text, don't do anything.
-            return;
+                _Search.IsLoading = true;
 
-        _Search.IsLoading = true;
+                location.Description = loc;
 
-        location.Description = loc;
+                var response = await _ViewModel.UpdateLocation(location);
+                if (!string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    _Search.IsLoading = false;
+                    this.DisplayCommonError(response.ErrorMessage);
+                    return;
+                }
 
-        var response = await _ViewModel.UpdateLocation(location);
-        if (!string.IsNullOrEmpty(response.ErrorMessage))
-        {
-            _Search.IsLoading = false;
-            this.DisplayCommonError(response.ErrorMessage);
-            return;
-        }
+                _Search.TriggerRefresh();
+                _Search.IsLoading = false; // fail safe
 
-        _Search.TriggerRefresh();
-        _Search.IsLoading = false; // fail safe
+                _IsEditing = false;
+            },
+            canceled: () =>
+            {
+                _IsEditing = false;
+            }));
     }
 }

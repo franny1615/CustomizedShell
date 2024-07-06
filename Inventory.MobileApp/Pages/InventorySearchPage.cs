@@ -106,12 +106,98 @@ public class InventorySearchPage : BasePage
 
     private void EditStatus(object? sender, EventArgs e)
     {
-        
+        if (sender is InventoryCardView card && card.BindingContext is Models.Inventory inventory)
+        {
+            _IsEditing = true;
+            Navigation.PushModalAsync(PageService.PickStatus(
+                LanguageService.Instance["Pick Status"],
+                picked: async (status) =>
+                {
+                    if (status == null)
+                        return;
+
+                    string descCache = inventory.QuantityType;
+                    int idCache = inventory.QtyTypeID;
+
+                    inventory.StatusID = status.Id;
+                    inventory.Status = status.Description;
+
+                    _Search.IsLoading = true;
+                    var response = await _ViewModel.UpdateInventory(inventory);
+                    if (!string.IsNullOrEmpty(response.ErrorMessage))
+                    {
+                        _Search.IsLoading = false;
+                        this.DisplayCommonError(response.ErrorMessage);
+                        return;
+                    }
+
+                    if (!response.Data)
+                    {
+                        inventory.StatusID = idCache;
+                        inventory.Status = descCache;
+                    }
+
+                    _Search.IsLoading = false;
+                    _IsEditing = false;
+
+                    // TODO: keep track of this issue, once resolved we can end the force refresh
+                    // https://github.com/dotnet/maui/issues/14363
+                    // basically on iOS, the card view height doesn't update even through the inner content has been resized.
+                    _Search.TriggerRefresh();
+                },
+                canceled: () =>
+                {
+                    _IsEditing = false;
+                }));
+        }
     }
 
     private void EditQuantityType(object? sender, EventArgs e)
     {
-        
+        if (sender is InventoryCardView card && card.BindingContext is Models.Inventory inventory)
+        {
+            _IsEditing = true;
+            Navigation.PushModalAsync(PageService.PickQtyType(
+                LanguageService.Instance["Pick Quantity Type"],
+                picked: async (qtyType) =>
+                {
+                    if (qtyType == null)
+                        return;
+
+                    string descCache = inventory.QuantityType;
+                    int idCache = inventory.QtyTypeID;
+
+                    inventory.QtyTypeID = qtyType.Id;
+                    inventory.QuantityType = qtyType.Description;
+
+                    _Search.IsLoading = true;
+                    var response = await _ViewModel.UpdateInventory(inventory);
+                    if (!string.IsNullOrEmpty(response.ErrorMessage))
+                    {
+                        _Search.IsLoading = false;
+                        this.DisplayCommonError(response.ErrorMessage);
+                        return;
+                    }
+
+                    if (!response.Data)
+                    {
+                        inventory.QtyTypeID = idCache;
+                        inventory.QuantityType = descCache;
+                    }
+
+                    _Search.IsLoading = false;
+                    _IsEditing = false;
+
+                    // TODO: keep track of this issue, once resolved we can end the force refresh
+                    // https://github.com/dotnet/maui/issues/14363
+                    // basically on iOS, the card view height doesn't update even through the inner content has been resized.
+                    _Search.TriggerRefresh();
+                },
+                canceled: () =>
+                {
+                    _IsEditing = false;
+                }));
+        }
     }
 
     private void EditQuantity(object? sender, EventArgs e)
@@ -119,7 +205,7 @@ public class InventorySearchPage : BasePage
         if (sender is InventoryCardView card && card.BindingContext is Models.Inventory inventory)
         {
             _IsEditing = true;
-            Navigation.PushModalAsync(new UserInputPopupPage(
+            Navigation.PushModalAsync(PageService.TakeUserInput(
                 LanguageService.Instance["Edit Quantity"],
                 inventory.Quantity.ToString(),
                 Keyboard.Numeric,
@@ -166,7 +252,50 @@ public class InventorySearchPage : BasePage
 
     private void EditLocation(object? sender, EventArgs e)
     {
-        
+        if (sender is InventoryCardView card && card.BindingContext is Models.Inventory inventory)
+        {
+            _IsEditing = true;
+            Navigation.PushModalAsync(PageService.PickLocation(
+                LanguageService.Instance["Pick Location"],
+                picked: async (location) =>
+                {
+                    if (location == null) 
+                        return;
+
+                    string locationDescCache = inventory.Location;
+                    int locationIDCache = inventory.LocationID;
+
+                    inventory.LocationID = location.Id;
+                    inventory.Location = location.Description;
+
+                    _Search.IsLoading = true;
+                    var response = await _ViewModel.UpdateInventory(inventory);
+                    if (!string.IsNullOrEmpty(response.ErrorMessage))
+                    {
+                        _Search.IsLoading = false;
+                        this.DisplayCommonError(response.ErrorMessage);
+                        return;
+                    }
+
+                    if (!response.Data)
+                    {
+                        inventory.LocationID = locationIDCache;
+                        inventory.Location = locationDescCache;
+                    }
+
+                    _Search.IsLoading = false;
+                    _IsEditing = false;
+
+                    // TODO: keep track of this issue, once resolved we can end the force refresh
+                    // https://github.com/dotnet/maui/issues/14363
+                    // basically on iOS, the card view height doesn't update even through the inner content has been resized.
+                    _Search.TriggerRefresh();
+                },
+                canceled: () =>
+                {
+                    _IsEditing = false;
+                }));
+        }
     }
 
     private void EditDescription(object? sender, EventArgs e)

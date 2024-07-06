@@ -9,6 +9,7 @@ public class QuantityTypesSearchPage : BasePage
 {
     private readonly QuantityTypesSearchViewModel _ViewModel;
     private readonly SearchView<QuantityType> _Search;
+    private bool _IsEditing = false;
 
     public QuantityTypesSearchPage(QuantityTypesSearchViewModel viewModel)
     {
@@ -22,7 +23,6 @@ public class QuantityTypesSearchPage : BasePage
             view.SetBinding(QuantityTypeCardView.DescriptionProperty, "Description");
             view.Delete += DeleteQtyType;
             view.Edit += UpdateQtyType;
-            view.Margin = new Thickness(8, 0, 8, 0);
 
             return view;
         });
@@ -32,29 +32,37 @@ public class QuantityTypesSearchPage : BasePage
         Content = _Search;
     }
 
-    private async void AddQtyType(object? sender, EventArgs e)
+    private void AddQtyType(object? sender, EventArgs e)
     {
-        string qtyType = await DisplayPromptAsync(
-            LanguageService.Instance["Add Quantity Type"],
+        _IsEditing = true;
+        Navigation.PushModalAsync(PageService.TakeUserInput(
             LanguageService.Instance["Enter the quantity type below."],
-            LanguageService.Instance["OK"],
-            LanguageService.Instance["Cancel"]);
+            "",
+            Keyboard.Plain,
+            submitted: async (qtyType) =>
+            {
+                if (string.IsNullOrEmpty(qtyType)) // canceled or entered empty text, don't do anything.
+                    return;
 
-        if (string.IsNullOrEmpty(qtyType)) // canceled or entered empty text, don't do anything.
-            return;
+                _Search.IsLoading = true;
 
-        _Search.IsLoading = true;
+                var response = await _ViewModel.InsertQtyType(qtyType);
+                if (!string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    _Search.IsLoading = false;
+                    this.DisplayCommonError(response.ErrorMessage);
+                    return;
+                }
 
-        var response = await _ViewModel.InsertQtyType(qtyType);
-        if (!string.IsNullOrEmpty(response.ErrorMessage))
-        {
-            _Search.IsLoading = false;
-            this.DisplayCommonError(response.ErrorMessage);
-            return;
-        }
-
-        _Search.TriggerRefresh();
-        _Search.IsLoading = false; // fail safe
+                _Search.TriggerRefresh();
+                _Search.IsLoading = false; // fail safe
+                
+                _IsEditing = false;
+            },
+            canceled: () =>
+            {
+                _IsEditing = false;
+            }));
     }
 
     private async void DeleteQtyType(object? sender, EventArgs e)
@@ -88,39 +96,50 @@ public class QuantityTypesSearchPage : BasePage
         }
     }
 
-    private async void UpdateQtyType(object? sender, EventArgs e)
+    private void UpdateQtyType(object? sender, EventArgs e)
     {
         if (sender is QuantityTypeCardView card && card.BindingContext is QuantityType qtyType)
         {
-            string qtyTypeStr = await DisplayPromptAsync(
-                LanguageService.Instance["Edit Quantity Type"],
+            _IsEditing = true;
+            Navigation.PushModalAsync(PageService.TakeUserInput(
                 LanguageService.Instance["Enter the quantity type below."],
-                LanguageService.Instance["OK"],
-                LanguageService.Instance["Cancel"]);
+                qtyType.Description,
+                Keyboard.Plain,
+                submitted: async (qtyTypeStr) =>
+                {
+                    if (string.IsNullOrEmpty(qtyTypeStr)) // canceled or entered empty text, don't do anything.
+                        return;
 
-            if (string.IsNullOrEmpty(qtyTypeStr)) // canceled or entered empty text, don't do anything.
-                return;
+                    _Search.IsLoading = true;
 
-            _Search.IsLoading = true;
+                    qtyType.Description = qtyTypeStr;
+                    var response = await _ViewModel.UpdateQtyType(qtyType);
 
-            qtyType.Description = qtyTypeStr;
-            var response = await _ViewModel.UpdateQtyType(qtyType);
+                    if (!string.IsNullOrEmpty(response.ErrorMessage))
+                    {
+                        _Search.IsLoading = false;
+                        this.DisplayCommonError(response.ErrorMessage);
+                        return;
+                    }
 
-            if (!string.IsNullOrEmpty(response.ErrorMessage))
-            {
-                _Search.IsLoading = false;
-                this.DisplayCommonError(response.ErrorMessage);
-                return;
-            }
+                    _Search.TriggerRefresh();
+                    _Search.IsLoading = false; // fail safe
 
-            _Search.TriggerRefresh();
-            _Search.IsLoading = false; // fail safe
+                    _IsEditing = false;
+                },
+                canceled: () =>
+                {
+                    _IsEditing = false;
+                }));
         }
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Search.TriggerRefresh();
+        if (!_IsEditing)
+        {
+            _Search.TriggerRefresh();
+        }
     }
 }

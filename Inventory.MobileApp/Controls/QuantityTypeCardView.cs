@@ -4,16 +4,21 @@ using Microsoft.Maui.Controls.Shapes;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 using System.Runtime.CompilerServices;
 using Inventory.MobileApp.Services;
+using Microsoft.Maui.Controls;
 
 namespace Inventory.MobileApp.Controls;
 
 public class QuantityTypeCardView : Border 
 {
+    public event EventHandler? Selected;
     public event EventHandler? Delete;
     public event EventHandler? Edit;
 
     public static readonly BindableProperty DescriptionProperty = BindableProperty.Create(nameof(Description), typeof(string), typeof(QuantityTypeCardView), null);
     public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+
+    public static readonly BindableProperty IsSelectableProperty = BindableProperty.Create(nameof(IsSelectable), typeof(bool), typeof(QuantityTypeCardView), false);
+    public bool IsSelectable { get => (bool)GetValue(IsSelectableProperty); set => SetValue(IsSelectableProperty, value); }
 
     private readonly Label _Description = new();
     private readonly Image _TrashIcon = new();
@@ -33,6 +38,13 @@ public class QuantityTypeCardView : Border
         PressedScale = 0.95
     };
 
+    private readonly TapGestureRecognizer _SelectGesture = new TapGestureRecognizer { NumberOfTapsRequired = 1 };
+    private readonly Grid _ContentLayout = new Grid
+    {
+        ColumnDefinitions = Columns.Define(Star, 32, 32),
+        ColumnSpacing = 0,
+    };
+
     public QuantityTypeCardView()
     {
         Margin = 0;
@@ -45,6 +57,12 @@ public class QuantityTypeCardView : Border
 
         _TouchBehavior.Command = new Command(() => Delete?.Invoke(this, EventArgs.Empty));
         _EditTouch.Command = new Command(() => Edit?.Invoke(this, EventArgs.Empty));
+        _SelectGesture.Tapped += async (s, e) => {
+            await this.ScaleTo(0.95, 70);
+            await this.ScaleTo(1.0, 70);
+
+            Selected?.Invoke(this, EventArgs.Empty);
+        };
 
         _Description
             .Font(size: 16)
@@ -59,17 +77,11 @@ public class QuantityTypeCardView : Border
             .Behaviors([_TouchBehavior])
             .ApplyMaterialIcon(MaterialIcon.Delete, 24, Colors.Red);
 
-        Content = new Grid
-        {
-            ColumnDefinitions = Columns.Define(Star, 32, 32),
-            ColumnSpacing = 0,
-            Children =
-            {
-                _Description.Column(0),
-                _EditIcon.Column(1),
-                _TrashIcon.Column(2),
-            }
-        };
+        _ContentLayout.Add(_Description.Column(0));
+        _ContentLayout.Add(_EditIcon.Column(1));
+        _ContentLayout.Add(_TrashIcon.Column(2));
+
+        Content = _ContentLayout;
     }
 
     protected override void OnPropertyChanged([CallerMemberName] string? propertyName = "")
@@ -78,6 +90,21 @@ public class QuantityTypeCardView : Border
         if (propertyName == DescriptionProperty.PropertyName)
         {
             _Description.Text = Description;
+        }
+        else if (propertyName == IsSelectableProperty.PropertyName)
+        {
+            _ContentLayout.Remove(_EditIcon);
+            _ContentLayout.Remove(_TrashIcon);
+            if (IsSelectable)
+            {
+                GestureRecognizers.Add(_SelectGesture);
+            }
+            else
+            {
+                GestureRecognizers.Remove(_SelectGesture);
+                _ContentLayout.Add(_EditIcon);
+                _ContentLayout.Add(_TrashIcon);
+            }
         }
     }
 }

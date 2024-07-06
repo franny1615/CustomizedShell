@@ -14,12 +14,16 @@ namespace Inventory.MobileApp.Controls;
 public class LocationCardView : Border
 {
     public event EventHandler? Clicked;
+    public event EventHandler? Selected;
 
-    public static readonly BindableProperty DescriptionProperty = BindableProperty.Create(nameof(Description), typeof(string), typeof(StatusCardView), null);
+    public static readonly BindableProperty DescriptionProperty = BindableProperty.Create(nameof(Description), typeof(string), typeof(LocationCardView), null);
     public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
 
-    public static readonly BindableProperty BarcodeProperty = BindableProperty.Create(nameof(Barcode), typeof(string), typeof(StatusCardView), null);
+    public static readonly BindableProperty BarcodeProperty = BindableProperty.Create(nameof(Barcode), typeof(string), typeof(LocationCardView), null);
     public string Barcode { get => (string)GetValue(BarcodeProperty); set => SetValue(BarcodeProperty, value); }
+
+    public static readonly BindableProperty IsSelectableProperty = BindableProperty.Create(nameof(IsSelectable), typeof(bool), typeof(LocationCardView), false);
+    public bool IsSelectable { get => (bool)GetValue(IsSelectableProperty); set => SetValue(IsSelectableProperty, value); }
 
     public byte[] CurrentBarcode = [];
 
@@ -42,6 +46,8 @@ public class LocationCardView : Border
     };
     private Action<byte[]>? GetImageCompletion;
 
+    private readonly TapGestureRecognizer _SelectGesture = new TapGestureRecognizer { NumberOfTapsRequired = 1 };
+
     public LocationCardView()
     {
         Margin = 0;
@@ -59,6 +65,12 @@ public class LocationCardView : Border
         Content = _ContentLayout;
 
         _TouchBehavior.Command = new Command(() => Clicked?.Invoke(this, EventArgs.Empty));
+        _SelectGesture.Tapped += async (s, e) => {
+            await this.ScaleTo(0.95, 70);
+            await this.ScaleTo(1.0, 70);
+
+            Selected?.Invoke(this, EventArgs.Empty);
+        };
 
         Loaded += HasLoaded;
         Unloaded += HasUnloaded;
@@ -112,6 +124,19 @@ public class LocationCardView : Border
         else if (propertyName == BarcodeProperty.PropertyName)
         {
             _Barcode.InvalidateSurface();
+        }
+        else if (propertyName == IsSelectableProperty.PropertyName)
+        {
+            _ContentLayout.Remove(_Kebab);
+            if (IsSelectable)
+            {
+                GestureRecognizers.Add(_SelectGesture);
+            }
+            else
+            {
+                GestureRecognizers.Remove(_SelectGesture);
+                _ContentLayout.Add(_Kebab);
+            }
         }
     }
 

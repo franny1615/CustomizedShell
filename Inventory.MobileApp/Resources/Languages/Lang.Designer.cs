@@ -586,6 +586,33 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick Location.
+        /// </summary>
+        internal static string Pick_Location {
+            get {
+                return ResourceManager.GetString("Pick Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Quantity Type.
+        /// </summary>
+        internal static string Pick_Quantity_Type {
+            get {
+                return ResourceManager.GetString("Pick Quantity Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Status.
+        /// </summary>
+        internal static string Pick_Status {
+            get {
+                return ResourceManager.GetString("Pick Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter a unique username..
         /// </summary>
         internal static string Please_enter_a_unique_username_ {

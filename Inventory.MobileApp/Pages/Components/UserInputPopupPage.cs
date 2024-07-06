@@ -65,9 +65,9 @@ public class UserInputPopupPage : PopupPage
         _Submit.Clicked += Submit;
     }
 
-    private void Submit(object? sender, EventArgs e)
+    private async void Submit(object? sender, EventArgs e)
     {
-        Navigation.PopModalAsync();
+        await Navigation.PopModalAsync();
         _Submitted?.Invoke(_UserInput.Text);
     }
 

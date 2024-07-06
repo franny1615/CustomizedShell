@@ -9,6 +9,7 @@ public class StatusSearchPage : BasePage
 {
     private readonly StatusSearchViewModel _ViewModel;
     private readonly SearchView<Status> _Search;
+    private bool _IsEditing = false;
 
     public StatusSearchPage(StatusSearchViewModel statusSearchViewModel)
     {
@@ -22,7 +23,6 @@ public class StatusSearchPage : BasePage
             view.SetBinding(StatusCardView.DescriptionProperty, "Description");
             view.Delete += DeleteStatus;
             view.Edit += UpdateStatus;
-            view.Margin = new Thickness(8, 0, 8, 0);
 
             return view;
         });
@@ -32,29 +32,37 @@ public class StatusSearchPage : BasePage
         Content = _Search;
     }
 
-    private async void AddStatus(object? sender, EventArgs e)
+    private void AddStatus(object? sender, EventArgs e)
     {
-        string status = await DisplayPromptAsync(
-            LanguageService.Instance["Add Status"],
+        _IsEditing = true;
+        Navigation.PushModalAsync(PageService.TakeUserInput(
             LanguageService.Instance["Enter the status description below."],
-            LanguageService.Instance["OK"],
-            LanguageService.Instance["Cancel"]);
+            "",
+            Keyboard.Plain,
+            submitted: async (status) =>
+            {
+                if (string.IsNullOrEmpty(status)) // canceled or entered empty text, don't do anything.
+                    return;
 
-        if (string.IsNullOrEmpty(status)) // canceled or entered empty text, don't do anything.
-            return;            
+                _Search.IsLoading = true;
 
-        _Search.IsLoading = true;
+                var response = await _ViewModel.InsertStatus(status);
+                if (!string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    _Search.IsLoading = false;
+                    this.DisplayCommonError(response.ErrorMessage);
+                    return;
+                }
 
-        var response = await _ViewModel.InsertStatus(status);
-        if (!string.IsNullOrEmpty(response.ErrorMessage))
-        {
-            _Search.IsLoading = false;
-            this.DisplayCommonError(response.ErrorMessage);
-            return;
-        }
+                _Search.TriggerRefresh();
+                _Search.IsLoading = false; // fail safe
 
-        _Search.TriggerRefresh();
-        _Search.IsLoading = false; // fail safe
+                _IsEditing = false;
+            },
+            canceled: () =>
+            {
+                _IsEditing = false;
+            }));
     }
 
     private async void DeleteStatus(object? sender, EventArgs e)
@@ -88,38 +96,49 @@ public class StatusSearchPage : BasePage
         }
     }
 
-    private async void UpdateStatus(object? sender, EventArgs e)
+    private void UpdateStatus(object? sender, EventArgs e)
     {
         if (sender is StatusCardView card && card.BindingContext is Status status)
         {
-            string statusStr = await DisplayPromptAsync(
-                LanguageService.Instance["Edit Status"],
+            _IsEditing = true;
+            Navigation.PushModalAsync(PageService.TakeUserInput(
                 LanguageService.Instance["Enter the status description below."],
-                LanguageService.Instance["OK"],
-                LanguageService.Instance["Cancel"]);
+                status.Description,
+                Keyboard.Plain,
+                submitted: async (statusStr) =>
+                {
+                    if (string.IsNullOrEmpty(statusStr)) // canceled or entered empty text, don't do anything.
+                        return;
 
-            if (string.IsNullOrEmpty(statusStr)) // canceled or entered empty text, don't do anything.
-                return;
+                    _Search.IsLoading = true;
 
-            _Search.IsLoading = true;
+                    status.Description = statusStr;
+                    var response = await _ViewModel.UpdateStatus(status);
+                    if (!string.IsNullOrEmpty(response.ErrorMessage))
+                    {
+                        _Search.IsLoading = false;
+                        this.DisplayCommonError(response.ErrorMessage);
+                        return;
+                    }
 
-            status.Description = statusStr;
-            var response = await _ViewModel.UpdateStatus(status);
-            if (!string.IsNullOrEmpty(response.ErrorMessage))
-            {
-                _Search.IsLoading = false;
-                this.DisplayCommonError(response.ErrorMessage);
-                return;
-            }
+                    _Search.TriggerRefresh();
+                    _Search.IsLoading = false; // fail safe
 
-            _Search.TriggerRefresh();
-            _Search.IsLoading = false; // fail safe
+                    _IsEditing = false;
+                },
+                canceled: () =>
+                {
+                    _IsEditing = false;
+                }));
         }
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _Search.TriggerRefresh();
+        if (!_IsEditing)
+        {
+            _Search.TriggerRefresh();
+        }
     }
 }

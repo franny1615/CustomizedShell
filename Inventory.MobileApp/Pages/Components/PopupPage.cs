@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Markup;
 using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using Microsoft.Maui.Controls.Shapes;
 using System.Runtime.CompilerServices;
@@ -127,7 +128,7 @@ public class PopupPage : BasePage
     #endregion
 
     #region Helpers
-    private void DisplayInfoChange(object sender, DisplayInfoChangedEventArgs e)
+    private void DisplayInfoChange(object? sender, DisplayInfoChangedEventArgs e)
     {
         ApplyDimensions(e.DisplayInfo);
     }
@@ -139,7 +140,8 @@ public class PopupPage : BasePage
         {
             case PopupStyle.Center:
                 _ContentContainer.WidthRequest = info.Width / info.Density * 0.85;
-                _ContentContainer.HeightRequest = info.Height / info.Density * 0.85;
+                _ContentContainer.MinimumHeightRequest = info.Height / info.Density * 0.35;
+                _ContentContainer.MaximumHeightRequest = info.Height / info.Density * 0.85;
                 break;
             case PopupStyle.BottomSheet:
             case PopupStyle.Unknown:

@@ -1,4 +1,6 @@
-﻿using Inventory.MobileApp.Pages;
+﻿using Inventory.MobileApp.Models;
+using Inventory.MobileApp.Pages;
+using Inventory.MobileApp.Pages.Components;
 using Inventory.MobileApp.ViewModels;
 
 namespace Inventory.MobileApp.Services;
@@ -38,5 +40,39 @@ public static class PageService
     public static InventorySearchPage InventorySearch()
     {
         return new InventorySearchPage(new InventorySearchViewModel());
+    }
+
+    public static UserInputPopupPage TakeUserInput(
+        string title,
+        string existingText,
+        Keyboard keyboard,
+        Action<string> submitted,
+        Action canceled)
+    {
+        return new UserInputPopupPage(title, existingText, keyboard, submitted, canceled);
+    }
+
+    public static PickLocationPopupPage PickLocation(
+        string title,
+        Action<Models.Location> picked,
+        Action canceled)
+    {
+        return new PickLocationPopupPage(new LocationSearchViewModel(), title, picked, canceled);
+    }
+
+    public static PickQuantityTypePopupPage PickQtyType(
+        string title,
+        Action<QuantityType> picked,
+        Action canceled)
+    {
+        return new PickQuantityTypePopupPage(new QuantityTypesSearchViewModel(), title, picked, canceled);
+    }
+
+    public static PickStatusPopupPage PickStatus(
+        string title,
+        Action<Status> picked,
+        Action canceled)
+    {
+        return new PickStatusPopupPage(new StatusSearchViewModel(), title, picked, canceled);
     }
 }

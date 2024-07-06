@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Inventory.MobileApp.Models;
+using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 using Microsoft.Maui.Platform;
 
 namespace Inventory.MobileApp.Pages;
@@ -31,5 +32,12 @@ public class BasePage: ContentPage
                 LanguageChanged?.Invoke(this, new EventArgs());
                 break;
         }
+    }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+#if ANDROID
+        Platform.CurrentActivity?.Window?.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
+#endif
     }
 }
