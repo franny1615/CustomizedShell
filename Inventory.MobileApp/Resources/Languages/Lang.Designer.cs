@@ -70,6 +70,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Inventory.
+        /// </summary>
+        internal static string Add_Inventory {
+            get {
+                return ResourceManager.GetString("Add Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Location.
         /// </summary>
         internal static string Add_Location {

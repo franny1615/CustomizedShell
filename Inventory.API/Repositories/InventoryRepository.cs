@@ -71,6 +71,15 @@ and inventory.Id = @invId";
         var result = new RepoResult<SearchResult<Models.Inventory>>();
         try
         {
+            string barcodeSearch = "";
+            if (int.TryParse(request.Search, out int barcode))
+            {
+                barcodeSearch = $"and inventory.Barcode = {barcode}";
+            }
+            else
+            {
+                barcodeSearch = "and inventory.[Description] LIKE @search+'%'";
+            }
             string _param = $@"
 declare 
 @companyId int = {companyId},
@@ -98,7 +107,7 @@ inner join [status] on status.Id = inventory.StatusId
 inner join [location] on [location].Id = inventory.LocationId
 inner join [quantity_type] on quantity_type.Id = inventory.QtyTypeId
 where inventory.CompanyId = @companyId
-and inventory.[Description] LIKE @search+'%'
+{barcodeSearch}
 order by inventory.Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
@@ -108,7 +117,7 @@ fetch next @pageSize rows only";
 select COUNT(*) 
 from inventory
 where inventory.CompanyId = @companyId
-and inventory.[Description] LIKE @search+'%';";
+{barcodeSearch};";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new()

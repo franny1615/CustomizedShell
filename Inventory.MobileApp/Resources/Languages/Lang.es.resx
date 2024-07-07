@@ -365,4 +365,7 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Pick Status" xml:space="preserve">
     <value>Elegir Estado</value>
   </data>
+  <data name="Add Inventory" xml:space="preserve">
+    <value>Agregar Inventario</value>
+  </data>
 </root>
