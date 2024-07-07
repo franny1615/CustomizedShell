@@ -45,6 +45,9 @@ public class InventoryCardView : Border
     public static readonly BindableProperty CreatedOnProperty = BindableProperty.Create(nameof(CreatedOn), typeof(DateTime), typeof(InventoryCardView), new DateTime(1970, 1, 1));
     public DateTime CreatedOn { get => (DateTime)GetValue(CreatedOnProperty); set => SetValue(CreatedOnProperty, value); }
 
+    public static readonly BindableProperty HideKebabProperty = BindableProperty.Create(nameof(HideKebab), typeof(bool), typeof(InventoryCardView), false);
+    public bool HideKebab { get => (bool)GetValue(HideKebabProperty); set => SetValue(HideKebabProperty, value); }
+
     private readonly IconLabel _Description = new()
     {
         Header = LanguageService.Instance["Description"],
@@ -230,6 +233,10 @@ public class InventoryCardView : Border
         else if (propertyName == BarcodeProperty.PropertyName)
         {
             _Barcode.InvalidateSurface();
+        }
+        else if (propertyName == HideKebabProperty.PropertyName)
+        {
+            _Kebab.IsVisible = !HideKebab;
         }
     }
 }

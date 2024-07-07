@@ -10,6 +10,7 @@ public class InventorySearchPage : BasePage
 {
     private readonly InventorySearchViewModel _ViewModel;
     private readonly SearchView<Models.Inventory> _Search;
+    private Random RAND = new Random();
     private bool _IsEditing = false;
 
     public InventorySearchPage(InventorySearchViewModel invSearchVM)
@@ -346,7 +347,36 @@ public class InventorySearchPage : BasePage
 
     private void AddInventory(object? sender, EventArgs e)
     {
-        
+        _IsEditing = true;
+        Navigation.PushAsync(PageService.AddInventory(
+            LanguageService.Instance["Add Inventory"],
+            new Models.Inventory 
+            { 
+                Description = string.Empty,
+                Quantity = 0,
+                Barcode = $"{RAND.Next(1000000, 9999999)}",
+                LastEditedOn = DateTime.Now, 
+                CreatedOn = DateTime.Now 
+            },
+            add: async (inventory) =>
+            {
+                if (inventory == null) 
+                    return;
+
+                _Search.IsLoading = true;
+                var response = await _ViewModel.InsertInventory(inventory);
+                if (!string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    _Search.IsLoading = false;
+                    this.DisplayCommonError(response.ErrorMessage);
+                    return;
+                }
+
+                _Search.IsLoading = false;
+                _IsEditing = false;
+
+                _Search.TriggerRefresh();
+            }));
     }
 
     protected override void OnAppearing()

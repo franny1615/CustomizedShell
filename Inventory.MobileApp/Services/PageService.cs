@@ -75,4 +75,12 @@ public static class PageService
     {
         return new PickStatusPopupPage(new StatusSearchViewModel(), title, picked, canceled);
     }
+
+    public static AddInventoryPage AddInventory(
+        string title,
+        Models.Inventory baseInventory,
+        Action<Models.Inventory> add)
+    {
+        return new AddInventoryPage(title, baseInventory, add); 
+    }
 }
