@@ -60,6 +60,7 @@ public class DashboardViewModel()
         }
 
         SessionService.CurrentUser = response.Data ?? new User();
+
 #if DEBUG
         System.Diagnostics.Debug.WriteLine($"PROFILE >>> {JsonSerializer.Serialize(SessionService.CurrentUser)}");
 #endif
@@ -72,14 +73,31 @@ public class DashboardViewModel()
         {
             // TODO: log to cloud or something
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine(response.ErrorMessage);
+            System.Diagnostics.Debug.WriteLine(permissions.ErrorMessage);
 #endif
             return;
         };
 
         SessionService.CurrentPermissions = permissions.Data ?? new UserPermissions();
+
 #if DEBUG
         System.Diagnostics.Debug.WriteLine($"PERMISSIONS >>> {JsonSerializer.Serialize(SessionService.CurrentPermissions)}");
+#endif
+
+        var company = await NetworkService.Get<Company>(Endpoints.companyDetails, new Dictionary<string, string>());
+        if (!string.IsNullOrEmpty(company.ErrorMessage))
+        {
+            // TODO: log to cloud or something
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(company.ErrorMessage);
+#endif
+            return;
+        };
+
+        SessionService.CurrentCompany = company.Data ?? new Company();
+
+#if DEBUG
+        System.Diagnostics.Debug.WriteLine($"COMPANY >>> {JsonSerializer.Serialize(SessionService.CurrentCompany)}");
 #endif
     }
 }

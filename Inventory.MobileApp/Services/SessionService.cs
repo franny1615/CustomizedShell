@@ -38,6 +38,7 @@ public static class SessionService
 
     public static User CurrentUser { get; set; } = new User();
     public static UserPermissions CurrentPermissions { get; set; } = new UserPermissions();
+    public static Company CurrentCompany { get; set; } = new Company();
 
     public static void LogOut()
     {
