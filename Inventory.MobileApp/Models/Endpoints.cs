@@ -30,4 +30,8 @@ public static class Endpoints
     public const string insertInventory = "api/inventory/insert";
     public const string deleteInventory = "api/inventory/delete";
     public const string updateInventory = "api/inventory/update";
+    public const string insertPermission = "api/permissions/insert";
+    public const string updatePermission = "api/permissions/update";
+    public const string deletePermission = "api/permissions/delete";
+    public const string getPermissionByUser = "api/permissions/detailsByUser";
 }

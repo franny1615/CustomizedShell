@@ -62,7 +62,8 @@ public class DashboardPage : BasePage
     {
         base.OnAppearing();
 		LanguageChanged += UpdateLanguageStrings;
-		ReloadDashboard();
+        _ = _DashboardVM.LoadProfile();
+        ReloadDashboard();
     }
 
     protected override void OnDisappearing()

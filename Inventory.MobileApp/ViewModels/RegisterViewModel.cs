@@ -5,6 +5,7 @@ namespace Inventory.MobileApp.ViewModels;
 
 public class RegisterViewModel
 {
+    private int _UserID = 0;
     private int _CompanyID = 0;
 
     public async Task<NetworkResponse<bool>> BeginEmailValidation(string email)
@@ -43,6 +44,7 @@ public class RegisterViewModel
             phoneNumber,
             isCompanyOwner = true
         });
+        _UserID = response.Data;
         return response;
     }
 
@@ -84,6 +86,16 @@ public class RegisterViewModel
             password
         });
         SessionService.AuthToken = response.Data ?? "";
+
+        // owner permissions
+        var permsresp = await NetworkService.Post<int>(Endpoints.insertPermission, new
+        {
+            UserId = _UserID,
+            CompanId = _CompanyID,
+            InventoryPermissions = 1023 // all perms...
+        });
+        response.ErrorMessage = $"{response.ErrorMessage ?? ""}{permsresp.ErrorMessage ?? ""}";
+
         return !string.IsNullOrEmpty(response.Data);
     }
 }

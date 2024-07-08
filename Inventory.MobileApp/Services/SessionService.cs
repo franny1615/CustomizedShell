@@ -36,6 +36,9 @@ public static class SessionService
         set => Preferences.Set("kFirstInstall", value ? "1": "0");
     }
 
+    public static User CurrentUser { get; set; } = new User();
+    public static UserPermissions CurrentPermissions { get; set; } = new UserPermissions();
+
     public static void LogOut()
     {
         AuthToken = "";
