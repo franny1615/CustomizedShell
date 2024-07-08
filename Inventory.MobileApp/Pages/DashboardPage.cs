@@ -107,7 +107,7 @@ public class DashboardPage : BasePage
 					Navigation.PushAsync(PageService.QuantityTypesSearch());
                     break;
 				case DashboardItemType.Profile:
-					// TODO: 
+					Navigation.PushAsync(PageService.Profile());
 					break;
                 case DashboardItemType.Unknown:
                     break;

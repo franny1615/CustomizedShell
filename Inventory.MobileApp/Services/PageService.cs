@@ -83,4 +83,9 @@ public static class PageService
     {
         return new AddInventoryPage(title, baseInventory, add); 
     }
+
+    public static ProfilePage Profile()
+    {
+        return new ProfilePage();
+    }
 }
