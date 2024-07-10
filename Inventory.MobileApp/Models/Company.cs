@@ -1,27 +1,47 @@
 ﻿using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Inventory.MobileApp.Models;
 
-public class Company
+public partial class Company : ObservableObject
 {
-    [JsonPropertyName("id")]
-    public int Id { get; set; } = -1;
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = string.Empty;
-    [JsonPropertyName("address1")]
-    public string Address1 { get; set; } = string.Empty;
-    [JsonPropertyName("address2")]
-    public string Address2 { get; set; } = string.Empty;
-    [JsonPropertyName("address3")]
-    public string Address3 { get; set; } = string.Empty;
-    [JsonPropertyName("country")]
-    public string Country { get; set; } = string.Empty;
-    [JsonPropertyName("city")]
-    public string City { get; set; } = string.Empty;
-    [JsonPropertyName("state")]
-    public string State { get; set; } = string.Empty;
-    [JsonPropertyName("zip")]
-    public string Zip { get; set; } = string.Empty;
-    [JsonPropertyName("licenseExpiresOn")]
-    public DateTime? LicenseExpiresOn { get; set; } = null;
+    [ObservableProperty]
+    [property: JsonPropertyName("id")]
+    public int id = -1;
+    
+    [ObservableProperty]
+    [property: JsonPropertyName("name")]
+    public string name = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("address1")]
+    public string address1 = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("address2")]
+    public string address2 = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("address3")]
+    public string address3 = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("country")]
+    public string country = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("city")]
+    public string city = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("state")]
+    public string state  = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("zip")]
+    public string zip = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("licenseExpiresOn")]
+    public DateTime? licenseExpiresOn = null;
 }

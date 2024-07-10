@@ -75,7 +75,7 @@ public class ProfileCardView : Border
         }
         else if (propertyName == PhoneNumberProperty.PropertyName)
         {
-            _PhoneNumber.Text = string.IsNullOrEmpty(PhoneNumber) ? "." : PhoneNumber;
+            _PhoneNumber.Text = string.IsNullOrEmpty(PhoneNumber) ? "" : PhoneNumber;
         }
     }
 }

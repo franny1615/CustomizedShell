@@ -1,31 +1,49 @@
 ﻿using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Inventory.MobileApp.Models;
 
-public class User
+public partial class User : ObservableObject
 {
-    [JsonPropertyName("id")]
-    public int Id { get; set; } = -1;
-    [JsonPropertyName("companyID")]
-    public int CompanyID { get; set; } = -1;
-    [JsonPropertyName("userName")]
-    public string UserName { get; set; } = string.Empty;
-    [JsonPropertyName("password")]
-    public string Password { get; set; } = string.Empty;
-    [JsonPropertyName("isDarkModeOn")]
-    public bool IsDarkModeOn { get; set; } = false;
-    [JsonPropertyName("localization")]
-    public string Localization { get; set; } = string.Empty;
-    [JsonPropertyName("email")]
-    public string Email { get; set; } = string.Empty;
-    [JsonPropertyName("phoneNumber")]
-    public string PhoneNumber { get; set; } = string.Empty;
-    [JsonPropertyName("isCompanyOwner")]
-    public bool IsCompanyOwner { get; set; } = false;
+    [ObservableProperty]
+    [property: JsonPropertyName("id")]
+    public int id = -1;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("companyID")]
+    public int companyID = -1;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("userName")]
+    public string userName = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("password")]
+    public string password = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("isDarkModeOn")]
+    public bool isDarkModeOn = false;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("localization")]
+    public string localization = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("email")]
+    public string email = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("phoneNumber")]
+    public string phoneNumber = string.Empty;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("isCompanyOwner")]
+    public bool isCompanyOwner = false;
 
     [JsonIgnore]
-    public object PasswordHash { get; set; } = string.Empty;
+    public object PasswordHash = string.Empty;
     [JsonIgnore]
-    public string Salt { get; set; } = string.Empty;
+    public string Salt = string.Empty;
 
 }

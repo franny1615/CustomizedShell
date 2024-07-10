@@ -368,4 +368,37 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Add Inventory" xml:space="preserve">
     <value>Agregar Inventario</value>
   </data>
+  <data name="Edit Email" xml:space="preserve">
+    <value>Editar Correo Electronico</value>
+  </data>
+  <data name="Edit Phone Number" xml:space="preserve">
+    <value>Editar Numero de Telefono</value>
+  </data>
+  <data name="Edit Company Name" xml:space="preserve">
+    <value>Editar Nombre de Compania</value>
+  </data>
+  <data name="Edit Address1" xml:space="preserve">
+    <value>Editar Dirección Linea 1</value>
+  </data>
+  <data name="Edit Address2" xml:space="preserve">
+    <value>Editar Dirección Linea 2</value>
+  </data>
+  <data name="Edit Address3" xml:space="preserve">
+    <value>Editar Dirección Linea 3</value>
+  </data>
+  <data name="Edit Country" xml:space="preserve">
+    <value>Editar País</value>
+  </data>
+  <data name="Edit City" xml:space="preserve">
+    <value>Editar Ciudad</value>
+  </data>
+  <data name="Edit State" xml:space="preserve">
+    <value>Editar Estado</value>
+  </data>
+  <data name="Edit Zip" xml:space="preserve">
+    <value>Editar Codigo Postal</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Ciudad</value>
+  </data>
 </root>

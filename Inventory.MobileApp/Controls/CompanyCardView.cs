@@ -3,6 +3,7 @@ using Inventory.MobileApp.Services;
 using Microsoft.Maui.Controls.Shapes;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Text;
 using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Inventory.MobileApp.Controls;
@@ -17,6 +18,9 @@ public class CompanyCardView : Border
     public event EventHandler? EditCity;
     public event EventHandler? EditState;
     public event EventHandler? EditZip;
+
+    public static readonly BindableProperty IDProperty = BindableProperty.Create(nameof(ID), typeof(int), typeof(CompanyCardView), -1);
+    public int ID { get => (int)GetValue(IDProperty); set => SetValue(IDProperty, value); }
 
     public static readonly BindableProperty NameProperty = BindableProperty.Create(nameof(Name), typeof(string), typeof(CompanyCardView), null);
     public string Name { get => (string)GetValue(NameProperty); set => SetValue(NameProperty, value); }
@@ -53,6 +57,10 @@ public class CompanyCardView : Border
         .Text(LanguageService.Instance["Company"])
         .FontSize(24)
         .Bold();
+    private readonly IconLabel _IDLabel = new IconLabel()
+    {
+        Header = LanguageService.Instance["Company Code (for employee signups)"]
+    };
     private readonly IconLabel _Name = new IconLabel
     {
         Header = LanguageService.Instance["Company Name"],
@@ -108,6 +116,7 @@ public class CompanyCardView : Border
         SetDynamicResource(Border.BackgroundProperty, "DashTileColor");
 
         _ContentLayout.Add(_Header);
+        _ContentLayout.Add(_IDLabel);
         _ContentLayout.Add(_Name);
         _ContentLayout.Add(_Address1);
         _ContentLayout.Add(_Address2);
@@ -148,31 +157,31 @@ public class CompanyCardView : Border
         }
         else if (propertyName == Address1Property.PropertyName)
         {
-            _Address1.Text = string.IsNullOrEmpty(Address1) ? "." : Address1;
+            _Address1.Text = string.IsNullOrEmpty(Address1) ? "" : Address1;
         }
         else if (propertyName == Address2Property.PropertyName)
         {
-            _Address2.Text = string.IsNullOrEmpty(Address2) ? "." : Address2;
+            _Address2.Text = string.IsNullOrEmpty(Address2) ? "" : Address2;
         }
         else if (propertyName == Address3Property.PropertyName)
         {
-            _Address3.Text = string.IsNullOrEmpty(Address3) ? "." : Address3;
+            _Address3.Text = string.IsNullOrEmpty(Address3) ? "" : Address3;
         }
         else if (propertyName == CountryProperty.PropertyName)
         {
-            _Country.Text = string.IsNullOrEmpty(Country) ? "." : Country;
+            _Country.Text = string.IsNullOrEmpty(Country) ? "" : Country;
         }
         else if (propertyName == CityProperty.PropertyName)
         {
-            _City.Text = string.IsNullOrEmpty(City) ? "." : City;
+            _City.Text = string.IsNullOrEmpty(City) ? "" : City;
         }
         else if (propertyName == StateProperty.PropertyName)
         {
-            _State.Text = string.IsNullOrEmpty(State) ? "." : State;
+            _State.Text = string.IsNullOrEmpty(State) ? "" : State;
         }
         else if (propertyName == ZipProperty.PropertyName)
         {
-            _Zip.Text = string.IsNullOrEmpty(Zip) ? "." : Zip;
+            _Zip.Text = string.IsNullOrEmpty(Zip) ? "" : Zip;
         }
         else if (propertyName == LicenseExpiresOnProperty.PropertyName)
         {
@@ -180,6 +189,10 @@ public class CompanyCardView : Border
             {
                 _LicenseExpiresOn.Text = (LicenseExpiresOn ?? DateTime.Now).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
             }
+        }
+        else if (propertyName == IDProperty.PropertyName)
+        {
+            _IDLabel.Text = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{ID}"));
         }
     }
 }

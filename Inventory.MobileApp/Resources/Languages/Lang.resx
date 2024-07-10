@@ -372,4 +372,37 @@ Would you like to share the error with us?</value>
   <data name="Add Inventory" xml:space="preserve">
     <value>Add Inventory</value>
   </data>
+  <data name="Edit Email" xml:space="preserve">
+    <value>Edit Email</value>
+  </data>
+  <data name="Edit Phone Number" xml:space="preserve">
+    <value>Edit Phone Number</value>
+  </data>
+  <data name="Edit Company Name" xml:space="preserve">
+    <value>Edit Company Name</value>
+  </data>
+  <data name="Edit Address1" xml:space="preserve">
+    <value>Edit Address1</value>
+  </data>
+  <data name="Edit Address2" xml:space="preserve">
+    <value>Edit Address2</value>
+  </data>
+  <data name="Edit Address3" xml:space="preserve">
+    <value>Edit Address3</value>
+  </data>
+  <data name="Edit Country" xml:space="preserve">
+    <value>Edit Country</value>
+  </data>
+  <data name="Edit City" xml:space="preserve">
+    <value>Edit City</value>
+  </data>
+  <data name="Edit State" xml:space="preserve">
+    <value>Edit State</value>
+  </data>
+  <data name="Edit Zip" xml:space="preserve">
+    <value>Edit Zip</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
 </root>

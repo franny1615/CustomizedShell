@@ -115,7 +115,8 @@ UPDATE company SET
     Country = '{company.Country}',
     City = '{company.City}',
     {licenseUpdate}
-    State = '{company.State}'
+    State = '{company.State}',
+    Zip = '{company.Zip}'
 WHERE company.Id = {company.Id}";
             await QueryAsync<object>(query);
             result.Data = true;
