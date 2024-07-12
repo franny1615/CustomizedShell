@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Inventory.API.Repositories;
 using Inventory.API.Models;
+using Inventory.API.Utilities;
 [assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +62,22 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseWebSockets();
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/api/websocket/serverStatus")
+    {
+        if (context.WebSockets.IsWebSocketRequest)
+            await WSUtils.CheckServerStatus(context);
+        else
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+    }
+    else
+    {
+        await next(context);
+    }
+});
 
 if (app.Environment.IsDevelopment())
 {
