@@ -51,27 +51,22 @@ public class InventoryCardView : Border
     private readonly IconLabel _Description = new()
     {
         Header = LanguageService.Instance["Description"],
-        Icon = MaterialIcon.Edit,
     };
     private readonly IconLabel _Quantity = new()
     {
         Header = LanguageService.Instance["Quantity"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _QtyType = new()
     {
         Header = LanguageService.Instance["Quantity Type"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _Status = new()
     {
         Header = LanguageService.Instance["Status"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _Location = new()
     {
         Header = LanguageService.Instance["Location"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _LastEditedOn = new()
     {
@@ -94,11 +89,36 @@ public class InventoryCardView : Border
 
         SetDynamicResource(Border.BackgroundProperty, "DashTileColor");
 
-        _Description.TapGesture(() => EditDescription?.Invoke(this, EventArgs.Empty));
-        _Quantity.TapGesture(() => EditQuantity?.Invoke(this, EventArgs.Empty));
-        _QtyType.TapGesture(() => EditQuantityType?.Invoke(this, EventArgs.Empty));
-        _Status.TapGesture(() => EditStatus?.Invoke(this, EventArgs.Empty));
-        _Location.TapGesture(() => EditLocation?.Invoke(this, EventArgs.Empty));
+        if (PermsUtils.IsAllowed(InventoryPermissions.CanEditDesc))
+        {
+            _Description.Icon = MaterialIcon.Edit;
+            _Description.TapGesture(() => EditDescription?.Invoke(this, EventArgs.Empty));
+        }
+        
+        if (PermsUtils.IsAllowed(InventoryPermissions.CanEditQty))
+        {
+            _Quantity.Icon = MaterialIcon.Edit;
+            _Quantity.TapGesture(() => EditQuantity?.Invoke(this, EventArgs.Empty));
+        }
+        
+        if (PermsUtils.IsAllowed(InventoryPermissions.CanEditQtyType))
+        {
+            _QtyType.Icon = MaterialIcon.Edit;
+            _QtyType.TapGesture(() => EditQuantityType?.Invoke(this, EventArgs.Empty));
+        }
+        
+        if (PermsUtils.IsAllowed(InventoryPermissions.CanEditStatus))
+        {
+            _Status.Icon = MaterialIcon.Edit;
+            _Status.TapGesture(() => EditStatus?.Invoke(this, EventArgs.Empty));
+        }
+        
+        if (PermsUtils.IsAllowed(InventoryPermissions.CanEditLocation))
+        {
+            _Location.Icon = MaterialIcon.Edit;
+            _Location.TapGesture(() => EditLocation?.Invoke(this, EventArgs.Empty));
+        }
+
         _Kebab.TapGesture(() => KebabMenu?.Invoke(this, EventArgs.Empty));
 
         var flex = new FlexLayout

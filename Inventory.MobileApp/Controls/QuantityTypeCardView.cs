@@ -5,6 +5,7 @@ using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 using System.Runtime.CompilerServices;
 using Inventory.MobileApp.Services;
 using Microsoft.Maui.Controls;
+using Inventory.MobileApp.Models;
 
 namespace Inventory.MobileApp.Controls;
 
@@ -78,10 +79,23 @@ public class QuantityTypeCardView : Border
             .ApplyMaterialIcon(MaterialIcon.Delete, 24, Colors.Red);
 
         _ContentLayout.Add(_Description.Column(0));
-        _ContentLayout.Add(_EditIcon.Column(1));
-        _ContentLayout.Add(_TrashIcon.Column(2));
+        CheckPermissions();
 
         Content = _ContentLayout;
+    }
+
+    private void CheckPermissions()
+    {
+        if (PermsUtils.IsAllowed(InventoryPermissions.CanEditQtyType))
+        {
+            _ContentLayout.Add(_EditIcon.Column(1));
+            _ContentLayout.Add(_TrashIcon.Column(2));
+        }
+        else
+        {
+            _ContentLayout.Remove(_EditIcon);
+            _ContentLayout.Remove(_TrashIcon);
+        }
     }
 
     protected override void OnPropertyChanged([CallerMemberName] string? propertyName = "")
@@ -102,8 +116,7 @@ public class QuantityTypeCardView : Border
             else
             {
                 GestureRecognizers.Remove(_SelectGesture);
-                _ContentLayout.Add(_EditIcon);
-                _ContentLayout.Add(_TrashIcon);
+                CheckPermissions();
             }
         }
     }

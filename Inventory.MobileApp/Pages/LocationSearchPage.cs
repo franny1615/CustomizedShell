@@ -18,6 +18,7 @@ public class LocationSearchPage : BasePage
 
         _ViewModel = locationSearchViewModel;
         _Search = new(locationSearchViewModel);
+        _Search.CanAddItems = PermsUtils.IsAllowed(InventoryPermissions.CanAddLocation);
         _Search.SearchLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 12 };
         _Search.CardTemplate = new DataTemplate(() =>
         {
@@ -47,18 +48,26 @@ public class LocationSearchPage : BasePage
     {
         if (sender is LocationCardView card && card.BindingContext is Location location)
         {
+            bool canEdit = PermsUtils.IsAllowed(InventoryPermissions.CanEditLocation);
+
             string delete = LanguageService.Instance["Delete"];
             string print = LanguageService.Instance["Print"];
             string edit = LanguageService.Instance["Edit"];
+
+            List<string> options = new List<string>();
+            if (canEdit)
+                options.Add(delete);
+
+            options.Add(print);
+            
+            if (canEdit)
+                options.Add(delete);
+
             string choice = await DisplayActionSheet(
                 LanguageService.Instance["Options"],
                 LanguageService.Instance["Cancel"],
                 null,
-                [
-                    delete,
-                    print,
-                    edit
-                ]);
+                options.ToArray());
 
             if (choice == delete)
             {

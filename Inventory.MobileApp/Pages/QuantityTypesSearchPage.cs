@@ -15,6 +15,7 @@ public class QuantityTypesSearchPage : BasePage
     {
         _ViewModel = viewModel;
         _Search = new(_ViewModel);
+        _Search.CanAddItems = PermsUtils.IsAllowed(InventoryPermissions.CanAddQtyType);
         _Search.SearchLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 12 };
         _Search.CardTemplate = new DataTemplate(() =>
         {

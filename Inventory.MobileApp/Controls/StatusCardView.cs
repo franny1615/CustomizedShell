@@ -84,12 +84,7 @@ public class StatusCardView : Border
 
     private void CheckPermissions()
     {
-        int permissions = SessionService.CurrentPermissions.InventoryPermissions;
-        int editPerm = (int)InventoryPermissions.CanEditStatus;
-        int editPermInt = permissions & editPerm;
-        bool canEdit = editPermInt == editPerm;
-
-        if (canEdit)
+        if (PermsUtils.IsAllowed(InventoryPermissions.CanEditStatus))
         {
             _ContentLayout.Add(_EditIcon.Column(1));
             _ContentLayout.Add(_TrashIcon.Column(2));

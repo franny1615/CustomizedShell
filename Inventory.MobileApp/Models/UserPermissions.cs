@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Inventory.MobileApp.Services;
+using System.Text.Json.Serialization;
 
 namespace Inventory.MobileApp.Models;
 
@@ -14,6 +15,18 @@ public class UserPermissions
     public int InventoryPermissions { get; set; }
 }
 
+public static class PermsUtils
+{
+    public static bool IsAllowed(InventoryPermissions permission)
+    {
+        int permissions = SessionService.CurrentPermissions.InventoryPermissions;
+        int perm = (int)permission;
+        int permInt = permissions & perm;
+
+        return perm == permInt;
+    }
+}
+
 public enum InventoryPermissions
 {
     CanEditDesc     = 1,   // 1 0 0 0 0 0 0 0 0 0 
@@ -25,4 +38,5 @@ public enum InventoryPermissions
     CanAddStatus    = 64,  // 0 0 0 0 0 0 1 0 0 0
     CanAddLocation  = 128, // 0 0 0 0 0 0 0 1 0 0
     CanAddQtyType   = 256, // 0 0 0 0 0 0 0 0 1 0 
+    CanDeleteInv    = 512, // 0 0 0 0 0 0 0 0 0 1
 }

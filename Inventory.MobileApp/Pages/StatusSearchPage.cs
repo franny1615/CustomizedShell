@@ -13,18 +13,9 @@ public class StatusSearchPage : BasePage
 
     public StatusSearchPage(StatusSearchViewModel statusSearchViewModel)
     {
-        int permissions = SessionService.CurrentPermissions.InventoryPermissions;
-        int canAddPerm = (int)InventoryPermissions.CanAddStatus;
-        int canAddPermInt = permissions & canAddPerm;
-        bool canAddStatus = canAddPermInt == canAddPerm;
-
-#if DEBUG
-        System.Diagnostics.Debug.WriteLine($"{permissions} & {canAddPerm} = {canAddPermInt}");
-#endif
-
         _ViewModel = statusSearchViewModel;
         _Search = new(_ViewModel);
-        _Search.CanAddItems = canAddStatus;
+        _Search.CanAddItems = PermsUtils.IsAllowed(InventoryPermissions.CanAddStatus);
         _Search.SearchLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 12 };
         _Search.CardTemplate = new DataTemplate(() =>
         {

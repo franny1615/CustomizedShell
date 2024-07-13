@@ -15,8 +15,14 @@ public class InventorySearchPage : BasePage
 
     public InventorySearchPage(InventorySearchViewModel invSearchVM)
     {
+        int permissions = SessionService.CurrentPermissions.InventoryPermissions;
+        int canAddPerm = (int)InventoryPermissions.CanAddInventory;
+        int canAddPermInt = permissions & canAddPerm;
+        bool canAdd = canAddPermInt == canAddPerm;
+
         _ViewModel = invSearchVM;
         _Search = new(invSearchVM);
+        _Search.CanAddItems = canAdd;
         _Search.SearchLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 12 };
         _Search.CardTemplate = new DataTemplate(() =>
         {
@@ -51,14 +57,17 @@ public class InventorySearchPage : BasePage
         {
             string delete = LanguageService.Instance["Delete"];
             string print = LanguageService.Instance["Print"];
+
+            List<string> options = new List<string>();
+            if (PermsUtils.IsAllowed(InventoryPermissions.CanDeleteInv))
+                options.Add(delete);
+            options.Add(print);
+
             string choice = await DisplayActionSheet(
                     LanguageService.Instance["Options"],
                     LanguageService.Instance["Cancel"],
                     null,
-                    [
-                        delete,
-                    print,
-                    ]);
+                    options.ToArray());
 
             if (choice == delete)
             {
