@@ -405,4 +405,19 @@ Would you like to share the error with us?</value>
   <data name="City" xml:space="preserve">
     <value>City</value>
   </data>
+  <data name="Company Code" xml:space="preserve">
+    <value>Company Code</value>
+  </data>
+  <data name="Company Registration" xml:space="preserve">
+    <value>Company Registration</value>
+  </data>
+  <data name="Invalid Code" xml:space="preserve">
+    <value>Invalid Code</value>
+  </data>
+  <data name="User Registration" xml:space="preserve">
+    <value>User Registration</value>
+  </data>
+  <data name="Verify that the company code has been entered correctly." xml:space="preserve">
+    <value>Verify that the company code has been entered correctly.</value>
+  </data>
 </root>

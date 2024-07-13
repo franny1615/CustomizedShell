@@ -1,12 +1,20 @@
 ﻿using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
+using System.Text;
 
 namespace Inventory.MobileApp.ViewModels;
 
 public class RegisterViewModel
 {
+    public bool IsUserRegistration = false;
+
     private int _UserID = 0;
     private int _CompanyID = 0;
+
+    public RegisterViewModel(bool isUserRegistration)
+    {
+        IsUserRegistration = isUserRegistration;
+    }
 
     public async Task<NetworkResponse<bool>> BeginEmailValidation(string email)
     {
@@ -42,7 +50,7 @@ public class RegisterViewModel
             localization = SessionService.CurrentLanguageCulture,
             email,
             phoneNumber,
-            isCompanyOwner = true
+            isCompanyOwner = IsUserRegistration ? false : true
         });
         _UserID = response.Data;
         return response;
@@ -92,10 +100,27 @@ public class RegisterViewModel
         {
             UserId = _UserID,
             CompanId = _CompanyID,
-            InventoryPermissions = 1023 // all perms...
+            InventoryPermissions = IsUserRegistration ? 0 : 1023 // read-only all v. all perms
         });
         response.ErrorMessage = $"{response.ErrorMessage ?? ""}{permsresp.ErrorMessage ?? ""}";
 
         return !string.IsNullOrEmpty(response.Data);
+    }
+
+    public bool SetCompanyID(string base64Code)
+    {
+        try
+        {
+            var bytes = Convert.FromBase64String(base64Code);
+            var code = Encoding.UTF8.GetString(bytes);
+            int.TryParse(code, out int intCode);
+            _CompanyID = intCode;
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

@@ -169,6 +169,24 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to City.
+        /// </summary>
+        internal static string City {
+            get {
+                return ResourceManager.GetString("City", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company Code.
+        /// </summary>
+        internal static string Company_Code {
+            get {
+                return ResourceManager.GetString("Company Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company Details.
         /// </summary>
         internal static string Company_Details {
@@ -183,6 +201,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Company_Name {
             get {
                 return ResourceManager.GetString("Company Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company Registration.
+        /// </summary>
+        internal static string Company_Registration {
+            get {
+                return ResourceManager.GetString("Company Registration", resourceCulture);
             }
         }
         
@@ -268,6 +295,60 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Address1.
+        /// </summary>
+        internal static string Edit_Address1 {
+            get {
+                return ResourceManager.GetString("Edit Address1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Address2.
+        /// </summary>
+        internal static string Edit_Address2 {
+            get {
+                return ResourceManager.GetString("Edit Address2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Address3.
+        /// </summary>
+        internal static string Edit_Address3 {
+            get {
+                return ResourceManager.GetString("Edit Address3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit City.
+        /// </summary>
+        internal static string Edit_City {
+            get {
+                return ResourceManager.GetString("Edit City", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Company Name.
+        /// </summary>
+        internal static string Edit_Company_Name {
+            get {
+                return ResourceManager.GetString("Edit Company Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Country.
+        /// </summary>
+        internal static string Edit_Country {
+            get {
+                return ResourceManager.GetString("Edit Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Description.
         /// </summary>
         internal static string Edit_Description {
@@ -277,11 +358,29 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Email.
+        /// </summary>
+        internal static string Edit_Email {
+            get {
+                return ResourceManager.GetString("Edit Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Location.
         /// </summary>
         internal static string Edit_Location {
             get {
                 return ResourceManager.GetString("Edit Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Phone Number.
+        /// </summary>
+        internal static string Edit_Phone_Number {
+            get {
+                return ResourceManager.GetString("Edit Phone Number", resourceCulture);
             }
         }
         
@@ -304,11 +403,29 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit State.
+        /// </summary>
+        internal static string Edit_State {
+            get {
+                return ResourceManager.GetString("Edit State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Status.
         /// </summary>
         internal static string Edit_Status {
             get {
                 return ResourceManager.GetString("Edit Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Zip.
+        /// </summary>
+        internal static string Edit_Zip {
+            get {
+                return ResourceManager.GetString("Edit Zip", resourceCulture);
             }
         }
         
@@ -456,6 +573,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Incorrect_username_password__Please_try_again_ {
             get {
                 return ResourceManager.GetString("Incorrect username/password. Please try again.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Code.
+        /// </summary>
+        internal static string Invalid_Code {
+            get {
+                return ResourceManager.GetString("Invalid Code", resourceCulture);
             }
         }
         
@@ -784,6 +910,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Registration.
+        /// </summary>
+        internal static string User_Registration {
+            get {
+                return ResourceManager.GetString("User Registration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         internal static string Username {
@@ -798,6 +933,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Validating {
             get {
                 return ResourceManager.GetString("Validating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify that the company code has been entered correctly..
+        /// </summary>
+        internal static string Verify_that_the_company_code_has_been_entered_correctly_ {
+            get {
+                return ResourceManager.GetString("Verify that the company code has been entered correctly.", resourceCulture);
             }
         }
         

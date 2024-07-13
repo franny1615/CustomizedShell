@@ -27,12 +27,16 @@ public class RegisterPage : BasePage
 
 		Title = LanguageService.Instance["Register"];
 
-		_ContentLayout.Add(_CompanyDetailsHeader
+        string compNameTxt = registerViewModel.IsUserRegistration ? 
+            LanguageService.Instance["Company Code"] :
+            LanguageService.Instance["Company Name"];
+
+        _ContentLayout.Add(_CompanyDetailsHeader
 			.Text(LanguageService.Instance["Company Details"])
 			.FontSize(24)
 			.Bold());
 		_ContentLayout.Add(_CompanyName
-			.Placeholder($"{LanguageService.Instance["Company Name"]}*")
+			.Placeholder($"{compNameTxt}*")
 			.PlaceholderIcon(MaterialIcon.Domain));
 
 		_ContentLayout.Add(_UserDetailsHeader
@@ -85,135 +89,150 @@ public class RegisterPage : BasePage
 			return;
 		}
 
-		bool haveCompanyName = !string.IsNullOrEmpty(_CompanyName.Text);
-		bool haveUsername = !string.IsNullOrEmpty(_Username.Text);
-		bool havePassword = !string.IsNullOrEmpty(_Password.Text);
-		bool haveEmail = !string.IsNullOrEmpty(_Email.Text);
-		if (!haveCompanyName)		
-			_CompanyName.ShowStatus(LanguageService.Instance["Required"], MaterialIcon.Info, Colors.Red);
-		if (!haveUsername)
-			_Username.ShowStatus(LanguageService.Instance["Required"], MaterialIcon.Info, Colors.Red);
-		if (!havePassword)
-			_Password.ShowStatus(LanguageService.Instance["Required"], MaterialIcon.Info, Colors.Red);
-		if (!haveEmail)
-			_Email.ShowStatus(LanguageService.Instance["Required"], MaterialIcon.Info, Colors.Red);
-		if (!haveCompanyName || !haveUsername || !havePassword || !haveEmail)
-			return;
+        bool haveCompanyName = !string.IsNullOrEmpty(_CompanyName.Text);
+        bool haveUsername = !string.IsNullOrEmpty(_Username.Text);
+        bool havePassword = !string.IsNullOrEmpty(_Password.Text);
+        bool haveEmail = !string.IsNullOrEmpty(_Email.Text);
+        if (!haveCompanyName)
+            _CompanyName.ShowStatus(LanguageService.Instance["Required"], MaterialIcon.Info, Colors.Red);
+        if (!haveUsername)
+            _Username.ShowStatus(LanguageService.Instance["Required"], MaterialIcon.Info, Colors.Red);
+        if (!havePassword)
+            _Password.ShowStatus(LanguageService.Instance["Required"], MaterialIcon.Info, Colors.Red);
+        if (!haveEmail)
+            _Email.ShowStatus(LanguageService.Instance["Required"], MaterialIcon.Info, Colors.Red);
+        if (!haveCompanyName || !haveUsername || !havePassword || !haveEmail)
+            return;
 
-		_SubmitButton.Text = LanguageService.Instance["Registering"];
-		var response = await _RegisterViewModel.DoesUsernameExist(_Username.Text);
-		_SubmitButton.Text = LanguageService.Instance["Submit"];
+        _SubmitButton.Text = LanguageService.Instance["Registering"];
+        var response = await _RegisterViewModel.DoesUsernameExist(_Username.Text);
+        _SubmitButton.Text = LanguageService.Instance["Submit"];
 
-		if (!string.IsNullOrEmpty(response.ErrorMessage))
-		{
-			this.DisplayCommonError(response.ErrorMessage);
-			return;
-		}
-
-		bool usernameExists = response.Data;
-		if (usernameExists)
-		{
-			await DisplayAlert(
-				LanguageService.Instance["Username"],
-				LanguageService.Instance["Please enter a unique username."],
-				LanguageService.Instance["OK"]
-			);
-			_Username.Text = "";
-			_Username.Focus();
-			return;
-		}
-
-		bool sendEmailVerification = await DisplayAlert(
-			LanguageService.Instance["Email Verification"],
-			string.Format(LanguageService.Instance["EmailVerificationMessage"], _Email.Text),
-			LanguageService.Instance["Continue"],
-			LanguageService.Instance["Cancel"]);
-
-		if (!sendEmailVerification)
-		{
-			return;
-		}
-
-		_SubmitButton.Text = LanguageService.Instance["Sending Code"];
-		response = await _RegisterViewModel.BeginEmailValidation(_Email.Text);
-		_SubmitButton.Text = LanguageService.Instance["Submit"];
-		if (!string.IsNullOrEmpty(response.ErrorMessage))
-		{
-			this.DisplayCommonError(response.ErrorMessage);
-			return;
-		}
-
-		string enteredCode = await DisplayPromptAsync(
-			LanguageService.Instance["Email Verification"],
-			string.Format(LanguageService.Instance["EnterVerifCode"], _Email.Text),
-			LanguageService.Instance["Continue"],
-			LanguageService.Instance["Cancel"]);
-
-		_SubmitButton.Text = LanguageService.Instance["Validating"];
-		response = await _RegisterViewModel.ValidateCode(_Email.Text, enteredCode);
-		_SubmitButton.Text = LanguageService.Instance["Submit"];
         if (!string.IsNullOrEmpty(response.ErrorMessage))
         {
             this.DisplayCommonError(response.ErrorMessage);
             return;
         }
 
-		if (!response.Data)
-		{
-			await DisplayAlert(
-				LanguageService.Instance["Email Verification"],
-				LanguageService.Instance["Email verification failed."],
-				LanguageService.Instance["OK"]);
-			return;
-		}
-
-		await DisplayAlert(
-			LanguageService.Instance["Email Verification"],
-			LanguageService.Instance["Email has been verified."],
-			LanguageService.Instance["OK"]);
-
-		_SubmitButton.Text = LanguageService.Instance["Registering"];
-		var companyResponse = await _RegisterViewModel.RegisterCompany(
-			name: _CompanyName.Text,
-			address1: "",
-			address2: "",
-			address3: "",
-			country: "",
-			city: "",
-			state: "",
-			zip: "");
-		_SubmitButton.Text = LanguageService.Instance["Submit"];
-
-		if (!string.IsNullOrEmpty(companyResponse.ErrorMessage))
+        bool usernameExists = response.Data;
+        if (usernameExists)
         {
-            this.DisplayCommonError(companyResponse.ErrorMessage);
+            await DisplayAlert(
+                LanguageService.Instance["Username"],
+                LanguageService.Instance["Please enter a unique username."],
+                LanguageService.Instance["OK"]
+            );
+            _Username.Text = "";
+            _Username.Focus();
             return;
         }
 
-		_SubmitButton.Text = LanguageService.Instance["Registering"];
-		var userResponse = await _RegisterViewModel.RegisterUser(
-			userName: _Username.Text,
-			password: _Password.Text,
-			email: _Email.Text,
-			phoneNumber: ""
-		);
-		_SubmitButton.Text = LanguageService.Instance["Submit"];
+        bool sendEmailVerification = await DisplayAlert(
+            LanguageService.Instance["Email Verification"],
+            string.Format(LanguageService.Instance["EmailVerificationMessage"], _Email.Text),
+            LanguageService.Instance["Continue"],
+            LanguageService.Instance["Cancel"]);
 
-		if (!string.IsNullOrEmpty(userResponse.ErrorMessage))
+        if (!sendEmailVerification)
+        {
+            return;
+        }
+
+        _SubmitButton.Text = LanguageService.Instance["Sending Code"];
+        response = await _RegisterViewModel.BeginEmailValidation(_Email.Text);
+        _SubmitButton.Text = LanguageService.Instance["Submit"];
+        if (!string.IsNullOrEmpty(response.ErrorMessage))
+        {
+            this.DisplayCommonError(response.ErrorMessage);
+            return;
+        }
+
+        string enteredCode = await DisplayPromptAsync(
+            LanguageService.Instance["Email Verification"],
+            string.Format(LanguageService.Instance["EnterVerifCode"], _Email.Text),
+            LanguageService.Instance["Continue"],
+            LanguageService.Instance["Cancel"]);
+
+        _SubmitButton.Text = LanguageService.Instance["Validating"];
+        response = await _RegisterViewModel.ValidateCode(_Email.Text, enteredCode);
+        _SubmitButton.Text = LanguageService.Instance["Submit"];
+        if (!string.IsNullOrEmpty(response.ErrorMessage))
+        {
+            this.DisplayCommonError(response.ErrorMessage);
+            return;
+        }
+
+        if (!response.Data)
+        {
+            await DisplayAlert(
+                LanguageService.Instance["Email Verification"],
+                LanguageService.Instance["Email verification failed."],
+                LanguageService.Instance["OK"]);
+            return;
+        }
+
+        await DisplayAlert(
+            LanguageService.Instance["Email Verification"],
+            LanguageService.Instance["Email has been verified."],
+            LanguageService.Instance["OK"]);
+
+        if (!_RegisterViewModel.IsUserRegistration)
+        {
+            _SubmitButton.Text = LanguageService.Instance["Registering"];
+            var companyResponse = await _RegisterViewModel.RegisterCompany(
+                name: _CompanyName.Text,
+                address1: "",
+                address2: "",
+                address3: "",
+                country: "",
+                city: "",
+                state: "",
+                zip: "");
+            _SubmitButton.Text = LanguageService.Instance["Submit"];
+
+            if (!string.IsNullOrEmpty(companyResponse.ErrorMessage))
+            {
+                this.DisplayCommonError(companyResponse.ErrorMessage);
+                return;
+            }
+        }
+        else
+        {
+            var validCode = _RegisterViewModel.SetCompanyID(_CompanyName.Text);
+            if (!validCode)
+            {
+                await this.DisplayAlert(
+                    LanguageService.Instance["Invalid Code"],
+                    LanguageService.Instance["Verify that the company code has been entered correctly."],
+                    LanguageService.Instance["OK"]);
+                return;
+            }
+        }
+
+        _SubmitButton.Text = LanguageService.Instance["Registering"];
+        var userResponse = await _RegisterViewModel.RegisterUser(
+            userName: _Username.Text,
+            password: _Password.Text,
+            email: _Email.Text,
+            phoneNumber: ""
+        );
+        _SubmitButton.Text = LanguageService.Instance["Submit"];
+
+        if (!string.IsNullOrEmpty(userResponse.ErrorMessage))
         {
             this.DisplayCommonError(userResponse.ErrorMessage);
             return;
         }
 
-		_SubmitButton.Text = LanguageService.Instance["Logging In"];
-		bool loggedIn = await _RegisterViewModel.Login(
-			userName: _Username.Text,
-			password: _Password.Text
-		);
-		_SubmitButton.Text = LanguageService.Instance["Submit"];
-		if (loggedIn)
-		{
-			WeakReferenceMessenger.Default.Send(new InternalMsg(InternalMessage.LoggedIn));
-		}
+        _SubmitButton.Text = LanguageService.Instance["Logging In"];
+        bool loggedIn = await _RegisterViewModel.Login(
+            userName: _Username.Text,
+            password: _Password.Text
+        );
+        _SubmitButton.Text = LanguageService.Instance["Submit"];
+        if (loggedIn)
+        {
+            WeakReferenceMessenger.Default.Send(new InternalMsg(InternalMessage.LoggedIn));
+        }
     }
 }

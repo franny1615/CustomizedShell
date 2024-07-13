@@ -401,4 +401,19 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="City" xml:space="preserve">
     <value>Ciudad</value>
   </data>
+  <data name="Company Code" xml:space="preserve">
+    <value>Codigo de Compania</value>
+  </data>
+  <data name="Company Registration" xml:space="preserve">
+    <value>Registrar Compania</value>
+  </data>
+  <data name="Invalid Code" xml:space="preserve">
+    <value>Codigo Invalido</value>
+  </data>
+  <data name="User Registration" xml:space="preserve">
+    <value>Registrar Usuario</value>
+  </data>
+  <data name="Verify that the company code has been entered correctly." xml:space="preserve">
+    <value>Verifique que el código de la empresa se haya ingresado correctamente.</value>
+  </data>
 </root>

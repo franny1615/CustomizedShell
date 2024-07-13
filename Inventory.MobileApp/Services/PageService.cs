@@ -7,9 +7,9 @@ namespace Inventory.MobileApp.Services;
 
 public static class PageService
 {
-    public static RegisterPage Register()
+    public static RegisterPage Register(bool isUserRegistration)
     {
-        return new RegisterPage(new RegisterViewModel());
+        return new RegisterPage(new RegisterViewModel(isUserRegistration));
     }
 
     public static LoginPage Login()

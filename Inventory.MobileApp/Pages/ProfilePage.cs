@@ -138,8 +138,8 @@ public class ProfilePage : BasePage
             Keyboard.Plain,
             submitted: async (address2) => 
             {
-                if (string.IsNullOrEmpty(address2))
-                    return;
+                if (address2 == null)
+                    address2 = string.Empty;
                 
                 SessionService.CurrentCompany.Address2 = address2;
                 await UpdateCompany();
@@ -156,9 +156,9 @@ public class ProfilePage : BasePage
             Keyboard.Plain,
             submitted: async (address3) => 
             {
-                if (string.IsNullOrEmpty(address3))
-                    return;
-                
+                if (address3 == null)
+                    address3 = string.Empty;
+
                 SessionService.CurrentCompany.Address3 = address3;
                 await UpdateCompany();
             },

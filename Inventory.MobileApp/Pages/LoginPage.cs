@@ -68,7 +68,21 @@ public class LoginPage : BasePage
 
         _SwitchLanguage.Command = new Command(() => this.DisplayLanguageSwitcher());
         _SwitchTheme.Command = new Command(() => this.DisplayThemeSwitcher());
-		_CreateAccountTap.Command = new Command(() => Navigation.PushAsync(PageService.Register()));
+		_CreateAccountTap.Command = new Command(async () =>
+		{
+			string company = LanguageService.Instance["Company Registration"];
+			string user = LanguageService.Instance["User Registration"];
+			string choice = await DisplayActionSheet(
+				LanguageService.Instance["Options"],
+				LanguageService.Instance["Cancel"],
+				null,
+				[company, user]);
+
+			if (choice == company)
+                await Navigation.PushAsync(PageService.Register(false));
+			else if (choice == user)
+                await Navigation.PushAsync(PageService.Register(true));
+        });
 
         _LogoContainer.Spacing = 8;
         _LogoContainer.Add(_Logo

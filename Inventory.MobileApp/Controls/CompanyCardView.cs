@@ -64,42 +64,34 @@ public class CompanyCardView : Border
     private readonly IconLabel _Name = new IconLabel
     {
         Header = LanguageService.Instance["Company Name"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _Address1 = new IconLabel
     {
         Header = LanguageService.Instance["Address 1"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _Address2 = new IconLabel
     {
         Header = LanguageService.Instance["Address 2"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _Address3 = new IconLabel
     {
         Header = LanguageService.Instance["Address 3"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _Country = new IconLabel
     {
         Header = LanguageService.Instance["Country"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _City = new IconLabel
     {
         Header = LanguageService.Instance["City"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _State = new IconLabel
     {
         Header = LanguageService.Instance["State"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _Zip = new IconLabel
     {
         Header = LanguageService.Instance["Zip"],
-        Icon = MaterialIcon.Edit
     };
     private readonly IconLabel _LicenseExpiresOn = new IconLabel
     {
@@ -134,16 +126,26 @@ public class CompanyCardView : Border
         });
         _ContentLayout.Add(_LicenseExpiresOn);
 
-        _Name.TapGesture(() => EditName?.Invoke(this, EventArgs.Empty));
-        _Address1.TapGesture(() => EditAddress1?.Invoke(this, EventArgs.Empty));
-        _Address2.TapGesture(() => EditAddress2?.Invoke(this, EventArgs.Empty));
-        _Address3.TapGesture(() => EditAddress3?.Invoke(this, EventArgs.Empty));
-        _Country.TapGesture(() => EditCountry?.Invoke(this, EventArgs.Empty));
-        _City.TapGesture(() => EditCity?.Invoke(this, EventArgs.Empty));
-        _State.TapGesture(() => EditState?.Invoke(this, EventArgs.Empty));
-        _Zip.TapGesture(() => EditZip?.Invoke(this, EventArgs.Empty));
+        if (SessionService.CurrentUser.IsCompanyOwner)
+        {
+            _Name.Icon = MaterialIcon.Edit;
+            _Address1.Icon = MaterialIcon.Edit;
+            _Address2.Icon = MaterialIcon.Edit;
+            _Address3.Icon = MaterialIcon.Edit;
+            _Country.Icon = MaterialIcon.Edit;
+            _City.Icon = MaterialIcon.Edit;
+            _State.Icon = MaterialIcon.Edit;
+            _Zip.Icon = MaterialIcon.Edit;
 
-        // TODO: take in the company id and base 64 it, its the code users will use to signup via register page. 
+            _Name.TapGesture(() => EditName?.Invoke(this, EventArgs.Empty));
+            _Address1.TapGesture(() => EditAddress1?.Invoke(this, EventArgs.Empty));
+            _Address2.TapGesture(() => EditAddress2?.Invoke(this, EventArgs.Empty));
+            _Address3.TapGesture(() => EditAddress3?.Invoke(this, EventArgs.Empty));
+            _Country.TapGesture(() => EditCountry?.Invoke(this, EventArgs.Empty));
+            _City.TapGesture(() => EditCity?.Invoke(this, EventArgs.Empty));
+            _State.TapGesture(() => EditState?.Invoke(this, EventArgs.Empty));
+            _Zip.TapGesture(() => EditZip?.Invoke(this, EventArgs.Empty));
+        }
 
         Content = _ContentLayout;
     }
