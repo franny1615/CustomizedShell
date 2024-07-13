@@ -257,12 +257,15 @@ WHERE app_user.Id = {id}";
         var result = new RepoResult<SearchResult<User>>();
         try
         {
-            string query = $@"
+            string _param = $@"
 declare 
 @companyId int = {companyId},
 @search NVARCHAR(max) = '{request.Search}',
 @page int = {request.Page},
-@pageSize int = {request.PageSize};
+@pageSize int = {request.PageSize};";
+
+            string query = $@"
+{_param}
 select 
     app_user.Id,
     app_user.CompanyId,
@@ -283,7 +286,12 @@ order by app_user.Id desc
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
             var items = (await QueryAsync<User>(query)).ToList();
-            string totalQuery = $@"select COUNT(*) from location;";
+            string totalQuery = $@"
+{_param}
+select COUNT(*) 
+from app_user
+where app_user.CompanyId = @companyId
+and Username LIKE @search+'%'";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new()

@@ -49,9 +49,12 @@ public class IconLabel : Grid
         RowDefinitions = Rows.Define(Auto, Star);
 
         _Switch.Toggled += (s, e) => 
-        { 
-            IsToggled = e.Value;
-            Toggled?.Invoke(this, e); 
+        {
+            if (e.Value != IsToggled)
+            {
+                IsToggled = e.Value;
+                Toggled?.Invoke(this, e);
+            }
         };
 
         WeakReferenceMessenger.Default.Register<InternalMsg>(this, (_, msg) =>

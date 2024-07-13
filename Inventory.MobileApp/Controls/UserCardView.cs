@@ -178,6 +178,7 @@ public class UserCardView : Border
             addLocation = (int)Models.InventoryPermissions.CanAddLocation;
 
         int permissions = editDesc + editQty + editQtyType + editLocation + editStatus + deleteInv + addInv + addQtyType + addStatus + addLocation;
+        InventoryPermissions = permissions;
 
         var response = await NetworkService.Post<bool>(Endpoints.updatePermission, new UserPermissions
         {
