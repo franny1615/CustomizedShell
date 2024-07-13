@@ -22,7 +22,8 @@ INSERT INTO company
     Country,
     City,
     State,
-    LicenseExpiresOn
+    LicenseExpiresOn,
+    Zip
 )
 VALUES
 (
@@ -33,7 +34,8 @@ VALUES
     '{company.Country}',
     '{company.City}',
     '{company.State}',
-    DATEADD(MONTH, 1, CURRENT_TIMESTAMP)
+    DATEADD(MONTH, 1, CURRENT_TIMESTAMP),
+    '{company.Zip}'
 );
 
 SELECT SCOPE_IDENTITY()";
@@ -81,7 +83,8 @@ SELECT
     Country,
     City,
     State,
-    LicenseExpiresOn
+    LicenseExpiresOn,
+    Zip
 FROM company
 WHERE company.Id = {id}";
             result.Data = (await QueryAsync<Company>(query)).First();
