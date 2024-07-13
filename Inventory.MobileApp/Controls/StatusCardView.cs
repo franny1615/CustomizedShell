@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Markup;
+using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 using Microsoft.Maui.Controls.Shapes;
 using System.Runtime.CompilerServices;
@@ -77,10 +78,27 @@ public class StatusCardView : Border
         };
 
         _ContentLayout.Add(_Description.Column(0));
-        _ContentLayout.Add(_EditIcon.Column(1));
-        _ContentLayout.Add(_TrashIcon.Column(2));
-
+        CheckPermissions();
         Content = _ContentLayout;
+    }
+
+    private void CheckPermissions()
+    {
+        int permissions = SessionService.CurrentPermissions.InventoryPermissions;
+        int editPerm = (int)InventoryPermissions.CanEditStatus;
+        int editPermInt = permissions & editPerm;
+        bool canEdit = editPermInt == editPerm;
+
+        if (canEdit)
+        {
+            _ContentLayout.Add(_EditIcon.Column(1));
+            _ContentLayout.Add(_TrashIcon.Column(2));
+        }
+        else
+        {
+            _ContentLayout.Remove(_EditIcon);
+            _ContentLayout.Remove(_TrashIcon);
+        }
     }
 
     protected override void OnPropertyChanged([CallerMemberName] string? propertyName = "")
@@ -101,8 +119,7 @@ public class StatusCardView : Border
             else
             {
                 GestureRecognizers.Remove(_SelectGesture);
-                _ContentLayout.Add(_EditIcon);
-                _ContentLayout.Add(_TrashIcon);
+                CheckPermissions();
             }
         }
     }
