@@ -41,6 +41,14 @@ public partial class User : ObservableObject
     [property: JsonPropertyName("isCompanyOwner")]
     public bool isCompanyOwner = false;
 
+    [ObservableProperty]
+    [property: JsonPropertyName("inventoryPermissions")]
+    public int inventoryPermissions = 0;
+
+    [ObservableProperty]
+    [property: JsonPropertyName("permissionId")]
+    public int permissionId = 0;
+
     [JsonIgnore]
     public object PasswordHash = string.Empty;
     [JsonIgnore]

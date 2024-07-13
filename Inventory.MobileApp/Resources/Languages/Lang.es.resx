@@ -416,4 +416,13 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Verify that the company code has been entered correctly." xml:space="preserve">
     <value>Verifique que el código de la empresa se haya ingresado correctamente.</value>
   </data>
+  <data name="Delete Inventory" xml:space="preserve">
+    <value>Eliminar inventario</value>
+  </data>
+  <data name="Inventory Permissions" xml:space="preserve">
+    <value>Permisos de inventario</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Dueño</value>
+  </data>
 </root>

@@ -13,6 +13,8 @@ public class User
     public string Email { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
     public bool IsCompanyOwner { get; set; } = false;
+    public int InventoryPermissions { get; set; } = 0;
+    public int PermissionId { get; set; } = 0;
 
     [JsonIgnore]
     public object PasswordHash { get; set; } = string.Empty;

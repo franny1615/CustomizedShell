@@ -14,6 +14,7 @@ public static class Endpoints
     public const string userDetails = "api/user/details";
     public const string userUpdate = "api/user/update";
     public const string userDelete = "api/user/delete";
+    public const string userSearch = "api/user/search";
     public const string searchStatus = "api/status/search";
     public const string insertStatus = "api/status/insert";
     public const string deleteStatus = "api/status/delete";

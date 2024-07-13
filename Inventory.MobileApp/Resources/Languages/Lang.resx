@@ -420,4 +420,13 @@ Would you like to share the error with us?</value>
   <data name="Verify that the company code has been entered correctly." xml:space="preserve">
     <value>Verify that the company code has been entered correctly.</value>
   </data>
+  <data name="Delete Inventory" xml:space="preserve">
+    <value>Delete Inventory</value>
+  </data>
+  <data name="Inventory Permissions" xml:space="preserve">
+    <value>Inventory Permissions</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Owner</value>
+  </data>
 </root>

@@ -25,6 +25,14 @@ public static class PermsUtils
 
         return perm == permInt;
     }
+
+    public static bool IsAllowed(InventoryPermissions permission, int givenPerms)
+    {
+        int perm = (int)permission;
+        int permInt = givenPerms & perm;
+
+        return perm == permInt;
+    }
 }
 
 public enum InventoryPermissions

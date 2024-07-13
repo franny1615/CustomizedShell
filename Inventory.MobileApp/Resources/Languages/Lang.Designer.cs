@@ -277,6 +277,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Inventory.
+        /// </summary>
+        internal static string Delete_Inventory {
+            get {
+                return ResourceManager.GetString("Delete Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {
@@ -604,6 +613,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inventory Permissions.
+        /// </summary>
+        internal static string Inventory_Permissions {
+            get {
+                return ResourceManager.GetString("Inventory Permissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is in use in at least one inventory item.
         /// </summary>
         internal static string is_in_use_in_at_least_one_inventory_item {
@@ -699,6 +717,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Options {
             get {
                 return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner.
+        /// </summary>
+        internal static string Owner {
+            get {
+                return ResourceManager.GetString("Owner", resourceCulture);
             }
         }
         

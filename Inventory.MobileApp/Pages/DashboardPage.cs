@@ -95,7 +95,7 @@ public class DashboardPage : BasePage
 					Navigation.PushAsync(PageService.InventorySearch());
                     break;
                 case DashboardItemType.Employees:
-					// TODO: 
+					Navigation.PushAsync(PageService.UserSearch());
                     break;
                 case DashboardItemType.Statuses:
 					Navigation.PushAsync(PageService.StatusSearch());

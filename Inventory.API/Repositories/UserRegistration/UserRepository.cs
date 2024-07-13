@@ -264,19 +264,22 @@ declare
 @page int = {request.Page},
 @pageSize int = {request.PageSize};
 select 
-    Id,
-    CompanyId,
+    app_user.Id,
+    app_user.CompanyId,
     Username,
     '' as Password,
     IsDarkModeOn,
     Localization,
     Email,
     PhoneNumber,
-    IsCompanyOwner
-from app_user 
-where CompanyId = @companyId
+    IsCompanyOwner,
+    InventoryPermissions,
+    user_permissions.Id as PermissionId
+from app_user
+inner join user_permissions on user_permissions.UserId = app_user.Id
+where app_user.CompanyId = @companyId
 and Username LIKE @search+'%'
-order by Id desc 
+order by app_user.Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
             var items = (await QueryAsync<User>(query)).ToList();

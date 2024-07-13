@@ -88,4 +88,9 @@ public static class PageService
     {
         return new ProfilePage();
     }
+
+    public static UserSearchPage UserSearch()
+    {
+        return new UserSearchPage(new UserSearchViewModel());
+    }
 }

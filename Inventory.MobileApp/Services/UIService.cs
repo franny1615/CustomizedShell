@@ -200,4 +200,10 @@ public static class UIService
     {
         return Application.Current?.Resources[resourceKey] as Color ?? Colors.Black;
     }
+
+    public static VerticalStackLayout Spacing(this VerticalStackLayout layout, int spacing)
+    {
+        layout.Spacing = spacing;
+        return layout;
+    }
 }
