@@ -23,20 +23,6 @@ public class StatusCardView : Border
     private readonly Label _Description = new();
     private readonly Image _TrashIcon = new();
     private readonly Image _EditIcon = new();
-    private readonly TouchBehavior _TouchBehavior = new TouchBehavior()
-    {
-        DefaultAnimationDuration = 250,
-        DefaultAnimationEasing = Easing.CubicInOut,
-        PressedOpacity = 0.8,
-        PressedScale = 0.95
-    };
-    private readonly TouchBehavior _EditBehavior = new TouchBehavior()
-    {
-        DefaultAnimationDuration = 250,
-        DefaultAnimationEasing = Easing.CubicInOut,
-        PressedOpacity = 0.8,
-        PressedScale = 0.95
-    };
 
     private readonly Grid _ContentLayout = new Grid
     {
@@ -54,8 +40,8 @@ public class StatusCardView : Border
         SetDynamicResource(Border.BackgroundProperty, "DashTileColor");
         _Description.SetDynamicResource(Label.TextColorProperty, "TextColor");
 
-        _TouchBehavior.Command = new Command(() => Delete?.Invoke(this, EventArgs.Empty));
-        _EditBehavior.Command = new Command(() => Edit?.Invoke(this, EventArgs.Empty));
+        _TrashIcon.TapGesture(() => Delete?.Invoke(this, EventArgs.Empty));
+        _EditIcon.TapGesture(() => Edit?.Invoke(this, EventArgs.Empty));
 
         _Description
             .Font(size: 16)
@@ -63,11 +49,9 @@ public class StatusCardView : Border
             .CenterVertical();
         _EditIcon
             .Center()
-            .Behaviors([_EditBehavior])
             .ApplyMaterialIcon(MaterialIcon.Edit, 24, Color.FromArgb("#646464"));
         _TrashIcon
             .Center()
-            .Behaviors([_TouchBehavior])
             .ApplyMaterialIcon(MaterialIcon.Delete, 24, Colors.Red);
 
         _SelectGesture.Tapped += async (s, e) => {

@@ -24,20 +24,6 @@ public class QuantityTypeCardView : Border
     private readonly Label _Description = new();
     private readonly Image _TrashIcon = new();
     private readonly Image _EditIcon = new(); 
-    private readonly TouchBehavior _TouchBehavior = new TouchBehavior()
-    {
-        DefaultAnimationDuration = 250,
-        DefaultAnimationEasing = Easing.CubicInOut,
-        PressedOpacity = 0.8,
-        PressedScale = 0.95
-    };
-    private readonly TouchBehavior _EditTouch = new TouchBehavior()
-    {
-        DefaultAnimationDuration = 250,
-        DefaultAnimationEasing = Easing.CubicInOut,
-        PressedOpacity = 0.8,
-        PressedScale = 0.95
-    };
 
     private readonly TapGestureRecognizer _SelectGesture = new TapGestureRecognizer { NumberOfTapsRequired = 1 };
     private readonly Grid _ContentLayout = new Grid
@@ -56,8 +42,8 @@ public class QuantityTypeCardView : Border
         SetDynamicResource(Border.BackgroundProperty, "DashTileColor");
         _Description.SetDynamicResource(Label.TextColorProperty, "TextColor");
 
-        _TouchBehavior.Command = new Command(() => Delete?.Invoke(this, EventArgs.Empty));
-        _EditTouch.Command = new Command(() => Edit?.Invoke(this, EventArgs.Empty));
+        _TrashIcon.TapGesture(() => { Delete?.Invoke(this, EventArgs.Empty); });
+        _EditIcon.TapGesture(() => { Edit?.Invoke(this, EventArgs.Empty); });
         _SelectGesture.Tapped += async (s, e) => {
             await this.ScaleTo(0.95, 70);
             await this.ScaleTo(1.0, 70);
@@ -71,11 +57,9 @@ public class QuantityTypeCardView : Border
             .CenterVertical();
         _EditIcon
             .Center()
-            .Behaviors([_EditTouch])
             .ApplyMaterialIcon(MaterialIcon.Edit, 24, Color.FromArgb("#646464"));
         _TrashIcon
             .Center()
-            .Behaviors([_TouchBehavior])
             .ApplyMaterialIcon(MaterialIcon.Delete, 24, Colors.Red);
 
         _ContentLayout.Add(_Description.Column(0));

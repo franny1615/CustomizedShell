@@ -37,13 +37,6 @@ public class LocationCardView : Border
     private readonly Label _Description = new Label().Font(size: 16).Bold();
     private readonly SKCanvasView _Barcode = new SKCanvasView();
     private readonly Image _Kebab = new Image().ApplyMaterialIcon(MaterialIcon.More_vert, 24, Color.FromArgb("#383838"));
-    private readonly TouchBehavior _TouchBehavior = new TouchBehavior()
-    {
-        DefaultAnimationDuration = 250,
-        DefaultAnimationEasing = Easing.CubicInOut,
-        PressedOpacity = 0.8,
-        PressedScale = 0.95
-    };
     private Action<byte[]>? GetImageCompletion;
 
     private readonly TapGestureRecognizer _SelectGesture = new TapGestureRecognizer { NumberOfTapsRequired = 1 };
@@ -57,14 +50,13 @@ public class LocationCardView : Border
 
         SetDynamicResource(Border.BackgroundProperty, "DashTileColor");
 
-        _Kebab.Behaviors([_TouchBehavior]);
         _ContentLayout.Add(_Description.Row(0).Column(0));
         _ContentLayout.Add(_Barcode.Row(1).Column(0));
         _ContentLayout.Add(_Kebab.Row(0).RowSpan(2).Column(1).Center());
 
         Content = _ContentLayout;
 
-        _TouchBehavior.Command = new Command(() => Clicked?.Invoke(this, EventArgs.Empty));
+        _Kebab.TapGesture(() => { Clicked?.Invoke(this, EventArgs.Empty); });
         _SelectGesture.Tapped += async (s, e) => {
             await this.ScaleTo(0.95, 70);
             await this.ScaleTo(1.0, 70);

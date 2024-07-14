@@ -39,13 +39,6 @@ public class DashboardTile : Border
     private readonly VerticalStackLayout _ContentLayout = new() { Spacing = 8 };
     private readonly Image _Icon = new Image();
     private readonly Label _Title = new Label { MaxLines = 2, HorizontalTextAlignment = TextAlignment.Center }.FontSize(16).Bold();
-    private readonly TouchBehavior _TouchBehavior = new TouchBehavior()
-    {
-        DefaultAnimationDuration = 250,
-        DefaultAnimationEasing = Easing.CubicInOut,
-        PressedOpacity = 0.8,
-        PressedScale = 0.95
-    };
 
     public DashboardTile()
     {
@@ -65,8 +58,7 @@ public class DashboardTile : Border
         _ContentLayout.Children.Add(_Icon.CenterHorizontal());
         _ContentLayout.Children.Add(_Title);
 
-        _TouchBehavior.Command = new Command(() => { Clicked?.Invoke(this, new EventArgs()); });
-        Behaviors.Add(_TouchBehavior);
+        this.TapGesture(() => { Clicked?.Invoke(this, new EventArgs()); });
 
         Content = new Grid { Children = { _ContentLayout.CenterVertical() } };
 
