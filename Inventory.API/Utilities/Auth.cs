@@ -22,7 +22,7 @@ public static class Auth
                 new Claim("UserName", user.UserName),
                 new Claim("Email", user.Email)
             }),
-            Expires = DateTime.UtcNow.AddDays(1),
+            Expires = DateTime.UtcNow.AddDays(365),
             Issuer = Env.JWTIssuer,
             Audience = Env.JWTAudience,
             SigningCredentials = new SigningCredentials
