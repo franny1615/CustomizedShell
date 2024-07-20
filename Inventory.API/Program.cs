@@ -92,7 +92,10 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 app.UseDefaultFiles();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    ServeUnknownFileTypes = true
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
