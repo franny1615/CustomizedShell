@@ -65,6 +65,7 @@ http {
     add_header X-Frame-Options DENY;
     add_header X-Content-Type-Options nosniff;
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    client_max_body_size 100M;
     location / {
         proxy_pass         http://inventoryApp;
         proxy_set_header   Upgrade $http_upgrade;
