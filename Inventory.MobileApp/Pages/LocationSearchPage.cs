@@ -56,7 +56,7 @@ public class LocationSearchPage : BasePage
 
             List<string> options = new List<string>();
             if (canEdit)
-                options.Add(delete);
+                options.Add(edit);
 
             options.Add(print);
             
