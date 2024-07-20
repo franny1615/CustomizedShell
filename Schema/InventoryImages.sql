@@ -1,0 +1,8 @@
+CREATE TABLE inventory_image
+(
+    Id           INT NOT NULL IDENTITY PRIMARY KEY,
+    CompanyId    INT NOT NULL FOREIGN KEY REFERENCES company(Id),
+    InventoryId  INT NOT NULL FOREIGN KEY REFERENCES inventory(Id),
+    ImageBase64  NVARCHAR(MAX) NOT NULL DEFAULT '',
+    CreatedOn    DATETIME NOT NULL DEFAULT GETDATE()
+);

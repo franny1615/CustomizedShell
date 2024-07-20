@@ -14,6 +14,10 @@ declare
 @invId int = {itemId},
 @companyId int = {companyId};
 
+delete from inventory_image
+where CompanyId = @companyId
+and InventoryId = @invId;
+
 delete from inventory
 where CompanyId = @companyId
 and Id = @invId;";

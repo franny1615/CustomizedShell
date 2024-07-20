@@ -26,6 +26,7 @@ builder.Services.AddTransient<ICrudRepository<Status>, StatusRepository>();
 builder.Services.AddTransient<ICrudRepository<QuantityType>, QuantityTypesRepository>();
 builder.Services.AddTransient<ICrudRepository<Inventory.API.Models.Inventory>, InventoryRepository>();
 builder.Services.AddTransient<ICrudRepository<Location>, LocationRepository>();
+builder.Services.AddTransient<ICrudRepository<InventoryImage>, InventoryImageRepository>();
 builder.Services.AddTransient<IPermissionsRepository, UserPermissionsRepository>();
 
 builder.Services.AddControllers();
