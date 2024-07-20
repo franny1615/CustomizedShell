@@ -429,4 +429,10 @@ Would you like to share the error with us?</value>
   <data name="Owner" xml:space="preserve">
     <value>Owner</value>
   </data>
+  <data name="Edit Images" xml:space="preserve">
+    <value>Edit Images</value>
+  </data>
+  <data name="Inventory Images" xml:space="preserve">
+    <value>Inventory Images</value>
+  </data>
 </root>

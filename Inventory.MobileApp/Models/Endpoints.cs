@@ -35,4 +35,8 @@ public static class Endpoints
     public const string updatePermission = "api/permissions/update";
     public const string deletePermission = "api/permissions/delete";
     public const string getPermissionByUser = "api/permissions/detailsByUser";
+    public const string searchImage = "api/image/search";
+    public const string insertImage = "api/image/insert";
+    public const string deleteImage = "api/image/delete";
+    public const string updateImage = "api/image/update";
 }

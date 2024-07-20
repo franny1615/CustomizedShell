@@ -425,4 +425,10 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Owner" xml:space="preserve">
     <value>Dueño</value>
   </data>
+  <data name="Edit Images" xml:space="preserve">
+    <value>Editar Imagenes</value>
+  </data>
+  <data name="Inventory Images" xml:space="preserve">
+    <value>Imagenes de Inventario</value>
+  </data>
 </root>

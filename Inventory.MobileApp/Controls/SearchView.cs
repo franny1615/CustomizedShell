@@ -32,6 +32,9 @@ public class SearchView<T> : ContentView
     public static readonly BindableProperty IsLoadingProperty = BindableProperty.Create(nameof(IsLoading), typeof(bool), typeof(SearchView<T>), false);
     public bool IsLoading { get => (bool)GetValue(IsLoadingProperty); set => SetValue(IsLoadingProperty, value); }
 
+    public static readonly BindableProperty ShowSearchProperty = BindableProperty.Create(nameof(ShowSearch), typeof(bool), typeof(SearchView<T>), true);
+    public bool ShowSearch { get => (bool)GetValue(ShowSearchProperty); set => SetValue(ShowSearchProperty, value); }
+
     private readonly Debouncer _SearchDebounce = new();
     private readonly ISearchViewModel<T> _SearchVM;
     private readonly MaterialEntry _SearchEntry = new()
@@ -192,6 +195,10 @@ public class SearchView<T> : ContentView
                 _Loading.IsRunning = false;
                 _Loading.IsEnabled = false;
             }
+        }
+        else if (propertyName == ShowSearchProperty.PropertyName)
+        {
+            _SearchEntry.IsVisible = ShowSearch;
         }
     }
 

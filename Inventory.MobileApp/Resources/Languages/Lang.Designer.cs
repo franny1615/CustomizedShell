@@ -376,6 +376,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Images.
+        /// </summary>
+        internal static string Edit_Images {
+            get {
+                return ResourceManager.GetString("Edit Images", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Location.
         /// </summary>
         internal static string Edit_Location {
@@ -600,6 +609,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Inventory {
             get {
                 return ResourceManager.GetString("Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory Images.
+        /// </summary>
+        internal static string Inventory_Images {
+            get {
+                return ResourceManager.GetString("Inventory Images", resourceCulture);
             }
         }
         

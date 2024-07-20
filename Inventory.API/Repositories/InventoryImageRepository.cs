@@ -64,6 +64,7 @@ and CompanyId = @companyId";
         {
             string _params = $@"
 declare 
+@invID int = {request.InventoryItemID},
 @companyId int = {companyId},
 @search NVARCHAR(max) = '{request.Search}',
 @page int = {request.Page},
@@ -78,6 +79,7 @@ select
     CreatedOn 
 from inventory_image
 where CompanyId = @companyId
+and InventoryId = @invID
 order by Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
@@ -86,7 +88,8 @@ fetch next @pageSize rows only";
 {_params}
 select COUNT(*) 
 from inventory_image
-where CompanyId = @companyId";
+where CompanyId = @companyId
+and InventoryId = @invID";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new()

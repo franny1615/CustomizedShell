@@ -93,4 +93,9 @@ public static class PageService
     {
         return new UserSearchPage(new UserSearchViewModel());
     }
+
+    public static InventoryImagesSearchPage InventoryImageSearch(Models.Inventory inventory)
+    {
+        return new InventoryImagesSearchPage(new InventoryImageSearchViewModel(inventory));
+    }
 }

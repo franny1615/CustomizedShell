@@ -57,10 +57,13 @@ public class InventorySearchPage : BasePage
         {
             string delete = LanguageService.Instance["Delete"];
             string print = LanguageService.Instance["Print"];
+            string editImages = LanguageService.Instance["Edit Images"];
 
             List<string> options = new List<string>();
             if (PermsUtils.IsAllowed(InventoryPermissions.CanDeleteInv))
                 options.Add(delete);
+            if (PermsUtils.IsAllowed(InventoryPermissions.CanAddInventory))
+                options.Add(editImages);
             options.Add(print);
 
             string choice = await DisplayActionSheet(
@@ -82,6 +85,10 @@ public class InventorySearchPage : BasePage
                     Title = LanguageService.Instance["Share Barcode"],
                     File = new ShareFile(path)
                 });
+            }
+            else if (choice == editImages)
+            {
+                await Navigation.PushAsync(PageService.InventoryImageSearch(inventory));
             }
         }
     }
