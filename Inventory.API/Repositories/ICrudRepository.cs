@@ -23,4 +23,17 @@ public class SearchRequest
     public int Page { get; set; } = 0;
     public int PageSize { get; set; } = 20;
     public int InventoryItemID { get; set; } = -1;
+    public int SortBy { get; set; } = 0;
+}
+
+public enum InventorySortBy
+{
+    None = 0,
+    Quantity = 1,
+    QuantityType = 2,
+    Barcode = 3,
+    Location = 4,
+    Status = 5,
+    CreatedDate = 6,
+    LastEditedDate = 7
 }

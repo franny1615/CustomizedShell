@@ -76,30 +76,53 @@ and inventory.Id = @invId";
         try
         {
             string barcodeSearch = "";
-            if (int.TryParse(request.Search, out int barcode))
+            if (!string.IsNullOrEmpty(request.Search) && request.Search.Length > 5 && int.TryParse(request.Search, out int barcode))
             {
                 barcodeSearch = $"and inventory.Barcode = {barcode}";
             }
             else
             {
-                barcodeSearch = "and inventory.[Description] LIKE @search+'%'";
+                // TODO: test that status/quantity/qtytype/location are actually searchable correctly
+                // TODO: also add in the sort by filter
+                barcodeSearch = @"where [Description] LIKE @search+'%' or
+Status LIKE @search+'%' or 
+QuantityType LIKE @search+'%' or
+Quantity LIKE @search+'%' or
+Location LIKE @search+'%'";
             }
             string _param = $@"
 declare 
 @companyId int = {companyId},
 @search NVARCHAR(max) = '{request.Search}',
 @page int = {request.Page},
-@pageSize int = {request.PageSize};";
-            string query = $@"
-{_param}
+@pageSize int = {request.PageSize},
+@count int = 0;
+
+declare @invTable table(
+	Id int, 
+	CompanyId int, 
+	Description nvarchar(max), 
+	Status nvarchar(max), 
+	Quantity int, 
+	QuantityType nvarchar(max), 
+	Barcode nvarchar(max),
+	Location nvarchar(max),
+	LastEditedOn DATETIME,
+	CreatedOn DATETIME,
+	QtyTypeId int,
+	LocationId int,
+	StatusId int
+);
+
+insert into @invTable 
 select 
-    inventory.Id,
-    inventory.CompanyId,
-    inventory.[Description],
+    inventory.Id as Id,
+    inventory.CompanyId as CompanyId,
+    inventory.[Description] as Description,
     status.[Description] as Status,
     Quantity,
     quantity_type.[Description] as QuantityType,
-    inventory.Barcode,
+    inventory.Barcode as Barcode,
     [location].[Description] as Location,
     LastEditedOn,
     CreatedOn,
@@ -110,18 +133,38 @@ from inventory
 inner join [status] on status.Id = inventory.StatusId
 inner join [location] on [location].Id = inventory.LocationId
 inner join [quantity_type] on quantity_type.Id = inventory.QtyTypeId
-where inventory.CompanyId = @companyId
+where inventory.CompanyId = @companyId;
+
+set @count = (select count(*) from @invTable);";
+            string query = $@"
+{_param}
+select 
+    Id,
+    CompanyId,
+    [Description],
+    Status,
+    Quantity,
+    QuantityType,
+    Barcode,
+    Location,
+    LastEditedOn,
+    CreatedOn,
+    QtyTypeId,
+    LocationId,
+    StatusId
+from @invTable
 {barcodeSearch}
-order by inventory.Id desc 
+order by Id desc 
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine(query);
+#endif
+
             var items = (await QueryAsync<Models.Inventory>(query)).ToList();
             string totalQuery = $@"
 {_param}
-select COUNT(*) 
-from inventory
-where inventory.CompanyId = @companyId
-{barcodeSearch};";
+select @count as InventoryCount;";
             var total = (await QueryAsync<int>(totalQuery)).First();
 
             result.Data = new()
