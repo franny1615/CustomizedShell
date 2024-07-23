@@ -24,6 +24,9 @@ public class SearchRequest
     public int PageSize { get; set; } = 20;
     public int InventoryItemID { get; set; } = -1;
     public int SortBy { get; set; } = 0;
+    public string Location { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
+    public string QuantityType { get; set; } = string.Empty;
 }
 
 public enum InventorySortBy

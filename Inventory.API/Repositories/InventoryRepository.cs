@@ -82,14 +82,54 @@ and inventory.Id = @invId";
             }
             else
             {
-                // TODO: test that status/quantity/qtytype/location are actually searchable correctly
-                // TODO: also add in the sort by filter
-                barcodeSearch = @"where [Description] LIKE @search+'%' or
-Status LIKE @search+'%' or 
-QuantityType LIKE @search+'%' or
-Quantity LIKE @search+'%' or
-Location LIKE @search+'%'";
+                barcodeSearch = @"
+where 
+(
+    [Description] LIKE @search+'%' or
+    Status LIKE @search+'%' or 
+    QuantityType LIKE @search+'%' or
+    Quantity LIKE @search+'%' or
+    Location LIKE @search+'%'
+)";
             }
+            
+            string exactSearch = $@"";
+            if (!string.IsNullOrEmpty(request.Location))
+                exactSearch += $"\nand Location = '{request.Location}'";
+            if (!string.IsNullOrEmpty(request.Status))
+                exactSearch += $"\nand Status = '{request.Status}'";
+            if (!string.IsNullOrEmpty(request.QuantityType))
+                exactSearch += $"\nand QuantityType = '{request.QuantityType}'";
+
+            string sortBy = "";
+            switch ((InventorySortBy)request.SortBy)
+            {
+                case InventorySortBy.None:
+                    sortBy = "order by Id desc";
+                    break;
+                case InventorySortBy.Quantity:
+                    sortBy = "order by Quantity desc";
+                    break;
+                case InventorySortBy.QuantityType:
+                    sortBy = "order by QuantityType desc";
+                    break;
+                case InventorySortBy.Barcode:
+                    sortBy = "order by Barcode desc";
+                    break;
+                case InventorySortBy.Location:
+                    sortBy = "order by Location desc";
+                    break;
+                case InventorySortBy.Status:
+                    sortBy = "order by Status desc";
+                    break;
+                case InventorySortBy.CreatedDate:
+                    sortBy = "order by CreatedDate desc";
+                    break;
+                case InventorySortBy.LastEditedDate:
+                    sortBy = "order by LastEditedDate desc";
+                    break;
+            }
+
             string _param = $@"
 declare 
 @companyId int = {companyId},
@@ -99,6 +139,22 @@ declare
 @count int = 0;
 
 declare @invTable table(
+	Id int, 
+	CompanyId int, 
+	Description nvarchar(max), 
+	Status nvarchar(max), 
+	Quantity int, 
+	QuantityType nvarchar(max), 
+	Barcode nvarchar(max),
+	Location nvarchar(max),
+	LastEditedOn DATETIME,
+	CreatedOn DATETIME,
+	QtyTypeId int,
+	LocationId int,
+	StatusId int
+);
+
+declare @invTableFiltered table(
 	Id int, 
 	CompanyId int, 
 	Description nvarchar(max), 
@@ -135,7 +191,12 @@ inner join [location] on [location].Id = inventory.LocationId
 inner join [quantity_type] on quantity_type.Id = inventory.QtyTypeId
 where inventory.CompanyId = @companyId;
 
-set @count = (select count(*) from @invTable);";
+insert into @invTableFiltered
+select * from @invTable
+{barcodeSearch}
+{exactSearch};
+
+set @count = (select count(*) from @invTableFiltered);";
             string query = $@"
 {_param}
 select 
@@ -152,9 +213,8 @@ select
     QtyTypeId,
     LocationId,
     StatusId
-from @invTable
-{barcodeSearch}
-order by Id desc 
+from @invTableFiltered
+{sortBy}
 offset (@page * @pageSize) rows 
 fetch next @pageSize rows only";
 #if DEBUG
