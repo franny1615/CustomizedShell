@@ -10,6 +10,8 @@ public class LocationSearchViewModel : ISearchViewModel<Location>
     private Random RAND = new Random();
     private const int PAGE_SIZE = 15;
 
+    public List<IFilter> Filters { get; set; } = [];
+
     public List<Location> Items { get; set; } = new List<Location>();
     public int TotalPages { get; set; } = 1;
     public int Total { get; set; } = 0;

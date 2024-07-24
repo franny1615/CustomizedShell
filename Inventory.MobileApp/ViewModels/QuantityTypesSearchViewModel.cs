@@ -9,6 +9,8 @@ public class QuantityTypesSearchViewModel : ISearchViewModel<QuantityType>
     private Random RAND = new Random();
     private const int PAGE_SIZE = 15;
 
+    public List<IFilter> Filters { get; set; } = [];
+
     public List<QuantityType> Items { get; set; } = new List<QuantityType>();
     public int TotalPages { get; set; } = 1;
     public int Total { get; set; } = 0;

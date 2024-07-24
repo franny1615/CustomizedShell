@@ -7,8 +7,16 @@ using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Inventory.MobileApp.Controls;
 
+public interface IFilter
+{
+    public string Placeholder { get; set; }
+    public string Text { get; set; }
+    public Action? Clicked { get; set; }
+}
+
 public interface ISearchViewModel<T>
 {
+    public List<IFilter> Filters { get; set; }
     public List<T> Items { get; set; }
     public int Total { get; set; }
     public int TotalPages { get; set; }
@@ -34,6 +42,9 @@ public class SearchView<T> : ContentView
 
     public static readonly BindableProperty ShowSearchProperty = BindableProperty.Create(nameof(ShowSearch), typeof(bool), typeof(SearchView<T>), true);
     public bool ShowSearch { get => (bool)GetValue(ShowSearchProperty); set => SetValue(ShowSearchProperty, value); }
+
+    public static readonly BindableProperty FiltersProperty = BindableProperty.Create(nameof(Filters), typeof(List<IFilter>), typeof(SearchView<T>));
+    public List<IFilter> Filters { get => (List<IFilter>)GetValue(FiltersProperty); set => SetValue(FiltersProperty, value); }
 
     private readonly Debouncer _SearchDebounce = new();
     private readonly ISearchViewModel<T> _SearchVM;
@@ -89,9 +100,15 @@ public class SearchView<T> : ContentView
     private readonly Border _CountBacking = new Border().BackgroundColor(UIService.Color("Primary")).Padding(0).BorderShape(new RoundRectangle { CornerRadius = 15 }).Height(30).MinWidth(30);
     private readonly Label _CountLabel = new Label().FontSize(16).Center().TextColor(Colors.White);
     private readonly ActivityIndicator _Loading = new() { WidthRequest = 25, IsVisible = false };
+    private readonly Image _Filter = new Image().ApplyMaterialIcon(MaterialIcon.Filter_alt, 24, UIService.Color("Primary"));
+    private Grid? _NoFilterLayout;
+    private Grid? _FilterLayout;
 
     public SearchView(ISearchViewModel<T> searchVM)
     {
+        BindingContext = searchVM;
+        this.SetBinding(FiltersProperty, "Filters");
+
         Padding = new Thickness(8, 12, 8, 12);
 
         _CountBacking.Content = new Grid { Children = { _CountLabel } };
@@ -109,17 +126,6 @@ public class SearchView<T> : ContentView
         _Refresh.Content = _SearchItems;
 
         _ContentLayout.Children.Add(_AddButton.Row(0).RowSpan(3).Bottom().End());
-        _ContentLayout.Children.Add(new Grid
-        {
-            ColumnSpacing = 8,
-            ColumnDefinitions = Columns.Define(Auto, Star, 32),
-            Children =
-            {
-                _CountBacking,
-                _SearchEntry.Column(1).ColumnSpan(2),
-                _Loading.Column(2)
-            }
-        }.Row(0));
         _ContentLayout.Children.Add(_Refresh.Row(1));
         _ContentLayout.Children.Add(new HorizontalStackLayout
         {
@@ -135,6 +141,57 @@ public class SearchView<T> : ContentView
         Content = _ContentLayout;
 
         _SearchEntry.TextChanged += SearchTextChanged;
+
+        LayoutSearch();
+    }
+
+    private void LayoutSearch()
+    {
+        _NoFilterLayout?.Clear();
+        _FilterLayout?.Clear();
+
+        _FilterLayout = new Grid
+        {
+            ColumnSpacing = 8,
+            ColumnDefinitions = Columns.Define(Auto, Star, Auto),
+            Children =
+            {
+                _CountBacking,
+                _SearchEntry.Column(1),
+                new HorizontalStackLayout
+                {
+                    Spacing = 8,
+                    Children =
+                    {
+                        _Filter,
+                        _Loading
+                    }
+                }.Column(2)
+            }
+        };
+        _NoFilterLayout = new Grid
+        {
+            ColumnSpacing = 8,
+            ColumnDefinitions = Columns.Define(Auto, Star, 32),
+            Children =
+            {
+                _CountBacking,
+                _SearchEntry.Column(1).ColumnSpan(2),
+                _Loading.Column(2)
+            }
+        };
+
+        _ContentLayout.Remove(_FilterLayout);
+        _ContentLayout.Remove(_NoFilterLayout);
+
+        if (Filters.Count > 0)
+        {
+            _ContentLayout.Children.Add(_FilterLayout.Row(0));
+        }
+        else
+        {
+            _ContentLayout.Children.Add(_NoFilterLayout.Row(0));
+        }
     }
 
     public void TriggerRefresh() => _Refresh.IsRefreshing = true;
@@ -190,7 +247,7 @@ public class SearchView<T> : ContentView
             }
             else
             {
-                _SearchEntry.ColumnSpan(2);
+                _SearchEntry.ColumnSpan(Filters.Count > 0 ? 1 : 2);
                 _Loading.IsVisible = false;
                 _Loading.IsRunning = false;
                 _Loading.IsEnabled = false;
@@ -199,6 +256,10 @@ public class SearchView<T> : ContentView
         else if (propertyName == ShowSearchProperty.PropertyName)
         {
             _SearchEntry.IsVisible = ShowSearch;
+        }
+        else if (propertyName == FiltersProperty.PropertyName)
+        {
+            LayoutSearch();
         }
     }
 

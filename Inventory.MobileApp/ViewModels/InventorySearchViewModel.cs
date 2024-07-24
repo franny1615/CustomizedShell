@@ -1,17 +1,43 @@
-﻿using Inventory.MobileApp.Controls;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Inventory.MobileApp.Controls;
 using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 
 namespace Inventory.MobileApp.ViewModels;
 
-public class InventorySearchViewModel : ISearchViewModel<Models.Inventory>
+public partial class InventoryFilter : ObservableObject, IFilter 
+{
+    [ObservableProperty]
+    public string placeholder = string.Empty;
+    [ObservableProperty]
+    public string text = string.Empty;
+    [ObservableProperty]
+    public Action? clicked = null;
+}
+
+public partial class InventorySearchViewModel : ObservableObject, ISearchViewModel<Models.Inventory>
 {
     private const int PAGE_SIZE = 15;
+
+    [ObservableProperty]
+    public List<IFilter> filters = [];
 
     public List<Models.Inventory> Items { get; set; } = new List<Models.Inventory>();
     public int TotalPages { get; set; } = 1;
     public int Page { get; set; } = 0;
     public int Total { get; set; } = 0;
+
+    public InventorySearchViewModel()
+    {
+        Filters = new List<IFilter>
+        {
+            new InventoryFilter
+            {
+                Text = "Location",
+                Placeholder = "Location"
+            }
+        };
+    }
 
     public async Task Search(string search)
     {
