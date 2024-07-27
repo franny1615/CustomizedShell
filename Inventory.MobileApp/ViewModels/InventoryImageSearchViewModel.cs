@@ -6,7 +6,7 @@ namespace Inventory.MobileApp.ViewModels;
 
 public class InventoryImageSearchViewModel : ISearchViewModel<InventoryImage>
 {
-    private const int PAGE_SIZE = 10;
+    private const int PAGE_SIZE = 5;
 
     public Models.Inventory InventoryItem { get; set; }
 

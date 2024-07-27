@@ -39,4 +39,5 @@ public static class Endpoints
     public const string insertImage = "api/image/insert";
     public const string deleteImage = "api/image/delete";
     public const string updateImage = "api/image/update";
+    public const string getImage = "api/image/details";
 }
