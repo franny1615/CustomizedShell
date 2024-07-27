@@ -8,8 +8,6 @@ public class InventoryImageSearchViewModel : ISearchViewModel<InventoryImage>
 {
     private const int PAGE_SIZE = 10;
 
-    public List<IFilter> Filters { get; set; } = [];
-
     public Models.Inventory InventoryItem { get; set; }
 
     public List<InventoryImage> Items { get; set; } = new List<InventoryImage>();

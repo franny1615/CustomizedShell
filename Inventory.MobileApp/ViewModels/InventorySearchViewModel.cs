@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Inventory.MobileApp.Controls;
 using Inventory.MobileApp.Models;
+using Inventory.MobileApp.Pages;
 using Inventory.MobileApp.Services;
 
 namespace Inventory.MobileApp.ViewModels;
@@ -19,25 +20,12 @@ public partial class InventorySearchViewModel : ObservableObject, ISearchViewMod
 {
     private const int PAGE_SIZE = 15;
 
-    [ObservableProperty]
-    public List<IFilter> filters = [];
-
     public List<Models.Inventory> Items { get; set; } = new List<Models.Inventory>();
     public int TotalPages { get; set; } = 1;
     public int Page { get; set; } = 0;
     public int Total { get; set; } = 0;
 
-    public InventorySearchViewModel()
-    {
-        Filters = new List<IFilter>
-        {
-            new InventoryFilter
-            {
-                Text = "Location",
-                Placeholder = "Location"
-            }
-        };
-    }
+    public InventoryFilters Filters { get; set; } = new();
 
     public async Task Search(string search)
     {
@@ -48,6 +36,19 @@ public partial class InventorySearchViewModel : ObservableObject, ISearchViewMod
         }
         parameters.Add("Page", Page.ToString());
         parameters.Add("PageSize", PAGE_SIZE.ToString());
+        parameters.Add("SortBy", ((int)Filters.SortBy).ToString());
+        if (!string.IsNullOrEmpty(Filters.Location))
+        {
+            parameters.Add("Location", Filters.Location);
+        }
+        if (!string.IsNullOrEmpty(Filters.Status))
+        {
+            parameters.Add("Status", Filters.Status);
+        }
+        if (!string.IsNullOrEmpty(Filters.QuantityType))
+        {
+            parameters.Add("QuantityType", Filters.QuantityType);
+        }
 
         var response = await NetworkService.Get<SearchResult<Models.Inventory>>(Endpoints.searchInventory, parameters);
 

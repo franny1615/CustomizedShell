@@ -98,4 +98,12 @@ public static class PageService
     {
         return new InventoryImagesSearchPage(new InventoryImageSearchViewModel(inventory));
     }
+
+    public static InventoryFiltersPage InventoryFilter(
+        InventoryFilters currentFilters,
+        Action? cancel,
+        Action<InventoryFilters>? applyFilters)
+    {
+        return new InventoryFiltersPage(currentFilters, cancel, applyFilters);
+    }
 }

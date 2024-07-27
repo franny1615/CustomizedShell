@@ -22,6 +22,7 @@ public class InventorySearchPage : BasePage
 
         _ViewModel = invSearchVM;
         _Search = new(invSearchVM);
+        _Search.ShowFilterButton = true;
         _Search.CanAddItems = canAdd;
         _Search.SearchLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical) { ItemSpacing = 12 };
         _Search.CardTemplate = new DataTemplate(() =>
@@ -46,6 +47,7 @@ public class InventorySearchPage : BasePage
             return view;
         });
         _Search.AddItem += AddInventory;
+        _Search.FilterTap += FiltersPage;
 
         Title = LanguageService.Instance["Inventory"];
         Content = _Search;
@@ -402,5 +404,25 @@ public class InventorySearchPage : BasePage
         {
             _Search.TriggerRefresh();
         }
+    }
+
+    private void FiltersPage(object? sender, EventArgs e)
+    {
+        _IsEditing = true;
+        Navigation.PushModalAsync(PageService.InventoryFilter
+        (
+            currentFilters: _ViewModel.Filters,
+            cancel: () => 
+            {
+                _IsEditing = false; 
+            },
+            applyFilters: (filters) => 
+            {
+                _ViewModel.Filters = filters;
+                _IsEditing = false;
+
+                _Search.TriggerRefresh();
+            }
+        ));
     }
 }

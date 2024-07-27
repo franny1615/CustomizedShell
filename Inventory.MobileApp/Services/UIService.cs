@@ -206,4 +206,10 @@ public static class UIService
         layout.Spacing = spacing;
         return layout;
     }
+
+    public static EntryLikeButton Placeholder(this EntryLikeButton entry, string placeholder)
+    {
+        entry.Placeholder = placeholder;
+        return entry;
+    }
 }

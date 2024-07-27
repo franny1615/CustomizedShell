@@ -16,7 +16,6 @@ public interface IFilter
 
 public interface ISearchViewModel<T>
 {
-    public List<IFilter> Filters { get; set; }
     public List<T> Items { get; set; }
     public int Total { get; set; }
     public int TotalPages { get; set; }
@@ -27,6 +26,7 @@ public interface ISearchViewModel<T>
 public class SearchView<T> : ContentView
 {
     public event EventHandler? AddItem;
+    public event EventHandler? FilterTap;
 
     public static readonly BindableProperty CardTemplateProperty = BindableProperty.Create(nameof(CardTemplate), typeof(DataTemplate), typeof(SearchView<T>), null);
     public DataTemplate CardTemplate { get => (DataTemplate)GetValue(CardTemplateProperty); set => SetValue(CardTemplateProperty, value); }
@@ -43,8 +43,8 @@ public class SearchView<T> : ContentView
     public static readonly BindableProperty ShowSearchProperty = BindableProperty.Create(nameof(ShowSearch), typeof(bool), typeof(SearchView<T>), true);
     public bool ShowSearch { get => (bool)GetValue(ShowSearchProperty); set => SetValue(ShowSearchProperty, value); }
 
-    public static readonly BindableProperty FiltersProperty = BindableProperty.Create(nameof(Filters), typeof(List<IFilter>), typeof(SearchView<T>));
-    public List<IFilter> Filters { get => (List<IFilter>)GetValue(FiltersProperty); set => SetValue(FiltersProperty, value); }
+    public static readonly BindableProperty ShowFilterButtonProperty = BindableProperty.Create(nameof(ShowFilterButton), typeof(bool), typeof(SearchView<T>));
+    public bool ShowFilterButton { get => (bool)GetValue(ShowFilterButtonProperty); set => SetValue(ShowFilterButtonProperty, value); }
 
     private readonly Debouncer _SearchDebounce = new();
     private readonly ISearchViewModel<T> _SearchVM;
@@ -107,7 +107,6 @@ public class SearchView<T> : ContentView
     public SearchView(ISearchViewModel<T> searchVM)
     {
         BindingContext = searchVM;
-        this.SetBinding(FiltersProperty, "Filters");
 
         Padding = new Thickness(8, 12, 8, 12);
 
@@ -141,6 +140,7 @@ public class SearchView<T> : ContentView
         Content = _ContentLayout;
 
         _SearchEntry.TextChanged += SearchTextChanged;
+        _Filter.TapGesture(() => { FilterTap?.Invoke(this, EventArgs.Empty); });
 
         LayoutSearch();
     }
@@ -184,7 +184,7 @@ public class SearchView<T> : ContentView
         _ContentLayout.Remove(_FilterLayout);
         _ContentLayout.Remove(_NoFilterLayout);
 
-        if (Filters.Count > 0)
+        if (ShowFilterButton)
         {
             _ContentLayout.Children.Add(_FilterLayout.Row(0));
         }
@@ -247,7 +247,7 @@ public class SearchView<T> : ContentView
             }
             else
             {
-                _SearchEntry.ColumnSpan(Filters.Count > 0 ? 1 : 2);
+                _SearchEntry.ColumnSpan(ShowFilterButton ? 1 : 2);
                 _Loading.IsVisible = false;
                 _Loading.IsRunning = false;
                 _Loading.IsEnabled = false;
@@ -257,7 +257,7 @@ public class SearchView<T> : ContentView
         {
             _SearchEntry.IsVisible = ShowSearch;
         }
-        else if (propertyName == FiltersProperty.PropertyName)
+        else if (propertyName == ShowFilterButtonProperty.PropertyName)
         {
             LayoutSearch();
         }

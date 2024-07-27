@@ -4,6 +4,7 @@ using Inventory.MobileApp.Models;
 using Inventory.MobileApp.Services;
 using Microsoft.Maui.Controls.Shapes;
 using System.Runtime.CompilerServices;
+using static CommunityToolkit.Maui.Markup.GridRowsColumns;
 
 namespace Inventory.MobileApp.Controls;
 
@@ -25,6 +26,8 @@ public class EntryLikeButton : ContentView
         .FontSize(16)
         .Bold()
         .CenterVertical();
+    private readonly Image _ChevronDown = new Image()
+        .ApplyMaterialIcon(MaterialIcon.Arrow_drop_down, 18, UIService.Color("TextColor"));
     private readonly Border _Border = new Border()
         .Height(DeviceInfo.Current.Platform == DevicePlatform.iOS ? 40 : 50)
         .BorderColor(Colors.DarkGray)
@@ -38,7 +41,16 @@ public class EntryLikeButton : ContentView
         _TextLabel.SetDynamicResource(Label.TextColorProperty, "TextColor");
         _Border.SetDynamicResource(Border.BackgroundColorProperty, "EBGC");
 
-        _Border.Content = _TextLabel;
+        _Border.Content = new Grid 
+        {
+            ColumnDefinitions = Columns.Define(Star, 40),
+            ColumnSpacing = 12,
+            Children = 
+            {
+                _TextLabel.Column(0),
+                _ChevronDown.Column(1)
+            }
+        };
         Content = new VerticalStackLayout
         {
             Spacing = 4,
