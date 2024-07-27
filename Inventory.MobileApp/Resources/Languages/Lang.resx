@@ -435,4 +435,13 @@ Would you like to share the error with us?</value>
   <data name="Inventory Images" xml:space="preserve">
     <value>Inventory Images</value>
   </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="Last Inserted" xml:space="preserve">
+    <value>Last Inserted</value>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>Sort By</value>
+  </data>
 </root>

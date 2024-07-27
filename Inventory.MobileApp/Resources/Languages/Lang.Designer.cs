@@ -577,6 +577,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filters.
+        /// </summary>
+        internal static string Filters {
+            get {
+                return ResourceManager.GetString("Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In Use.
         /// </summary>
         internal static string In_Use {
@@ -654,6 +663,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Last_Edited {
             get {
                 return ResourceManager.GetString("Last Edited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Inserted.
+        /// </summary>
+        internal static string Last_Inserted {
+            get {
+                return ResourceManager.GetString("Last Inserted", resourceCulture);
             }
         }
         
@@ -915,6 +933,15 @@ namespace Inventory.MobileApp.Resources.Languages {
         internal static string Share_Barcode {
             get {
                 return ResourceManager.GetString("Share Barcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort By.
+        /// </summary>
+        internal static string Sort_By {
+            get {
+                return ResourceManager.GetString("Sort By", resourceCulture);
             }
         }
         

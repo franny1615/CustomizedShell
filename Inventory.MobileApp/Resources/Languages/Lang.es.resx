@@ -431,4 +431,13 @@ El correo electrónico verificado se utiliza para recuperar una cuenta perdida.<
   <data name="Inventory Images" xml:space="preserve">
     <value>Imagenes de Inventario</value>
   </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filtros</value>
+  </data>
+  <data name="Last Inserted" xml:space="preserve">
+    <value>Último insertado</value>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>Ordenar por</value>
+  </data>
 </root>

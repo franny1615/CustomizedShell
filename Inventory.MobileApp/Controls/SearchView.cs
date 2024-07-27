@@ -150,46 +150,45 @@ public class SearchView<T> : ContentView
         _NoFilterLayout?.Clear();
         _FilterLayout?.Clear();
 
-        _FilterLayout = new Grid
-        {
-            ColumnSpacing = 8,
-            ColumnDefinitions = Columns.Define(Auto, Star, Auto),
-            Children =
-            {
-                _CountBacking,
-                _SearchEntry.Column(1),
-                new HorizontalStackLayout
-                {
-                    Spacing = 8,
-                    Children =
-                    {
-                        _Filter,
-                        _Loading
-                    }
-                }.Column(2)
-            }
-        };
-        _NoFilterLayout = new Grid
-        {
-            ColumnSpacing = 8,
-            ColumnDefinitions = Columns.Define(Auto, Star, 32),
-            Children =
-            {
-                _CountBacking,
-                _SearchEntry.Column(1).ColumnSpan(2),
-                _Loading.Column(2)
-            }
-        };
-
         _ContentLayout.Remove(_FilterLayout);
         _ContentLayout.Remove(_NoFilterLayout);
 
         if (ShowFilterButton)
         {
+            _FilterLayout = new Grid
+            {
+                ColumnSpacing = 8,
+                ColumnDefinitions = Columns.Define(Auto, Star, Auto),
+                Children =
+                {
+                    _CountBacking,
+                    _SearchEntry.Column(1),
+                    new HorizontalStackLayout
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            _Filter,
+                            _Loading
+                        }
+                    }.Column(2)
+                }
+            };
             _ContentLayout.Children.Add(_FilterLayout.Row(0));
         }
         else
         {
+            _NoFilterLayout = new Grid
+            {
+                ColumnSpacing = 8,
+                ColumnDefinitions = Columns.Define(Auto, Star, 32),
+                Children =
+                {
+                    _CountBacking,
+                    _SearchEntry.Column(1).ColumnSpan(2),
+                    _Loading.Column(2)
+                }
+            };
             _ContentLayout.Children.Add(_NoFilterLayout.Row(0));
         }
     }
