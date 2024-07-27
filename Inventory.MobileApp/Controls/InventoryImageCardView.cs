@@ -64,42 +64,39 @@ public class InventoryImageCardView : Border
         Loaded += HasLoaded;
     }
 
-    private void HasLoaded(object? sender, EventArgs e)
+    private async void HasLoaded(object? sender, EventArgs e)
     {
         _ActivityIndicator.IsVisible = false;
         _ActivityIndicator.IsRunning = false;
         _ActivityIndicator.IsEnabled = false;
 
-        Task.Run(async () =>
+        if (BindingContext is InventoryImage image && string.IsNullOrEmpty(image.ImageBase64))
         {
-            if (BindingContext is InventoryImage image && string.IsNullOrEmpty(image.ImageBase64))
+            _ActivityIndicator.IsVisible = true;
+            _ActivityIndicator.IsRunning = true;
+            _ActivityIndicator.IsEnabled = true;
+
+            var resp = await NetworkService.Get<InventoryImage>(Endpoints.getImage, new Dictionary<string, string>
             {
-                _ActivityIndicator.IsVisible = true;
-                _ActivityIndicator.IsRunning = true;
-                _ActivityIndicator.IsEnabled = true;
+                { "ID", image.Id.ToString() }
+            });
 
-                var resp = await NetworkService.Get<InventoryImage>(Endpoints.getImage, new Dictionary<string, string>
-                {
-                    { "ID", image.Id.ToString() }
-                });
-
-                if (!string.IsNullOrEmpty(resp.ErrorMessage))
-                {
-                    // TODO: log to cloud
-                }
-                else
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        image.ImageBase64 = resp.Data?.ImageBase64 ?? "";
-                    });
-                }
-
-                _ActivityIndicator.IsVisible = false;
-                _ActivityIndicator.IsRunning = false;
-                _ActivityIndicator.IsEnabled = false;
+            if (!string.IsNullOrEmpty(resp.ErrorMessage))
+            {
+                // TODO: log to cloud
             }
-        });
+            else
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    image.ImageBase64 = resp.Data?.ImageBase64 ?? "";
+                });
+            }
+
+            _ActivityIndicator.IsVisible = false;
+            _ActivityIndicator.IsRunning = false;
+            _ActivityIndicator.IsEnabled = false;
+        }
     }
 
     protected override void OnPropertyChanged([CallerMemberName] string? propertyName = "")
