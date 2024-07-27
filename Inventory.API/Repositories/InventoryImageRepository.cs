@@ -75,7 +75,7 @@ select
     Id,
     CompanyId,
     InventoryId,
-    ImageBase64,
+    '' as ImageBase64,
     CreatedOn 
 from inventory_image
 where CompanyId = @companyId
