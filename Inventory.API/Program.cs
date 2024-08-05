@@ -74,6 +74,13 @@ app.Use(async (context, next) =>
         else
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
     }
+    else if (context.Request.Path == "/api/websocket/movenetv4")
+    {
+        if (context.WebSockets.IsWebSocketRequest)
+            await WSUtils.MoveNETV4(context);
+        else
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+    }
     else
     {
         await next(context);

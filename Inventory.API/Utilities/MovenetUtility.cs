@@ -28,9 +28,11 @@ public class MoveNetUtility
             var model = modelMemoryStream.ToArray();
             var session = new InferenceSession(model);
 
-            // Predict 
+            // Start Stopwatch 
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
+
+            // Predict
             var input = new DenseTensor<int>(GetInput(imageStream), new[]
             {
                 1,
@@ -42,6 +44,8 @@ public class MoveNetUtility
             {
                 NamedOnnxValue.CreateFromTensor(InputTensorName, input)
             });
+            
+            // End Stopwatch
             sw.Stop();
 
             // Log time
@@ -128,3 +132,16 @@ public class MoveNetUtility
     }
 }
 
+public class MoveNetPacket
+{
+    public MoveNetPacketType Type { get; set; } = MoveNetPacketType.KeepAlive;
+    public string Message { get; set; } = string.Empty;
+    public float[] Detections { get; set; } = [];
+}
+
+public enum MoveNetPacketType
+{
+    KeepAlive,
+    Picture,
+    DetectionResult
+}
