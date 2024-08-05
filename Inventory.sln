@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.API", "Inventory.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.MobileApp", "Inventory.MobileApp\Inventory.MobileApp.csproj", "{029E3EC3-05A4-4E76-A9CA-284A915F280D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FDMobile", "FDMobile\FDMobile.csproj", "{EF3FD80A-B2B1-45A3-B4B7-E4E9F1095D01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,12 @@ Global
 		{029E3EC3-05A4-4E76-A9CA-284A915F280D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{029E3EC3-05A4-4E76-A9CA-284A915F280D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{029E3EC3-05A4-4E76-A9CA-284A915F280D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3FD80A-B2B1-45A3-B4B7-E4E9F1095D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3FD80A-B2B1-45A3-B4B7-E4E9F1095D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3FD80A-B2B1-45A3-B4B7-E4E9F1095D01}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EF3FD80A-B2B1-45A3-B4B7-E4E9F1095D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3FD80A-B2B1-45A3-B4B7-E4E9F1095D01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3FD80A-B2B1-45A3-B4B7-E4E9F1095D01}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
