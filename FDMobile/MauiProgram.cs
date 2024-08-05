@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Markup;
+using FDMobile.Controls;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using SkiaSharp.Views.Maui.Controls.Hosting;
@@ -19,6 +20,7 @@ namespace FDMobile
                 .UseMauiCommunityToolkitMarkup()
                 .UseMauiCompatibility()
                 .UseSkiaSharp()
+                .UseCameraView()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

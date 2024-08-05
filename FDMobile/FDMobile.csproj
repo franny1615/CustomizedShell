@@ -70,5 +70,78 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
+	
+	<!-- ANDROID CAMERA DEPENDENCIES -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
+	  <PackageReference Include="Xamarin.AndroidX.Activity">
+	    <Version>1.9.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Activity.Ktx">
+	    <Version>1.9.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Camera.Camera2">
+	    <Version>1.3.4.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Camera.Core">
+	    <Version>1.3.4.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Camera.Extensions">
+	    <Version>1.3.4.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Camera.Lifecycle">
+	    <Version>1.3.4.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Camera.Video">
+	    <Version>1.3.4.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Camera.View">
+	    <Version>1.3.4.1</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Collection">
+	    <Version>1.4.2</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Collection.Ktx">
+	    <Version>1.4.2</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.Common">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.Common.Jvm">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData.Core">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData.Core.Ktx">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.Process">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime.Android">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime.Ktx">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel.Android">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel.Ktx">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModelSavedState">
+	    <Version>2.8.4</Version>
+	  </PackageReference>
+	</ItemGroup>
 
 </Project>
