@@ -1,8 +1,10 @@
-﻿using Android.Widget;
+﻿using Android.Graphics;
+using Android.Widget;
 using AndroidX.Camera.Core;
 using AndroidX.Camera.Lifecycle;
 using AndroidX.Camera.View;
 using AndroidX.Core.Content;
+using Java.IO;
 using Java.Lang;
 using Java.Util.Concurrent;
 using Microsoft.Maui.Handlers;
@@ -15,6 +17,9 @@ public partial class CameraViewHandler : ViewHandler<CameraView, RelativeLayout>
     public bool HavePermissions { get; private set; } = false;
     public PreviewView PreviewView { get; private set; }
     public IExecutorService? CameraExecutor { get; private set; }
+
+    public IExecutorService? ImageAnalysisExecutor { get; private set; }
+    public ImageAnalysis? ImageAnalysis { get; private set; }
 
     protected override RelativeLayout CreatePlatformView()
     {
@@ -39,6 +44,7 @@ public partial class CameraViewHandler : ViewHandler<CameraView, RelativeLayout>
         if (HavePermissions)
         {
             CameraExecutor = Executors.NewSingleThreadExecutor();
+            ImageAnalysisExecutor = Executors.NewSingleThreadExecutor();
             PreviewView = new PreviewView(Context)
             {
                 LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
@@ -80,10 +86,28 @@ public partial class CameraViewHandler : ViewHandler<CameraView, RelativeLayout>
                                 break;
                         }
 
+                        handler.ImageAnalysis = new ImageAnalysis
+                            .Builder()
+                            .SetBackpressureStrategy(ImageAnalysis.StrategyKeepOnlyLatest)
+                            .Build();
+                        if (handler.ImageAnalysisExecutor != null)
+                        {
+                            handler.ImageAnalysis.SetAnalyzer(
+                                handler.ImageAnalysisExecutor,
+                                new ImgAnalyzerDelegate((sample) =>
+                                {
+                                    cameraView.CurrentImageSample = sample;
+#if DEBUG
+                                    System.Diagnostics.Debug.WriteLine("got sample");
+#endif
+                                }));
+                        }
+
                         cameraProvider?.UnbindAll();
                         cameraProvider?.BindToLifecycle(
                             ((MauiAppCompatActivity)Platform.CurrentActivity!), 
                             cameraSelector, 
+                            handler.ImageAnalysis,
                             preview);
                     }
                     catch (Java.Lang.Exception e)
@@ -101,5 +125,23 @@ public class CameraRunnable(Action run) : Java.Lang.Object, IRunnable
     public void Run()
     {
         run?.Invoke();
+    }
+}
+
+public class ImgAnalyzerDelegate(
+    Action<byte[]> gotSample) : Java.Lang.Object, ImageAnalysis.IAnalyzer
+{
+    public Android.Util.Size DefaultTargetResolution => new Android.Util.Size(1280, 720);
+
+    public void Analyze(IImageProxy p0)
+    {
+        var bitmap = p0.ToBitmap();
+        MemoryStream stream = new MemoryStream();
+        bitmap.Compress(Bitmap.CompressFormat.Png!, 100, stream);
+        byte[] data = stream.ToArray();
+        gotSample?.Invoke(data);    
+        bitmap.Recycle();
+
+        p0.Close(); // important in order to get more samples
     }
 }
