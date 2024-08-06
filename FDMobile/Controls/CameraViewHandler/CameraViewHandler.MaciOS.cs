@@ -1,7 +1,10 @@
 ﻿using AVFoundation;
 using CoreFoundation;
+using CoreMedia;
+using Foundation;
 using Microsoft.Maui.Handlers;
 using UIKit;
+using CoreImage;
 
 namespace FDMobile.Controls.Handlers;
 
@@ -14,6 +17,8 @@ public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
     public AVCaptureInput? FrontInput { get; private set; }
     public AVCaptureInput? BackInput { get; private set; }
     public AVCaptureVideoPreviewLayer? PreviewLayer { get; private set; }
+    public AVCaptureVideoDataOutput? VideoDataOutput { get; private set; }
+    public DispatchQueue? VideoOutputQueue { get; private set; }
 
     protected override UIView CreatePlatformView()
     {
@@ -62,6 +67,7 @@ public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
             handler.CaptureSession.AutomaticallyConfiguresCaptureDeviceForWideColor = true;
 
             handler.SetupInputs(cameraView.Position);
+            handler.SetupOutputs();
 
             DispatchQueue.MainQueue.DispatchAsync(() =>
             {
@@ -90,10 +96,12 @@ public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
 
         if (BackCamera != null)
         {
+            BackCamera.ActiveVideoMaxFrameDuration = new CMTime(1, 30);
             BackInput = AVCaptureDeviceInput.FromDevice(BackCamera);
         }
         if (FrontCamera != null)
         {
+            FrontCamera.ActiveVideoMaxFrameDuration = new CMTime(1, 30);
             FrontInput = AVCaptureDeviceInput.FromDevice(FrontCamera);
         }
 
@@ -114,6 +122,24 @@ public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
         }
     }
 
+    private void SetupOutputs()
+    {
+        VideoDataOutput = new AVCaptureVideoDataOutput();
+        VideoOutputQueue = new DispatchQueue("cvVideoQueue");
+        VideoDataOutput.SetSampleBufferDelegate(new VideoCaptureDelegate((image) => {
+            if (image != null)
+            {
+                var bytes = image.AsPNG()?.ToArray();
+                VirtualView.CurrentImageSample = bytes ?? [];
+            }
+        }), VideoOutputQueue);
+
+        if (CaptureSession != null)
+        {
+            CaptureSession.AddOutput(VideoDataOutput);
+        }
+    }
+
     private void SetupPreviewLayer()
     {
         if (CaptureSession == null)
@@ -122,5 +148,51 @@ public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
         PreviewLayer = new AVCaptureVideoPreviewLayer(CaptureSession);
         PlatformView.Layer.InsertSublayer(PreviewLayer, 0);
         PreviewLayer.Frame = PlatformView.Layer.Frame;
+    }
+}
+
+public class VideoCaptureDelegate : NSObject, IAVCaptureVideoDataOutputSampleBufferDelegate
+{
+    private Action<UIImage?> _GotSample;
+
+    public VideoCaptureDelegate(Action<UIImage?> gotSample)
+    {
+        _GotSample = gotSample;
+    }
+
+    [Foundation.Export("captureOutput:didOutputSampleBuffer:fromConnection:")]
+    public virtual void DidOutputSampleBuffer (
+        AVCaptureOutput captureOutput, 
+        CMSampleBuffer sampleBuffer, 
+        AVCaptureConnection connection)
+    {
+        _GotSample?.Invoke(ImageFromSampleBuffer(sampleBuffer));
+    }
+
+    public UIImage? ImageFromSampleBuffer(CMSampleBuffer sampleBuffer)
+    {
+        var imageBuffer = sampleBuffer.GetImageBuffer();
+        if (imageBuffer == null)
+            return null;
+
+        var ciImage = CIImage.FromImageBuffer(imageBuffer);
+        return UIImage.FromImage(ciImage, 1.0f, Orientation());
+    }
+
+    private UIImageOrientation Orientation()
+    {
+        var currOrientation = UIDevice.CurrentDevice.Orientation;
+        switch (currOrientation)
+        {
+            case UIDeviceOrientation.PortraitUpsideDown:
+                return UIImageOrientation.Left;
+            case UIDeviceOrientation.LandscapeLeft:
+                return UIImageOrientation.UpMirrored;
+            case UIDeviceOrientation.LandscapeRight:
+                return UIImageOrientation.Down;
+            case UIDeviceOrientation.Portrait:
+            default:
+                return UIImageOrientation.Up;
+        }
     }
 }
