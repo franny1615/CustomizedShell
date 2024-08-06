@@ -7,6 +7,7 @@ namespace FDMobile.Controls.Handlers;
 
 public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
 {
+    public bool HavePermissions { get; set; }
     public AVCaptureSession? CaptureSession { get; private set; }
     public AVCaptureDevice? BackCamera { get; private set; }
     public AVCaptureDevice? FrontCamera { get; private set; }
@@ -30,12 +31,26 @@ public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
         base.DisconnectHandler(platformView);
     }
 
-    public static void MapCameraPosition(
+    public static async void MapCameraPosition(
         CameraViewHandler handler, 
         CameraView cameraView)
     {
+        var cameraStatus = await Permissions.CheckStatusAsync<Permissions.Camera>();
+        var cameraCheck = PermissionStatus.Denied;
+        if (cameraStatus == PermissionStatus.Denied || cameraStatus == PermissionStatus.Unknown)
+        {
+            cameraCheck = await Permissions.RequestAsync<Permissions.Camera>();
+        }
+        
+        handler.HavePermissions = 
+            cameraStatus == PermissionStatus.Granted || 
+            cameraCheck == PermissionStatus.Granted;
+
         DispatchQueue.DefaultGlobalQueue.DispatchSync(() =>
         {
+            if (!handler.HavePermissions)
+                return;
+
             handler.CaptureSession = new AVCaptureSession();
             handler.CaptureSession.BeginConfiguration();
 

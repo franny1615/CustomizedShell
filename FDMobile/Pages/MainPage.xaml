@@ -6,6 +6,6 @@
              Title="MainPage">
     <Grid>
         <controls:CameraView 
-            Position="Rear" />
+            Position="Front" />
     </Grid>
 </ContentPage>
