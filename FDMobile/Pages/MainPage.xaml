@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:FDMobile.Controls"
              x:Class="FDMobile.Pages.MainPage"
              Title="MainPage">
-    <Grid>
+    <Grid x:Name="Container">
         <Border
             VerticalOptions="Start"
             HorizontalOptions="Start"
