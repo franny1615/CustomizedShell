@@ -31,7 +31,7 @@ public class MoveNetUtility
             var session = new InferenceSession(model);
 
             // Predict
-            var input = ConvertImageToFloatTensorUnsafe(imageStream);
+            var input = GetInput(imageStream);
             using var results = session.Run(new List<NamedOnnxValue>
             {
                 NamedOnnxValue.CreateFromTensor(InputTensorName, input)
@@ -48,36 +48,43 @@ public class MoveNetUtility
         }
     }
 
-    public static DenseTensor<int> ConvertImageToFloatTensorUnsafe(Stream imageStream)
+    private static DenseTensor<int> GetInput(Stream imageStream)
     {
         DenseTensor<int> data = new DenseTensor<int>([1, ImageWidth, ImageHeight, 3]);
 
-        Bitmap image = new Bitmap(imageStream);    
-        
-        BitmapData bmd = image.LockBits(
-            new Rectangle(0, 0, image.Width, image.Height), 
-            ImageLockMode.ReadOnly, 
-            image.PixelFormat);
+        using var sourceBitmap = SKBitmap.Decode(imageStream);
+        var pixels = sourceBitmap.Bytes;
 
-        int PixelSize = 3;
+        var bytesPerPixel = sourceBitmap.BytesPerPixel;
+        var rowLength = ImageWidth * bytesPerPixel;
+        var channelLength = ImageWidth * ImageHeight;
+        var channelData = new float[channelLength * 3];
+        var channelDataIndex = 0;
 
-        unsafe
+        for (int y = 0; y < ImageHeight; y++)
         {
-            for (int y = 0; y < bmd.Height; y++)
-            {
-                // row is a pointer to a full row of data with each of its colors
-                byte* row = (byte*)bmd.Scan0 + (y * bmd.Stride);
-                for (int x = 0; x < bmd.Width; x++)
-                {           
-                    data[0, y, x, 0] = row[x*PixelSize + 0];
-                    data[0, y, x, 1] = row[x*PixelSize + 1];
-                    data[0, y, x, 2] = row[x*PixelSize + 2];
-                }
-            }
+            var rowOffset = y * rowLength;
 
-            image.UnlockBits(bmd);
+            for (int x = 0, columnOffset = 0; x < ImageWidth; x++, columnOffset += bytesPerPixel)
+            {
+                var pixelOffset = rowOffset + columnOffset;
+                
+                var pixelR = pixels[pixelOffset];
+                var pixelG = pixels[pixelOffset + 1];
+                var pixelB = pixels[pixelOffset + 2];
+
+                var rChannelIndex = channelDataIndex;
+                var gChannelIndex = channelDataIndex + 1;
+                var bChannelIndex = channelDataIndex + 2;
+
+                data[0, y, x, 0] = pixelR;
+                data[0, y, x, 1] = pixelG;
+                data[0, y, x, 2] = pixelB;
+
+                channelDataIndex++;
+            }
         }
-        
+
         return data;
     }
 }
