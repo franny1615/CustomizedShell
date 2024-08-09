@@ -28,10 +28,6 @@ public class MoveNetUtility
             var model = modelMemoryStream.ToArray();
             var session = new InferenceSession(model);
 
-            // Start Stopwatch 
-            var sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
-
             // Predict
             var input = new DenseTensor<int>(GetInput(imageStream), new[]
             {
@@ -44,12 +40,6 @@ public class MoveNetUtility
             {
                 NamedOnnxValue.CreateFromTensor(InputTensorName, input)
             });
-            
-            // End Stopwatch
-            sw.Stop();
-
-            // Log time
-            Console.WriteLine($"Prediction took: {sw.ElapsedMilliseconds} ms");
 
             // Merge the prediction array with the labels. Produce tuples of landmark name and its probability.
             var predictions = results.FirstOrDefault(i => i.Name == OutputTensorName)?.AsTensor<float>().ToArray();
@@ -67,30 +57,30 @@ public class MoveNetUtility
         using var sourceBitmap = SKBitmap.Decode(imageStream);
         var pixels = sourceBitmap.Bytes;
 
-        if (sourceBitmap.Width != ImageWidth || sourceBitmap.Height != ImageHeight)
-        {
-            float ratio = (float)Math.Min(ImageWidth, ImageHeight) / Math.Min(sourceBitmap.Width, sourceBitmap.Height);
+        // if (sourceBitmap.Width != ImageWidth || sourceBitmap.Height != ImageHeight)
+        // {
+        //     float ratio = (float)Math.Min(ImageWidth, ImageHeight) / Math.Min(sourceBitmap.Width, sourceBitmap.Height);
 
-            using SKBitmap scaledBitmap = sourceBitmap.Resize(new SKImageInfo(
-                (int)(ratio * sourceBitmap.Width),
-                (int)(ratio * sourceBitmap.Height)),
-                SKFilterQuality.Medium);
+        //     using SKBitmap scaledBitmap = sourceBitmap.Resize(new SKImageInfo(
+        //         (int)(ratio * sourceBitmap.Width),
+        //         (int)(ratio * sourceBitmap.Height)),
+        //         SKFilterQuality.Medium);
 
-            var horizontalCrop = scaledBitmap.Width - ImageWidth;
-            var verticalCrop = scaledBitmap.Height - ImageHeight;
-            var leftOffset = horizontalCrop == 0 ? 0 : horizontalCrop / 2;
-            var topOffset = verticalCrop == 0 ? 0 : verticalCrop / 2;
+        //     var horizontalCrop = scaledBitmap.Width - ImageWidth;
+        //     var verticalCrop = scaledBitmap.Height - ImageHeight;
+        //     var leftOffset = horizontalCrop == 0 ? 0 : horizontalCrop / 2;
+        //     var topOffset = verticalCrop == 0 ? 0 : verticalCrop / 2;
 
-            var cropRect = SKRectI.Create(
-                new SKPointI(leftOffset, topOffset),
-            new SKSizeI(ImageWidth, ImageHeight));
+        //     var cropRect = SKRectI.Create(
+        //         new SKPointI(leftOffset, topOffset),
+        //     new SKSizeI(ImageWidth, ImageHeight));
 
-            using SKImage currentImage = SKImage.FromBitmap(scaledBitmap);
-            using SKImage croppedImage = currentImage.Subset(cropRect);
-            using SKBitmap croppedBitmap = SKBitmap.FromImage(croppedImage);
+        //     using SKImage currentImage = SKImage.FromBitmap(scaledBitmap);
+        //     using SKImage croppedImage = currentImage.Subset(cropRect);
+        //     using SKBitmap croppedBitmap = SKBitmap.FromImage(croppedImage);
 
-            pixels = croppedBitmap.Bytes;
-        }
+        //     pixels = croppedBitmap.Bytes;
+        // }
 
         var bytesPerPixel = sourceBitmap.BytesPerPixel;
         var rowLength = ImageWidth * bytesPerPixel;
