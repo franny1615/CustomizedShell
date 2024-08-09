@@ -5,7 +5,41 @@
              x:Class="FDMobile.Pages.MainPage"
              Title="MainPage">
     <Grid>
-        <controls:CameraView 
-            Position="Rear" />
+        <Border
+            VerticalOptions="Start"
+            HorizontalOptions="Start"
+            Padding="8"
+            Stroke="Transparent"
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 0 0 0 5"
+            Margin="0"
+            BackgroundColor="DarkGray"
+            ZIndex="1">
+            <Label 
+                x:Name="ConnectedStatus"
+                FontAttributes="Bold"
+                TextColor="Black"
+                Padding="8" />
+        </Border>
+        <Border
+            VerticalOptions="Start"
+            HorizontalOptions="End"
+            Padding="8"
+            Stroke="Transparent"
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 0 0 5 0"
+            Margin="0"
+            BackgroundColor="DarkGray"
+            ZIndex="1">
+            <VerticalStackLayout Spacing="0">
+                <Label HorizontalOptions="Center" Text="Original Image"/>
+                <Image 
+                    x:Name="PreviewImage"
+                    Aspect="AspectFit"
+                    WidthRequest="192"
+                    HeightRequest="192"/>
+            </VerticalStackLayout>
+        </Border>
+        <controls:CameraView x:Name="CameraView" Position="Rear" />
     </Grid>
 </ContentPage>

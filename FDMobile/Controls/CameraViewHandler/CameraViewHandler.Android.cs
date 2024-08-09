@@ -97,9 +97,6 @@ public partial class CameraViewHandler : ViewHandler<CameraView, RelativeLayout>
                                 new ImgAnalyzerDelegate((sample) =>
                                 {
                                     cameraView.CurrentImageSample = sample;
-#if DEBUG
-                                    System.Diagnostics.Debug.WriteLine("got sample");
-#endif
                                 }));
                         }
 
@@ -136,8 +133,16 @@ public class ImgAnalyzerDelegate(
     public void Analyze(IImageProxy p0)
     {
         var bitmap = p0.ToBitmap();
+
+        Matrix matrix = new();
+        matrix.PostRotate(p0.ImageInfo.RotationDegrees);
+        Bitmap bitmapRotated = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true);
+
+        Bitmap scaledBitmap = Bitmap.CreateScaledBitmap(bitmapRotated, 192, 192, false);
+
         MemoryStream stream = new MemoryStream();
-        bitmap.Compress(Bitmap.CompressFormat.Png!, 100, stream);
+        scaledBitmap.Compress(Bitmap.CompressFormat.Png!, 100, stream);
+
         byte[] data = stream.ToArray();
         gotSample?.Invoke(data);    
         bitmap.Recycle();
