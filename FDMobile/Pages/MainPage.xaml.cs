@@ -1,7 +1,11 @@
+using Foundation;
 using SkiaSharp;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+#if IOS
+using UIKit; 
+#endif 
 
 namespace FDMobile.Pages;
 
@@ -55,6 +59,14 @@ public partial class MainPage : ContentPage
                     await Task.Delay(1000);
 
                     var sample = CameraView.CurrentImageSample;
+                    
+                    #if IOS
+                    // .Scale() is very intensive appearantly so only do it at the times of fetching sample
+                    var data = NSData.FromArray(sample);
+                    var image = new UIImage(data);
+                    sample = image.Scale(new CoreGraphics.CGSize(192, 192)).AsPNG()?.ToArray();
+                    #endif 
+
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         PreviewImage.Source = ImageSource.FromStream(() => new MemoryStream(sample));
