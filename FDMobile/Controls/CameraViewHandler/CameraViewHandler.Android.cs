@@ -138,7 +138,11 @@ public class ImgAnalyzerDelegate(
         matrix.PostRotate(p0.ImageInfo.RotationDegrees);
         Bitmap bitmapRotated = Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true);
 
-        Bitmap scaledBitmap = Bitmap.CreateScaledBitmap(bitmapRotated, 192, 192, false);
+        Matrix mirror = new();
+        mirror.PreScale(-1, 1);
+        Bitmap bitmapMirrored = Bitmap.CreateBitmap(bitmapRotated, 0, 0, bitmapRotated.Width, bitmapRotated.Height, mirror, true);
+
+        Bitmap scaledBitmap = Bitmap.CreateScaledBitmap(bitmapMirrored, 192, 192, false);
 
         MemoryStream stream = new MemoryStream();
         scaledBitmap.Compress(Bitmap.CompressFormat.Png!, 100, stream);
