@@ -5,6 +5,7 @@ using Foundation;
 using Microsoft.Maui.Handlers;
 using UIKit;
 using CoreImage;
+using CoreGraphics;
 
 namespace FDMobile.Controls.Handlers;
 
@@ -129,7 +130,10 @@ public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
         VideoDataOutput.SetSampleBufferDelegate(new VideoCaptureDelegate((image) => {
             if (image != null)
             {
-                var bytes = image.AsPNG()?.ToArray();
+                var bytes = image
+                    .Scale(new CGSize(192, 192))
+                    .AsPNG()?
+                    .ToArray();
                 VirtualView.CurrentImageSample = bytes ?? [];
             }
         }), VideoOutputQueue);
