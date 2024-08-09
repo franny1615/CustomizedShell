@@ -104,9 +104,9 @@ public class MoveNetUtility
                 var gChannelIndex = channelDataIndex + 1;
                 var bChannelIndex = channelDataIndex + 2;
 
-                channelData[rChannelIndex] = (pixelR / 255f - 0.485f) / 0.229f;
-                channelData[gChannelIndex] = (pixelG / 255f - 0.456f) / 0.224f;
-                channelData[bChannelIndex] = (pixelB / 255f - 0.406f) / 0.225f;
+                channelData[rChannelIndex] = pixelR; // (pixelR / 255f - 0.485f) / 0.229f;
+                channelData[gChannelIndex] = pixelG; // (pixelG / 255f - 0.456f) / 0.224f;
+                channelData[bChannelIndex] = pixelB; // (pixelB / 255f - 0.406f) / 0.225f;
 
                 channelDataIndex++;
             }
