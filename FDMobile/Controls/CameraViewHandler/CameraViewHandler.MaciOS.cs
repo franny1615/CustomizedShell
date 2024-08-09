@@ -6,6 +6,7 @@ using Microsoft.Maui.Handlers;
 using UIKit;
 using CoreImage;
 using CoreGraphics;
+using Microsoft.Maui.Graphics.Platform;
 
 namespace FDMobile.Controls.Handlers;
 
@@ -130,11 +131,8 @@ public partial class CameraViewHandler : ViewHandler<CameraView, UIView>
         VideoDataOutput.SetSampleBufferDelegate(new VideoCaptureDelegate((image) => {
             if (image != null)
             {
-                var bytes = image
-                    .Scale(new CGSize(192, 192))
-                    .AsPNG()?
-                    .ToArray();
-                VirtualView.CurrentImageSample = bytes ?? [];
+                var data = image.AsPNG()?.ToArray();
+                VirtualView.CurrentImageSample = data ?? [];
             }
         }), VideoOutputQueue);
 
@@ -180,23 +178,32 @@ public class VideoCaptureDelegate : NSObject, IAVCaptureVideoDataOutputSampleBuf
             return null;
 
         var ciImage = CIImage.FromImageBuffer(imageBuffer);
-        return UIImage.FromImage(ciImage, 1.0f, Orientation());
-    }
+        var context = new CIContext();
 
-    private UIImageOrientation Orientation()
-    {
-        var currOrientation = UIDevice.CurrentDevice.Orientation;
-        switch (currOrientation)
+        if (ciImage == null)
+            return null;
+        
+        UIDeviceOrientation currentOrientation = UIDevice.CurrentDevice.Orientation;
+        switch (currentOrientation)
         {
-            case UIDeviceOrientation.PortraitUpsideDown:
-                return UIImageOrientation.Left;
-            case UIDeviceOrientation.LandscapeLeft:
-                return UIImageOrientation.UpMirrored;
-            case UIDeviceOrientation.LandscapeRight:
-                return UIImageOrientation.Down;
             case UIDeviceOrientation.Portrait:
-            default:
-                return UIImageOrientation.Up;
+                ciImage = ciImage.CreateByApplyingOrientation(ImageIO.CGImagePropertyOrientation.Right);
+                break;
+            case UIDeviceOrientation.PortraitUpsideDown:
+                ciImage = ciImage.CreateByApplyingOrientation(ImageIO.CGImagePropertyOrientation.Left);
+                break;
+            case UIDeviceOrientation.LandscapeLeft:
+                ciImage = ciImage.CreateByApplyingOrientation(ImageIO.CGImagePropertyOrientation.Down);
+                break;
+            case UIDeviceOrientation.LandscapeRight:
+                ciImage = ciImage.CreateByApplyingOrientation(ImageIO.CGImagePropertyOrientation.Up);
+                break;
         }
+
+        var cgImage = context.CreateCGImage(ciImage, ciImage.Extent);
+        if (cgImage == null)
+            return null;
+
+        return new UIImage(cgImage);
     }
 }

@@ -32,7 +32,7 @@
             BackgroundColor="DarkGray"
             ZIndex="1">
             <VerticalStackLayout Spacing="0">
-                <Label HorizontalOptions="Center" Text="Original Image"/>
+                <Label HorizontalOptions="Center" Text="Resized Image"/>
                 <Image 
                     x:Name="PreviewImage"
                     Aspect="AspectFit"
@@ -40,6 +40,6 @@
                     HeightRequest="192"/>
             </VerticalStackLayout>
         </Border>
-        <controls:CameraView x:Name="CameraView" Position="Rear" />
+        <controls:CameraView x:Name="CameraView" Position="Front" />
     </Grid>
 </ContentPage>
