@@ -3,6 +3,8 @@ using Microsoft.ML;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using SkiaSharp;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Reflection;
 
 namespace Inventory.API.Utilities;
@@ -29,13 +31,7 @@ public class MoveNetUtility
             var session = new InferenceSession(model);
 
             // Predict
-            var input = new DenseTensor<int>(GetInput(imageStream), new[]
-            {
-                1,
-                ImageWidth,
-                ImageHeight,
-                3
-            });
+            var input = ConvertImageToFloatTensorUnsafe(imageStream);
             using var results = session.Run(new List<NamedOnnxValue>
             {
                 NamedOnnxValue.CreateFromTensor(InputTensorName, input)
@@ -52,73 +48,37 @@ public class MoveNetUtility
         }
     }
 
-    private static int[] GetInput(Stream imageStream)
+    public static DenseTensor<int> ConvertImageToFloatTensorUnsafe(Stream imageStream)
     {
-        using var sourceBitmap = SKBitmap.Decode(imageStream);
-        var pixels = sourceBitmap.Bytes;
+        DenseTensor<int> data = new DenseTensor<int>([1, ImageWidth, ImageHeight, 3]);
 
-        // if (sourceBitmap.Width != ImageWidth || sourceBitmap.Height != ImageHeight)
-        // {
-        //     float ratio = (float)Math.Min(ImageWidth, ImageHeight) / Math.Min(sourceBitmap.Width, sourceBitmap.Height);
+        Bitmap image = new Bitmap(imageStream);    
+        
+        BitmapData bmd = image.LockBits(
+            new Rectangle(0, 0, image.Width, image.Height), 
+            ImageLockMode.ReadOnly, 
+            image.PixelFormat);
 
-        //     using SKBitmap scaledBitmap = sourceBitmap.Resize(new SKImageInfo(
-        //         (int)(ratio * sourceBitmap.Width),
-        //         (int)(ratio * sourceBitmap.Height)),
-        //         SKFilterQuality.Medium);
+        int PixelSize = 3;
 
-        //     var horizontalCrop = scaledBitmap.Width - ImageWidth;
-        //     var verticalCrop = scaledBitmap.Height - ImageHeight;
-        //     var leftOffset = horizontalCrop == 0 ? 0 : horizontalCrop / 2;
-        //     var topOffset = verticalCrop == 0 ? 0 : verticalCrop / 2;
-
-        //     var cropRect = SKRectI.Create(
-        //         new SKPointI(leftOffset, topOffset),
-        //     new SKSizeI(ImageWidth, ImageHeight));
-
-        //     using SKImage currentImage = SKImage.FromBitmap(scaledBitmap);
-        //     using SKImage croppedImage = currentImage.Subset(cropRect);
-        //     using SKBitmap croppedBitmap = SKBitmap.FromImage(croppedImage);
-
-        //     pixels = croppedBitmap.Bytes;
-        // }
-
-        var bytesPerPixel = sourceBitmap.BytesPerPixel;
-        var rowLength = ImageWidth * bytesPerPixel;
-        var channelLength = ImageWidth * ImageHeight;
-        var channelData = new float[channelLength * 3];
-        var channelDataIndex = 0;
-
-        for (int y = 0; y < ImageHeight; y++)
+        unsafe
         {
-            var rowOffset = y * rowLength;
-
-            for (int x = 0, columnOffset = 0; x < ImageWidth; x++, columnOffset += bytesPerPixel)
+            for (int y = 0; y < bmd.Height; y++)
             {
-                var pixelOffset = rowOffset + columnOffset;
-
-                var pixelR = pixels[pixelOffset];
-                var pixelG = pixels[pixelOffset + 1];
-                var pixelB = pixels[pixelOffset + 2];
-
-                var rChannelIndex = channelDataIndex;
-                var gChannelIndex = channelDataIndex + 1;
-                var bChannelIndex = channelDataIndex + 2;
-
-                channelData[rChannelIndex] = pixelR; // (pixelR / 255f - 0.485f) / 0.229f;
-                channelData[gChannelIndex] = pixelG; // (pixelG / 255f - 0.456f) / 0.224f;
-                channelData[bChannelIndex] = pixelB; // (pixelB / 255f - 0.406f) / 0.225f;
-
-                channelDataIndex++;
+                // row is a pointer to a full row of data with each of its colors
+                byte* row = (byte*)bmd.Scan0 + (y * bmd.Stride);
+                for (int x = 0; x < bmd.Width; x++)
+                {           
+                    data[0, y, x, 0] = row[x*PixelSize + 0];
+                    data[0, y, x, 1] = row[x*PixelSize + 1];
+                    data[0, y, x, 2] = row[x*PixelSize + 2];
+                }
             }
-        }
 
-        var mapped = new int[channelLength * 3];
-        for (int i = 0; i < channelData.Length; i++)
-        {
-            mapped[i] = (int)channelData[i];
+            image.UnlockBits(bmd);
         }
-
-        return mapped;
+        
+        return data;
     }
 }
 
