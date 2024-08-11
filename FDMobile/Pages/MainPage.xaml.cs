@@ -22,9 +22,11 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _ = ConnectToWebSocket();
+        // _ = ConnectToWebSocket();
+        _ = RunOnDevice();
     }
 
+    #region WEB SOCKET BASED
     private async Task ConnectToWebSocket()
     {
         var ws = new ClientWebSocket();
@@ -120,6 +122,70 @@ public partial class MainPage : ContentPage
             }
         });
     }
+    #endregion
+
+    #region ON DEVICE BASED
+    private async Task RunOnDevice()
+    {
+        _IsConnected = true;
+        while (_IsConnected)
+        {
+            try 
+            {
+                var sample = CameraView.CurrentImageSample;
+
+                if (sample == null || (sample != null && sample.Length == 0))
+                {
+                    await Task.Delay(1000);
+                    continue;
+                }
+                
+                #if IOS
+                var data = NSData.FromArray(sample);
+                UIImage theImage = new UIImage(data);
+                await MainThread.InvokeOnMainThreadAsync(() => 
+                {
+                    theImage = theImage.GetImageWithHorizontallyFlippedOrientation();
+                });
+                sample = theImage?
+                    .Scale(new CoreGraphics.CGSize(192, 192))
+                    .AsPNG()?
+                    .ToArray() ?? [];
+                #endif 
+
+                await Task.Delay(1000); // 1 fps
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    PreviewImage.Source = ImageSource.FromStream(() => new MemoryStream(sample));
+                });
+
+                var predictions = MoveNetUtility.Predict(new MemoryStream(sample));
+
+                MainThread.BeginInvokeOnMainThread(() => 
+                {
+                    if (string.IsNullOrEmpty(predictions.ErrorMessage))
+                    {
+                        _Detections.Packet = new MoveNetPacket
+                        {
+                            Type = MoveNetPacketType.DetectionResult,
+                            Detections = predictions.Data ?? []
+                        };
+                        TheCanvas.Invalidate();   
+                    }
+                    else 
+                    {
+                        System.Diagnostics.Debug.WriteLine(predictions.ErrorMessage);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+        }
+    }
+    #endregion
 }
 
 public class MoveNetPacket
