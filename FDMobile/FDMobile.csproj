@@ -52,7 +52,7 @@
 		<PackageReference Include="SkiaSharp" Version="2.88.8" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.8" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
-		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.18.1" />
+		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.12.1" />
     	<PackageReference Include="Microsoft.ML.OnnxTransformer" Version="3.0.1" />
 	</ItemGroup>
 
@@ -145,5 +145,11 @@
 	    <Version>2.8.4</Version>
 	  </PackageReference>
 	</ItemGroup>
+
+	<Target Name="AddCoreML" Condition="'$(TargetFramework)' == 'net6.0-ios'" AfterTargets="_LoadLinkerOutput" BeforeTargets="_ComputeLinkNativeExecutableInputs">
+		<ItemGroup>
+			<_LinkerFrameworks Include="CoreML" />
+		</ItemGroup>
+	</Target>
 
 </Project>

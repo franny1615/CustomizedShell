@@ -153,12 +153,12 @@ public partial class MainPage : ContentPage
                     .ToArray() ?? [];
                 #endif 
 
-                await Task.Delay(1000); // 1 fps
+                await Task.Delay(50); // ~ 24 fps
 
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    PreviewImage.Source = ImageSource.FromStream(() => new MemoryStream(sample));
-                });
+                // MainThread.BeginInvokeOnMainThread(() =>
+                // {
+                //     PreviewImage.Source = ImageSource.FromStream(() => new MemoryStream(sample));
+                // });
 
                 var predictions = MoveNetUtility.Predict(new MemoryStream(sample));
 
